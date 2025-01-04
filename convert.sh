@@ -1,3 +1,2 @@
 #!/bin/bash
-. env/bin/activate
-python convert.py
+env/bin/python convert.py
