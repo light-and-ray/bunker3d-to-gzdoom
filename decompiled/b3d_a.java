@@ -1,4 +1,9 @@
-/* Decompiler 7822ms, total 8408ms, lines 9270 */
+/*
+ * Decompiled a.class from b3d
+ * And partially deobfuscated
+ * I'm not going to 100% deobfuscate and port it
+ * If you are, please note, I could broke sth accidentally
+ */
 import GlomoReg.i;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -23,7 +28,7 @@ import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordFilter;
 import javax.microedition.rms.RecordStore;
 
-public final class a extends Canvas {
+public final class b3d_a extends Canvas {
    private byte c;
    private i d;
    private boolean e;
