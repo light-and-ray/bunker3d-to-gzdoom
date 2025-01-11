@@ -49,6 +49,26 @@ public final class b3d_a extends Canvas {
    private byte[] s;
    private byte[] t;
    private byte[] u;
+   /*
+                  loadedMap
+        -----------------------------------
+        | header, 3 shorts: A, B, C       |
+        -----------------------------------
+    0   | 5 shorts, can be negative       |
+        -----------------------------------
+    1   | A*4 nibbles as bytes            |
+        -----------------------------------
+    2   | B bytes                         |
+        -----------------------------------
+    3   | 72 bytes                        |
+        -----------------------------------
+    4   | C bytes                         |
+        -----------------------------------
+    5   | 10 bytes                        |
+        -----------------------------------
+        | footer, 8 shorts                |
+        -----------------------------------
+   */
    private byte[][] loadedMap;
    private byte[] lumpsSizes = new byte[]{5, 72, 10, 8};
    private String dataExt = ".b3d";
@@ -1156,12 +1176,12 @@ public final class b3d_a extends Canvas {
 
    private void a(short[] footer) {
       this.E = new byte[3][][][];
-      this.a((byte[])this.loadedMap[0], (byte[])this.loadedMap[1], (byte[])this.o, 0);
-      this.a((byte[])this.loadedMap[2], (byte[])this.loadedMap[3], (byte[])this.p, 1);
+      this.loadMapPart((byte[])this.loadedMap[0], (byte[])this.loadedMap[1], (byte[])this.o, 0);
+      this.loadMapPart((byte[])this.loadedMap[2], (byte[])this.loadedMap[3], (byte[])this.p, 1);
       this.a(this.E[0], this.E[1]);
       this.a(this.E[1]);
       if (!this.gB) {
-         this.a((byte[])this.loadedMap[4], (byte[])this.loadedMap[5], (byte[])this.n, 2);
+         this.loadMapPart((byte[])this.loadedMap[4], (byte[])this.loadedMap[5], (byte[])this.n, 2);
          this.b(this.E[2]);
          // E[2][0] - palettes ?
          this.readFoe(this.E[2]);
@@ -1185,25 +1205,24 @@ public final class b3d_a extends Canvas {
       this.ef = 0;
    }
 
-   private void a(byte[] var1, byte[] var2, byte[] var3, int var4) {
-      int var8 = 0;
-      int var10 = var2.length;
-      this.E[var4] = new byte[var10][][];
+   private void loadMapPart(byte[] lumpA, byte[] lumpB, byte[] mapMetadata, int E_idx) {
+      int pos = 0;
+      int lump1Size = lumpB.length;
+      this.E[E_idx] = new byte[lump1Size][][];
 
-      for(int var5 = 0; var5 < var10; ++var5) {
-         int var9 = var2[var5] < 0 ? 127 - var2[var5] : var2[var5];
-         this.E[var4][var5] = new byte[var9][var3[var5]];
+      for(int i = 0; i < lump1Size; ++i) {
+         int value = lumpB[i] < 0 ? 127 - lumpB[i] : lumpB[i];
+         this.E[E_idx][i] = new byte[value][mapMetadata[i]];
 
-         for(int var6 = 0; var6 < var9; ++var6) {
-            byte var11 = var3[var5];
+         for(int j = 0; j < value; ++j) {
+            byte var11 = mapMetadata[i];
 
-            for(int var7 = 0; var7 < var11; ++var7) {
-               this.E[var4][var5][var6][var7] = var1[var8];
-               ++var8;
+            for(int k = 0; k < var11; ++k) {
+               this.E[E_idx][i][j][k] = lumpA[pos];
+               ++pos;
             }
          }
       }
-
    }
 
    private void a(byte[][][] var1, byte[][][] var2) {

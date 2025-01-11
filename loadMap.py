@@ -1,22 +1,32 @@
-def read_short(data, offset):
-    return (data[offset] & 0xFF) | (data[offset + 1] & 0xFF) << 8
+from tools import read_binary, read_byte, read_short, get2DListValueRange
+from readMetadata import read_metadata
 
-def read_byte(data, offset):
-    return data[offset]
 
-def read_binary(file_name):
-    try:
-        with open(file_name, 'rb') as file_stream:
-            # Read the file length (2 bytes)
-            length_low_byte = file_stream.read(1)[0]
-            length_high_byte = file_stream.read(1)[0]
-            file_length = (length_high_byte << 8) | length_low_byte
+mapData = [[], [], []]
 
-            file_data = file_stream.read(file_length)
-            return file_data
-    except Exception as e:
-        print(f"Error reading file: {e}")
-        return None
+def load_map_part(lumpA, lumpB, map_metadata, idx):
+    global mapData
+    pos = 0
+    lumpB_size = len(lumpB)
+    mapData[idx] = []
+
+    for i in range(lumpB_size):
+        value = 127 - lumpB[i] if lumpB[i] < 0 else lumpB[i]
+        mapData[idx].append([])
+
+        for j in range(value):
+            var11 = map_metadata[i]
+
+            row = []
+            for k in range(var11):
+                row.append(lumpA[pos])
+                pos += 1
+            mapData[idx][i].append(row)
+
+    for i in range(lumpB_size):
+        list_ = mapData[idx][i]
+        print(f"Fragment {i} of size {lumpB[i]} in range {get2DListValueRange(list_)}: {list_}\n")
+
 
 
 """
@@ -103,9 +113,9 @@ def load_map(file_path):
     offset += lump5_size
     lumps.append(lump5)
 
-    print("Lumps:")
-    for i, lump in enumerate(lumps):
-        print(f"Lump {i}: {lump}")
+    # print("Lumps:")
+    # for i, lump in enumerate(lumps):
+    #     print(f"Lump {i} of size {len(lump)}: {lump}\n")
 
     # Read footer
     footer_size = 8
@@ -114,7 +124,19 @@ def load_map(file_path):
         footer.append(read_short(data, offset))
         offset += 2
 
-    print("Footer:")
-    print(footer)
+    print("Footer:", footer)
+
+    metadata = read_metadata("a.b3d")
+
+    print("\nLump 0+1\n")
+    load_map_part(lump0, lump1, metadata['o'], 0)
+
+    print("\nLump 2+3\n")
+    load_map_part(lump2, lump3, metadata['p'], 1)
+
+    print("\nLump 4+5\n")
+    load_map_part(lump4, lump5, metadata['n'], 2)
+
+
 
 load_map("1 d (склад).b3d")
