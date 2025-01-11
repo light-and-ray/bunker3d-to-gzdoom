@@ -36,7 +36,7 @@ public final class b3d_a extends Canvas {
    private int g = 10;
    private int h = 10;
    private final short[] i = new short[]{1, 81, 161};
-   private short[] j;
+   private short[] unusedMapRawLump1;
    private short[] FOE_METADATA;       // i +   0  1  2  3  4  5  6
                                        // val   x  y  w  h
    private short[] l;
@@ -49,8 +49,8 @@ public final class b3d_a extends Canvas {
    private byte[] s;
    private byte[] t;
    private byte[] u;
-   private byte[][] v;
-   private byte[] w = new byte[]{5, 72, 10, 8};
+   private byte[][] loadedMap;
+   private byte[] lumpsSizes = new byte[]{5, 72, 10, 8};
    private String dataExt = ".b3d";
    private String[] mapFiles = new String[]{"/d", "/b", "/o", "/x", "/m", "/t", "/g", "/y", "/l"};
    private byte[] z;
@@ -350,7 +350,7 @@ public final class b3d_a extends Canvas {
    private int fg;
    private int fh;
    private int fi;
-   private int fj;
+   private int selectedMap;
    private int fk;
    private byte fl;
    private byte fm;
@@ -538,7 +538,7 @@ public final class b3d_a extends Canvas {
          this.E();
          d(var1);
          int var3 = this.gL[22];
-         int var4 = this.gK[22] + this.fj;
+         int var4 = this.gK[22] + this.selectedMap;
 
          for(var2 = this.gK[22]; var2 < var4; ++var2) {
             var3 += this.t[var2];
@@ -610,7 +610,7 @@ public final class b3d_a extends Canvas {
          }
 
          this.s();
-         this.d();
+         this.loadMap();
          this.n();
          this.t();
          this.dN = new short[7][];
@@ -665,7 +665,7 @@ public final class b3d_a extends Canvas {
          this.J();
          this.L();
          byte var10001;
-         if (this.fj == 1) {
+         if (this.selectedMap == 1) {
             this.es = false;
             var10000 = this;
             var10001 = 1;
@@ -675,7 +675,7 @@ public final class b3d_a extends Canvas {
          }
 
          var10000.em = var10001;
-         this.D(this.fj);
+         this.D(this.selectedMap);
          if (this.gB) {
             return;
          }
@@ -786,7 +786,7 @@ public final class b3d_a extends Canvas {
          this.a(this.dD);
          if (!this.gB) {
             int var8 = this.ci[this.fk].length;
-            if (this.fj != 9) {
+            if (this.selectedMap != 9) {
                this.bH = 0;
                this.bO = false;
                this.z(var8);
@@ -1064,118 +1064,119 @@ public final class b3d_a extends Canvas {
 
    }
 
-   private void d() {
+   private void loadMap() {
       boolean var3 = false;
-      int var5 = this.fj == 0 ? 1 : this.fj;
-      byte[] var6;
-      short var7 = readShort((byte[])(var6 = this.readBinary(this.mapFiles[var5 - 1] + this.dataExt)), 0);
-      short var8 = readShort((byte[])var6, 2);
-      short var9 = readShort((byte[])var6, 4);
-      this.v = new byte[6][];
-      int var4 = var7 * 4;
-      this.v[0] = new byte[var4];
-      int var11 = 6;
+      int selectedMapFileIdx = this.selectedMap == 0 ? 1 : this.selectedMap;
+      byte[] mapFile = this.readBinary(this.mapFiles[selectedMapFileIdx - 1] + this.dataExt);
+      short headerNumberA = readShort((byte[])mapFile, 0);
+      short headerNumberB = readShort((byte[])mapFile, 2);
+      short headerNumberC = readShort((byte[])mapFile, 4);
+      this.loadedMap = new byte[6][];
+      int lump0Size = headerNumberA * 4;
+      this.loadedMap[0] = new byte[lump0Size];
+      int pos = 6;
+      int i;
 
-      int var2;
-      for(var2 = 0; var2 < var4; var2 += 4) {
-         this.v[0][var2] = (byte)((var6[var11 + 1] & 240) >> 4);
-         this.v[0][var2 + 1] = (byte)(var6[var11 + 1] & 15);
-         this.v[0][var2 + 2] = (byte)((var6[var11] & 240) >> 4);
-         this.v[0][var2 + 3] = (byte)(var6[var11] & 15);
-         var11 += 2;
+      for (i = 0; i < lump0Size; i += 4) {
+         byte highNibble1 = (byte) ((mapFile[pos + 1] & 0xF0) >> 4);
+         byte lowNibble1 = (byte) (mapFile[pos + 1] & 0x0F);
+
+         byte highNibble2 = (byte) ((mapFile[pos] & 0xF0) >> 4);
+         byte lowNibble2 = (byte) (mapFile[pos] & 0x0F);
+
+         loadedMap[0][i] = highNibble1;
+         loadedMap[0][i + 1] = lowNibble1;
+         loadedMap[0][i + 2] = highNibble2;
+         loadedMap[0][i + 3] = lowNibble2;
+
+         pos += 2;
       }
 
-      this.v[1] = new byte[this.w[0]];
-      this.j = new short[5];
-      byte var12 = this.w[0];
+      // this.lumpsSizes = {5, 72, 10, 8}
+      this.loadedMap[1] = new byte[this.lumpsSizes[0]];
+      this.unusedMapRawLump1 = new short[5];
+      byte size = this.lumpsSizes[0]; // 5
 
-      for(var2 = 0; var2 < var12; ++var2) {
-         short var1 = readShort(var6, var11);
-         this.j[var2] = var1;
-         byte[] var10000;
-         int var10001;
-         int var10002;
-         if (var1 >= 128) {
-            var10000 = this.v[1];
-            var10001 = var2;
-            var10002 = 127 - var1;
+      for(i = 0; i < size; ++i) {
+         short rawValue = readShort(mapFile, pos);
+         this.unusedMapRawLump1[i] = rawValue;
+         int value;
+         if (rawValue >= 128) {
+            value = 127 - rawValue;
          } else {
-            var10000 = this.v[1];
-            var10001 = var2;
-            var10002 = var1;
+            value = rawValue;
          }
-
-         var10000[var10001] = (byte)var10002;
-         var11 += 2;
+         this.loadedMap[1][i] = (byte)value;
+         pos += 2;
       }
 
-      this.v[2] = new byte[var8];
+      this.loadedMap[2] = new byte[headerNumberB];
 
-      for(var2 = 0; var2 < var8; ++var2) {
-         this.v[2][var2] = var6[var11];
-         ++var11;
+      for(i = 0; i < headerNumberB; ++i) {
+         this.loadedMap[2][i] = mapFile[pos];
+         ++pos;
       }
 
-      var12 = this.w[1];
-      this.v[3] = new byte[var12];
+      size = this.lumpsSizes[1]; // 72
+      this.loadedMap[3] = new byte[size];
 
-      for(var2 = 0; var2 < var12; ++var2) {
-         this.v[3][var2] = var6[var11];
-         ++var11;
+      for(i = 0; i < size; ++i) {
+         this.loadedMap[3][i] = mapFile[pos];
+         ++pos;
       }
 
-      this.v[4] = new byte[var9];
+      this.loadedMap[4] = new byte[headerNumberC];
 
-      for(var2 = 0; var2 < var9; ++var2) {
-         this.v[4][var2] = var6[var11];
-         ++var11;
+      for(i = 0; i < headerNumberC; ++i) {
+         this.loadedMap[4][i] = mapFile[pos];
+         ++pos;
       }
 
-      var12 = this.w[2];
-      this.v[5] = new byte[var12];
+      size = this.lumpsSizes[2]; // 10
+      this.loadedMap[5] = new byte[size];
 
-      for(var2 = 0; var2 < var12; ++var2) {
-         this.v[5][var2] = var6[var11];
-         ++var11;
+      for(i = 0; i < size; ++i) {
+         this.loadedMap[5][i] = mapFile[pos];
+         ++pos;
       }
 
-      short[] var10 = new short[var12 = this.w[3]];
+      short[] footer = new short[size = this.lumpsSizes[3]]; // 8
 
-      for(var2 = 0; var2 < var12; ++var2) {
-         var10[var2] = readShort(var6, var11);
-         var11 += 2;
+      for(i = 0; i < size; ++i) {
+         footer[i] = readShort(mapFile, pos);
+         pos += 2;
       }
 
-      this.a(var10);
+      this.a(footer);
       this.q = null;
       this.E = (byte[][][][])null;
       this.M = null;
       System.gc();
    }
 
-   private void a(short[] var1) {
+   private void a(short[] footer) {
       this.E = new byte[3][][][];
-      this.a((byte[])this.v[0], (byte[])this.v[1], (byte[])this.o, 0);
-      this.a((byte[])this.v[2], (byte[])this.v[3], (byte[])this.p, 1);
+      this.a((byte[])this.loadedMap[0], (byte[])this.loadedMap[1], (byte[])this.o, 0);
+      this.a((byte[])this.loadedMap[2], (byte[])this.loadedMap[3], (byte[])this.p, 1);
       this.a(this.E[0], this.E[1]);
       this.a(this.E[1]);
       if (!this.gB) {
-         this.a((byte[])this.v[4], (byte[])this.v[5], (byte[])this.n, 2);
+         this.a((byte[])this.loadedMap[4], (byte[])this.loadedMap[5], (byte[])this.n, 2);
          this.b(this.E[2]);
          // E[2][0] - palettes ?
          this.readFoe(this.E[2]);
          this.d(this.E[2]);
       }
 
-      this.v = (byte[][])null;
+      this.loadedMap = (byte[][])null;
       this.E[2] = (byte[][][])null;
       this.c(false);
       System.gc();
-      this.b(var1);
-      this.a(this.E[0], this.E[1], var1);
+      this.b(footer);
+      this.a(this.E[0], this.E[1], footer);
       this.gf = false;
       this.M();
-      if (this.fj == 9) {
+      if (this.selectedMap == 9) {
          this.b();
       }
 
@@ -1754,7 +1755,7 @@ public final class b3d_a extends Canvas {
          }
 
          var10000[var10001] = var6;
-         if (this.ca[var2] > 0 && (this.ca[var2] != 32 || this.fj != 9)) {
+         if (this.ca[var2] > 0 && (this.ca[var2] != 32 || this.selectedMap != 9)) {
             var10000 = this.ce;
             var10001 = var2;
             var10002 = 0;
@@ -5672,8 +5673,8 @@ public final class b3d_a extends Canvas {
       for(int var2 = 0; var2 < this.eZ; ++var2) {
          if (a(this.fz[0] - ((long)this.dq[var2][0] * 75000L >> 16)) < 75000L && a(this.fz[1] - ((long)this.dq[var2][1] * 75000L >> 16)) < 75000L) {
             if (var2 == this.eS) {
-               ++this.fj;
-               if (this.fj == 3 && this.c == 1) {
+               ++this.selectedMap;
+               if (this.selectedMap == 3 && this.c == 1) {
                   this.gm = 0;
                   this.b(false);
                   this.go = 0;
@@ -5690,14 +5691,14 @@ public final class b3d_a extends Canvas {
                   return;
                }
 
-               if (this.fj != 10) {
-                  if (this.hA < this.fj) {
-                     this.hA = this.fj;
+               if (this.selectedMap != 10) {
+                  if (this.hA < this.selectedMap) {
+                     this.hA = this.selectedMap;
                   }
 
-                  this.hx[this.fj - 1] = this.ek;
-                  this.hy[this.fj - 1] = this.eK;
-                  this.hz[this.fj - 1] = this.eL;
+                  this.hx[this.selectedMap - 1] = this.ek;
+                  this.hy[this.selectedMap - 1] = this.eK;
+                  this.hz[this.selectedMap - 1] = this.eL;
 
                   try {
                      if (this.hp != null) {
@@ -6165,7 +6166,7 @@ public final class b3d_a extends Canvas {
             } else {
                a var10000;
                byte var10002;
-               if ((this.ca[var4] != 32 || this.fj != 9) && this.ca[var4] > 0) {
+               if ((this.ca[var4] != 32 || this.selectedMap != 9) && this.ca[var4] > 0) {
                   var10000 = this;
                   var10001 = var4;
                   var10002 = 0;
@@ -6177,7 +6178,7 @@ public final class b3d_a extends Canvas {
 
                var10000.f(var10001, var10002);
                int[] var6;
-               if (this.fj == 9) {
+               if (this.selectedMap == 9) {
                   if (this.ca[var4] == 32 && !this.ee && (this.cg[var4] != 33 || this.F() % 7 == 0)) {
                      if (this.cg[var4] < 33) {
                         this.cg[var4] = 33;
@@ -6565,7 +6566,7 @@ public final class b3d_a extends Canvas {
             int var10001;
             byte var10002;
             int var10003;
-            if (this.ca[var6] == 32 && this.fj == 9) {
+            if (this.ca[var6] == 32 && this.selectedMap == 9) {
                var10000 = this.ce;
                var10001 = var6;
                var10002 = var10000[var6];
@@ -6590,7 +6591,7 @@ public final class b3d_a extends Canvas {
                if (this.cg[var6] >= var2 && (this.cg[var6] < var2 + 2 || var4 == -100)) {
                   if (this.cg[var6] < var3) {
                      ++this.cg[var6];
-                  } else if (this.fj == 9 && (var6 == 13 || var6 == 14)) {
+                  } else if (this.selectedMap == 9 && (var6 == 13 || var6 == 14)) {
                      this.fx = true;
                      this.aa();
                      this.gm = 21;
@@ -7140,7 +7141,7 @@ public final class b3d_a extends Canvas {
          byte var10002;
          byte var10003;
          byte var10004;
-         if (this.fj < 7) {
+         if (this.selectedMap < 7) {
             this.b(0, 10, 12, -100, 0);
             this.b(1, 13, 15, -100, 0);
             var10000 = this;
@@ -7308,8 +7309,8 @@ public final class b3d_a extends Canvas {
                   this.letterImages = (int[][])null;
                   this.b(false);
                   this.go = 1;
-                  if (this.fj == 0) {
-                     this.fj = 1;
+                  if (this.selectedMap == 0) {
+                     this.selectedMap = 1;
                   }
 
                   this.gp = 8;
@@ -8567,9 +8568,9 @@ public final class b3d_a extends Canvas {
 
                               if (this.ht == 0) {
                                  this.ht += 10;
-                                 if (this.fj != -1) {
+                                 if (this.selectedMap != -1) {
                                     var8 = this;
-                                    var10001 = this.fj;
+                                    var10001 = this.selectedMap;
                                  } else {
                                     var8 = this;
                                     var10001 = 9;
@@ -8755,7 +8756,7 @@ public final class b3d_a extends Canvas {
                this.gz = true;
                this.gj = 0;
                this.D(9);
-               this.fj = -1;
+               this.selectedMap = -1;
                this.gi = System.currentTimeMillis();
             } else if (this.gE) {
                var1.drawRGB(this.gJ, 0, this.companyLogoW, 240 - this.companyLogoW >> 1, (300 - this.companyLogoH >> 1) + this.gj, this.companyLogoW, this.companyLogoH, false);
