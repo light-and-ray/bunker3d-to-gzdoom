@@ -49,9 +49,9 @@ def modifyBigLumps01(big_lump0, big_lump1):
     cW[2][var12 - 1] = big_lump1[7][var11 - 1][1]
     cW[3][var12 - 1] = big_lump1[7][var11 - 1][2]
 
-    # for var18 in range(var12):
-    #     for i in range(4):
-    #         cW[i][var18] <<= 16
+    for var18 in range(var12):
+        for i in range(4):
+            cW[i][var18] <<= 16
 
     eX = var12
     var12 = 0

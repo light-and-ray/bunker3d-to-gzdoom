@@ -34,5 +34,5 @@ def draw_lines(lines, width=1024):
 
     # Save the image
     img.show()
-    img.save('lines.png')
+    img.save('lines.jpg')
 
