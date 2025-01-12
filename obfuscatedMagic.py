@@ -3,6 +3,7 @@ def q(var1):
     by = [0 for _ in range(var1)]
     return cW, by
 
+# loads base geometry
 def modifyBigLumps01(big_lump0, big_lump1):
     var3 = False
     var11 = 0

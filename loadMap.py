@@ -129,9 +129,12 @@ def load_map(file_path):
     bigLump1 = load_map_part(lump2, lump3, metadata['p'])
     bigLump2 = load_map_part(lump4, lump5, metadata['n'])
 
-    modifier = obfuscatedMagic.BigLumpModifier(metadata)
-    modifier.modify_big_lumps01(bigLump0, bigLump1)
-    modifier.modify_big_lump1(bigLump1)
+    # modifier = obfuscatedMagic.BigLumpModifier(metadata)
+    # modifier.modify_big_lumps01(bigLump0, bigLump1)
+    # modifier.modify_big_lump1(bigLump1)
+    # return modifier.cW
+
+    return obfuscatedMagic.modifyBigLumps01(bigLump0, bigLump1)[0]
 
     # print("\nbigLump 0\n")
     # printBigLump(bigLump0)
@@ -147,7 +150,4 @@ def load_map(file_path):
     #     print(len(x))
 
     # print(get2DListValueRange(modifier.cW))
-    return modifier.cW
 
-
-load_map("1 d (склад).b3d")

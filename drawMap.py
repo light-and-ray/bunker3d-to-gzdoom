@@ -7,22 +7,22 @@ def reconfigureLines(lines: list[list]):
     return newLines
 
 
-def draw_lines(lines, width=1024, height=1024):
+def draw_lines(lines, width=1024):
     lines = reconfigureLines(lines)
     # Calculate min and max coordinates
-    min_x = min(min(d[0], d[2]) for d in lines)
-    max_x = max(max(d[0], d[2]) for d in lines)
-    min_y = min(min(d[1], d[3]) for d in lines)
-    max_y = max(max(d[1], d[3]) for d in lines)
+    min_x = min(min(line[0], line[2]) for line in lines)
+    max_x = max(max(line[0], line[2]) for line in lines)
+    min_y = min(min(line[1], line[3]) for line in lines)
+    max_y = max(max(line[1], line[3]) for line in lines)
 
     # Rescale coordinates
     def rescale(x, y):
-        scaled_x = int(((x - min_x) / (max_x - min_x)) * 1024)
-        scaled_y = int(((y - min_y) / (max_y - min_y)) * 1024)
+        scaled_x = int(((x - min_x) / (max_x - min_x)) * width)
+        scaled_y = int(width - ((y - min_y) / (max_y - min_y)) * width)
         return scaled_x, scaled_y
 
     # Create a new image
-    img = Image.new('RGB', (1024, 1024), color = (73, 109, 137))
+    img = Image.new('RGB', (width, width), color = (73, 109, 137))
     d = ImageDraw.Draw(img)
 
     # Draw lines
