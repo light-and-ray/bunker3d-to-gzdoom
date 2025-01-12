@@ -1,4 +1,4 @@
-from tools import read_binary, read_byte, read_short
+from tools import read_binary, read_short
 
 
 def read_metadata(metadata_file_path):

@@ -3,9 +3,6 @@ import math
 def read_short(data, offset):
     return (data[offset] & 0xFF) | (data[offset + 1] & 0xFF) << 8
 
-def read_byte(data, offset):
-    return data[offset]
-
 def read_binary(file_name):
     try:
         with open(file_name, 'rb') as file_stream:
@@ -32,4 +29,9 @@ def get2DListValueRange(list_: list[list]):
                 max = value
     return (min, max)
 
+
+def printBigLump(bigLump):
+    for i in range(len(bigLump)):
+        list_ = bigLump[i]
+        print(f"Fragment {i} of size {len(list_)} in range {get2DListValueRange(list_)}: {list_}\n")
 

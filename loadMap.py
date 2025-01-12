@@ -1,18 +1,17 @@
-from tools import read_binary, read_byte, read_short, get2DListValueRange
+from tools import read_binary, read_short, printBigLump, get2DListValueRange
 from readMetadata import read_metadata
+import obfuscatedMagic
 
 
-mapData = [[], [], []]
 
-def load_map_part(lumpA, lumpB, map_metadata, idx):
-    global mapData
+def load_map_part(lumpA, lumpB, map_metadata):
+    bigLump = []
     pos = 0
     lumpB_size = len(lumpB)
-    mapData[idx] = []
 
     for i in range(lumpB_size):
         value = 127 - lumpB[i] if lumpB[i] < 0 else lumpB[i]
-        mapData[idx].append([])
+        bigLump.append([])
 
         for j in range(value):
             var11 = map_metadata[i]
@@ -21,11 +20,9 @@ def load_map_part(lumpA, lumpB, map_metadata, idx):
             for k in range(var11):
                 row.append(lumpA[pos])
                 pos += 1
-            mapData[idx][i].append(row)
+            bigLump[i].append(row)
 
-    for i in range(lumpB_size):
-        list_ = mapData[idx][i]
-        print(f"Fragment {i} of size {lumpB[i]} in range {get2DListValueRange(list_)}: {list_}\n")
+    return bigLump
 
 
 
@@ -128,15 +125,29 @@ def load_map(file_path):
 
     metadata = read_metadata("a.b3d")
 
-    print("\nLump 0+1\n")
-    load_map_part(lump0, lump1, metadata['o'], 0)
+    bigLump0 = load_map_part(lump0, lump1, metadata['o'])
+    bigLump1 = load_map_part(lump2, lump3, metadata['p'])
+    bigLump2 = load_map_part(lump4, lump5, metadata['n'])
 
-    print("\nLump 2+3\n")
-    load_map_part(lump2, lump3, metadata['p'], 1)
+    modifier = obfuscatedMagic.BigLumpModifier(metadata)
+    modifier.modify_big_lumps01(bigLump0, bigLump1)
+    modifier.modify_big_lump1(bigLump1)
 
-    print("\nLump 4+5\n")
-    load_map_part(lump4, lump5, metadata['n'], 2)
+    # print("\nbigLump 0\n")
+    # printBigLump(bigLump0)
 
+    # print("\nbigLump 1\n")
+    # printBigLump(bigLump1)
+
+    # print("\nbigLump 2\n")
+    # printBigLump(bigLump2)
+
+    # print(len(modifier.cX))
+    # for x in modifier.cW:
+    #     print(len(x))
+
+    # print(get2DListValueRange(modifier.cW))
+    return modifier.cW
 
 
 load_map("1 d (склад).b3d")

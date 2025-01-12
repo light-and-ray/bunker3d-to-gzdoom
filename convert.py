@@ -1,4 +1,6 @@
 import omg
+from loadMap import load_map
+from drawMap import draw_lines
 
 wad = omg.WAD('MAP01.wad')
 map = omg.UMapEditor(wad.udmfmaps.values()[0])
@@ -19,17 +21,16 @@ def prettifyACS(script) -> str:
 # line : omg.ULinedef = map.linedefs[0]
 # print('linedefs[0]:', line.to_textmap())
 
-for line in map.linedefs:
-    print(line.to_textmap())
+# # for line in map.linedefs:
+# #     print(line.to_textmap())
 
 # print(sector.defaults)
-# print(map.scripts.data)
 
-# script : str = map.scripts.data
-# print('scripts[0]:', prettifyACS(script), '\n')
+# # script : str = map.scripts.data
+# # print('scripts[0]:', prettifyACS(script), '\n')
 
-# behavior : omg.Lump = map.behavior
-# print(prettifyACS(behavior.data))
+# # behavior : omg.Lump = map.behavior
+# # print(prettifyACS(behavior.data))
 
 # print('namespace:', map.namespace, '\n')
 
@@ -37,3 +38,6 @@ for line in map.linedefs:
 # print('things[0]:', thing.to_textmap())
 
 
+# lines = load_map("1 d (склад).b3d")
+lines = load_map("2 b (казарма).b3d")
+draw_lines(lines)
