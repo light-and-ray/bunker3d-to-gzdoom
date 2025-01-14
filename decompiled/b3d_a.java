@@ -1451,7 +1451,7 @@ public final class b3d_a extends Canvas {
 
          int var7;
          for(var7 = var6; var7 < var10; ++var7) {
-            this.cD[var2][var7] = (short)(this.fb + t(bigLump1[var2 + 21][var7 - var6][0]) % 60 * 3);
+            this.cD[var2][var7] = (short)(this.fb + abs(bigLump1[var2 + 21][var7 - var6][0]) % 60 * 3);
             this.cE[var2][var7] = (short)(this.cD[var2][var7] + 2);
             if (bigLump1[var2 + 21][var7 - var6][0] < 0) {
                var10000 = this.cD[var2];

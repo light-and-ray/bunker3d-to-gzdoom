@@ -23,7 +23,7 @@ def modifyBigLumps01(big_lump0, big_lump1):
     bz = create1DList(totalNumberOfLines)
 
     for i in range(len(big_lump1[31])):
-        bz[big_lump1[31][i][0] + 128] = big_lump1[31][i][1]
+        bz[(big_lump1[31][i][0] + 128) & 0xFF] = big_lump1[31][i][1]
 
     length = len(big_lump0[0])
     var8 = len(big_lump1[7])
@@ -45,7 +45,6 @@ def modifyBigLumps01(big_lump0, big_lump1):
         cW[1][var12] = var15 + cW[1][var12 - 1]
         cW[2][var12 - 1] = cW[0][var12]
         cW[3][var12 - 1] = cW[1][var12]
-        print('!!! 2', var12)
         var12 += 1
 
     cW[2][var12 - 1] = big_lump1[7][var11 - 1][1]
@@ -54,7 +53,6 @@ def modifyBigLumps01(big_lump0, big_lump1):
     for var18 in range(var12):
         for i in range(4):
             cW[i][var18] <<= 16
-    return [cW]
     eX = var12
     var12 = 0
     var11 = 0
@@ -67,7 +65,7 @@ def modifyBigLumps01(big_lump0, big_lump1):
         var8 = len(big_lump0[1][i])
 
         for var5 in range(var8):
-            if var11 < var9 and var12 == big_lump1[7][var11][0] + 128:
+            if var11 < var9 and var12 == ((big_lump1[7][var11][0] + 128) & 0xFF):
                 if var11!= 0:
                     cX[var12 - 1] = big_lump1[7][var11 - 1][4]
 
@@ -78,7 +76,7 @@ def modifyBigLumps01(big_lump0, big_lump1):
             if big_lump0[1][i][var5] == 15:
                 var6 = 0
                 while var6 < var10:
-                    if big_lump1[10][var6][0] + 128 == var12:
+                    if ((big_lump1[10][var6][0] + 128) & 0xFF) == var12:
                         cX[var12] = big_lump1[10][var6][1]
                         break
                     var6 += 1
@@ -133,12 +131,13 @@ class BigLumpModifier:
         self.dL = [0] * 91
         self.dL[1] = 1146
         var1 = 1146
+        self.gB = False
 
         for var2 in range(2, 91):
             var1 += self.a[var2 - 2]
             self.dL[var2] = self.dL[var2 - 1] + var1
 
-    def modify_big_lumps01(self, big_lump0, big_lump1):
+    def modifyBigLump01(self, big_lump0, big_lump1):
         var3 = False
         var11 = 0
         var12 = 0
@@ -156,13 +155,13 @@ class BigLumpModifier:
         length = len(big_lump1[31])
 
         for i in range(length):
-            self.bz[big_lump1[31][i][0] + 128] = big_lump1[31][i][1]
+            self.bz[(big_lump1[31][i][0] + 128) & 0xFF] = big_lump1[31][i][1]
 
         length = len(big_lump0[0])
         var8 = len(big_lump1[7])
 
         for i in range(length):
-            if var11 < var8 and var12 == big_lump1[7][var11][0] + 128:
+            if var11 < var8 and var12 == ((big_lump1[7][var11][0] + 128) & 0xFF):
                 if var11!= 0:
                     self.cW[2][var12 - 1] = big_lump1[7][var11 - 1][1]
                     self.cW[3][var12 - 1] = big_lump1[7][var11 - 1][2]
@@ -199,7 +198,7 @@ class BigLumpModifier:
             var8 = len(big_lump0[1][i])
 
             for var5 in range(var8):
-                if var11 < var9 and var12 == big_lump1[7][var11][0] + 128:
+                if var11 < var9 and var12 == ((big_lump1[7][var11][0] + 128) & 0xFF):
                     if var11!= 0:
                         self.cX[var12 - 1] = big_lump1[7][var11 - 1][4]
 
@@ -210,7 +209,7 @@ class BigLumpModifier:
                 if big_lump0[1][i][var5] == 15:
                     var6 = 0
                     while var6 < var10:
-                        if big_lump1[10][var6][0] + 128 == var12:
+                        if ((big_lump1[10][var6][0] + 128) & 0xFF) == var12:
                             self.cX[var12] = big_lump1[10][var6][1]
                             break
                         var6 += 1
@@ -254,86 +253,138 @@ class BigLumpModifier:
             for var5 in range(var8):
                 big_lump0[4][i][var5] = big_lump0[4][i][var5] * 3
 
-    def modify_big_lump1(self, big_lump1):
-        # Initialize class fields
-        self.cD = [[0 for _ in range(7)] for _ in range(7)]
-        self.cE = [[0 for _ in range(7)] for _ in range(7)]
+
+    def modifyBigLump1(self, bigLump1):
+        self.cD = create2DList(7, 0)
+        self.cE = create2DList(7, 0)
         self.fa = self.eX
-        self.fb = self.fa + 4 * len(big_lump1[12])
-        self.fc = self.fb + 3 * len(big_lump1[20])
+        self.fb = self.fa + 4 * len(bigLump1[12])
+        self.fc = self.fb + 3 * len(bigLump1[20])
 
-        # Initialize important data
-        important_data = {
-            'cD': [],
-            'cE': [],
-            'fa': self.fa,
-            'fb': self.fb,
-            'fc': self.fc,
-            'eX': self.eX,
-            'eY': len(big_lump1[12]),
-            'eZ': len(big_lump1[20]),
-            'bA': [],
-            'bs': [],
-            'fG': [],
-            'fH': [],
-            'fE': [],
-            'fd': self.eX,
-            'bh': [],
-            'ci': []
-        }
-
-        # Call subfunctions
         for var2 in range(7):
-            var12 = len(big_lump1[var2]) + len(big_lump1[var2 + 13]) + len(big_lump1[var2 + 21]) + len(big_lump1[var2 + 42]) + len(big_lump1[var2 + 52])
-            self.cD[var2] = [0 for _ in range(var12)]
-            self.cE[var2] = [0 for _ in range(var12)]
-            important_data['cD'].append(self.cD[var2])
-            important_data['cE'].append(self.cE[var2])
+            var12 = len(bigLump1[var2]) + len(bigLump1[var2 + 13]) + len(bigLump1[var2 + 21]) + len(bigLump1[var2 + 42]) + len(bigLump1[var2 + 52])
+            self.cD[var2] = create1DList(var12)
+            self.cE[var2] = create1DList(var12)
+            var10 = len(bigLump1[var2])
+            var3 = 0
+            while var3 < var10:
+                self.cD[var2][var3] = (bigLump1[var2][var3][0] + 128) & 0xFF
+                self.cE[var2][var3] = (bigLump1[var2][var3][1] + 128) & 0xFF
+                var3 += 1
 
-        self.fill_this_fields(big_lump1[8][0][0], big_lump1[8][0][1] * 75000, big_lump1[8][0][2] * 75000, big_lump1[8][0][3] * 2, big_lump1[8][0][7])
+            var10 = len(bigLump1[var2 + 13]) + var3
 
+            var6 = var3
+            while var6 < var10:
+                var13 = bigLump1[var2 + 13][var6 - var3][0]
+                self.cD[var2][var6] = (self.fa + var13 * 4) & 0xFFFF
+                self.cE[var2][var6] = (self.cD[var2][var6] + 3) & 0xFFFF
+                var14 = bigLump1[12][var13][3] % 90
+                if abs(var14) <= 3:
+                    self.cE[var2][var6] = (self.cE[var2][var6] - abs(var14)) & 0xFFFF
+                elif abs(var14) > 6:
+                    var6 += 1
+                    continue
+                else:
+                    self.cD[var2][var6] = (self.cD[var2][var6] + (abs(var14) - 3)) & 0xFFFF
+                bigLump1[12][var13][3] = (bigLump1[12][var13][3] - var14) & 0xFF
+                var6 += 1
+            var10 = len(bigLump1[var2 + 21]) + var6
+
+            var7 = var6
+            while var7 < var10:
+                self.cD[var2][var7] = (self.fb + abs(bigLump1[var2 + 21][var7 - var6][0]) % 60 * 3) & 0xFFFF
+                self.cE[var2][var7] = (self.cD[var2][var7] + 2) & 0xFFFF
+                if bigLump1[var2 + 21][var7 - var6][0] < 0:
+                    self.cD[var2][var7] = (self.cD[var2][var7] + 2) & 0xFFFF
+                elif bigLump1[var2 + 21][var7 - var6][0] < 60:
+                    var7 += 1
+                    continue
+                else:
+                    self.cE[var2][var7] = (self.cE[var2][var7] - 2) & 0xFFFF
+                var7 += 1
+
+            var10 = len(bigLump1[var2 + 42]) + var7
+
+            var8 = var7
+            while var8 < var10:
+                var13 = bigLump1[var2 + 42][var8 - var7][0]
+                self.cD[var2][var8] = (self.fc + var13 * 4) & 0xFFFF
+                self.cE[var2][var8] = (self.cD[var2][var8] + 3) & 0xFFFF
+                var14 = bigLump1[41][var13][2] % 90
+                if abs(var14) <= 3:
+                    self.cE[var2][var8] = (self.cE[var2][var8] - abs(var14)) & 0xFFFF
+                elif abs(var14) > 6:
+                    var8 += 1
+                    continue
+                else:
+                    self.cD[var2][var8] = (self.cD[var2][var8] + (abs(var14) - 3)) & 0xFFFF
+                bigLump1[41][var13][2] = (bigLump1[41][var13][2] - var14) & 0xFF
+                var8 += 1
+
+            var10 = len(bigLump1[var2 + 52]) + var8
+
+            var9 = var8
+            while var9 < var10:
+                self.cD[var2][var9] = self.bi[bigLump1[var2 + 52][var9 - var8][0]]
+                self.cE[var2][var9] = (self.bi[bigLump1[var2 + 52][var9 - var8][0] + 1] - 1) & 0xFFFF
+                var9 += 1
+
+        self.fillThisFields(bigLump1[8][0][0], bigLump1[8][0][1] * 75000, bigLump1[8][0][2] * 75000, bigLump1[8][0][3] * 2, bigLump1[8][0][7])
+        self.cC = (16 + bigLump1[8][0][5]) & 0xFF
+        self.cB = bigLump1[8][0][6]
         var12 = self.eX
-        important_data['eY'] = len(big_lump1[12])
-        important_data['eZ'] = len(big_lump1[20])
+        self.eY = len(bigLump1[12])
+        var24 = 48 + self.eY
+        self.cg = create1DList(var24)
+        self.bT = create2DList(var24, 2)
+        self.cm = [False] * var24
+        self.cd = create1DList(var24)
+        self.ch = create1DList(var24)
+        var10 = len(bigLump1[12])
 
-        # Call subfunction 1
-        for var3 in range(len(big_lump1[12])):
-            var14 = 128 + big_lump1[12][var3][0] << 16 >> 2
-            var15 = 128 + big_lump1[12][var3][1] << 16 >> 2
+        for var3 in range(var10):
+            var14 = ((128 + bigLump1[12][var3][0] & 0xFF) << 16 >> 2)
+            var15 = ((128 + bigLump1[12][var3][1] & 0xFF) << 16 >> 2)
             var6 = 48 + var3
-            var12 = self.modify_big_lump1_subfunction1(var14, var15, 16384, 16384, big_lump1[12][var3][3], var12, big_lump1[12][var3][2], big_lump1[12][var3][2], big_lump1[12][var3][2], big_lump1[12][var3][2], 1, 0)
+            self.bT[var6][0] = var14
+            self.bT[var6][1] = var15
+            self.cg[var6] = (self.cC - 1) & 0xFF
+            self.cm[var6] = False
+            self.cd[var6] = (self.cC + 2 + bigLump1[12][var3][4]) & 0xFF
+            if bigLump1[12][var3][4] > 3:
+                self.cd[var6] = (self.cd[var6] - 4) & 0xFF
+                self.ch[var6] = 1
+            var12 = self.modifyBigLump1_subfunction1(var14, var15, 16384, 16384, bigLump1[12][var3][3], var12, bigLump1[12][var3][2], bigLump1[12][var3][2], bigLump1[12][var3][2], bigLump1[12][var3][2], 1, 0)
 
-        self.eZ = len(big_lump1[20])
-        self.dr = [None] * self.eZ
-        self.ds = [None] * self.eZ
-        self.dv = [None] * self.eZ
-        self.dw = [None] * self.eZ
-        self.dt = [None] * self.eZ
-        self.dz = [None] * self.eZ
-        self.dA = [None] * self.eZ
-        self.dx = [None] * self.eZ
-        self.dy = [None] * self.eZ
-        self.dp = [[None] * 2] * self.eZ
-        self.dq = [[None] * 2] * self.eZ
-        self.dB = [None] * self.eZ
-        self.du = [None] * self.eZ
+        self.eZ = len(bigLump1[20])
+        self.dp = create2DList(self.eZ, 2)
+        self.dr = create1DList(self.eZ)
+        self.ds = create1DList(self.eZ)
+        self.dv = create1DList(self.eZ)
+        self.dw = create1DList(self.eZ)
+        self.dt = create1DList(self.eZ)
+        self.dx = create1DList(self.eZ)
+        self.dy = create1DList(self.eZ)
+        self.dz = create1DList(self.eZ)
+        self.dA = create1DList(self.eZ)
+        self.dq = create2DList(self.eZ, 2)
+        self.dB = create1DList(self.eZ)
+        self.du = create1DList(self.eZ)
+        var10 = len(bigLump1[20])
 
-
-        # Call subfunction 2 and 3
-        for var3 in range(len(big_lump1[20])):
-            self.dp[var3][0] = 128 + big_lump1[20][var3][0] << 16 >> 2
-            self.dp[var3][1] = 128 + big_lump1[20][var3][1] << 16 >> 2
-            var28 = big_lump1[20][var3][2] * big_lump1[20][var3][3]
-            if var28 >= 0:
+        for var3 in range(var10):
+            self.dp[var3][0] = ((128 + bigLump1[20][var3][0] & 0xFF) << 16 >> 2)
+            self.dp[var3][1] = ((128 + bigLump1[20][var3][1] & 0xFF) << 16 >> 2)
+            if bigLump1[20][var3][2] * bigLump1[20][var3][3] >= 0:
                 self.dr[var3] = 0
                 self.ds[var3] = 1
             else:
                 self.dr[var3] = 1
                 self.ds[var3] = 0
-
-            self.dv[var3] = (big_lump1[20][var3][2] << 16) // 127
-            self.dw[var3] = (big_lump1[20][var3][3] << 16) // 127
-            self.dt[var3] = big_lump1[59][var3][3]
+            self.dv[var3] = (bigLump1[20][var3][2] << 16) // 127
+            self.dw[var3] = (bigLump1[20][var3][3] << 16) // 127
+            self.dt[var3] = bigLump1[59][var3][3]
             self.dz[var3] = 0
             self.dA[var3] = 6225920
             if self.dw[var3] > 0:
@@ -344,41 +395,78 @@ class BigLumpModifier:
             self.dq[var3][self.dr[var3]] = self.dp[var3][self.dr[var3]] + self.dx[var3]
             self.dq[var3][self.ds[var3]] = self.dp[var3][self.ds[var3]]
             self.dB[var3] = -1
-            self.du[var3] = big_lump1[28][var3][0]
-            self.modify_big_lump1_subfunction2(big_lump1[59][var3][0], big_lump1[59][var3][1], big_lump1[59][var3][2], var12)
-            var12 = self.modify_big_lump1_subfunction3(self.dp[var3], self.dv[var3], self.dx[var3], self.dr[var3], self.ds[var3], var12, 0)
-            var12 = self.modify_big_lump1_subfunction3(self.dp[var3], self.dv[var3], self.dw[var3], self.dr[var3], self.ds[var3], var12, 1)
+            self.du[var3] = bigLump1[28][var3][0]
+            if not self.gB or var3!= 0 and var3!= 1:
+                var30 = bigLump1[59][var3][0]
+                var31 = bigLump1[59][var3][1]
+                var10003 = bigLump1[59][var3][2]
+            else:
+                var30 = 7
+                var31 = bigLump1[59][var3][1]
+                var10003 = 7
+            self.modifyBigLump1_subfunction2(var30, var31, var10003, var12)
+            self.modifyBigLump1_subfunction3(self.dp[var3], self.dv[var3], self.dx[var3], self.dr[var3], self.ds[var3], var12, 0)
+            var12 = self.modifyBigLump1_subfunction3(self.dp[var3], self.dv[var3], self.dw[var3], self.dr[var3], self.ds[var3], var12, 1)
 
-        # important_data['bA'] = self.bA
-        # important_data['bs'] = self.bs
-        self.fG = [[], []]
-        self.fE = [[], []]
-        self.fH = [[], []]
-        important_data['fG'] = self.fG
-        important_data['fH'] = self.fH
-        important_data['fE'] = self.fE
+        self.eX = var12
+        self.bA = create1DList(len(bigLump1[30]) * 7)
+        self.bs = create1DList(32 + len(bigLump1[30]))
+        var5 = 0
+        var10 = len(bigLump1[30])
 
-        # Call subfunction 4
-        self.modify_big_lump1_subfunction4(0, 49, big_lump1)
-        self.modify_big_lump1_subfunction4(1, 70, big_lump1)
+        for var3 in range(var10):
+            self.bs[32 + var3] = 96
+            var11 = len(bigLump1[30][var3])
 
-        important_data['fd'] = self.eX
-        # important_data['bh'] = self.bh
+            for var4 in range(var11):
+                self.bA[var5] = bigLump1[30][var3][var4]
+                var5 += 1
 
-        # Call subfunction 5
-        for var3 in range(len(big_lump1[51])):
-            var25 = (128 + big_lump1[51][var3][0] << 16 >> 2)
-            var16 = (128 + big_lump1[51][var3][1] << 16 >> 2)
-            var22 = (big_lump1[51][var3][3] << 16) // 60
-            self.bh[var3] = big_lump1[51][var3][6]
-            var12 = self.modify_big_lump1_subfunction5(var25, var16, big_lump1[51][var3][2], var22, var12, big_lump1[51][var3][4], big_lump1[51][var3][5], big_lump1[51][var3][7], big_lump1[51][var3][8])
+        var12 = self.eX
+        var10 = len(bigLump1[41])
 
-        # important_data['ci'] = self.ci
+        for var3 in range(var10):
+            var25 = ((128 + bigLump1[41][var3][0]) & 0xFF << 16 >> 2)
+            var16 = ((128 + bigLump1[41][var3][1]) & 0xFF << 16 >> 2)
+            var18 = (bigLump1[60][var3][0] << 16) // 42 // 2
+            var20 = (bigLump1[60][var3][1] << 16) // 42 // 2
+            var12 = self.modifyBigLump1_subfunction1(var25, var16, var18, var20, bigLump1[41][var3][2], var12, bigLump1[61][var3][0], bigLump1[61][var3][1], bigLump1[61][var3][2], bigLump1[61][var3][3], bigLump1[62][var3][0], bigLump1[62][var3][1])
 
-        return important_data
+        self.eX = var12
+        self.fG = create2DList(2, 0)
+        self.fH = create2DList(2, 0)
+        self.fE = create2DList(2, 0)
+        self.modifyBigLump1_subfunction4(0, 49, bigLump1)
+        self.modifyBigLump1_subfunction4(1, 70, bigLump1)
+        var12 = self.eX
+        self.fd = var12
+        var10 = len(bigLump1[51])
 
+        for var3 in range(var10):
+            var25 = ((128 + bigLump1[51][var3][0] & 0xFF) << 16 >> 2)
+            var16 = ((128 + bigLump1[51][var3][1] & 0xFF) << 16 >> 2)
+            var22 = (bigLump1[51][var3][3] << 16) // 60
+            self.bh[var3] = bigLump1[51][var3][6]
+            var12 = self.modifyBigLump1_subfunction5(var25, var16, bigLump1[51][var3][2], var22, var12, bigLump1[51][var3][4], bigLump1[51][var3][5], bigLump1[51][var3][7], bigLump1[51][var3][8])
 
-    def fill_this_fields(self, var1, var2, var4, var6, var7):
+        self.eX = var12
+        self.ci = create2DList(7, 0)
+
+        for var2 in range(63, 70):
+            var10 = len(bigLump1[var2])
+            var11 = len(bigLump1[var2 - 50])
+            self.ci[var2 - 63] = create1DList(var10 + var11)
+
+            for var3 in range(var10):
+                self.ci[var2 - 63][var3] = bigLump1[var2][var3][0]
+
+            var6 = var3
+
+            for var3 in range(var11):
+                self.ci[var2 - 63][var6] = (48 + bigLump1[var2 - 50][var3][0]) & 0xFF
+                var6 += 1
+
+    def fillThisFields(self, var1, var2, var4, var6, var7):
         self.fz = [0, 0]
         self.fk = var1
         self.fz[0] = var2
@@ -386,8 +474,9 @@ class BigLumpModifier:
         self.eR = var6
         self.eS = var7
 
-    def modify_big_lump1_subfunction1(self, var1, var3, var5, var7, var9, var10, var11, var12, var13, var14, var15, var16):
+    def modifyBigLump1_subfunction1(self, var1, var3, var5, var7, var9, var10, var11, var12, var13, var14, var15, var16):
         var19 = 0
+        print('!!! modifyBigLump1_subfunction1')
         for var18 in range(var10, var10 + 4):
             self.by[var18] = var15
             if var16!= 6:
@@ -411,7 +500,7 @@ class BigLumpModifier:
             self.bz[var18] = 3
         return var18 + 1
 
-    def modify_big_lump1_subfunction2(self, var1, var2, var3, var4):
+    def modifyBigLump1_subfunction2(self, var1, var2, var3, var4):
         self.cX[var4] = var1
         var5 = var4 + 1
         self.cX[var5] = var2
@@ -419,7 +508,8 @@ class BigLumpModifier:
         self.cX[var5] = var3
         self.bz[var5] = 3
 
-    def modify_big_lump1_subfunction3(self, var1, var2, var4, var6, var7, var8, var9):
+    def modifyBigLump1_subfunction3(self, var1, var2, var4, var6, var7, var8, var9):
+        print('!!! modifyBigLump1_subfunction3')
         if var9 == 0:
             self.cW[var6][var8] = var1[var6]
             self.cW[var7][var8] = int((var1[var7] - (var2 >> 1)))
@@ -438,7 +528,7 @@ class BigLumpModifier:
             self.cW[var7 + 2][var10] = self.cW[var7][var10]
         return var10 + 1
 
-    def modify_big_lump1_subfunction4(self, var1, var2, var3):
+    def modifyBigLump1_subfunction4(self, var1, var2, var3):
         var4 = var2
         if len(var3[var2])!= 0:
             var7 = len(var3[var2][0])
@@ -449,7 +539,7 @@ class BigLumpModifier:
                 self.ff = 2
             else:
                 self.ff = 1
-            var8 = self.fG[var1][0] < 10 and 128 or 299
+            var8 = 128 if self.fG[var1][0] < 10 else 299
             var4 = var2 + 1
             self.fE[var1] = [0] * len(var3[var4])
             self.fH[var1] = [0] * len(var3[var4])
@@ -458,7 +548,8 @@ class BigLumpModifier:
                 self.fE[var1][var5] = (var3[var4][var5][0] + var8)
                 self.fH[var1][var5] = 0
 
-    def modify_big_lump1_subfunction5(self, var1, var3, var5, var6, var8, var9, var10, var11, var12):
+    def modifyBigLump1_subfunction5(self, var1, var3, var5, var6, var8, var9, var10, var11, var12):
+        print('!!! modifyBigLump1_subfunction5')
         var15 = 360 // var5
         var14 = var12 * 4
         for var13 in range(var8, var8 + var5):
