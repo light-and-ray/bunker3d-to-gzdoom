@@ -1,6 +1,7 @@
-def q(var1):
-    cW = [[0 for _ in range(var1)] for _ in range(4)]
-    by = [0 for _ in range(var1)]
+from tools import create1DList, create2DList
+def initMapArrays(var1):
+    cW = create2DList(4, var1)
+    by = create1DList(var1)
     return cW, by
 
 # loads base geometry
@@ -8,18 +9,18 @@ def modifyBigLumps01(big_lump0, big_lump1):
     var3 = False
     var11 = 0
     var12 = 0
-    var17 = len(big_lump0[0]) + len(big_lump1[7]) + len(big_lump1[12]) * 4 + len(big_lump1[20]) * 3 + len(big_lump1[33]) * 4 + len(big_lump1[41]) * 4
+    totalNumberOfLines = len(big_lump0[0]) + len(big_lump1[7]) + len(big_lump1[12]) * 4 + len(big_lump1[20]) * 3 + len(big_lump1[33]) * 4 + len(big_lump1[41]) * 4
 
     length = len(big_lump1[51]) + 1
-    bi = [0 for _ in range(length)]
-    bi[0] = var17
+    bi = create1DList(length)
+    bi[0] = totalNumberOfLines
 
     for i in range(1, length):
         bi[i] = bi[i - 1] + big_lump1[51][i - 1][2]
 
-    var17 = bi[-1]
-    cW, by = q(var17)
-    bz = [0 for _ in range(var17)]
+    totalNumberOfLines = bi[-1]
+    cW, by = initMapArrays(totalNumberOfLines)
+    bz = create1DList(totalNumberOfLines)
 
     for i in range(len(big_lump1[31])):
         bz[big_lump1[31][i][0] + 128] = big_lump1[31][i][1]
@@ -28,7 +29,7 @@ def modifyBigLumps01(big_lump0, big_lump1):
     var8 = len(big_lump1[7])
 
     for i in range(length):
-        if var11 < var8 and var12 == big_lump1[7][var11][0] + 128:
+        if var11 < var8 and var12 == ((big_lump1[7][var11][0] + 128) & 0xFF) :
             if var11!= 0:
                 cW[2][var12 - 1] = big_lump1[7][var11 - 1][1]
                 cW[3][var12 - 1] = big_lump1[7][var11 - 1][2]
@@ -40,10 +41,11 @@ def modifyBigLumps01(big_lump0, big_lump1):
 
         var13 = big_lump0[0][i][0] - 7
         var15 = big_lump0[0][i][1] - 7
-        cW[0][var12] = int(var13 + cW[0][var12 - 1])
-        cW[1][var12] = int(var15 + cW[1][var12 - 1])
+        cW[0][var12] = var13 + cW[0][var12 - 1]
+        cW[1][var12] = var15 + cW[1][var12 - 1]
         cW[2][var12 - 1] = cW[0][var12]
         cW[3][var12 - 1] = cW[1][var12]
+        print('!!! 2', var12)
         var12 += 1
 
     cW[2][var12 - 1] = big_lump1[7][var11 - 1][1]
@@ -52,11 +54,11 @@ def modifyBigLumps01(big_lump0, big_lump1):
     for var18 in range(var12):
         for i in range(4):
             cW[i][var18] <<= 16
-
+    return [cW]
     eX = var12
     var12 = 0
     var11 = 0
-    cX = [0 for _ in range(var17)]
+    cX = [0 for _ in range(totalNumberOfLines)]
     length = len(big_lump0[1])
     var9 = len(big_lump1[7])
     var10 = len(big_lump1[10])

@@ -1,5 +1,5 @@
 import omg
-from loadMap import load_map
+from loadMap import loadMap
 from drawMap import draw_lines
 
 wad = omg.WAD('MAP01.wad')
@@ -38,6 +38,6 @@ def prettifyACS(script) -> str:
 # print('things[0]:', thing.to_textmap())
 
 
-lines = load_map("1 d (склад).b3d")
-# lines = load_map("2 b (казарма).b3d")
+lines = loadMap("1 d (склад).b3d")
+# lines = loadMap("2 b (казарма).b3d")
 draw_lines(lines)

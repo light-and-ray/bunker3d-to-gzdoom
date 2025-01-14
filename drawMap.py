@@ -1,4 +1,4 @@
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 
 def reconfigureLines(lines: list[list]):
     newLines = []
@@ -23,16 +23,22 @@ def draw_lines(lines, width=1024):
 
     # Create a new image
     img = Image.new('RGB', (width, width), color = (73, 109, 137))
-    d = ImageDraw.Draw(img)
+    draw = ImageDraw.Draw(img)
 
     # Draw lines
-    for line in lines:
+    for i, line in enumerate(lines):
         x1, y1, x2, y2 = line
         scaled_x1, scaled_y1 = rescale(x1, y1)
         scaled_x2, scaled_y2 = rescale(x2, y2)
-        d.line([(scaled_x1, scaled_y1), (scaled_x2, scaled_y2)], fill=(255, 255, 0), width=2)
+        draw.line([(scaled_x1, scaled_y1), (scaled_x2, scaled_y2)], fill=(255, 255, 0), width=2)
+        draw.circle((scaled_x1, scaled_y1), fill=(0, 255, 0), radius=2)
+        draw.circle((scaled_x2, scaled_y2), fill=(0, 255, 0), radius=2)
+        midpoint_x = (scaled_x1 + scaled_x2) / 2
+        midpoint_y = (scaled_y1 + scaled_y2) / 2
+        font = ImageFont.load_default()
+        draw.text((midpoint_x-6, midpoint_y-7), str(i+1), fill=(0, 0, 0), font=font, anchor=None)
 
     # Save the image
     img.show()
-    img.save('lines.jpg')
+    img.save('lines.png')
 

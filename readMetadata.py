@@ -1,4 +1,4 @@
-from tools import read_binary, read_short
+from tools import read_binary, readShort
 
 
 def read_metadata(metadata_file_path):
@@ -7,7 +7,7 @@ def read_metadata(metadata_file_path):
     file = read_binary(metadata_file_path)
 
     for _ in range(12):
-        header.append(read_short(file, pos))
+        header.append(readShort(file, pos))
         pos += 2
 
     metadata = {
@@ -25,7 +25,7 @@ def read_metadata(metadata_file_path):
         'a': []
     }
 
-    metadata['FOE_METADATA'] = [read_short(file, pos) for pos in range(pos, pos + header[0]*2, 2)]
+    metadata['FOE_METADATA'] = [readShort(file, pos) for pos in range(pos, pos + header[0]*2, 2)]
     pos += header[0]*2
 
     metadata['l'] = [file[pos] for pos in range(pos, pos + header[1])]

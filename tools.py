@@ -1,7 +1,7 @@
 import math
 
-def read_short(data, offset):
-    return (data[offset] & 0xFF) | (data[offset + 1] & 0xFF) << 8
+def readShort(data, offset):
+    return (data[offset] & 0xFF) | ((data[offset + 1] & 0xFF) << 8)
 
 def read_binary(file_name):
     try:
@@ -35,3 +35,9 @@ def printBigLump(bigLump):
         list_ = bigLump[i]
         print(f"Fragment {i} of size {len(list_)} in range {get2DListValueRange(list_)}: {list_}\n")
 
+
+def create2DList(a, b, default=0):
+    return [[default for _ in range(b)] for _ in range(a)]
+
+def create1DList(a, default=0):
+    return [default for _ in range(a)]

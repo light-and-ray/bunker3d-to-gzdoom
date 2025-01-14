@@ -1207,14 +1207,14 @@ public final class b3d_a extends Canvas {
 
    private void loadMapPart(byte[] lumpA, byte[] lumpB, byte[] mapMetadata, int E_idx) {
       int pos = 0;
-      int lump1Size = lumpB.length;
-      this.E[E_idx] = new byte[lump1Size][][];
+      int lumpBSize = lumpB.length;
+      this.E[E_idx] = new byte[lumpBSize][][];
 
-      for(int i = 0; i < lump1Size; ++i) {
-         int value = lumpB[i] < 0 ? 127 - lumpB[i] : lumpB[i];
-         this.E[E_idx][i] = new byte[value][mapMetadata[i]];
+      for(int i = 0; i < lumpBSize; ++i) {
+         int lumpFragmentSize = lumpB[i] < 0 ? 127 - lumpB[i] : lumpB[i];
+         this.E[E_idx][i] = new byte[lumpFragmentSize][mapMetadata[i]];
 
-         for(int j = 0; j < value; ++j) {
+         for(int j = 0; j < lumpFragmentSize; ++j) {
             byte var11 = mapMetadata[i];
 
             for(int k = 0; k < var11; ++k) {
@@ -1230,20 +1230,20 @@ public final class b3d_a extends Canvas {
       int var11 = 0;
       int var12 = 0;
                 // 124 + 9 +
-      int var17 = bigLump0[0].length + bigLump1[7].length + bigLump1[12].length * 4 + bigLump1[20].length * 3 + bigLump1[33].length * 4 + bigLump1[41].length * 4;
+      int totalNumberOfLines = bigLump0[0].length + bigLump1[7].length + bigLump1[12].length * 4 + bigLump1[20].length * 3 + bigLump1[33].length * 4 + bigLump1[41].length * 4;
 
       int length = bigLump1[51].length + 1;
       this.bi = new int[length];
-      this.bi[0] = var17;
+      this.bi[0] = totalNumberOfLines;
 
       int i;
       for(i = 1; i < length; ++i) {
          this.bi[i] = this.bi[i - 1] + bigLump1[51][i - 1][2];
       }
 
-      var17 = this.bi[i - 1];
-      this.q(var17);
-      this.bz = new byte[var17];
+      totalNumberOfLines = this.bi[i - 1];
+      this.initMapArrays(totalNumberOfLines);
+      this.bz = new byte[totalNumberOfLines];
       length = bigLump1[31].length;
 
       for(i = 0; i < length; ++i) {
@@ -1288,7 +1288,7 @@ public final class b3d_a extends Canvas {
       this.eX = var12;
       var12 = 0;
       var11 = 0;
-      this.cX = new byte[var17];
+      this.cX = new byte[totalNumberOfLines];
       length = bigLump0[1].length;
       int var9 = bigLump1[7].length;
       int var10 = bigLump1[10].length;
@@ -5416,7 +5416,7 @@ public final class b3d_a extends Canvas {
       return false;
    }
 
-   private void q(int var1) {
+   private void initMapArrays(int var1) {
       this.cW = new int[4][var1];
       this.by = new byte[var1];
    }

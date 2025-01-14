@@ -1,19 +1,19 @@
-from tools import read_binary, read_short, printBigLump, get2DListValueRange
+from tools import read_binary, readShort, printBigLump, get2DListValueRange
 from readMetadata import read_metadata
 import obfuscatedMagic
 
 
 
-def load_map_part(lumpA, lumpB, map_metadata):
+def loadMapPart(lumpA, lumpB, map_metadata):
     bigLump = []
     pos = 0
     lumpB_size = len(lumpB)
 
     for i in range(lumpB_size):
-        value = 127 - lumpB[i] if lumpB[i] < 0 else lumpB[i]
+        lumpFragmentSize = 127 - lumpB[i] if lumpB[i] < 0 else lumpB[i]
         bigLump.append([])
 
-        for j in range(value):
+        for j in range(lumpFragmentSize):
             var11 = map_metadata[i]
 
             row = []
@@ -47,13 +47,13 @@ def load_map_part(lumpA, lumpB, map_metadata):
 """
 
 
-def load_map(file_path):
+def loadMap(file_path):
     data = read_binary(file_path)
 
     # Read header
-    header_number_a = read_short(data, 0)
-    header_number_b = read_short(data, 2)
-    header_number_c = read_short(data, 4)
+    header_number_a = readShort(data, 0)
+    header_number_b = readShort(data, 2)
+    header_number_c = readShort(data, 4)
     print(f"Map file: {file_path}")
     print(f"Header: A={header_number_a}, B={header_number_b}, C={header_number_c}")
 
@@ -63,7 +63,7 @@ def load_map(file_path):
 
     # Lump 0
     lump0_size = header_number_a * 4
-    lump0 = [None] * lump0_size
+    lump0 = bytearray(lump0_size)
     for i in range(0, lump0_size, 4):
         high_nibble1 = (data[offset + 1] & 0xF0) >> 4
         low_nibble1 = data[offset + 1] & 0x0F
@@ -80,7 +80,7 @@ def load_map(file_path):
     lump1_size = 5
     lump1 = [None] * lump1_size
     for i in range(lump1_size):
-        raw_value = read_short(data, offset)
+        raw_value = readShort(data, offset)
         value = raw_value if raw_value < 128 else 127 - raw_value
         lump1[i] = value
         offset += 2
@@ -118,29 +118,27 @@ def load_map(file_path):
     footer_size = 8
     footer = []
     for i in range(footer_size):
-        footer.append(read_short(data, offset))
+        footer.append(readShort(data, offset))
         offset += 2
 
     print("Footer:", footer)
 
     metadata = read_metadata("a.b3d")
 
-    bigLump0 = load_map_part(lump0, lump1, metadata['o'])
-    bigLump1 = load_map_part(lump2, lump3, metadata['p'])
-    bigLump2 = load_map_part(lump4, lump5, metadata['n'])
+    bigLump0 = loadMapPart(lump0, lump1, metadata['o'])
+    bigLump1 = loadMapPart(lump2, lump3, metadata['p'])
+    bigLump2 = loadMapPart(lump4, lump5, metadata['n'])
 
     # modifier = obfuscatedMagic.BigLumpModifier(metadata)
     # modifier.modify_big_lumps01(bigLump0, bigLump1)
     # modifier.modify_big_lump1(bigLump1)
     # return modifier.cW
 
-    return obfuscatedMagic.modifyBigLumps01(bigLump0, bigLump1)[0]
+    print("\nbigLump 0\n")
+    printBigLump(bigLump0)
 
-    # print("\nbigLump 0\n")
-    # printBigLump(bigLump0)
-
-    # print("\nbigLump 1\n")
-    # printBigLump(bigLump1)
+    print("\nbigLump 1\n")
+    printBigLump(bigLump1)
 
     # print("\nbigLump 2\n")
     # printBigLump(bigLump2)
@@ -150,4 +148,5 @@ def load_map(file_path):
     #     print(len(x))
 
     # print(get2DListValueRange(modifier.cW))
+    return obfuscatedMagic.modifyBigLumps01(bigLump0, bigLump1)[0]
 
