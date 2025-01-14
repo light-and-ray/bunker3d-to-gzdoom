@@ -1,128 +1,5 @@
 from tools import create1DList, create2DList
 from drawMap import draw_lines
-def initMapArrays(var1):
-    cW = create2DList(4, var1)
-    by = create1DList(var1)
-    return cW, by
-
-# loads base geometry
-# def modifyBigLumps01(big_lump0, big_lump1):
-#     var3 = False
-#     var11 = 0
-#     var12 = 0
-#     totalNumberOfLines = len(big_lump0[0]) + len(big_lump1[7]) + len(big_lump1[12]) * 4 + len(big_lump1[20]) * 3 + len(big_lump1[33]) * 4 + len(big_lump1[41]) * 4
-
-#     length = len(big_lump1[51]) + 1
-#     bi = create1DList(length)
-#     bi[0] = totalNumberOfLines
-
-#     for i in range(1, length):
-#         bi[i] = bi[i - 1] + big_lump1[51][i - 1][2]
-
-#     totalNumberOfLines = bi[-1]
-#     cW, by = initMapArrays(totalNumberOfLines)
-#     bz = create1DList(totalNumberOfLines)
-
-#     for i in range(len(big_lump1[31])):
-#         bz[(big_lump1[31][i][0] + 128) & 0xFF] = big_lump1[31][i][1]
-
-#     length = len(big_lump0[0])
-#     var8 = len(big_lump1[7])
-
-#     for i in range(length):
-#         if var11 < var8 and var12 == ((big_lump1[7][var11][0] + 128) & 0xFF) :
-#             if var11!= 0:
-#                 cW[2][var12 - 1] = big_lump1[7][var11 - 1][1]
-#                 cW[3][var12 - 1] = big_lump1[7][var11 - 1][2]
-
-#             cW[0][var12] = big_lump1[7][var11][1]
-#             cW[1][var12] = big_lump1[7][var11][2]
-#             var11 += 1
-#             var12 += 1
-
-#         var13 = big_lump0[0][i][0] - 7
-#         var15 = big_lump0[0][i][1] - 7
-#         cW[0][var12] = var13 + cW[0][var12 - 1]
-#         cW[1][var12] = var15 + cW[1][var12 - 1]
-#         cW[2][var12 - 1] = cW[0][var12]
-#         cW[3][var12 - 1] = cW[1][var12]
-#         var12 += 1
-
-#     cW[2][var12 - 1] = big_lump1[7][var11 - 1][1]
-#     cW[3][var12 - 1] = big_lump1[7][var11 - 1][2]
-
-#     for var18 in range(var12):
-#         for i in range(4):
-#             cW[i][var18] <<= 16
-#     eX = var12
-#     var12 = 0
-#     var11 = 0
-#     cX = [0 for _ in range(totalNumberOfLines)]
-#     length = len(big_lump0[1])
-#     var9 = len(big_lump1[7])
-#     var10 = len(big_lump1[10])
-
-#     for i in range(length):
-#         var8 = len(big_lump0[1][i])
-
-#         for var5 in range(var8):
-#             if var11 < var9 and var12 == ((big_lump1[7][var11][0] + 128) & 0xFF):
-#                 if var11!= 0:
-#                     cX[var12 - 1] = big_lump1[7][var11 - 1][4]
-
-#                 cX[var12] = big_lump1[7][var11][3]
-#                 var11 += 1
-#                 var12 += 1
-
-#             if big_lump0[1][i][var5] == 15:
-#                 var6 = 0
-#                 while var6 < var10:
-#                     if ((big_lump1[10][var6][0] + 128) & 0xFF) == var12:
-#                         cX[var12] = big_lump1[10][var6][1]
-#                         break
-#                     var6 += 1
-#             else:
-#                 cX[var12] = big_lump0[1][i][var5]
-#             var12 += 1
-
-#     cX[var12 - 1 - big_lump1[8][0][4]] = big_lump1[7][var11 - 1][4]
-
-#     length = len(big_lump0[2])
-#     var8 = len(big_lump1[29])
-
-#     for i in range(length):
-#         for var5 in range(5):
-#             if big_lump0[2][i][var5]!= 15:
-#                 if big_lump0[2][i][var5] == 7:
-#                     big_lump0[2][i][var5] = -7
-#                 elif big_lump0[2][i][var5]!= 0:
-#                     big_lump0[2][i][var5] -= 7
-#             else:
-#                 for var6 in range(var8):
-#                     if big_lump1[29][var6][0] == i and big_lump1[29][var6][1] == var5:
-#                         big_lump0[2][i][var5] = big_lump1[29][var6][2]
-#                         break
-
-#     for i in range(length):
-#         var8 = len(big_lump0[2][i])
-#         for var5 in range(6, var8):
-#             big_lump0[2][i][var5] *= 3
-
-#     length = len(big_lump0[3])
-
-#     for i in range(length):
-#         for var5 in range(1, 3):
-#             big_lump0[3][i][var5] *= 3
-
-#     length = len(big_lump0[4])
-
-#     for i in range(length):
-#         var8 = len(big_lump0[4][i])
-#         for var5 in range(var8):
-#             big_lump0[4][i][var5] *= 3
-
-#     return cW, by, bi, bz, cX, eX
-
 
 
 class BigLumpModifier:
@@ -138,21 +15,23 @@ class BigLumpModifier:
             var1 += self.a[var2 - 2]
             self.dL[var2] = self.dL[var2 - 1] + var1
 
-    def modifyBigLump01(self, big_lump0, big_lump1):
+
+    def modifyBigLumps01(self, big_lump0, big_lump1):
         var3 = False
-        var11 = 0
-        var12 = 0
-        var17 = len(big_lump0[0]) + len(big_lump1[7]) + len(big_lump1[12]) * 4 + len(big_lump1[20]) * 3 + len(big_lump1[33]) * 4 + len(big_lump1[41]) * 4
+        lineSeqIdx = 0
+        lineIdx = 0
+        totalNumberOfLines = len(big_lump0[0]) + len(big_lump1[7]) + len(big_lump1[12]) * 4 + len(big_lump1[20]) * 3 + len(big_lump1[33]) * 4 + len(big_lump1[41]) * 4
         length = len(big_lump1[51]) + 1
         self.bi = [0] * length
-        self.bi[0] = var17
+        self.bi[0] = totalNumberOfLines
 
         for i in range(1, length):
             self.bi[i] = self.bi[i - 1] + big_lump1[51][i - 1][2]
+            print('!!!', self.bi[i])
 
-        var17 = self.bi[-1]
-        self.q(var17)
-        self.bz = [0] * var17
+        totalNumberOfLines = self.bi[-1]
+        self.initMapArrays(totalNumberOfLines)
+        self.bz = [0] * totalNumberOfLines
         length = len(big_lump1[31])
 
         for i in range(length):
@@ -162,35 +41,37 @@ class BigLumpModifier:
         var8 = len(big_lump1[7])
 
         for i in range(length):
-            if var11 < var8 and var12 == ((big_lump1[7][var11][0] + 128) & 0xFF):
-                if var11!= 0:
-                    self.cW[2][var12 - 1] = big_lump1[7][var11 - 1][1]
-                    self.cW[3][var12 - 1] = big_lump1[7][var11 - 1][2]
+            # start new line sequence
+            # big_lump1[7] - starting points for sequences
+            if lineSeqIdx < var8 and lineIdx == ((big_lump1[7][lineSeqIdx][0] + 128) & 0xFF):
+                if lineSeqIdx!= 0:
+                    self.cW[2][lineIdx - 1] = big_lump1[7][lineSeqIdx - 1][1]
+                    self.cW[3][lineIdx - 1] = big_lump1[7][lineSeqIdx - 1][2]
 
-                self.cW[0][var12] = big_lump1[7][var11][1]
-                self.cW[1][var12] = big_lump1[7][var11][2]
-                var11 += 1
-                var12 += 1
+                self.cW[0][lineIdx] = big_lump1[7][lineSeqIdx][1]
+                self.cW[1][lineIdx] = big_lump1[7][lineSeqIdx][2]
+                lineSeqIdx += 1
+                lineIdx += 1
 
             var13 = big_lump0[0][i][0] - 7
             var15 = big_lump0[0][i][1] - 7
-            self.cW[0][var12] = int(var13 + self.cW[0][var12 - 1])
-            self.cW[1][var12] = int(var15 + self.cW[1][var12 - 1])
-            self.cW[2][var12 - 1] = self.cW[0][var12]
-            self.cW[3][var12 - 1] = self.cW[1][var12]
-            var12 += 1
+            self.cW[0][lineIdx] = int(var13 + self.cW[0][lineIdx - 1])
+            self.cW[1][lineIdx] = int(var15 + self.cW[1][lineIdx - 1])
+            self.cW[2][lineIdx - 1] = self.cW[0][lineIdx]
+            self.cW[3][lineIdx - 1] = self.cW[1][lineIdx]
+            lineIdx += 1
 
-        self.cW[2][var12 - 1] = big_lump1[7][var11 - 1][1]
-        self.cW[3][var12 - 1] = big_lump1[7][var11 - 1][2]
+        self.cW[2][lineIdx - 1] = big_lump1[7][lineSeqIdx - 1][1]
+        self.cW[3][lineIdx - 1] = big_lump1[7][lineSeqIdx - 1][2]
 
-        for var18 in range(var12):
+        for var18 in range(lineIdx):
             for i in range(4):
                 self.cW[i][var18] <<= 16
 
-        self.eX = var12
-        var12 = 0
-        var11 = 0
-        self.cX = [0] * var17
+        self.eX = lineIdx
+        lineIdx = 0
+        lineSeqIdx = 0
+        self.cX = [0] * totalNumberOfLines
         length = len(big_lump0[1])
         var9 = len(big_lump1[7])
         var10 = len(big_lump1[10])
@@ -199,26 +80,26 @@ class BigLumpModifier:
             var8 = len(big_lump0[1][i])
 
             for var5 in range(var8):
-                if var11 < var9 and var12 == ((big_lump1[7][var11][0] + 128) & 0xFF):
-                    if var11!= 0:
-                        self.cX[var12 - 1] = big_lump1[7][var11 - 1][4]
+                if lineSeqIdx < var9 and lineIdx == ((big_lump1[7][lineSeqIdx][0] + 128) & 0xFF):
+                    if lineSeqIdx!= 0:
+                        self.cX[lineIdx - 1] = big_lump1[7][lineSeqIdx - 1][4]
 
-                    self.cX[var12] = big_lump1[7][var11][3]
-                    var11 += 1
-                    var12 += 1
+                    self.cX[lineIdx] = big_lump1[7][lineSeqIdx][3]
+                    lineSeqIdx += 1
+                    lineIdx += 1
 
                 if big_lump0[1][i][var5] == 15:
                     var6 = 0
                     while var6 < var10:
-                        if ((big_lump1[10][var6][0] + 128) & 0xFF) == var12:
-                            self.cX[var12] = big_lump1[10][var6][1]
+                        if ((big_lump1[10][var6][0] + 128) & 0xFF) == lineIdx:
+                            self.cX[lineIdx] = big_lump1[10][var6][1]
                             break
                         var6 += 1
                 else:
-                    self.cX[var12] = big_lump0[1][i][var5]
-                var12 += 1
+                    self.cX[lineIdx] = big_lump0[1][i][var5]
+                lineIdx += 1
 
-        self.cX[var12 - 1 - big_lump1[8][0][4]] = big_lump1[7][var11 - 1][4]
+        self.cX[lineIdx - 1 - big_lump1[8][0][4]] = big_lump1[7][lineSeqIdx - 1][4]
         length = len(big_lump0[2])
 
         for i in range(length):
@@ -568,7 +449,7 @@ class BigLumpModifier:
             self.bz[var13] = var11
         return var13
 
-    def q(self, var1):
+    def initMapArrays(self, var1):
         self.cW = [[0 for _ in range(var1)] for _ in range(4)]
         self.by = [0 for _ in range(var1)]
 

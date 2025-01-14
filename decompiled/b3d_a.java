@@ -1227,9 +1227,8 @@ public final class b3d_a extends Canvas {
 
    private void modifyBigLumps01(byte[][][] bigLump0, byte[][][] bigLump1) {
       boolean var3 = false;
-      int var11 = 0;
-      int var12 = 0;
-                // 124 + 9 +
+      int lineSeqIdx = 0;
+      int lineIdx = 0;
       int totalNumberOfLines = bigLump0[0].length + bigLump1[7].length + bigLump1[12].length * 4 + bigLump1[20].length * 3 + bigLump1[33].length * 4 + bigLump1[41].length * 4;
 
       int length = bigLump1[51].length + 1;
@@ -1254,40 +1253,40 @@ public final class b3d_a extends Canvas {
       int var8 = bigLump1[7].length;
 
       for(i = 0; i < length; ++i) {
-         if (var11 < var8 && var12 == bigLump1[7][var11][0] + 128) {
-            if (var11 != 0) {
-               this.cW[2][var12 - 1] = bigLump1[7][var11 - 1][1];
-               this.cW[3][var12 - 1] = bigLump1[7][var11 - 1][2];
+         if (lineSeqIdx < var8 && lineIdx == bigLump1[7][lineSeqIdx][0] + 128) {
+            if (lineSeqIdx != 0) {
+               this.cW[2][lineIdx - 1] = bigLump1[7][lineSeqIdx - 1][1];
+               this.cW[3][lineIdx - 1] = bigLump1[7][lineSeqIdx - 1][2];
             }
 
-            this.cW[0][var12] = bigLump1[7][var11][1];
-            this.cW[1][var12] = bigLump1[7][var11][2];
-            ++var11;
-            ++var12;
+            this.cW[0][lineIdx] = bigLump1[7][lineSeqIdx][1];
+            this.cW[1][lineIdx] = bigLump1[7][lineSeqIdx][2];
+            ++lineSeqIdx;
+            ++lineIdx;
          }
 
          long var13 = (long)(bigLump0[0][i][0] - 7);
          long var15 = (long)(bigLump0[0][i][1] - 7);
-         this.cW[0][var12] = (int)(var13 + (long)this.cW[0][var12 - 1]);
-         this.cW[1][var12] = (int)(var15 + (long)this.cW[1][var12 - 1]);
-         this.cW[2][var12 - 1] = this.cW[0][var12];
-         this.cW[3][var12 - 1] = this.cW[1][var12];
-         ++var12;
+         this.cW[0][lineIdx] = (int)(var13 + (long)this.cW[0][lineIdx - 1]);
+         this.cW[1][lineIdx] = (int)(var15 + (long)this.cW[1][lineIdx - 1]);
+         this.cW[2][lineIdx - 1] = this.cW[0][lineIdx];
+         this.cW[3][lineIdx - 1] = this.cW[1][lineIdx];
+         ++lineIdx;
       }
 
-      this.cW[2][var12 - 1] = bigLump1[7][var11 - 1][1];
-      this.cW[3][var12 - 1] = bigLump1[7][var11 - 1][2];
+      this.cW[2][lineIdx - 1] = bigLump1[7][lineSeqIdx - 1][1];
+      this.cW[3][lineIdx - 1] = bigLump1[7][lineSeqIdx - 1][2];
 
-      for(int var18 = 0; var18 < var12; ++var18) {
+      for(int var18 = 0; var18 < lineIdx; ++var18) {
          for(i = 0; i < 4; ++i) {
             int[] var10000 = this.cW[i];
             var10000[var18] <<= 16;
          }
       }
 
-      this.eX = var12;
-      var12 = 0;
-      var11 = 0;
+      this.eX = lineIdx;
+      lineIdx = 0;
+      lineSeqIdx = 0;
       this.cX = new byte[totalNumberOfLines];
       length = bigLump0[1].length;
       int var9 = bigLump1[7].length;
@@ -1300,14 +1299,14 @@ public final class b3d_a extends Canvas {
 
          label159:
          for(var5 = 0; var5 < var8; ++var5) {
-            if (var11 < var9 && var12 == bigLump1[7][var11][0] + 128) {
-               if (var11 != 0) {
-                  this.cX[var12 - 1] = bigLump1[7][var11 - 1][4];
+            if (lineSeqIdx < var9 && lineIdx == bigLump1[7][lineSeqIdx][0] + 128) {
+               if (lineSeqIdx != 0) {
+                  this.cX[lineIdx - 1] = bigLump1[7][lineSeqIdx - 1][4];
                }
 
-               this.cX[var12] = bigLump1[7][var11][3];
-               ++var11;
-               ++var12;
+               this.cX[lineIdx] = bigLump1[7][lineSeqIdx][3];
+               ++lineSeqIdx;
+               ++lineIdx;
             }
 
             int var10001;
@@ -1322,9 +1321,9 @@ public final class b3d_a extends Canvas {
                      continue label159;
                   }
 
-                  if (bigLump1[10][var6][0] + 128 == var12) {
+                  if (bigLump1[10][var6][0] + 128 == lineIdx) {
                      var19 = this.cX;
-                     var10001 = var12;
+                     var10001 = lineIdx;
                      var10002 = bigLump1[10][var6];
                      var10003 = 1;
                      break;
@@ -1334,17 +1333,17 @@ public final class b3d_a extends Canvas {
                }
             } else {
                var19 = this.cX;
-               var10001 = var12;
+               var10001 = lineIdx;
                var10002 = bigLump0[1][i];
                var10003 = var5;
             }
 
             var19[var10001] = var10002[var10003];
-            ++var12;
+            ++lineIdx;
          }
       }
 
-      this.cX[var12 - 1 - bigLump1[8][0][4]] = bigLump1[7][var11 - 1][4];
+      this.cX[lineIdx - 1 - bigLump1[8][0][4]] = bigLump1[7][lineSeqIdx - 1][4];
       length = bigLump0[2].length;
       var8 = bigLump1[29].length;
 

@@ -50,14 +50,13 @@ def loadMapPart(lumpA, lumpB, map_metadata):
 def loadMap(file_path):
     data = read_binary(file_path)
 
-    # Read header
+    # Header
     header_number_a = readShort(data, 0)
     header_number_b = readShort(data, 2)
     header_number_c = readShort(data, 4)
     print(f"Map file: {file_path}")
     print(f"Header: A={header_number_a}, B={header_number_b}, C={header_number_c}")
 
-    # Read lumps
     lumps = []
     offset = 6
 
@@ -110,11 +109,7 @@ def loadMap(file_path):
     offset += lump5_size
     lumps.append(lump5)
 
-    # print("Lumps:")
-    # for i, lump in enumerate(lumps):
-    #     print(f"Lump {i} of size {len(lump)}: {lump}\n")
-
-    # Read footer
+    # Footer
     footer_size = 8
     footer = []
     for i in range(footer_size):
@@ -130,23 +125,8 @@ def loadMap(file_path):
     bigLump2 = loadMapPart(lump4, lump5, metadata['n'])
 
     modifier = obfuscatedMagic.BigLumpModifier(metadata)
-    modifier.modifyBigLump01(bigLump0, bigLump1)
+    modifier.modifyBigLumps01(bigLump0, bigLump1)
     modifier.modifyBigLump1(bigLump1)
 
-    # print("\nbigLump 0\n")
-    # printBigLump(bigLump0)
-
-    # print("\nbigLump 1\n")
-    # printBigLump(bigLump1)
-
-    # print("\nbigLump 2\n")
-    # printBigLump(bigLump2)
-
-    # print(len(modifier.cX))
-    # for x in modifier.cW:
-    #     print(len(x))
-
-    # print(get2DListValueRange(modifier.cW))
-    # return obfuscatedMagic.modifyBigLumps01(bigLump0, bigLump1)[0]
     return modifier.cW
 
