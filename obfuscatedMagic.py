@@ -143,6 +143,7 @@ class BigLumpModifier:
         self.fb = self.fa + 4 * len(bigLump1[12])
         self.fc = self.fb + 3 * len(bigLump1[20])
 
+        # SPRITE DECORATIONS (?)
         for var2 in range(7):
             var12 = len(bigLump1[var2]) + len(bigLump1[var2 + 13]) + len(bigLump1[var2 + 21]) + len(bigLump1[var2 + 42]) + len(bigLump1[var2 + 52])
             self.cD[var2] = create1DList(var12)
