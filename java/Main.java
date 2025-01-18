@@ -68,6 +68,7 @@ public class Main {
     public static void main(String[] args) {
         ResourcesLoader loader = new ResourcesLoader();
         loader.readMetadata();
+        loader.initPrecalculatedAngles();
         loader.loadMap();
         export("cW", loader.cW);
     }

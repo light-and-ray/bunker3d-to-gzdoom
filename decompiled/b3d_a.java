@@ -629,7 +629,7 @@ public final class b3d_a extends Canvas {
             this.readMetadata();
          }
 
-         this.s();
+         this.initPrecalculatedAngles();
          this.loadMap();
          this.n();
          this.t();
@@ -5753,7 +5753,7 @@ public final class b3d_a extends Canvas {
       this.dC = var1;
    }
 
-   private void s() {
+   private void initPrecalculatedAngles() {
       this.dL = new int[91];
       this.dL[1] = 1146;
       int var1 = 1146;
