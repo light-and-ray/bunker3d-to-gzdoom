@@ -1,3 +1,3 @@
 #!/bin/bash -ex
-./runJava.sh
+mkdir -p draws
 env/bin/python convert.py

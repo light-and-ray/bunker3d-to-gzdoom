@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class Main {
+public class MainB3D {
     public static String ROOT_TMP = "../tmp";
 
     public static void export(String filename, Object array) {
@@ -66,7 +66,9 @@ public class Main {
 
 
     public static void main(String[] args) {
-        ResourcesLoader loader = new ResourcesLoader();
+        int selectedMap = Integer.parseInt(args[0]);
+        ResourcesLoaderB3D loader = new ResourcesLoaderB3D();
+        loader.selectedMap = selectedMap;
         loader.readMetadata();
         loader.initPrecalculatedAngles();
         loader.loadMap();

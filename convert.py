@@ -38,8 +38,6 @@ def prettifyACS(script) -> str:
 # print('things[0]:', thing.to_textmap())
 
 
-lines = loadMap()
-# lines = loadMap("1 d (склад).b3d")
-# lines = loadMap("2 b (казарма).b3d")
-# lines = loadMap("3 o (офицерская).b3d")
-draw_lines(lines)
+for idx in range(1, 10):
+    lines = loadMap(idx)
+    draw_lines(lines, name=f'c1m{idx}', show=False)

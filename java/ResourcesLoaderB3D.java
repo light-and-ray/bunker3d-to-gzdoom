@@ -3,7 +3,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ResourcesLoader {
+public class ResourcesLoaderB3D {
    public String ROOT_JAR = "../jars/b3d.d";
    public byte c;
    public boolean e;
@@ -131,7 +131,7 @@ public class ResourcesLoader {
 
 
 
-   public ResourcesLoader() {
+   public ResourcesLoaderB3D() {
    }
 
    public byte[] readBinary(String fileName) {
@@ -995,7 +995,7 @@ public class ResourcesLoader {
             this.fG[var1][var6] = var3[var4][0][var6];
          }
 
-         ResourcesLoader var10000;
+         ResourcesLoaderB3D var10000;
          byte var10001;
          if (this.fG[var1][1] != this.fG[var1][2]) {
             var10000 = this;

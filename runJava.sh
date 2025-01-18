@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -ex
 cd java
 javac *.java
-java -cp . Main
+exec java -cp . MainB3D "$@"

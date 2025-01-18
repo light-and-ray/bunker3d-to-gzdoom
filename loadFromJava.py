@@ -1,4 +1,4 @@
-import json
+import json, os
 
 def read_2d_list_from_json(filename):
     try:
@@ -17,11 +17,14 @@ def read_2d_list_from_json(filename):
         return None
 
 
-def loadMap():
-    # Example usage:
-    filename = 'tmp/cW.json'
+def readArray(arrayName: str):
+    filename = f'tmp/{arrayName}.json'
     data = read_2d_list_from_json(filename)
-    if data is not None:
-        for row in data:
-            print(row)
     return data
+
+
+def loadMap(mapIndex):
+    returnCode = os.system(f'./runJava.sh {mapIndex}')
+    if (returnCode != 0):
+        raise Exception(f"java returned {returnCode}")
+    return readArray('cW')
