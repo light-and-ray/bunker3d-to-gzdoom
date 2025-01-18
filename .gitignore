@@ -2,3 +2,5 @@ env
 .directory
 __pycache__
 *.class
+/tmp
+/jars
