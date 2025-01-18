@@ -1,3 +1,4 @@
 env
 .directory
 __pycache__
+*.class
