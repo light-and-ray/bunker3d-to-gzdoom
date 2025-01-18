@@ -122,6 +122,7 @@ def loadMap(file_path):
 
     bigLump0 = loadMapPart(lump0, lump1, metadata['o'])
     bigLump1 = loadMapPart(lump2, lump3, metadata['p'])
+    printBigLump(bigLump1)
     bigLump2 = loadMapPart(lump4, lump5, metadata['n'])
 
     modifier = obfuscatedMagic.BigLumpModifier(metadata)

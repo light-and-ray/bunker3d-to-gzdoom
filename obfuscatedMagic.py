@@ -6,7 +6,7 @@ class BigLumpModifier:
     def __init__(self, metadata):
         self.B = [[1, 1, -1, 1], [-1, 1, -1, -1], [-1, -1, 1, -1], [1, -1, 1, 1]]
         self.a = metadata['a']
-        self.dL = [0] * 91
+        self.dL = create1DList(91)
         self.dL[1] = 1146
         var1 = 1146
         self.gB = False
@@ -170,7 +170,8 @@ class BigLumpModifier:
                     continue
                 else:
                     self.cD[var2][var6] = (self.cD[var2][var6] + (abs(var14) - 3)) & 0xFFFF
-                bigLump1[12][var13][3] = (bigLump1[12][var13][3] - var14) & 0xFF
+                print('!!!', bigLump1[12][var13][3], (bigLump1[12][var13][3] - var14))
+                bigLump1[12][var13][3] = (bigLump1[12][var13][3] - var14)
                 var6 += 1
             var10 = len(bigLump1[var2 + 21]) + var6
 
@@ -365,18 +366,31 @@ class BigLumpModifier:
             self.by[var18] = var15
             if var16 != 6:
                 self.bz[var18] = var16
-
             for var17 in range(0, 4, 2):
                 if var9 == 0:
                     self.cW[var17][var18] = int((self.B[var19][var17] * var7 + var1))
                     self.cW[var17 + 1][var18] = int((self.B[var19][var17 + 1] * var5 + var3))
+                    print(f'!!! {var1=}, {var7=}, {var9=}')
                 else:
-                    self.cW[var17][var18] = int(((self.B[var19][var17] * var7 * self.s(var9) >> 16) -
-                                                (self.B[var19][var17 + 1] * var5 * self.r(var9) >> 16) + var1))
-                    self.cW[var17 + 1][var18] = int(((self.B[var19][var17] * var7 * self.r(var9) >> 16) +
-                                                    (self.B[var19][var17 + 1] * var5 * self.s(var9) >> 16) + var3))
+                    term1 = (self.B[var19][var17] * var7 * self.s(var9)) >> 16
+                    term2 = (self.B[var19][var17 + 1] * var5 * self.r(var9)) >> 16
+                    print(f'!!! {var1=}, {var7=}, {term1=}, {term2=}, {var9=}, {self.s(var9)=}, {self.r(var9)=}')
+                    self.cW[var17][var18] = (term1 - term2 + var1)
+
+                    term3 = (self.B[var19][var17] * var7 * self.r(var9)) >> 16
+                    term4 = (self.B[var19][var17 + 1] * var5 * self.s(var9)) >> 16
+                    # print(f'!!! {var3=}, {term3=}, {term4=}')
+                    self.cW[var17 + 1][var18] = (term3 + term4 + var3)
+
+                    # self.cW[var17][var18] = int(((self.B[var19][var17] * var7 * self.s(var9) >> 16) -
+                    #                             (self.B[var19][var17 + 1] * var5 * self.r(var9) >> 16) + var1))
+                    # self.cW[var17 + 1][var18] = int(((self.B[var19][var17] * var7 * self.r(var9) >> 16) +
+                    #                                 (self.B[var19][var17 + 1] * var5 * self.s(var9) >> 16) + var3))
+
 
             var19 += 1
+
+        var18 = var10 + 4
 
         self.cX[var10] = var11
         var18 = var10 + 1
@@ -387,6 +401,9 @@ class BigLumpModifier:
         self.cX[var18] = var14
         if var16 == 6:
             self.bz[var18] = 3
+
+        # draw_lines(self.cW)
+        # input('sf1 PRESS ANY KEY')
 
         return var18 + 1
 
@@ -418,7 +435,7 @@ class BigLumpModifier:
             self.cW[var6 + 2][var10] = int((self.cW[var6][var10] - var4))
             self.cW[var7 + 2][var10] = self.cW[var7][var10]
         # draw_lines(self.cW)
-        # input('PRESS ANY KEY')
+        # input('sf3 PRESS ANY KEY')
 
         return var10 + 1
 
@@ -467,17 +484,17 @@ class BigLumpModifier:
         if var1 < 0:
             return -self.r(-var1)
         elif var1 >= 90 and var1 < 180:
-            return self.dL[180 - var1]
+            return self.dL[180 - var1] & 0xFFFF
         elif var1 >= 180 and var1 < 270:
-            return -self.dL[var1 - 180]
+            return -self.dL[var1 - 180] & 0xFFFF
         elif var1 >= 270 and var1 < 360:
-            return -self.dL[90 - (var1 - 270)]
+            return -self.dL[90 - (var1 - 270)] & 0xFFFF
         else:
-            return self.r(var1 % 360) if var1 >= 360 else self.dL[var1]
+            return self.r(var1 % 360) if var1 >= 360 else self.dL[var1] & 0xFFFF
 
     def s(self, var1):
         return self.r(90 - var1)
 
     def initMapArrays(self, var1):
-        self.cW = [[0 for _ in range(var1)] for _ in range(4)]
-        self.by = [0 for _ in range(var1)]
+        self.cW = create2DList(4, var1)
+        self.by = create1DList(var1)

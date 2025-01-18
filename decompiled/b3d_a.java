@@ -2899,17 +2899,12 @@ public final class b3d_a extends Canvas {
             long var10002;
             if (var9 == 0) {
                this.cW[var17][var18] = (int)((long)this.B[var19][var17] * var7 + var1);
-               var10000 = this.cW[var17 + 1];
-               var10001 = var18;
                var10002 = (long)this.B[var19][var17 + 1] * var5;
             } else {
                this.cW[var17][var18] = (int)(((long)this.B[var19][var17] * var7 * this.s(var9) >> 16) - ((long)this.B[var19][var17 + 1] * var5 * this.r(var9) >> 16) + var1);
-               var10000 = this.cW[var17 + 1];
-               var10001 = var18;
                var10002 = ((long)this.B[var19][var17] * var7 * this.r(var9) >> 16) + ((long)this.B[var19][var17 + 1] * var5 * this.s(var9) >> 16);
             }
-
-            var10000[var10001] = (int)(var10002 + var3);
+            this.cW[var17 + 1][var18] = (int)(var10002 + var3);
          }
 
          ++var19;
