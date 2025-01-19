@@ -2,12 +2,12 @@ import omg
 from loadFromJava import loadMap
 from drawMap import draw_lines
 
-wad = omg.WAD('MAP01.wad')
-map = omg.UMapEditor(wad.udmfmaps.values()[0])
+# wad = omg.WAD('MAP01.wad')
+# map = omg.UMapEditor(wad.udmfmaps.values()[0])
 
 
-def prettifyACS(script) -> str:
-    return str(script).replace('\\n', '\n').replace('\\t', '    ')
+# def prettifyACS(script) -> str:
+#     return str(script).replace('\\n', '\n').replace('\\t', '    ')
 
 # vertex : omg.UVertex = map.vertexes[0]
 # print('vertexes[0]:', vertex.to_textmap())

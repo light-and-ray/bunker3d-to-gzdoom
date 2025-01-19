@@ -4,4 +4,4 @@ if [ -d "tmp" ]; then
     rm -r tmp
 fi
 mkdir tmp
-env/bin/python convert.py
+env/bin/python src/convert.py

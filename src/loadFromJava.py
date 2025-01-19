@@ -24,7 +24,7 @@ def readArray(arrayName: str):
 
 
 def loadMap(mapIndex):
-    returnCode = os.system(f'./runJava.sh {mapIndex}')
+    returnCode = os.system(f'./bin/runJava.sh {mapIndex}')
     if (returnCode != 0):
         raise Exception(f"java returned {returnCode}")
     return readArray('cW')
