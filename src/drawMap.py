@@ -1,19 +1,13 @@
 from PIL import Image, ImageDraw, ImageFont
-
-def reconfigureLines(lines: list[list]):
-    newLines = []
-    for i in range(len(lines[0])):
-        newLines.append([lines[0][i], lines[1][i], lines[2][i], lines[3][i]])
-    return newLines
+from b3dClasses import LineB3D
 
 
-def draw_lines(lines, show=True, name=None, width=1024, frame=30):
-    lines = reconfigureLines(lines)
+def draw_lines(lines: list[LineB3D], show=True, name=None, width=1024, frame=30):
     # Calculate min and max coordinates
-    min_x = min(min(line[0], line[2]) for line in lines)
-    max_x = max(max(line[0], line[2]) for line in lines)
-    min_y = min(min(line[1], line[3]) for line in lines)
-    max_y = max(max(line[1], line[3]) for line in lines)
+    min_x = min(min(line.v1[0], line.v2[0]) for line in lines)
+    max_x = max(max(line.v1[0], line.v2[0]) for line in lines)
+    min_y = min(min(line.v1[1], line.v2[1]) for line in lines)
+    max_y = max(max(line.v1[1], line.v2[1]) for line in lines)
     height = int((max_y - min_y) / (max_x - min_x) * width)
 
     # Rescale coordinates
@@ -28,7 +22,8 @@ def draw_lines(lines, show=True, name=None, width=1024, frame=30):
 
     # Draw lines
     for i, line in enumerate(lines):
-        x1, y1, x2, y2 = line
+        x1, y1 = line.v1
+        x2, y2 = line.v2
         scaled_x1, scaled_y1 = rescale(x1, y1)
         scaled_x2, scaled_y2 = rescale(x2, y2)
         draw.line([(scaled_x1, scaled_y1), (scaled_x2, scaled_y2)], fill=(255, 255, 0), width=2)
