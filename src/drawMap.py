@@ -2,13 +2,15 @@ from PIL import Image, ImageDraw, ImageFont
 from ClassesB3D import LineB3D
 
 
-def draw_lines(lines: list[LineB3D], show=True, name=None, width=1024, frame=30):
+def draw_lines(lines: list[LineB3D], show=True, name=None, resolution=1280, frame=30):
     # Calculate min and max coordinates
     min_x = min(min(line.v1[0], line.v2[0]) for line in lines)
     max_x = max(max(line.v1[0], line.v2[0]) for line in lines)
     min_y = min(min(line.v1[1], line.v2[1]) for line in lines)
     max_y = max(max(line.v1[1], line.v2[1]) for line in lines)
-    height = int((max_y - min_y) / (max_x - min_x) * width)
+    ratio = (max_y - min_y) / (max_x - min_x)
+    height = int((resolution**2 * ratio)**0.5)
+    width = int(resolution**2/height)
 
     # Rescale coordinates
     def rescale(x, y):
