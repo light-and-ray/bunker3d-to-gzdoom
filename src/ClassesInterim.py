@@ -28,10 +28,6 @@ class MapInterim:
 
     @staticmethod
     def cullLines(lines: list[LineInterim]) -> list[LineInterim]:
-        i = 41
-        j = 193
-        print(i, j, (lines[i].v1[0], lines[i].v1[1], lines[i].v2[0], lines[i].v2[1]),
-                                        (lines[j].v1[0], lines[j].v1[1], lines[j].v2[0], lines[j].v2[1]))
         i = 0
         while i < len(lines):
             j = i + 1

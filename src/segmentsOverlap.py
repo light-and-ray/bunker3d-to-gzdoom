@@ -27,7 +27,7 @@ def resolveSegmentsOverlap_(xA, yA, xB, yB, xC, yC, xD, yD):
                     return new_segments
         return None
 
-    # Check if the segments overlap (non-horizontal and non-vertical)
+    # Check if the segments overlap
     if xA <= xD and xB >= xC:
         # Find the overlap segment
         overlap_start = max(xA, xC)
@@ -54,12 +54,12 @@ def reverseSegments(segments):
 def resolveSegmentsOverlap(xA, yA, xB, yB, xC, yC, xD, yD):
     # Ensure the segments are in the same order (xA, yA) to (xB, yB) and (xC, yC) to (xD, yD)
     changedAB = False
-    if xA > xB:
+    if xA > xB or (xA == xB and yA > yB):
         xA, xB = xB, xA
         yA, yB = yB, yA
         changedAB = True
     changedBC = False
-    if xC > xD:
+    if xC > xD or (xC == xD and yC > yD):
         xC, xD = xD, xC
         yC, yD = yD, yC
         changedBC = True
@@ -74,8 +74,8 @@ def resolveSegmentsOverlap(xA, yA, xB, yB, xC, yC, xD, yD):
 
 def test():
     lines = [
-        LineB3D(v1=(10, 0), v2=(0, 0)),
-        LineB3D(v1=(5, 0), v2=(4, 0)),
+        LineB3D(v1=(10, 10), v2=(10, 13)),
+        LineB3D(v1=(10, 12), v2=(10, 11)),
     ]
     # draw_lines(lines, show=True)
     i = 0
