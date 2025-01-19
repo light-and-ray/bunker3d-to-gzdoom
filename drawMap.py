@@ -43,5 +43,5 @@ def draw_lines(lines, show=True, name=None, width=1024, frame=30):
     if show:
         img.show()
     if (name):
-        img.save(f'draws/{name}.png')
+        img.save(f'drawings/{name}.png')
 
