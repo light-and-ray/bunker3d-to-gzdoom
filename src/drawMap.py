@@ -1,5 +1,5 @@
 from PIL import Image, ImageDraw, ImageFont
-from b3dClasses import LineB3D
+from ClassesB3D import LineB3D
 
 
 def draw_lines(lines: list[LineB3D], show=True, name=None, width=1024, frame=30):

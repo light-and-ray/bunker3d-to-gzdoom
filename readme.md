@@ -1,6 +1,6 @@
 ```bash
 python -m venv env
 . env/bin/activate
-pip install omgifol numpy pillow
+pip install omgifol pillow
 
 ```
