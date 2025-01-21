@@ -3,6 +3,7 @@ from typing import Any
 from ClassesB3D import MapB3D, CrateB3D, DoorB3D
 from algebraFunctions import resolveSegmentsOverlap, isInside, isAthwart
 from ClassesShared import Vertex, HeightType
+from drawMap import drawMap
 
 
 @dataclass
@@ -19,7 +20,7 @@ class MapInterim:
         for line in mapB3D.lines:
             self.lines.append(LineInterim(v1=line.v1, v2=line.v2, height=line.height, texture=line.texture))
         # self._removeCratesAndDoors(mapB3D.crates, mapB3D.doors)
-        # self._removeOverlaps()
+        self._removeOverlaps()
 
 
     def _removeCratesAndDoors(self, crates: list[CrateB3D], doors: list[DoorB3D]):
@@ -59,7 +60,7 @@ class MapInterim:
                     heights = set([oldLine1.height, oldLine2.height])
                     if heights == set([HeightType.TOP, HeightType.BOTTOM]):
                         if isAthwart(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
-                            # raise Exception("Athwart TOP and BOTTOM")
+                            raise Exception("Athwart TOP and BOTTOM")
                             pass
                         else:
                             height = HeightType.FULL
@@ -103,7 +104,8 @@ class MapInterim:
                     j += 1
                     continue
                 else:
-                    print(i, j, resolved)
+                    print(i, j, (self.lineToTuple(self.lines[i]), self.lineToTuple(self.lines[j])), "->\n     ", resolved)
+                    # drawMap(self, wait=True)
                     oldLine1 = self.lines[i]
                     oldLine2 = self.lines[j]
                     del self.lines[j]

@@ -93,29 +93,40 @@ def isInside(xA, yA, xB, yB, xC, yC, xD, yD):
     Returns True if the segment (xA, yA) - (xB, yB) is fully inside the segment (xC, yC) - (xD, yD).
     The segments are assumed to be collinear.
     """
-    return (min(xC, xD) <= xA and xB <= max(xC, xD) and
-            min(yC, yD) <= yA and yB <= max(yC, yD))
+    # Check for horizontal line
+    if yA == yB and yC == yD:
+        return min(xC, xD) <= min(xA, xB) and max(xA, xB) <= max(xC, xD)
+    # Check for vertical line
+    elif xA == xB and xC == xD:
+        return min(yC, yD) <= min(yA, yB) and max(yA, yB) <= max(yC, yD)
+    else:
+        return (min(xC, xD) <= min(xA, xB) and max(xA, xB) <= max(xC, xD) and
+                min(yC, yD) <= min(yA, yB) and max(yA, yB) <= max(yC, yD))
 
 def isAthwart(xA, yA, xB, yB, xC, yC, xD, yD):
     """
     Returns True if the two already collinear segments (xA, yA) - (xB, yB) and (xC, yC) - (xD, yD)
     are "moving" in different directions.
     """
-    return ((xA < xB and xC > xD) or (xA > xB and xC < xD) or
-            (yA < yB and yC > yD) or (yA > yB and yC < yD))
+    # Check for horizontal line
+    if yA == yB and yC == yD:
+        return ((xA < xB and xC > xD) or (xA > xB and xC < xD))
+    # Check for vertical line
+    elif xA == xB and xC == xD:
+        return ((yA < yB and yC > yD) or (yA > yB and yC < yD))
+    else:
+        return ((xA < xB and xC > xD) or (xA > xB and xC < xD) or
+                (yA < yB and yC > yD) or (yA > yB and yC < yD))
 
 
 def test():
-    from drawMap import draw_lines
-    lines = [
-        LineB3D(v1=(10, 10), v2=(10, 13)),
-        LineB3D(v1=(10, 12), v2=(10, 11)),
-    ]
-    # draw_lines(lines, show=True)
-    i = 0
-    j = 1
-    result = resolveSegmentsOverlap(lines[i].v1.x, lines[i].v1.y, lines[i].v2.x, lines[i].v2.y,
-                                    lines[j].v1.x, lines[j].v1.y, lines[j].v2.x, lines[j].v2.y)
-    print(result)
+    oldLine1 = (10, 9, 10, 6)
+    oldLine2 = (10, 7, 10, 8)
+    tuples = [(10, 9, 10, 8), (10, 7, 10, 8), (10, 7, 10, 6)]
+    for tup in tuples:
+        print(isInside(*tup, *oldLine1))
+        print(isInside(*tup, *oldLine2))
+        print(isAthwart(*oldLine1, *oldLine2))
+        print()
 
-# test()
+test()

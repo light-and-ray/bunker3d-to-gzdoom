@@ -1,8 +1,11 @@
 from PIL import Image, ImageDraw, ImageFont
-from ClassesInterim import MapInterim
 from ClassesShared import HeightType
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from ClassesInterim import MapInterim
 
-def draw_lines(map: MapInterim, show=True, name=None, resolution=1280, frame=30):
+
+def drawMap(map: 'MapInterim', show=True, name=None, resolution=1280, frame=30, wait=False):
     # Calculate min and max coordinates
     min_x = min(min(line.v1.x, line.v2.x) for line in map.lines)
     max_x = max(max(line.v1.x, line.v2.x) for line in map.lines)
@@ -48,4 +51,5 @@ def draw_lines(map: MapInterim, show=True, name=None, resolution=1280, frame=30)
         img.show()
     if (name):
         img.save(f'drawings/{name}.png')
-
+    if wait:
+        input("PRESS ANY KEY")
