@@ -26,6 +26,7 @@ class MapInterim:
 
     def _removeCratesDoorsAndBrokenLines(self, crates: list[CrateB3D], doors: list[DoorB3D], brokenLines: list[int]):
         linesToRemove: set[int] = set(brokenLines)
+        # linesToRemove: set[int] = set()
         # for crate in crates:
         #     linesToRemove.add(crate.startLineIdx)
         #     linesToRemove.add(crate.startLineIdx+1)
