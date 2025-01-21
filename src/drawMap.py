@@ -1,13 +1,12 @@
 from PIL import Image, ImageDraw, ImageFont
-from ClassesB3D import LineB3D
+from ClassesInterim import MapInterim
 
-
-def draw_lines(lines: list[LineB3D], show=True, name=None, resolution=1280, frame=30):
+def draw_lines(map: MapInterim, show=True, name=None, resolution=1280, frame=30):
     # Calculate min and max coordinates
-    min_x = min(min(line.v1[0], line.v2[0]) for line in lines)
-    max_x = max(max(line.v1[0], line.v2[0]) for line in lines)
-    min_y = min(min(line.v1[1], line.v2[1]) for line in lines)
-    max_y = max(max(line.v1[1], line.v2[1]) for line in lines)
+    min_x = min(min(line.v1.x, line.v2.x) for line in map.lines)
+    max_x = max(max(line.v1.x, line.v2.x) for line in map.lines)
+    min_y = min(min(line.v1.y, line.v2.y) for line in map.lines)
+    max_y = max(max(line.v1.y, line.v2.y) for line in map.lines)
     ratio = (max_y - min_y) / (max_x - min_x)
     height = int((resolution**2 * ratio)**0.5)
     width = int(resolution**2/height)
@@ -23,9 +22,9 @@ def draw_lines(lines: list[LineB3D], show=True, name=None, resolution=1280, fram
     draw = ImageDraw.Draw(img)
 
     # Draw lines
-    for i, line in enumerate(lines):
-        x1, y1 = line.v1
-        x2, y2 = line.v2
+    for i, line in enumerate(map.lines):
+        x1, y1 = line.v1.x, line.v1.y
+        x2, y2 = line.v2.x, line.v2.y
         scaled_x1, scaled_y1 = rescale(x1, y1)
         scaled_x2, scaled_y2 = rescale(x2, y2)
         draw.line([(scaled_x1, scaled_y1), (scaled_x2, scaled_y2)], fill=(255, 255, 0), width=2)

@@ -1,19 +1,14 @@
 from dataclasses import dataclass
 from typing import Any
-from enum import Enum
-from ClassesB3D import MapB3D
+from ClassesB3D import MapB3D, CrateB3D, DoorB3D
 from algebraFunctions import resolveSegmentsOverlap
-
-class HeightType(Enum):
-    FULL = 1
-    BOTTOM = 2
-    TOP = 3
+from ClassesShared import Vertex, HeightType
 
 
 @dataclass
 class LineInterim:
-    v1 : tuple[int]
-    v2 : tuple[int]
+    v1 : Vertex
+    v2 : Vertex
     height : HeightType = None
     side1 : Any = None
     side2 : Any = None
@@ -24,19 +19,40 @@ class MapInterim:
         self.lines: list[LineInterim] = []
         for line in mapB3D.lines:
             self.lines.append(LineInterim(v1=line.v1, v2=line.v2))
-        self.lines = self.cullLines(self.lines)
+        self._removeCratesAndDoors(mapB3D.crates, mapB3D.doors)
 
-    @staticmethod
-    def cullLines(lines: list[LineInterim]) -> list[LineInterim]:
-        i = 0
-        while i < len(lines):
-            j = i + 1
-            while j < len(lines):
-                resolved = resolveSegmentsOverlap(lines[i].v1[0], lines[i].v1[1], lines[i].v2[0], lines[i].v2[1],
-                                                  lines[j].v1[0], lines[j].v1[1], lines[j].v2[0], lines[j].v2[1])
-                # if resolved:
-                    # print(i, j, (lines[i].v1[0], lines[i].v1[1], lines[i].v2[0], lines[i].v2[1]),
-                    #             (lines[j].v1[0], lines[j].v1[1], lines[j].v2[0], lines[j].v2[1]),
-                    #         "->\n      ", *resolved)
-                j += 1
-            i += 1
+    def _removeCratesAndDoors(self, crates: list[CrateB3D], doors: list[DoorB3D]):
+        linesToRemove: list[int] = []
+        for crate in crates:
+            linesToRemove.append(crate.startLineIdx)
+            linesToRemove.append(crate.startLineIdx+1)
+            linesToRemove.append(crate.startLineIdx+2)
+            linesToRemove.append(crate.startLineIdx+3)
+        for door in doors:
+            linesToRemove.append(door.startLineIdx)
+            linesToRemove.append(door.startLineIdx+1)
+            linesToRemove.append(door.startLineIdx+2)
+
+        newLines: list[LineInterim] = []
+        for i, line in enumerate(self.lines):
+            if i not in linesToRemove:
+                newLines.append(line)
+        self.lines = newLines
+
+
+
+    # @staticmethod
+    # def cullLines(lines: list[LineInterim]) -> list[LineInterim]:
+    #     i = 0
+    #     while i < len(lines):
+    #         j = i + 1
+    #         while j < len(lines):
+    #             resolved = resolveSegmentsOverlap(lines[i].v1.x, lines[i].v1.y, lines[i].v2.x, lines[i].v2.y,
+    #                                               lines[j].v1.x, lines[j].v1.y, lines[j].v2.x, lines[j].v2.y)
+    #             # if resolved:
+    #                 # print(i, j, (lines[i].v1.x, lines[i].v1.y, lines[i].v2.x, lines[i].v2.y),
+    #                 #             (lines[j].v1.x, lines[j].v1.y, lines[j].v2.x, lines[j].v2.y),
+    #                 #         "->\n      ", *resolved)
+    #             j += 1
+    #         i += 1
+    #     return lines
