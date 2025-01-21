@@ -53,6 +53,17 @@ def reverseSegments(segments):
         )
     return reversedSegments
 
+def _revertCD(segments, xC, yC, xD, yD):
+    for i in range(len(segments)):
+        if (set([xC, xD]) == set([segments[i][0], segments[i][2]]) and
+            set([yC, yD]) == set([segments[i][1], segments[i][3]])
+        ):
+            segments[i]  = (
+                segments[i][2], segments[i][3],
+                segments[i][0], segments[i][1]
+            )
+            return
+
 def resolveSegmentsOverlap(xA, yA, xB, yB, xC, yC, xD, yD):
     # Ensure the segments are in the same order (xA, yA) to (xB, yB) and (xC, yC) to (xD, yD)
     changedAB = False
@@ -70,8 +81,28 @@ def resolveSegmentsOverlap(xA, yA, xB, yB, xC, yC, xD, yD):
         result = [tuple(int(x) for x in seg) for seg in result]
         if changedAB:
             result = reverseSegments(result)
-        # if changedCD:
+            if not changedCD:
+                _revertCD(result, xC, yC, xD, yD)
+        elif changedCD:
+            _revertCD(result, xC, yC, xD, yD)
     return result
+
+
+def isInside(xA, yA, xB, yB, xC, yC, xD, yD):
+    """
+    Returns True if the segment (xA, yA) - (xB, yB) is fully inside the segment (xC, yC) - (xD, yD).
+    The segments are assumed to be collinear.
+    """
+    return (min(xC, xD) <= xA and xB <= max(xC, xD) and
+            min(yC, yD) <= yA and yB <= max(yC, yD))
+
+def isAthwart(xA, yA, xB, yB, xC, yC, xD, yD):
+    """
+    Returns True if the two already collinear segments (xA, yA) - (xB, yB) and (xC, yC) - (xD, yD)
+    are "moving" in different directions.
+    """
+    return ((xA < xB and xC > xD) or (xA > xB and xC < xD) or
+            (yA < yB and yC > yD) or (yA > yB and yC < yD))
 
 
 def test():

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Any
 from ClassesB3D import MapB3D, CrateB3D, DoorB3D
-from algebraFunctions import resolveSegmentsOverlap
+from algebraFunctions import resolveSegmentsOverlap, isInside, isAthwart
 from ClassesShared import Vertex, HeightType
 
 
@@ -9,16 +9,15 @@ from ClassesShared import Vertex, HeightType
 class LineInterim:
     v1 : Vertex
     v2 : Vertex
-    height : HeightType = None
-    side1 : Any = None
-    side2 : Any = None
+    height : HeightType
+    texture : Any = None
 
 
 class MapInterim:
     def __init__(self, mapB3D: MapB3D):
         self.lines: list[LineInterim] = []
         for line in mapB3D.lines:
-            self.lines.append(LineInterim(v1=line.v1, v2=line.v2))
+            self.lines.append(LineInterim(v1=line.v1, v2=line.v2, height=line.height, texture=line.texture))
         # self._removeCratesAndDoors(mapB3D.crates, mapB3D.doors)
         self._removeOverlaps()
 
@@ -36,16 +35,61 @@ class MapInterim:
             linesToRemove.append(door.startLineIdx+2)
 
         newLines: list[LineInterim] = []
-        for i, line in enumerate(self.lines):
-            if i not in linesToRemove:
+        for index, line in enumerate(self.lines):
+            if index not in linesToRemove:
                 newLines.append(line)
         self.lines = newLines
 
     @staticmethod
-    def _tuplesToLine(tuples: list[tuple[int]]) -> list[LineInterim]:
+    def lineToTuple(line: LineInterim) -> tuple[int]:
+        return (line.v1.x, line.v1.y, line.v2.x, line.v2.y)
+
+    @staticmethod
+    def _tuplesToLines(tuples, oldLine1: LineInterim, oldLine2: LineInterim) -> list[LineInterim]:
         lines: list[LineInterim] = []
         for tup in tuples:
-            lines.append(LineInterim(v1=Vertex(tup[0], tup[1]), v2=Vertex(tup[2], tup[3])))
+            height : HeightType = None
+            if isInside(*tup, *MapInterim.lineToTuple(oldLine1)) and isInside(*tup, *MapInterim.lineToTuple(oldLine2)):
+                if oldLine1.height == oldLine2.height:
+                    if isAthwart(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
+                        height = None
+                    else:
+                        height = oldLine1.height
+                else:
+                    heights = set([oldLine1.height, oldLine2.height])
+                    if heights == set([HeightType.TOP, HeightType.BOTTOM]):
+                        if isAthwart(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
+                            # raise Exception("Athwart TOP and BOTTOM")
+                            pass
+                        else:
+                            height = HeightType.FULL
+                    elif heights == set([HeightType.TOP, HeightType.FULL]):
+                        if isAthwart(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
+                            height = HeightType.BOTTOM
+                        else:
+                            print('Warning: top and full lines are not athwart')
+                            height = HeightType.FULL
+                    elif heights == set([HeightType.BOTTOM, HeightType.FULL]):
+                        if isAthwart(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
+                            height = HeightType.TOP
+                        else:
+                            print('Warning: bottom and full lines are not athwart')
+                            height = HeightType.FULL
+                    else:
+                        raise Exception("Can't be here")
+            else:
+                if isInside(*tup, *MapInterim.lineToTuple(oldLine1)):
+                    height = oldLine1.height
+                elif isInside(*tup, *MapInterim.lineToTuple(oldLine2)):
+                    height = oldLine2.height
+                else:
+                    raise Exception("Tuple is not inside either oldLine1 or oldLine2")
+            if height:
+                lines.append(LineInterim(
+                    v1=Vertex(tup[0], tup[1]),
+                    v2=Vertex(tup[2], tup[3]),
+                    height=height
+                ))
         return lines
 
     def _removeOverlaps(self):
@@ -54,14 +98,16 @@ class MapInterim:
             j = i + 1
             isBroken = False
             while j < len(self.lines):
-                resolved = resolveSegmentsOverlap(self.lines[i].v1.x, self.lines[i].v1.y, self.lines[i].v2.x, self.lines[i].v2.y,
-                                                  self.lines[j].v1.x, self.lines[j].v1.y, self.lines[j].v2.x, self.lines[j].v2.y)
+                resolved = resolveSegmentsOverlap(*self.lineToTuple(self.lines[i]), *self.lineToTuple(self.lines[j]))
                 if not resolved:
                     j += 1
                     continue
                 else:
+                    print(i, j, resolved)
+                    oldLine1 = self.lines[i]
+                    oldLine2 = self.lines[j]
                     del self.lines[j]
-                    self.lines = self.lines[:i] + self._tuplesToLine(resolved) + self.lines[i+1:]
+                    self.lines = self.lines[:i] + self._tuplesToLines(resolved, oldLine1, oldLine2) + self.lines[i+1:]
                     isBroken = True
                     break
             if isBroken:
