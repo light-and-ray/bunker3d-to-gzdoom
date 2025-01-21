@@ -19,7 +19,9 @@ class MapInterim:
         self.lines: list[LineInterim] = []
         for line in mapB3D.lines:
             self.lines.append(LineInterim(v1=line.v1, v2=line.v2))
-        self._removeCratesAndDoors(mapB3D.crates, mapB3D.doors)
+        # self._removeCratesAndDoors(mapB3D.crates, mapB3D.doors)
+        self._removeOverlaps()
+
 
     def _removeCratesAndDoors(self, crates: list[CrateB3D], doors: list[DoorB3D]):
         linesToRemove: list[int] = []
@@ -39,20 +41,33 @@ class MapInterim:
                 newLines.append(line)
         self.lines = newLines
 
+    @staticmethod
+    def _tuplesToLine(tuples: list[tuple[int]]) -> list[LineInterim]:
+        lines: list[LineInterim] = []
+        for tup in tuples:
+            lines.append(LineInterim(v1=Vertex(tup[0], tup[1]), v2=Vertex(tup[2], tup[3])))
+        return lines
+
+    def _removeOverlaps(self):
+        i = 0
+        while i < len(self.lines):
+            j = i + 1
+            isBroken = False
+            while j < len(self.lines):
+                resolved = resolveSegmentsOverlap(self.lines[i].v1.x, self.lines[i].v1.y, self.lines[i].v2.x, self.lines[i].v2.y,
+                                                  self.lines[j].v1.x, self.lines[j].v1.y, self.lines[j].v2.x, self.lines[j].v2.y)
+                if not resolved:
+                    j += 1
+                    continue
+                else:
+                    del self.lines[j]
+                    self.lines = self.lines[:i] + self._tuplesToLine(resolved) + self.lines[i+1:]
+                    isBroken = True
+                    break
+            if isBroken:
+                continue
+            else:
+                i += 1
+                continue
 
 
-    # @staticmethod
-    # def cullLines(lines: list[LineInterim]) -> list[LineInterim]:
-    #     i = 0
-    #     while i < len(lines):
-    #         j = i + 1
-    #         while j < len(lines):
-    #             resolved = resolveSegmentsOverlap(lines[i].v1.x, lines[i].v1.y, lines[i].v2.x, lines[i].v2.y,
-    #                                               lines[j].v1.x, lines[j].v1.y, lines[j].v2.x, lines[j].v2.y)
-    #             # if resolved:
-    #                 # print(i, j, (lines[i].v1.x, lines[i].v1.y, lines[i].v2.x, lines[i].v2.y),
-    #                 #             (lines[j].v1.x, lines[j].v1.y, lines[j].v2.x, lines[j].v2.y),
-    #                 #         "->\n      ", *resolved)
-    #             j += 1
-    #         i += 1
-    #     return lines

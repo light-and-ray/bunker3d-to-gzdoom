@@ -22,6 +22,10 @@ def resolveSegmentsOverlap_(xA, yA, xB, yB, xC, yC, xD, yD):
                     new_segments.append((xA, overlap_start, xA, overlap_end))
                     if overlap_end < yB:
                         new_segments.append((xA, overlap_end, xA, yB))
+                    if overlap_start > yC:
+                        new_segments.append((xC, yC, xC, overlap_start))
+                    if overlap_end < yD:
+                        new_segments.append((xC, overlap_end, xC, yD))
                     return new_segments
         return None
 
