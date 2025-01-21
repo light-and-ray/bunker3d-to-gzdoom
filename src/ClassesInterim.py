@@ -127,6 +127,7 @@ class MapInterim:
                     j += 1
                     continue
                 else:
+                    # print(i, j)
                     # if i > 80:
                     #     drawMap(self, wait=True)
                     oldLine1 = self.lines[i]

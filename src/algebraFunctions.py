@@ -85,12 +85,20 @@ def resolveSegmentsOverlap(xA, yA, xB, yB, xC, yC, xD, yD):
     result = resolveSegmentsOverlap_(xA, yA, xB, yB, xC, yC, xD, yD)
     if result:
         result = [tuple(int(x) for x in seg) for seg in result]
-        if changedAB:
-            result = reverseSegments(result)
-            if not changedCD:
+        if isLonger(xA, yA, xB, yB, xC, yC, xD, yD):
+            if changedAB:
+                result = reverseSegments(result)
+                if not changedCD:
+                    _revertCD(result, xC, yC, xD, yD)
+            elif changedCD:
                 _revertCD(result, xC, yC, xD, yD)
-        elif changedCD:
-            _revertCD(result, xC, yC, xD, yD)
+        else:
+            if changedCD:
+                result = reverseSegments(result)
+                if not changedAB:
+                    _revertCD(result, xC, yC, xD, yD)
+            elif changedAB:
+                _revertCD(result, xC, yC, xD, yD)
     return result
 
 
@@ -124,6 +132,10 @@ def isAthwart(xA, yA, xB, yB, xC, yC, xD, yD):
         return ((xA < xB and xC > xD) or (xA > xB and xC < xD) or
                 (yA < yB and yC > yD) or (yA > yB and yC < yD))
 
+def isLonger(xA, yA, xB, yB, xC, yC, xD, yD):
+    length_AB = math.sqrt((xB - xA) ** 2 + (yB - yA) ** 2)
+    length_CD = math.sqrt((xD - xC) ** 2 + (yD - yC) ** 2)
+    return length_AB > length_CD
 
 
 def distance_point_line(x0, y0, x1, y1, x2, y2):
