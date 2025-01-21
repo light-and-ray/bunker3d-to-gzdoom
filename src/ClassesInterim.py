@@ -19,7 +19,7 @@ class MapInterim:
         for line in mapB3D.lines:
             self.lines.append(LineInterim(v1=line.v1, v2=line.v2, height=line.height, texture=line.texture))
         # self._removeCratesAndDoors(mapB3D.crates, mapB3D.doors)
-        self._removeOverlaps()
+        # self._removeOverlaps()
 
 
     def _removeCratesAndDoors(self, crates: list[CrateB3D], doors: list[DoorB3D]):

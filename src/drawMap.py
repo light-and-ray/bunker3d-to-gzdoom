@@ -1,5 +1,6 @@
 from PIL import Image, ImageDraw, ImageFont
 from ClassesInterim import MapInterim
+from ClassesShared import HeightType
 
 def draw_lines(map: MapInterim, show=True, name=None, resolution=1280, frame=30):
     # Calculate min and max coordinates
@@ -27,7 +28,14 @@ def draw_lines(map: MapInterim, show=True, name=None, resolution=1280, frame=30)
         x2, y2 = line.v2.x, line.v2.y
         scaled_x1, scaled_y1 = rescale(x1, y1)
         scaled_x2, scaled_y2 = rescale(x2, y2)
-        draw.line([(scaled_x1, scaled_y1), (scaled_x2, scaled_y2)], fill=(255, 255, 0), width=2)
+        color = None
+        if line.height == HeightType.FULL:
+            color = (255, 255, 0)
+        elif line.height == HeightType.BOTTOM:
+            color = (250, 56, 35)
+        else:
+            color = (10, 99, 207)
+        draw.line([(scaled_x1, scaled_y1), (scaled_x2, scaled_y2)], fill=color, width=2)
         draw.circle((scaled_x1, scaled_y1), fill=(0, 255, 0), radius=2)
         draw.circle((scaled_x2, scaled_y2), fill=(0, 255, 0), radius=2)
         midpoint_x = (scaled_x1 + scaled_x2) / 2
