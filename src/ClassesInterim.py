@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Any
 from enum import Enum
 from ClassesB3D import MapB3D
-from segmentsOverlap import resolveSegmentsOverlap
+from algebraFunctions import resolveSegmentsOverlap
 
 class HeightType(Enum):
     FULL = 1

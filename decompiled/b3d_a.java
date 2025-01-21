@@ -293,7 +293,7 @@ public final class b3d_a extends Canvas {
    private long dI;
    private int dJ;
    private int dK;
-   private int[] dL;
+   private int[] cosTable;
    private short[][] dM;
    private short[][] dN;
    private short[] dO;
@@ -629,7 +629,7 @@ public final class b3d_a extends Canvas {
             this.readMetadata();
          }
 
-         this.initPrecalculatedAngles();
+         this.initCosTable();
          this.loadMap();
          this.n();
          this.t();
@@ -1167,14 +1167,14 @@ public final class b3d_a extends Canvas {
          pos += 2;
       }
 
-      this.a(footer);
+      this.loadMapInner(footer);
       this.q = null;
       this.E = (byte[][][][])null;
       this.M = null;
       System.gc();
    }
 
-   private void a(short[] footer) {
+   private void loadMapInner(short[] footer) {
       this.E = new byte[3][][][];
       this.loadMapPart((byte[])this.loadedMap[0], (byte[])this.loadedMap[1], (byte[])this.o, 0);
       this.loadMapPart((byte[])this.loadedMap[2], (byte[])this.loadedMap[3], (byte[])this.p, 1);
@@ -1502,7 +1502,7 @@ public final class b3d_a extends Canvas {
          }
       }
 
-      this.fillThisFields(bigLump1[8][0][0], (long)bigLump1[8][0][1] * 75000L, (long)bigLump1[8][0][2] * 75000L, bigLump1[8][0][3] * 2, bigLump1[8][0][7]);
+      this.fillTheseFields(bigLump1[8][0][0], (long)bigLump1[8][0][1] * 75000L, (long)bigLump1[8][0][2] * 75000L, bigLump1[8][0][3] * 2, bigLump1[8][0][7]);
       this.cC = (byte)(16 + bigLump1[8][0][5]);
       this.cB = bigLump1[8][0][6];
       var12 = this.eX;
@@ -2883,6 +2883,7 @@ public final class b3d_a extends Canvas {
 
    }
 
+   // Crates + something else
    private int modifyBigLump1_subfunction1(long var1, long var3, long var5, long var7, int var9, int var10, byte var11, byte var12, byte var13, byte var14, byte var15, byte var16) {
       int var19 = 0;
 
@@ -2901,8 +2902,8 @@ public final class b3d_a extends Canvas {
                this.cW[var17][var18] = (int)((long)this.B[var19][var17] * var7 + var1);
                var10002 = (long)this.B[var19][var17 + 1] * var5;
             } else {
-               this.cW[var17][var18] = (int)(((long)this.B[var19][var17] * var7 * this.s(var9) >> 16) - ((long)this.B[var19][var17 + 1] * var5 * this.r(var9) >> 16) + var1);
-               var10002 = ((long)this.B[var19][var17] * var7 * this.r(var9) >> 16) + ((long)this.B[var19][var17 + 1] * var5 * this.s(var9) >> 16);
+               this.cW[var17][var18] = (int)(((long)this.B[var19][var17] * var7 * this.sin(var9) >> 16) - ((long)this.B[var19][var17 + 1] * var5 * this.cos(var9) >> 16) + var1);
+               var10002 = ((long)this.B[var19][var17] * var7 * this.cos(var9) >> 16) + ((long)this.B[var19][var17 + 1] * var5 * this.sin(var9) >> 16);
             }
             this.cW[var17 + 1][var18] = (int)(var10002 + var3);
          }
@@ -2930,11 +2931,11 @@ public final class b3d_a extends Canvas {
 
       int var13;
       for(var13 = var8; var13 < var8 + var5; ++var13) {
-         this.cW[0][var13] = (int)((var6 * this.r(var14) >> 16) + var1);
-         this.cW[1][var13] = (int)((var6 * this.s(var14) >> 16) + var3);
+         this.cW[0][var13] = (int)((var6 * this.cos(var14) >> 16) + var1);
+         this.cW[1][var13] = (int)((var6 * this.sin(var14) >> 16) + var3);
          var14 -= var15;
-         this.cW[2][var13] = (int)((var6 * this.r(var14) >> 16) + var1);
-         this.cW[3][var13] = (int)((var6 * this.s(var14) >> 16) + var3);
+         this.cW[2][var13] = (int)((var6 * this.cos(var14) >> 16) + var1);
+         this.cW[3][var13] = (int)((var6 * this.sin(var14) >> 16) + var3);
          this.by[var13] = var10;
          this.cX[var13] = (byte)var9;
          this.bz[var13] = var11;
@@ -2952,7 +2953,7 @@ public final class b3d_a extends Canvas {
       this.bz[var5] = 3;
    }
 
-   private void fillThisFields(int var1, long var2, long var4, int var6, int var7) {
+   private void fillTheseFields(int var1, long var2, long var4, int var6, int var7) {
       this.fz = new long[2];
       this.fk = var1;
       this.fz[0] = var2;
@@ -3039,12 +3040,12 @@ public final class b3d_a extends Canvas {
       this.be = new long[3];
       this.bf = new long[3];
       this.bg = new long[3];
-      this.be[0] = -this.r(this.eR + 135);
-      this.bf[0] = this.s(this.eR + 135);
-      this.be[1] = this.r(this.eR + 45);
-      this.bf[1] = -this.s(this.eR + 45);
-      this.be[2] = -this.r(this.eR + 180);
-      this.bf[2] = this.s(this.eR + 180);
+      this.be[0] = -this.cos(this.eR + 135);
+      this.bf[0] = this.sin(this.eR + 135);
+      this.be[1] = this.cos(this.eR + 45);
+      this.bf[1] = -this.sin(this.eR + 45);
+      this.be[2] = -this.cos(this.eR + 180);
+      this.bf[2] = this.sin(this.eR + 180);
 
       for(int var1 = 0; var1 < 3; ++var1) {
          this.bg[var1] = -(this.be[var1] * this.eI >> 16) - (this.bf[var1] * this.eJ >> 16);
@@ -3056,8 +3057,8 @@ public final class b3d_a extends Canvas {
    }
 
    private void f() {
-      this.S = -this.r(this.eR);
-      this.T = this.s(this.eR);
+      this.S = -this.cos(this.eR);
+      this.T = this.sin(this.eR);
       this.U = this.T;
       this.V = -this.S;
    }
@@ -3172,7 +3173,7 @@ public final class b3d_a extends Canvas {
       int var12;
       if (var5 != -90 && var5 != 0) {
          var10000 = this;
-         var12 = (int)(a(((long)(this.cW[1][var1] - this.cW[3][var1]) << 16) / this.s(var5)) * 75000L >> 16 >> 16);
+         var12 = (int)(a(((long)(this.cW[1][var1] - this.cW[3][var1]) << 16) / this.sin(var5)) * 75000L >> 16 >> 16);
       } else {
          int[][] var10002;
          byte var10003;
@@ -3405,8 +3406,8 @@ public final class b3d_a extends Canvas {
 
       int var27 = var41;
       if (this.aq == -1 && this.au >= this.fa && this.au < this.fb) {
-         this.dZ = (int)(a((long)this.cW[0][this.au] - this.eI) >> 16);
-         this.ea = (int)(a((long)this.cW[1][this.au] - this.eJ) >> 16);
+         this.dZ = (int)(abs((long)this.cW[0][this.au] - this.eI) >> 16);
+         this.ea = (int)(abs((long)this.cW[1][this.au] - this.eJ) >> 16);
          if (this.dZ <= 2 && this.ea <= 2) {
             var37 = true;
          }
@@ -4366,8 +4367,8 @@ public final class b3d_a extends Canvas {
          }
 
          if (!this.cl[this.bI] && this.bI < 32) {
-            this.dZ = (int)(a((long)this.bT[this.bI][0] - this.eI) >> 16);
-            this.ea = (int)(a((long)this.bT[this.bI][1] - this.eJ) >> 16);
+            this.dZ = (int)(abs((long)this.bT[this.bI][0] - this.eI) >> 16);
+            this.ea = (int)(abs((long)this.bT[this.bI][1] - this.eJ) >> 16);
             if (this.dZ <= this.er && this.ea <= this.er) {
                var25 = true;
             }
@@ -5162,8 +5163,8 @@ public final class b3d_a extends Canvas {
    private void a(long var1, long var3, int var5) {
       long[] var6 = new long[2];
       int var7 = this.eR + var5;
-      var6[0] = this.fz[0] - (var1 * this.r(var7) >> 16);
-      var6[1] = this.fz[1] + (var1 * this.s(var7) >> 16);
+      var6[0] = this.fz[0] - (var1 * this.cos(var7) >> 16);
+      var6[1] = this.fz[1] + (var1 * this.sin(var7) >> 16);
       if (this.gB) {
          this.fz[0] = var6[0];
          this.fz[1] = var6[1];
@@ -5261,7 +5262,7 @@ public final class b3d_a extends Canvas {
       byte var10001;
       long var10002;
       if (this.do[var1] != 0) {
-         var6[0] -= (long)var5 * var2 * this.r(this.do[var1]) >> 16;
+         var6[0] -= (long)var5 * var2 * this.cos(this.do[var1]) >> 16;
          var10000 = var6;
          var10001 = 1;
          var10002 = (-var11 - (var7 * var6[0] >> 16) << 16) / var9;
@@ -5284,7 +5285,7 @@ public final class b3d_a extends Canvas {
    }
 
    private boolean c(int var1, int var2) {
-      return this.s(var2 - this.do[var1]) >= 0L;
+      return this.sin(var2 - this.do[var1]) >= 0L;
    }
 
    private boolean b(long[] var1) {
@@ -5294,7 +5295,7 @@ public final class b3d_a extends Canvas {
 
       for(int var8 = 0; var8 < var7; ++var8) {
          byte var6 = this.ci[this.fk][var8];
-         if (a(var2 - ((long)this.bT[var6][0] * 75000L >> 16)) < 30000L && a(var4 - ((long)this.bT[var6][1] * 75000L >> 16)) < 30000L && this.bY[this.cg[var6]] == 1) {
+         if (abs(var2 - ((long)this.bT[var6][0] * 75000L >> 16)) < 30000L && abs(var4 - ((long)this.bT[var6][1] * 75000L >> 16)) < 30000L && this.bY[this.cg[var6]] == 1) {
             if (this.cg[var6] != this.cB && this.cg[var6] != 15) {
                if (var6 >= 48) {
                   if (!this.cl[var6]) {
@@ -5511,7 +5512,7 @@ public final class b3d_a extends Canvas {
       this.dm = null;
       this.dn = null;
       this.bp = (int[][])null;
-      this.dL = null;
+      this.cosTable = null;
       this.cU = null;
       this.cV = null;
       this.do = null;
@@ -5579,6 +5580,7 @@ public final class b3d_a extends Canvas {
 
    }
 
+   // Doors
    private int modifyBigLump1_subfunction3(int[] var1, long var2, long var4, int var6, int var7, int var8, int var9) {
       if (var9 == 0) {
          this.cW[var6][var8] = var1[var6];
@@ -5643,7 +5645,7 @@ public final class b3d_a extends Canvas {
                         var10001 = var2;
                         var10002 = var5[var2] + 1;
                      } else if (this.dB[var2] < var3 + this.dt[var2]) {
-                        if (a(this.fz[0] - ((long)this.dq[var2][0] * 75000L >> 16)) >= 75000L || a(this.fz[1] - ((long)this.dq[var2][1] * 75000L >> 16)) >= 75000L) {
+                        if (abs(this.fz[0] - ((long)this.dq[var2][0] * 75000L >> 16)) >= 75000L || abs(this.fz[1] - ((long)this.dq[var2][1] * 75000L >> 16)) >= 75000L) {
                            this.e(1, var2);
                            this.a(this.dp[var2], (long)this.dv[var2], (long)this.dx[var2], this.dr[var2], this.ds[var2], var4, 0);
                            this.a((short)((short)var4), (short)((short)(var4 + 3)), 1);
@@ -5683,7 +5685,7 @@ public final class b3d_a extends Canvas {
       boolean var1 = this.dC;
 
       for(int var2 = 0; var2 < this.eZ; ++var2) {
-         if (a(this.fz[0] - ((long)this.dq[var2][0] * 75000L >> 16)) < 75000L && a(this.fz[1] - ((long)this.dq[var2][1] * 75000L >> 16)) < 75000L) {
+         if (abs(this.fz[0] - ((long)this.dq[var2][0] * 75000L >> 16)) < 75000L && abs(this.fz[1] - ((long)this.dq[var2][1] * 75000L >> 16)) < 75000L) {
             if (var2 == this.eS) {
                ++this.selectedMap;
                if (this.selectedMap == 3 && this.c == 1) {
@@ -5753,51 +5755,51 @@ public final class b3d_a extends Canvas {
       this.dC = var1;
    }
 
-   private void initPrecalculatedAngles() {
-      this.dL = new int[91];
-      this.dL[1] = 1146;
+   private void initCosTable() {
+      this.cosTable = new int[91];
+      this.cosTable[1] = 1146;
       int var1 = 1146;
 
       for(int var2 = 2; var2 <= 90; ++var2) {
          var1 += this.a[var2 - 2];
-         this.dL[var2] = this.dL[var2 - 1] + var1;
+         this.cosTable[var2] = this.cosTable[var2 - 1] + var1;
       }
 
       this.a = null;
    }
 
-   private long r(int var1) {
+   private long cos(int var1) {
       if (var1 < 0) {
-         return -this.r(-var1);
+         return -this.cos(-var1);
       } else if (var1 >= 90 & var1 < 180) {
-         return (long)this.dL[180 - var1];
+         return (long)this.cosTable[180 - var1];
       } else if (var1 >= 180 & var1 < 270) {
-         return (long)(-this.dL[var1 - 180]);
+         return (long)(-this.cosTable[var1 - 180]);
       } else if (var1 >= 270 & var1 < 360) {
-         return (long)(-this.dL[90 - (var1 - 270)]);
+         return (long)(-this.cosTable[90 - (var1 - 270)]);
       } else {
-         return var1 >= 360 ? this.r(var1 % 360) : (long)this.dL[var1];
+         return var1 >= 360 ? this.cos(var1 % 360) : (long)this.cosTable[var1];
       }
    }
 
-   private long s(int var1) {
-      return this.r(90 - var1);
+   private long sin(int var1) {
+      return this.cos(90 - var1);
    }
 
    private static int abs(int var0) {
       return var0 > 0 ? var0 : -var0;
    }
 
-   private static long a(long var0) {
+   private static long abs(long var0) {
       return var0 > 0L ? var0 : -var0;
    }
 
    private void b(int var1, int var2, int var3, int var4, int var5, int var6) {
-      this.dE = (long)var1 * (20000L * this.r(this.do[var6]) >> 16) + ((long)this.cW[1][var6] * 75000L >> 16);
-      this.dF = (long)var2 * (20000L * this.s(90 - this.do[var6]) >> 16) + ((long)this.cW[0][var6] * 75000L >> 16);
-      this.dH = (long)var3 * (20000L * this.s(90 + this.do[var6]) >> 16) + ((long)this.cW[2][var6] * 75000L >> 16);
-      this.dG = (long)var4 * (20000L * this.r(90 - this.do[var6]) >> 16) + ((long)this.cW[1][var6] * 75000L >> 16);
-      this.dI = (long)var5 * (20000L * this.r(90 + this.do[var6]) >> 16) + ((long)this.cW[3][var6] * 75000L >> 16);
+      this.dE = (long)var1 * (20000L * this.cos(this.do[var6]) >> 16) + ((long)this.cW[1][var6] * 75000L >> 16);
+      this.dF = (long)var2 * (20000L * this.sin(90 - this.do[var6]) >> 16) + ((long)this.cW[0][var6] * 75000L >> 16);
+      this.dH = (long)var3 * (20000L * this.sin(90 + this.do[var6]) >> 16) + ((long)this.cW[2][var6] * 75000L >> 16);
+      this.dG = (long)var4 * (20000L * this.cos(90 - this.do[var6]) >> 16) + ((long)this.cW[1][var6] * 75000L >> 16);
+      this.dI = (long)var5 * (20000L * this.cos(90 + this.do[var6]) >> 16) + ((long)this.cW[3][var6] * 75000L >> 16);
    }
 
    private void a(short var1, short var2, int var3) {
@@ -5834,7 +5836,7 @@ public final class b3d_a extends Canvas {
 
                      while(true) {
                         byte var15 = var17;
-                        if ((this.r(var15) << 16) / this.r(90 - var15) >= var6) {
+                        if ((this.cos(var15) << 16) / this.cos(90 - var15) >= var6) {
                            var16 = this.do;
                            var10001 = var14;
                            var10002 = var15;
@@ -5871,7 +5873,7 @@ public final class b3d_a extends Canvas {
          byte var10004;
          byte var10005;
          if (this.cW[1][var14] <= this.cW[3][var14]) {
-            var8 = (20000L * this.s(this.do[var14]) >> 16) + ((long)this.cW[0][var14] * 75000L >> 16);
+            var8 = (20000L * this.sin(this.do[var14]) >> 16) + ((long)this.cW[0][var14] * 75000L >> 16);
             if (this.do[var14] != -90) {
                var18 = this;
                var19 = 1;
@@ -5895,7 +5897,7 @@ public final class b3d_a extends Canvas {
                var10005 = 1;
             }
          } else {
-            var8 = -(20000L * this.s(this.do[var14]) >> 16) + ((long)this.cW[0][var14] * 75000L >> 16);
+            var8 = -(20000L * this.sin(this.do[var14]) >> 16) + ((long)this.cW[0][var14] * 75000L >> 16);
             var18 = this;
             var19 = -1;
             var10002 = -1;
@@ -6106,8 +6108,8 @@ public final class b3d_a extends Canvas {
 
    private void f(int var1, int var2) {
       this.eb = false;
-      this.dZ = (int)(a((long)this.bT[var1][0] - this.eI) >> 16);
-      this.ea = (int)(a((long)this.bT[var1][1] - this.eJ) >> 16);
+      this.dZ = (int)(abs((long)this.bT[var1][0] - this.eI) >> 16);
+      this.ea = (int)(abs((long)this.bT[var1][1] - this.eJ) >> 16);
       if (this.dZ <= var2 && this.ea <= var2) {
          this.dS = (long)this.bT[var1][0] * 75000L >> 16;
          this.dT = (long)this.bT[var1][1] * 75000L >> 16;
@@ -6302,9 +6304,9 @@ public final class b3d_a extends Canvas {
                      if (this.cc[var4] == 1) {
                         if (this.cb[var4] < this.bZ[var4]) {
                            var6 = this.bT[var4];
-                           var6[0] = (int)((long)var6[0] - (7498L * this.r(this.bW[var4]) >> 16));
+                           var6[0] = (int)((long)var6[0] - (7498L * this.cos(this.bW[var4]) >> 16));
                            var6 = this.bT[var4];
-                           var6[1] = (int)((long)var6[1] + (7498L * this.s(this.bW[var4]) >> 16));
+                           var6[1] = (int)((long)var6[1] + (7498L * this.sin(this.bW[var4]) >> 16));
                            var5 = this.cb;
                            var10001 = var4;
                            var9 = (byte)(var5[var4] + 1);
@@ -6321,9 +6323,9 @@ public final class b3d_a extends Canvas {
                         }
                      } else if (this.cb[var4] < this.bZ[var4]) {
                         var6 = this.bT[var4];
-                        var6[0] = (int)((long)var6[0] + (7498L * this.r(this.bW[var4]) >> 16));
+                        var6[0] = (int)((long)var6[0] + (7498L * this.cos(this.bW[var4]) >> 16));
                         var6 = this.bT[var4];
-                        var6[1] = (int)((long)var6[1] - (7498L * this.s(this.bW[var4]) >> 16));
+                        var6[1] = (int)((long)var6[1] - (7498L * this.sin(this.bW[var4]) >> 16));
                         var5 = this.cb;
                         var10001 = var4;
                         var9 = (byte)(var5[var4] + 1);
@@ -6774,7 +6776,7 @@ public final class b3d_a extends Canvas {
    private void z(int var1) {
       for(int var2 = 0; var2 < var1; ++var2) {
          byte var3 = this.ci[this.fk][var2];
-         if (this.cm[var3] && (this.cg[var3] == this.fl || this.bO) && (this.bu[this.cg[var3]] != 2 || !this.l(var3) || a((long)this.bT[var3][0] - this.eI) >> 16 < 6L && a((long)this.bT[var3][1] - this.eJ) >> 16 < 6L)) {
+         if (this.cm[var3] && (this.cg[var3] == this.fl || this.bO) && (this.bu[this.cg[var3]] != 2 || !this.l(var3) || abs((long)this.bT[var3][0] - this.eI) >> 16 < 6L && abs((long)this.bT[var3][1] - this.eJ) >> 16 < 6L)) {
             this.m(var3);
          }
       }

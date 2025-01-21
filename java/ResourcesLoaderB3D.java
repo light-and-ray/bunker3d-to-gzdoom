@@ -75,58 +75,58 @@ public class ResourcesLoaderB3D {
    public byte[] cX;
    byte[] a;
 
-   private short[][] cD;
-   private short[][] cE;
-   private int fa;
-   private int fb;
-   private int fc;
-   private int cB;
-   private byte cC;
-   private int eY;
-   private byte[] bZ;
-   private byte[] ca;
-   private byte[] cb;
-   private byte[] cc;
-   private byte[] cd;
-   private byte[] ce;
-   private byte[] cf;
-   private byte[] cg;
-   private byte[] ch;
-   private byte[][] ci;
-   private boolean[] cj;
-   private boolean[] ck;
-   private boolean[] cl;
-   private boolean[] cm;
-   private int[][] bT;
-   private int eZ;
-   private int[][] dp;
-   private int[][] dq;
-   private byte[] dr;
-   private byte[] ds;
-   private byte[] dt;
-   private byte[] du;
-   private int[] dv;
-   private int[] dw;
-   private int[] dx;
-   private int[] dy;
-   private int[] dz;
-   private int[] dA;
-   private int[] dB;
-   private byte[] bA;
-   private short[] bs;
-   private short[] fD;
-   private short[][] fE;
-   private byte[] fF;
-   private byte[][] fG;
-   private byte[][] fH;
-   private int fd;
-   private int[] bh;
-   private long[] fz;
-   private int fk;
-   private int eR;
-   private int eS;
-   private int[] dL;
-   private int ff;
+   public short[][] cD;
+   public short[][] cE;
+   public int fa;
+   public int fb;
+   public int fc;
+   public int cB;
+   public byte cC;
+   public int eY;
+   public byte[] bZ;
+   public byte[] ca;
+   public byte[] cb;
+   public byte[] cc;
+   public byte[] cd;
+   public byte[] ce;
+   public byte[] cf;
+   public byte[] cg;
+   public byte[] ch;
+   public byte[][] ci;
+   public boolean[] cj;
+   public boolean[] ck;
+   public boolean[] cl;
+   public boolean[] cm;
+   public int[][] bT;
+   public int eZ;
+   public int[][] dp;
+   public int[][] dq;
+   public byte[] dr;
+   public byte[] ds;
+   public byte[] dt;
+   public byte[] du;
+   public int[] dv;
+   public int[] dw;
+   public int[] dx;
+   public int[] dy;
+   public int[] dz;
+   public int[] dA;
+   public int[] dB;
+   public byte[] bA;
+   public short[] bs;
+   public short[] fD;
+   public short[][] fE;
+   public byte[] fF;
+   public byte[][] fG;
+   public byte[][] fH;
+   public int fd;
+   public int[] bh;
+   public long[] fz;
+   public int fk;
+   public int eR;
+   public int eS;
+   public int[] cosTable;
+   public int ff;
 
 
 
@@ -153,14 +153,14 @@ public class ResourcesLoaderB3D {
       return (short)(data[offset] & 255 | (data[offset + 1] & 255) << 8);
    }
 
-   public void initPrecalculatedAngles() {
-      this.dL = new int[91];
-      this.dL[1] = 1146;
+   public void initCosTable() {
+      this.cosTable = new int[91];
+      this.cosTable[1] = 1146;
       int var1 = 1146;
 
       for(int var2 = 2; var2 <= 90; ++var2) {
          var1 += this.a[var2 - 2];
-         this.dL[var2] = this.dL[var2 - 1] + var1;
+         this.cosTable[var2] = this.cosTable[var2 - 1] + var1;
       }
 
       this.a = null;
@@ -289,7 +289,7 @@ public class ResourcesLoaderB3D {
 
    }
 
-   private static int abs(int var0) {
+   public static int abs(int var0) {
       return var0 > 0 ? var0 : -var0;
    }
 
@@ -376,14 +376,14 @@ public class ResourcesLoaderB3D {
          pos += 2;
       }
 
-      this.a(footer);
+      this.loadMapInner(footer);
       this.q = null;
       this.E = (byte[][][][])null;
       this.M = null;
       System.gc();
    }
 
-   public void a(short[] footer) {
+   public void loadMapInner(short[] footer) {
       this.E = new byte[3][][][];
       this.loadMapPart((byte[])this.loadedMap[0], (byte[])this.loadedMap[1], (byte[])this.o, 0);
       this.loadMapPart((byte[])this.loadedMap[2], (byte[])this.loadedMap[3], (byte[])this.p, 1);
@@ -614,7 +614,7 @@ public class ResourcesLoaderB3D {
 
 
 
-   private void modifyBigLump1(byte[][][] bigLump1) {
+   public void modifyBigLump1(byte[][][] bigLump1) {
       this.cD = new short[7][];
       this.cE = new short[7][];
       this.fa = this.eX;
@@ -722,7 +722,7 @@ public class ResourcesLoaderB3D {
          }
       }
 
-      this.fillThisFields(bigLump1[8][0][0], (long)bigLump1[8][0][1] * 75000L, (long)bigLump1[8][0][2] * 75000L, bigLump1[8][0][3] * 2, bigLump1[8][0][7]);
+      this.fillTheseFields(bigLump1[8][0][0], (long)bigLump1[8][0][1] * 75000L, (long)bigLump1[8][0][2] * 75000L, bigLump1[8][0][3] * 2, bigLump1[8][0][7]);
       this.cC = (byte)(16 + bigLump1[8][0][5]);
       this.cB = bigLump1[8][0][6];
       var12 = this.eX;
@@ -898,7 +898,7 @@ public class ResourcesLoaderB3D {
 
    }
 
-   private void fillThisFields(int var1, long var2, long var4, int var6, int var7) {
+   public void fillTheseFields(int var1, long var2, long var4, int var6, int var7) {
       this.fz = new long[2];
       this.fk = var1;
       this.fz[0] = var2;
@@ -908,8 +908,8 @@ public class ResourcesLoaderB3D {
    }
 
 
-
-   private int modifyBigLump1_subfunction1(long var1, long var3, long var5, long var7, int var9, int var10, byte var11, byte var12, byte var13, byte var14, byte var15, byte var16) {
+   // Crates + something else
+   public int modifyBigLump1_subfunction1(long var1, long var3, long var5, long var7, int var9, int var10, byte var11, byte var12, byte var13, byte var14, byte var15, byte var16) {
       int var19 = 0;
 
       int var18;
@@ -927,8 +927,8 @@ public class ResourcesLoaderB3D {
                this.cW[var17][var18] = (int)((long)this.B[var19][var17] * var7 + var1);
                var10002 = (long)this.B[var19][var17 + 1] * var5;
             } else {
-               this.cW[var17][var18] = (int)(((long)this.B[var19][var17] * var7 * this.s(var9) >> 16) - ((long)this.B[var19][var17 + 1] * var5 * this.r(var9) >> 16) + var1);
-               var10002 = ((long)this.B[var19][var17] * var7 * this.r(var9) >> 16) + ((long)this.B[var19][var17 + 1] * var5 * this.s(var9) >> 16);
+               this.cW[var17][var18] = (int)(((long)this.B[var19][var17] * var7 * this.sin(var9) >> 16) - ((long)this.B[var19][var17 + 1] * var5 * this.cos(var9) >> 16) + var1);
+               var10002 = ((long)this.B[var19][var17] * var7 * this.cos(var9) >> 16) + ((long)this.B[var19][var17 + 1] * var5 * this.sin(var9) >> 16);
             }
             this.cW[var17 + 1][var18] = (int)(var10002 + var3);
          }
@@ -950,7 +950,7 @@ public class ResourcesLoaderB3D {
       return var18 + 1;
    }
 
-   private void modifyBigLump1_subfunction2(byte var1, byte var2, byte var3, int var4) {
+   public void modifyBigLump1_subfunction2(byte var1, byte var2, byte var3, int var4) {
       this.cX[var4] = var1;
       int var5 = var4 + 1;
       this.cX[var5] = var2;
@@ -960,7 +960,8 @@ public class ResourcesLoaderB3D {
    }
 
 
-   private int modifyBigLump1_subfunction3(int[] var1, long var2, long var4, int var6, int var7, int var8, int var9) {
+   // Doors
+   public int modifyBigLump1_subfunction3(int[] var1, long var2, long var4, int var6, int var7, int var8, int var9) {
       if (var9 == 0) {
          this.cW[var6][var8] = var1[var6];
          this.cW[var7][var8] = (int)((long)var1[var7] - (var2 >> 1));
@@ -985,7 +986,7 @@ public class ResourcesLoaderB3D {
    }
 
 
-   private void modifyBigLump1_subfunction4(int var1, int var2, byte[][][] var3) {
+   public void modifyBigLump1_subfunction4(int var1, int var2, byte[][][] var3) {
       int var4 = var2;
       if (var3[var2].length != 0) {
          int var7 = var3[var2][0].length;
@@ -1021,17 +1022,17 @@ public class ResourcesLoaderB3D {
    }
 
 
-   private int modifyBigLump1_subfunction5(long var1, long var3, int var5, long var6, int var8, int var9, byte var10, byte var11, int var12) {
+   public int modifyBigLump1_subfunction5(long var1, long var3, int var5, long var6, int var8, int var9, byte var10, byte var11, int var12) {
       int var15 = 360 / var5;
       int var14 = var12 * 4;
 
       int var13;
       for(var13 = var8; var13 < var8 + var5; ++var13) {
-         this.cW[0][var13] = (int)((var6 * this.r(var14) >> 16) + var1);
-         this.cW[1][var13] = (int)((var6 * this.s(var14) >> 16) + var3);
+         this.cW[0][var13] = (int)((var6 * this.cos(var14) >> 16) + var1);
+         this.cW[1][var13] = (int)((var6 * this.sin(var14) >> 16) + var3);
          var14 -= var15;
-         this.cW[2][var13] = (int)((var6 * this.r(var14) >> 16) + var1);
-         this.cW[3][var13] = (int)((var6 * this.s(var14) >> 16) + var3);
+         this.cW[2][var13] = (int)((var6 * this.cos(var14) >> 16) + var1);
+         this.cW[3][var13] = (int)((var6 * this.sin(var14) >> 16) + var3);
          this.by[var13] = var10;
          this.cX[var13] = (byte)var9;
          this.bz[var13] = var11;
@@ -1040,22 +1041,22 @@ public class ResourcesLoaderB3D {
       return var13;
    }
 
-   private long r(int var1) {
+   public long cos(int var1) {
       if (var1 < 0) {
-         return -this.r(-var1);
+         return -this.cos(-var1);
       } else if (var1 >= 90 & var1 < 180) {
-         return (long)this.dL[180 - var1];
+         return (long)this.cosTable[180 - var1];
       } else if (var1 >= 180 & var1 < 270) {
-         return (long)(-this.dL[var1 - 180]);
+         return (long)(-this.cosTable[var1 - 180]);
       } else if (var1 >= 270 & var1 < 360) {
-         return (long)(-this.dL[90 - (var1 - 270)]);
+         return (long)(-this.cosTable[90 - (var1 - 270)]);
       } else {
-         return var1 >= 360 ? this.r(var1 % 360) : (long)this.dL[var1];
+         return var1 >= 360 ? this.cos(var1 % 360) : (long)this.cosTable[var1];
       }
    }
 
-   private long s(int var1) {
-      return this.r(90 - var1);
+   public long sin(int var1) {
+      return this.cos(90 - var1);
    }
 
 

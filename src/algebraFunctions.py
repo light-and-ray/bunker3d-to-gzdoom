@@ -58,17 +58,17 @@ def resolveSegmentsOverlap(xA, yA, xB, yB, xC, yC, xD, yD):
         xA, xB = xB, xA
         yA, yB = yB, yA
         changedAB = True
-    changedBC = False
+    changedCD = False
     if xC > xD or (xC == xD and yC > yD):
         xC, xD = xD, xC
         yC, yD = yD, yC
-        changedBC = True
+        changedCD = True
     result = resolveSegmentsOverlap_(xA, yA, xB, yB, xC, yC, xD, yD)
     if result:
         result = [tuple(int(x) for x in seg) for seg in result]
         if changedAB:
             result = reverseSegments(result)
-        # if changedBC:
+        # if changedCD:
     return result
 
 
