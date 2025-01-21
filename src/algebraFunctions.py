@@ -1,14 +1,9 @@
 import math
 
 def areCollinear(x1, y1, x2, y2, x3, y3):
-    # Check if the points (x1, y1), (x2, y2), (x3, y3) are collinear
     return (y2 - y1) * (x3 - x2) == (y3 - y2) * (x2 - x1)
 
 def resolveSegmentsOverlap_(xA, yA, xB, yB, xC, yC, xD, yD):
-    # Check if the segments are collinear
-    if not areCollinear(xA, yA, xB, yB, xC, yC) or not areCollinear(xA, yA, xB, yB, xD, yD):
-        return None
-
     new_segments = []
 
     # Handle vertical segments
@@ -71,6 +66,10 @@ def _revertCD(segments, xC, yC, xD, yD):
             return
 
 def resolveSegmentsOverlap(xA, yA, xB, yB, xC, yC, xD, yD):
+    # Check if the segments are collinear
+    if not areCollinear(xA, yA, xB, yB, xC, yC) or not areCollinear(xA, yA, xB, yB, xD, yD):
+        return None
+
     # Ensure the segments are in the same order (xA, yA) to (xB, yB) and (xC, yC) to (xD, yD)
     changedAB = False
     if xA > xB or (xA == xB and yA > yB):
@@ -82,7 +81,9 @@ def resolveSegmentsOverlap(xA, yA, xB, yB, xC, yC, xD, yD):
         xC, xD = xD, xC
         yC, yD = yD, yC
         changedCD = True
+
     result = resolveSegmentsOverlap_(xA, yA, xB, yB, xC, yC, xD, yD)
+
     if result:
         result = [tuple(int(x) for x in seg) for seg in result]
         if isLonger(xA, yA, xB, yB, xC, yC, xD, yD):
@@ -133,12 +134,16 @@ def isAthwart(xA, yA, xB, yB, xC, yC, xD, yD):
                 (yA < yB and yC > yD) or (yA > yB and yC < yD))
 
 def isLonger(xA, yA, xB, yB, xC, yC, xD, yD):
+    '''
+    Compares the lengths of two line segments and returns True if
+    the first segment (AB) is longer than the second segment (CD).
+    '''
     length_AB = math.sqrt((xB - xA) ** 2 + (yB - yA) ** 2)
     length_CD = math.sqrt((xD - xC) ** 2 + (yD - yC) ** 2)
     return length_AB > length_CD
 
 
-def distance_point_line(x0, y0, x1, y1, x2, y2):
+def distancePointLine(x0, y0, x1, y1, x2, y2):
     if (x2 - x1) ** 2 + (y2 - y1) ** 2 == 0:
         return math.sqrt((x0 - x1) ** 2 + (y0 - y1) ** 2)
     numerator = abs((y2 - y1) * x0 - (x2 - x1) * y0 + x2 * y1 - y2 * x1)
@@ -146,7 +151,7 @@ def distance_point_line(x0, y0, x1, y1, x2, y2):
     return numerator / denominator
 
 def fixVertex(x, y, xA, yA, xB, yB, threshold):
-    dist = distance_point_line(x, y, xA, yA, xB, yB)
+    dist = distancePointLine(x, y, xA, yA, xB, yB)
 
     if dist > threshold:
         return None
