@@ -125,8 +125,8 @@ def isAthwart(xA, yA, xB, yB, xC, yC, xD, yD):
 
 
 def test():
-    oldLine1 =  ((9, 7, 8, 7), (7, 7, 10, 7))
-    oldLine2 = (10, 7, 10, 8)
+    oldLine1 =  (10, 9, 10, 6)
+    oldLine2 =  (10, 7, 10, 8)
     tuples = [(10, 9, 10, 8), (10, 7, 10, 8), (10, 7, 10, 6)]
     for tup in tuples:
         print(isInside(*tup, *oldLine1))

@@ -61,7 +61,6 @@ class MapInterim:
                     if heights == set([HeightType.TOP, HeightType.BOTTOM]):
                         if isAthwart(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
                             raise Exception("Athwart TOP and BOTTOM")
-                            pass
                         else:
                             height = HeightType.FULL
                     elif heights == set([HeightType.TOP, HeightType.FULL]):
@@ -104,13 +103,15 @@ class MapInterim:
                     j += 1
                     continue
                 else:
-                    print(i, j, (self.lineToTuple(self.lines[i]), self.lineToTuple(self.lines[j])), "->\n     ", resolved)
-                    if i > 170:
-                        drawMap(self, wait=True)
+                    # if i > 170:
+                    #     drawMap(self, wait=True)
                     oldLine1 = self.lines[i]
                     oldLine2 = self.lines[j]
                     del self.lines[j]
-                    self.lines = self.lines[:i] + self._tuplesToLines(resolved, oldLine1, oldLine2) + self.lines[i+1:]
+                    newLines = self._tuplesToLines(resolved, oldLine1, oldLine2)
+                    # print(i, j, (self.lineToTuple(oldLine1), self.lineToTuple(oldLine2)), "->\n     ",
+                    #       tuple((self.lineToTuple(line) for line in newLines)))
+                    self.lines = self.lines[:i] + newLines + self.lines[i+1:]
                     isBroken = True
                     break
             if isBroken:
