@@ -1,5 +1,3 @@
-# from drawMap import LineB3D, draw_lines
-from ClassesB3D import LineB3D
 
 def areCollinear(x1, y1, x2, y2, x3, y3):
     # Check if the points (x1, y1), (x2, y2), (x3, y3) are collinear
@@ -73,11 +71,12 @@ def resolveSegmentsOverlap(xA, yA, xB, yB, xC, yC, xD, yD):
 
 
 def test():
+    from drawMap import LineB3D, draw_lines
     lines = [
         LineB3D(v1=(10, 10), v2=(10, 13)),
         LineB3D(v1=(10, 12), v2=(10, 11)),
     ]
-    # draw_lines(lines, show=True)
+    draw_lines(lines, show=True)
     i = 0
     j = 1
     result = resolveSegmentsOverlap(lines[i].v1[0], lines[i].v1[1], lines[i].v2[0], lines[i].v2[1],
