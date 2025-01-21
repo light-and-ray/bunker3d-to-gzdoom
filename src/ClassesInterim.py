@@ -105,7 +105,8 @@ class MapInterim:
                     continue
                 else:
                     print(i, j, (self.lineToTuple(self.lines[i]), self.lineToTuple(self.lines[j])), "->\n     ", resolved)
-                    # drawMap(self, wait=True)
+                    if i > 170:
+                        drawMap(self, wait=True)
                     oldLine1 = self.lines[i]
                     oldLine2 = self.lines[j]
                     del self.lines[j]

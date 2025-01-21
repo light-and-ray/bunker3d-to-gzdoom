@@ -37,9 +37,14 @@ def resolveSegmentsOverlap_(xA, yA, xB, yB, xC, yC, xD, yD):
         if overlap_start < overlap_end:
             if overlap_start > xA:
                 new_segments.append((xA, yA, overlap_start, yA + (yB - yA) * (overlap_start - xA) / (xB - xA)))
-            new_segments.append((overlap_start, yA + (yB - yA) * (overlap_start - xA) / (xB - xA), overlap_end, yA + (yB - yA) * (overlap_end - xA) / (xB - xA)))
+            if overlap_start < xB and overlap_end > xA:
+                new_segments.append((overlap_start, yA + (yB - yA) * (overlap_start - xA) / (xB - xA), overlap_end, yA + (yB - yA) * (overlap_end - xA) / (xB - xA)))
             if overlap_end < xB:
                 new_segments.append((overlap_end, yA + (yB - yA) * (overlap_end - xA) / (xB - xA), xB, yB))
+            if overlap_start > xC:
+                new_segments.append((xC, yC, overlap_start, yC + (yD - yC) * (overlap_start - xC) / (xD - xC)))
+            if overlap_end < xD:
+                new_segments.append((overlap_end, yC + (yD - yC) * (overlap_end - xC) / (xD - xC), xD, yD))
             return new_segments
 
     return None
@@ -120,7 +125,7 @@ def isAthwart(xA, yA, xB, yB, xC, yC, xD, yD):
 
 
 def test():
-    oldLine1 = (10, 9, 10, 6)
+    oldLine1 =  ((9, 7, 8, 7), (7, 7, 10, 7))
     oldLine2 = (10, 7, 10, 8)
     tuples = [(10, 9, 10, 8), (10, 7, 10, 8), (10, 7, 10, 6)]
     for tup in tuples:
@@ -129,4 +134,4 @@ def test():
         print(isAthwart(*oldLine1, *oldLine2))
         print()
 
-test()
+# test()
