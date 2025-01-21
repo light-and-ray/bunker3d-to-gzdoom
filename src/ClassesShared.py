@@ -10,3 +10,5 @@ class HeightType(Enum):
 class Vertex:
     x: int
     y: int
+    def pair(self) -> tuple[int]:
+        return (self.x, self.y)

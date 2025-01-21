@@ -1,3 +1,4 @@
+import math
 
 def areCollinear(x1, y1, x2, y2, x3, y3):
     # Check if the points (x1, y1), (x2, y2), (x3, y3) are collinear
@@ -122,6 +123,39 @@ def isAthwart(xA, yA, xB, yB, xC, yC, xD, yD):
     else:
         return ((xA < xB and xC > xD) or (xA > xB and xC < xD) or
                 (yA < yB and yC > yD) or (yA > yB and yC < yD))
+
+
+
+def distance_point_line(x0, y0, x1, y1, x2, y2):
+    if (x2 - x1) ** 2 + (y2 - y1) ** 2 == 0:
+        return math.sqrt((x0 - x1) ** 2 + (y0 - y1) ** 2)
+    numerator = abs((y2 - y1) * x0 - (x2 - x1) * y0 + x2 * y1 - y2 * x1)
+    denominator = math.sqrt((y2 - y1) ** 2 + (x2 - x1) ** 2)
+    return numerator / denominator
+
+def fixVertex(x, y, xA, yA, xB, yB, threshold):
+    dist = distance_point_line(x, y, xA, yA, xB, yB)
+
+    if dist > threshold:
+        return None
+
+    # Check if the line segment is vertical
+    if xB - xA == 0:
+        # Calculate the projection of the point onto the vertical line segment
+        t = (y - yA) / (yB - yA) if yB - yA!= 0 else 0
+    else:
+        # Calculate the projection of the point onto the line segment
+        t = ((x - xA) * (xB - xA) + (y - yA) * (yB - yA)) / ((xB - xA) ** 2 + (yB - yA) ** 2)
+
+    # Check if the projection is within the segment
+    if t < 0 or t > 1:
+        return None
+
+    # Calculate the coordinates of the projection
+    proj_x = xA + t * (xB - xA)
+    proj_y = yA + t * (yB - yA)
+
+    return (proj_x, proj_y)
 
 
 def test():

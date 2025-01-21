@@ -5,7 +5,7 @@ if TYPE_CHECKING:
     from ClassesInterim import MapInterim
 
 
-def drawMap(map: 'MapInterim', show=True, name=None, resolution=1280, frame=30, wait=False):
+def drawMap(map: 'MapInterim', show=True, name=None, resolution=8000, frame=30, wait=False):
     # Calculate min and max coordinates
     min_x = min(min(line.v1.x, line.v2.x) for line in map.lines)
     max_x = max(max(line.v1.x, line.v2.x) for line in map.lines)

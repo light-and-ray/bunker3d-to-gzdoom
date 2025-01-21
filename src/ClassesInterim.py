@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Any
 from ClassesB3D import MapB3D, CrateB3D, DoorB3D
-from algebraFunctions import resolveSegmentsOverlap, isInside, isAthwart
+from algebraFunctions import resolveSegmentsOverlap, isInside, isAthwart, fixVertex
 from ClassesShared import Vertex, HeightType
 from drawMap import drawMap
 
@@ -20,26 +20,50 @@ class MapInterim:
         for line in mapB3D.lines:
             self.lines.append(LineInterim(v1=line.v1, v2=line.v2, height=line.height, texture=line.texture))
         self._removeCratesDoorsAndBrokenLines(mapB3D.crates, mapB3D.doors, mapB3D.brokenLines)
+        # self._fixVertexes()
         self._removeOverlaps()
 
 
     def _removeCratesDoorsAndBrokenLines(self, crates: list[CrateB3D], doors: list[DoorB3D], brokenLines: list[int]):
-        linesToRemove: list[int] = brokenLines[:]
+        linesToRemove: set[int] = set(brokenLines)
         # for crate in crates:
-        #     linesToRemove.append(crate.startLineIdx)
-        #     linesToRemove.append(crate.startLineIdx+1)
-        #     linesToRemove.append(crate.startLineIdx+2)
-        #     linesToRemove.append(crate.startLineIdx+3)
+        #     linesToRemove.add(crate.startLineIdx)
+        #     linesToRemove.add(crate.startLineIdx+1)
+        #     linesToRemove.add(crate.startLineIdx+2)
+        #     linesToRemove.add(crate.startLineIdx+3)
         # for door in doors:
-        #     linesToRemove.append(door.startLineIdx)
-        #     linesToRemove.append(door.startLineIdx+1)
-        #     linesToRemove.append(door.startLineIdx+2)
+        #     linesToRemove.add(door.startLineIdx)
+        #     linesToRemove.add(door.startLineIdx+1)
+        #     linesToRemove.add(door.startLineIdx+2)
 
         newLines: list[LineInterim] = []
         for index, line in enumerate(self.lines):
             if index not in linesToRemove:
                 newLines.append(line)
         self.lines = newLines
+
+
+    def _fixVertexes(self):
+        THRESHOLD = 100
+        for i in range(len(self.lines)):
+            v1 = self.lines[i].v1
+            v2 = self.lines[i].v2
+            for j in range(len(self.lines)):
+                if i == j: continue
+                if (v1.pair in [self.lines[j].v1.pair, self.lines[j].v2.pair] or
+                    v2.pair in [self.lines[j].v1.pair, self.lines[j].v2.pair]
+                ): continue
+
+                x, y = v1.pair()
+                fixed = fixVertex(x, y, *self.lineToTuple(self.lines[j]), THRESHOLD)
+                if fixed:
+                    self.lines[i].v1 = Vertex(*fixed)
+
+                x, y = v2.pair()
+                fixed = fixVertex(x, y, *self.lineToTuple(self.lines[j]), THRESHOLD)
+                if fixed:
+                    self.lines[i].v2 = Vertex(*fixed)
+
 
     @staticmethod
     def lineToTuple(line: LineInterim) -> tuple[int]:
@@ -103,7 +127,7 @@ class MapInterim:
                     j += 1
                     continue
                 else:
-                    # if i > 170:
+                    # if i > 80:
                     #     drawMap(self, wait=True)
                     oldLine1 = self.lines[i]
                     oldLine2 = self.lines[j]
