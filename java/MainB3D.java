@@ -1,4 +1,4 @@
-public class Main {
+public class MainB3D {
     public static void main(String[] args) {
         int selectedMap = Integer.parseInt(args[0]);
         ResourcesLoaderB3D loader = new ResourcesLoaderB3D();
