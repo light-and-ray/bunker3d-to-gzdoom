@@ -2,9 +2,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class ResourcesLoaderB3D {
    public String ROOT_JAR = "../jars/b3d.d";
+   public ArrayList<Integer> DOORS_INDEXES = new ArrayList<>();
+   public ArrayList<Integer> CRATES_INDEXES = new ArrayList<>();
+   public ArrayList<Byte> CRATES_CONTENT = new ArrayList<>();
+   public ArrayList<Byte> CRATES_ANGLE = new ArrayList<>();
    public byte c;
    public boolean e;
    public int f = 10;
@@ -750,7 +755,9 @@ public class ResourcesLoaderB3D {
             var26[var6] = (byte)(var26[var6] - 4);
             this.ch[var6] = 1;
          }
-
+         CRATES_INDEXES.add(var12);
+         CRATES_CONTENT.add(bigLump1[12][var3][4]);
+         CRATES_ANGLE.add(bigLump1[12][var3][3]);
          var12 = this.modifyBigLump1_subfunction1((long)var14, (long)var15, 16384L, 16384L, bigLump1[12][var3][3], var12, bigLump1[12][var3][2], bigLump1[12][var3][2], bigLump1[12][var3][2], bigLump1[12][var3][2], (byte)1, (byte)0);
       }
 
@@ -822,6 +829,7 @@ public class ResourcesLoaderB3D {
             var10003 = 7;
          }
 
+         DOORS_INDEXES.add(var12);
          this.modifyBigLump1_subfunction2(var30, var31, var10003, var12);
          this.modifyBigLump1_subfunction3(this.dp[var3], (long)this.dv[var3], (long)this.dx[var3], this.dr[var3], this.ds[var3], var12, 0);
          var12 = this.modifyBigLump1_subfunction3(this.dp[var3], (long)this.dv[var3], (long)this.dw[var3], this.dr[var3], this.ds[var3], var12, 1);

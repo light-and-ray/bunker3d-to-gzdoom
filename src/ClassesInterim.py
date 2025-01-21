@@ -34,9 +34,9 @@ class MapInterim:
             while j < len(lines):
                 resolved = resolveSegmentsOverlap(lines[i].v1[0], lines[i].v1[1], lines[i].v2[0], lines[i].v2[1],
                                                   lines[j].v1[0], lines[j].v1[1], lines[j].v2[0], lines[j].v2[1])
-                if resolved:
-                    print(i, j, (lines[i].v1[0], lines[i].v1[1], lines[i].v2[0], lines[i].v2[1]),
-                                (lines[j].v1[0], lines[j].v1[1], lines[j].v2[0], lines[j].v2[1]),
-                            "->\n      ", *resolved)
+                # if resolved:
+                    # print(i, j, (lines[i].v1[0], lines[i].v1[1], lines[i].v2[0], lines[i].v2[1]),
+                    #             (lines[j].v1[0], lines[j].v1[1], lines[j].v2[0], lines[j].v2[1]),
+                    #         "->\n      ", *resolved)
                 j += 1
             i += 1

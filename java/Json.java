@@ -1,6 +1,7 @@
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 public class Json {
 
@@ -24,6 +25,8 @@ public class Json {
             return toJson((byte[][]) array);
         } else if (array instanceof int[][]) {
             return toJson((int[][]) array);
+        } else if (array instanceof ArrayList) {
+            return toJson((ArrayList<?>) array);
         } else {
             return "Unsupported type";
         }
@@ -84,6 +87,27 @@ public class Json {
             }
             sb.append("]");
             if (i < array.length - 1) {
+                sb.append(",");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
+    private static String toJson(ArrayList<?> array) {
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < array.size(); i++) {
+            Object obj = array.get(i);
+            if (obj instanceof Integer) {
+                sb.append(obj);
+            } else if (obj instanceof Byte) {
+                sb.append(obj);
+            } else if (obj instanceof ArrayList) {
+                sb.append(toJson((ArrayList<?>) obj));
+            } else {
+                sb.append("\"" + obj.toString() + "\"");
+            }
+            if (i < array.size() - 1) {
                 sb.append(",");
             }
         }
