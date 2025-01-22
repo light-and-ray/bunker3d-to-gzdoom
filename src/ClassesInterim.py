@@ -91,15 +91,35 @@ class MapInterim:
                             height = HeightType.FULL
                     elif heights == set([HeightType.TOP, HeightType.FULL]):
                         if areOppositelyDirected(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
-                            height = HeightType.BOTTOM
-                            needReverse = True
+                            if len(tuples) != 1:
+                                height = HeightType.BOTTOM
+                                needReverse = True
+                            else:
+                                height = None
+                                newLine = None
+                                if oldLine1.height == HeightType.FULL:
+                                    newLine = oldLine1
+                                else:
+                                    newLine = oldLine2
+                                newLine.height = HeightType.BOTTOM
+                                lines.append(newLine)
                         else:
                             print('Warning: top and full lines are not oppositely directed')
                             height = HeightType.FULL
                     elif heights == set([HeightType.BOTTOM, HeightType.FULL]):
                         if areOppositelyDirected(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
-                            height = HeightType.TOP
-                            needReverse = True
+                            if len(tuples) != 1:
+                                height = HeightType.TOP
+                                needReverse = True
+                            else:
+                                height = None
+                                newLine = None
+                                if oldLine1.height == HeightType.FULL:
+                                    newLine = oldLine1
+                                else:
+                                    newLine = oldLine2
+                                newLine.height = HeightType.TOP
+                                lines.append(newLine)
                         else:
                             print('Warning: bottom and full lines are not oppositely directed')
                             height = HeightType.FULL
@@ -140,7 +160,7 @@ class MapInterim:
                     continue
                 else:
                     # print(i, j)
-                    # if i > 80:
+                    # if i > 90:
                     #     drawMap(self, wait=True)
                     oldLine1 = self.lines[i]
                     oldLine2 = self.lines[j]

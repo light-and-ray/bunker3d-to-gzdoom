@@ -54,10 +54,10 @@ def reverseSegments(segments):
         )
     return reversedSegments
 
-def _revertCD(segments, xC, yC, xD, yD):
+def _revertSeg(segments, x1, y1, x2, y2):
     for i in range(len(segments)):
-        if (set([xC, xD]) == set([segments[i][0], segments[i][2]]) and
-            set([yC, yD]) == set([segments[i][1], segments[i][3]])
+        if (set([x1, x2]) == set([segments[i][0], segments[i][2]]) and
+            set([y1, y2]) == set([segments[i][1], segments[i][3]])
         ):
             segments[i]  = (
                 segments[i][2], segments[i][3],
@@ -83,23 +83,23 @@ def resolveSegmentsOverlap(xA, yA, xB, yB, xC, yC, xD, yD):
         changedCD = True
 
     result = resolveSegmentsOverlap_(xA, yA, xB, yB, xC, yC, xD, yD)
-
+    # print(f"{changedAB=} {changedCD}")
     if result:
         result = [tuple(int(x) for x in seg) for seg in result]
         if isLonger(xA, yA, xB, yB, xC, yC, xD, yD):
             if changedAB:
                 result = reverseSegments(result)
-                if not changedCD:
-                    _revertCD(result, xC, yC, xD, yD)
+                if not changedCD and (xC, yC, xD, yD) != (xA, yA, xB, yB):
+                    _revertSeg(result, xC, yC, xD, yD)
             elif changedCD:
-                _revertCD(result, xC, yC, xD, yD)
+                _revertSeg(result, xC, yC, xD, yD)
         else:
             if changedCD:
                 result = reverseSegments(result)
-                if not changedAB:
-                    _revertCD(result, xC, yC, xD, yD)
+                if not changedAB and (xC, yC, xD, yD) != (xA, yA, xB, yB):
+                    _revertSeg(result, xA, yA, xB, yB)
             elif changedAB:
-                _revertCD(result, xC, yC, xD, yD)
+                _revertSeg(result, xA, yA, xB, yB)
     return result
 
 
@@ -176,9 +176,11 @@ def fixVertex(x, y, xA, yA, xB, yB, threshold):
 
 
 def test():
-    oldLine1 =  (10, 9, 10, 6)
-    oldLine2 =  (10, 7, 10, 8)
-    tuples = [(10, 9, 10, 8), (10, 7, 10, 8), (10, 7, 10, 6)]
+    oldLine1 = (10, 9, 10, 8)
+    oldLine2 = (10, 8, 10, 9)
+    tuples = ((10, 8, 10, 9),)
+    print(resolveSegmentsOverlap(*oldLine1, *oldLine2), '\n')
+
     for tup in tuples:
         print(isInside(*tup, *oldLine1))
         print(isInside(*tup, *oldLine2))
