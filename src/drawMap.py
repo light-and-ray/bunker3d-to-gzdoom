@@ -105,9 +105,9 @@ def drawMapSVG(map: 'MapInterim', name, resolution=1280, frame=30):
         if line.height == HeightType.FULL:
             color = svgwrite.rgb(255, 255, 0, '%')  # Yellow
         elif line.height == HeightType.BOTTOM:
-            color = svgwrite.rgb(250/255, 56/255, 35/255, '%')  # Reddish
+            color = svgwrite.rgb(250, 56, 35, '%')  # Reddish
         else:
-            color = svgwrite.rgb(10/255, 99/255, 207/255, '%')  # Blueish
+            color = svgwrite.rgb(10, 99, 207, '%')  # Blueish
 
         # Draw line
         dwg.add(dwg.line((scaled_x1, scaled_y1), (scaled_x2, scaled_y2),
