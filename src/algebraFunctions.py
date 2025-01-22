@@ -118,7 +118,7 @@ def isInside(xA, yA, xB, yB, xC, yC, xD, yD):
         return (min(xC, xD) <= min(xA, xB) and max(xA, xB) <= max(xC, xD) and
                 min(yC, yD) <= min(yA, yB) and max(yA, yB) <= max(yC, yD))
 
-def isAthwart(xA, yA, xB, yB, xC, yC, xD, yD):
+def areOppositelyDirected(xA, yA, xB, yB, xC, yC, xD, yD):
     """
     Returns True if the two already collinear segments (xA, yA) - (xB, yB) and (xC, yC) - (xD, yD)
     are "moving" in different directions.
@@ -182,7 +182,7 @@ def test():
     for tup in tuples:
         print(isInside(*tup, *oldLine1))
         print(isInside(*tup, *oldLine2))
-        print(isAthwart(*oldLine1, *oldLine2))
+        print(areOppositelyDirected(*oldLine1, *oldLine2))
         print()
 
 # test()

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Any
 from ClassesB3D import MapB3D, CrateB3D, DoorB3D
-from algebraFunctions import resolveSegmentsOverlap, isInside, isAthwart, fixVertex
+from algebraFunctions import resolveSegmentsOverlap, isInside, areOppositelyDirected, fixVertex
 from ClassesShared import Vertex, HeightType
 from drawMap import drawMap
 
@@ -77,28 +77,28 @@ class MapInterim:
             height : HeightType = None
             if isInside(*tup, *MapInterim.lineToTuple(oldLine1)) and isInside(*tup, *MapInterim.lineToTuple(oldLine2)):
                 if oldLine1.height == oldLine2.height:
-                    if isAthwart(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
+                    if areOppositelyDirected(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
                         height = None
                     else:
                         height = oldLine1.height
                 else:
                     heights = set([oldLine1.height, oldLine2.height])
                     if heights == set([HeightType.TOP, HeightType.BOTTOM]):
-                        if isAthwart(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
-                            raise Exception("Athwart TOP and BOTTOM")
+                        if areOppositelyDirected(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
+                            raise Exception("Oppositely directed TOP and BOTTOM")
                         else:
                             height = HeightType.FULL
                     elif heights == set([HeightType.TOP, HeightType.FULL]):
-                        if isAthwart(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
+                        if areOppositelyDirected(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
                             height = HeightType.BOTTOM
                         else:
-                            print('Warning: top and full lines are not athwart')
+                            print('Warning: top and full lines are not oppositely directed')
                             height = HeightType.FULL
                     elif heights == set([HeightType.BOTTOM, HeightType.FULL]):
-                        if isAthwart(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
+                        if areOppositelyDirected(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
                             height = HeightType.TOP
                         else:
-                            print('Warning: bottom and full lines are not athwart')
+                            print('Warning: bottom and full lines are not oppositely directed')
                             height = HeightType.FULL
                     else:
                         raise Exception("Can't be here")
