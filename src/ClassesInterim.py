@@ -112,22 +112,19 @@ class MapInterim:
                     height = oldLine2.height
                 else:
                     raise Exception("Tuple is not inside either oldLine1 or oldLine2")
-            print(f'{height=}, {tup=}')
+
             if height:
                 newLine = None
                 if changed and height in (HeightType.TOP, HeightType.BOTTOM):
                     for oldLine in (oldLine1, oldLine2):
-                        print(f'{oldLine=}')
                         if oldLine.height != HeightType.FULL:
                             continue
-                        print(f'{(tup[0], tup[1])} {[oldLine.v1.pair(), oldLine.v2.pair()]}')
                         if ((tup[0], tup[1]) in [oldLine.v1.pair(), oldLine.v2.pair()]
                             and (tup[2], tup[3]) in [oldLine.v1.pair(), oldLine.v2.pair()]
                         ):
                             newLine = oldLine
                             newLine.height = height
                             break
-                print(f'{newLine=}')
                 if not newLine:
                     if not changed:
                         lines.append(LineInterim(
