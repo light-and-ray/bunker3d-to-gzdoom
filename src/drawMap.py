@@ -1,5 +1,6 @@
 from PIL import Image, ImageDraw, ImageFont
 from ClassesShared import HeightType
+import math
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ClassesInterim import MapInterim
@@ -43,6 +44,20 @@ def drawMap(map: 'MapInterim', show=True, name=None, resolution=1280, frame=30, 
         draw.circle((scaled_x2, scaled_y2), fill=(0, 255, 0), radius=2)
         midpoint_x = (scaled_x1 + scaled_x2) / 2
         midpoint_y = (scaled_y1 + scaled_y2) / 2
+
+        # Draw normal indicators
+        dx = scaled_x2 - scaled_x1
+        dy = scaled_y2 - scaled_y1
+        length = math.hypot(dx, dy)
+        if length > 0:
+            normal_x = -dy / length
+            normal_y = dx / length
+            normal_x *= 5
+            normal_y *= 5
+            normal_x += midpoint_x
+            normal_y += midpoint_y
+            draw.line([(midpoint_x, midpoint_y), (normal_x, normal_y)], fill=color, width=1)
+
         font = ImageFont.load_default()
         draw.text((midpoint_x-6, midpoint_y-7), str(i), fill=(0, 0, 0), font=font, anchor=None)
 

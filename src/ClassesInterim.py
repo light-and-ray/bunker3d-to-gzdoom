@@ -75,6 +75,7 @@ class MapInterim:
         lines: list[LineInterim] = []
         for tup in tuples:
             height : HeightType = None
+            needReverse = False
             if isInside(*tup, *MapInterim.lineToTuple(oldLine1)) and isInside(*tup, *MapInterim.lineToTuple(oldLine2)):
                 if oldLine1.height == oldLine2.height:
                     if areOppositelyDirected(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
@@ -91,12 +92,14 @@ class MapInterim:
                     elif heights == set([HeightType.TOP, HeightType.FULL]):
                         if areOppositelyDirected(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
                             height = HeightType.BOTTOM
+                            needReverse = True
                         else:
                             print('Warning: top and full lines are not oppositely directed')
                             height = HeightType.FULL
                     elif heights == set([HeightType.BOTTOM, HeightType.FULL]):
                         if areOppositelyDirected(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
                             height = HeightType.TOP
+                            needReverse = True
                         else:
                             print('Warning: bottom and full lines are not oppositely directed')
                             height = HeightType.FULL
@@ -110,11 +113,19 @@ class MapInterim:
                 else:
                     raise Exception("Tuple is not inside either oldLine1 or oldLine2")
             if height:
-                lines.append(LineInterim(
-                    v1=Vertex(tup[0], tup[1]),
-                    v2=Vertex(tup[2], tup[3]),
-                    height=height
-                ))
+                if not needReverse:
+                    lines.append(LineInterim(
+                        v1=Vertex(tup[0], tup[1]),
+                        v2=Vertex(tup[2], tup[3]),
+                        height=height
+                    ))
+                else:
+                    lines.append(LineInterim(
+                        v1=Vertex(tup[2], tup[3]),
+                        v2=Vertex(tup[0], tup[1]),
+                        height=height
+                    ))
+
         return lines
 
     def _removeOverlaps(self):
