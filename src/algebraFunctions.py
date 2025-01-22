@@ -3,7 +3,7 @@ import math
 def areCollinear(x1, y1, x2, y2, x3, y3):
     return (y2 - y1) * (x3 - x2) == (y3 - y2) * (x2 - x1)
 
-def resolveSegmentsOverlap_(xA, yA, xB, yB, xC, yC, xD, yD):
+def _resolveSegmentsOverlapInner(xA, yA, xB, yB, xC, yC, xD, yD):
     new_segments = []
 
     # Handle vertical segments
@@ -54,7 +54,7 @@ def reverseSegments(segments):
         )
     return reversedSegments
 
-def _revertSeg(segments, x1, y1, x2, y2):
+def reverseSegment(segments, x1, y1, x2, y2):
     for i in range(len(segments)):
         if (set([x1, x2]) == set([segments[i][0], segments[i][2]]) and
             set([y1, y2]) == set([segments[i][1], segments[i][3]])
@@ -82,7 +82,7 @@ def resolveSegmentsOverlap(xA, yA, xB, yB, xC, yC, xD, yD):
         yC, yD = yD, yC
         changedCD = True
 
-    result = resolveSegmentsOverlap_(xA, yA, xB, yB, xC, yC, xD, yD)
+    result = _resolveSegmentsOverlapInner(xA, yA, xB, yB, xC, yC, xD, yD)
     # print(f"{changedAB=} {changedCD}")
     if result:
         result = [tuple(int(x) for x in seg) for seg in result]
@@ -90,16 +90,16 @@ def resolveSegmentsOverlap(xA, yA, xB, yB, xC, yC, xD, yD):
             if changedAB:
                 result = reverseSegments(result)
                 if not changedCD and (xC, yC, xD, yD) != (xA, yA, xB, yB):
-                    _revertSeg(result, xC, yC, xD, yD)
+                    reverseSegment(result, xC, yC, xD, yD)
             elif changedCD:
-                _revertSeg(result, xC, yC, xD, yD)
+                reverseSegment(result, xC, yC, xD, yD)
         else:
             if changedCD:
                 result = reverseSegments(result)
                 if not changedAB and (xC, yC, xD, yD) != (xA, yA, xB, yB):
-                    _revertSeg(result, xA, yA, xB, yB)
+                    reverseSegment(result, xA, yA, xB, yB)
             elif changedAB:
-                _revertSeg(result, xA, yA, xB, yB)
+                reverseSegment(result, xA, yA, xB, yB)
     return result
 
 
@@ -176,9 +176,9 @@ def fixVertex(x, y, xA, yA, xB, yB, threshold):
 
 
 def test():
-    oldLine1 = (10, 9, 10, 8)
-    oldLine2 = (10, 8, 10, 9)
-    tuples = ((10, 8, 10, 9),)
+    oldLine1 = (7, 10, 8, 10)
+    oldLine2 = (9, 10, 6, 10)
+    tuples = ((9, 10, 8, 10), (7, 10, 6, 10), (8, 10, 7, 10))
     print(resolveSegmentsOverlap(*oldLine1, *oldLine2), '\n')
 
     for tup in tuples:
@@ -187,4 +187,4 @@ def test():
         print(areOppositelyDirected(*oldLine1, *oldLine2))
         print()
 
-# test()
+test()

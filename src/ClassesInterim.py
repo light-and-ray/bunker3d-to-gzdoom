@@ -75,7 +75,7 @@ class MapInterim:
         lines: list[LineInterim] = []
         for tup in tuples:
             height : HeightType = None
-            needReverse = False
+            changed = False
             if isInside(*tup, *MapInterim.lineToTuple(oldLine1)) and isInside(*tup, *MapInterim.lineToTuple(oldLine2)):
                 if oldLine1.height == oldLine2.height:
                     if areOppositelyDirected(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
@@ -91,35 +91,15 @@ class MapInterim:
                             height = HeightType.FULL
                     elif heights == set([HeightType.TOP, HeightType.FULL]):
                         if areOppositelyDirected(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
-                            if len(tuples) != 1:
-                                height = HeightType.BOTTOM
-                                needReverse = True
-                            else:
-                                height = None
-                                newLine = None
-                                if oldLine1.height == HeightType.FULL:
-                                    newLine = oldLine1
-                                else:
-                                    newLine = oldLine2
-                                newLine.height = HeightType.BOTTOM
-                                lines.append(newLine)
+                            height = HeightType.BOTTOM
+                            changed = True
                         else:
                             print('Warning: top and full lines are not oppositely directed')
                             height = HeightType.FULL
                     elif heights == set([HeightType.BOTTOM, HeightType.FULL]):
                         if areOppositelyDirected(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
-                            if len(tuples) != 1:
-                                height = HeightType.TOP
-                                needReverse = True
-                            else:
-                                height = None
-                                newLine = None
-                                if oldLine1.height == HeightType.FULL:
-                                    newLine = oldLine1
-                                else:
-                                    newLine = oldLine2
-                                newLine.height = HeightType.TOP
-                                lines.append(newLine)
+                            height = HeightType.TOP
+                            changed = True
                         else:
                             print('Warning: bottom and full lines are not oppositely directed')
                             height = HeightType.FULL
@@ -132,19 +112,37 @@ class MapInterim:
                     height = oldLine2.height
                 else:
                     raise Exception("Tuple is not inside either oldLine1 or oldLine2")
+            print(f'{height=}, {tup=}')
             if height:
-                if not needReverse:
-                    lines.append(LineInterim(
-                        v1=Vertex(tup[0], tup[1]),
-                        v2=Vertex(tup[2], tup[3]),
-                        height=height
-                    ))
+                newLine = None
+                if changed and height in (HeightType.TOP, HeightType.BOTTOM):
+                    for oldLine in (oldLine1, oldLine2):
+                        print(f'{oldLine=}')
+                        if oldLine.height != HeightType.FULL:
+                            continue
+                        print(f'{(tup[0], tup[1])} {[oldLine.v1.pair(), oldLine.v2.pair()]}')
+                        if ((tup[0], tup[1]) in [oldLine.v1.pair(), oldLine.v2.pair()]
+                            and (tup[2], tup[3]) in [oldLine.v1.pair(), oldLine.v2.pair()]
+                        ):
+                            newLine = oldLine
+                            newLine.height = height
+                            break
+                print(f'{newLine=}')
+                if not newLine:
+                    if not changed:
+                        lines.append(LineInterim(
+                            v1=Vertex(tup[0], tup[1]),
+                            v2=Vertex(tup[2], tup[3]),
+                            height=height
+                        ))
+                    else:
+                        lines.append(LineInterim(
+                            v1=Vertex(tup[2], tup[3]),
+                            v2=Vertex(tup[0], tup[1]),
+                            height=height
+                        ))
                 else:
-                    lines.append(LineInterim(
-                        v1=Vertex(tup[2], tup[3]),
-                        v2=Vertex(tup[0], tup[1]),
-                        height=height
-                    ))
+                    lines.append(newLine)
 
         return lines
 
@@ -160,7 +158,7 @@ class MapInterim:
                     continue
                 else:
                     # print(i, j)
-                    # if i > 90:
+                    # if i > 170:
                     #     drawMap(self, wait=True)
                     oldLine1 = self.lines[i]
                     oldLine2 = self.lines[j]
