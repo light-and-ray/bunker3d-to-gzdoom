@@ -187,4 +187,4 @@ def test():
         print(areOppositelyDirected(*oldLine1, *oldLine2))
         print()
 
-test()
+# test()
