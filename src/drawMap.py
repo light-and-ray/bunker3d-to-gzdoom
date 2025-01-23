@@ -20,7 +20,7 @@ def drawMap(map: 'MapInterim', show=True, name=None, resolution=1280, frame=30, 
         scaled_y = height - ((y - min_y) / (max_y - min_y)) * height + frame
         return scaled_x, scaled_y
 
-    svg_filename = f"drawings/{name}.svg" if name else "output.svg"
+    svg_filename = f"drawings/{name}.svg" if name else "tmp/tmp.svg"
     dwg = svgwrite.Drawing(svg_filename, (width+frame*2, height+frame*2), debug=True)
     dwg.add(dwg.rect(insert=(0, 0),
                     size=(width+frame*2, height+frame*2),
@@ -68,8 +68,7 @@ def drawMap(map: 'MapInterim', show=True, name=None, resolution=1280, frame=30, 
         dwg.add(dwg.text(str(i), insert=(midpoint_x-8, midpoint_y+4),
                          fill='black', font_size=12, font_family='sans-serif'))
 
-    if name:
-        dwg.save()
+    dwg.save()
     if show:
         os.system(f"firefox '{svg_filename}'")
     if wait:
