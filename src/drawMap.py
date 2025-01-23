@@ -94,7 +94,10 @@ def drawMapSVG(map: 'MapInterim', name, resolution=1280, frame=30):
     # Create an SVG file
     svg_filename = f"drawings/{name}.svg" if name else "output.svg"
     dwg = svgwrite.Drawing(svg_filename, (width+frame*2, height+frame*2), debug=True)
-
+    dwg.add(dwg.rect(insert=(0, 0),
+                    size=(width+frame*2, height+frame*2),
+                    fill='white',
+                    fill_opacity=1))
     # Draw lines
     for i, line in enumerate(map.lines):
         x1, y1 = line.v1.x, line.v1.y
