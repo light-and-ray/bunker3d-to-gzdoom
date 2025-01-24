@@ -5,7 +5,7 @@ What does this project do?
 1. Heuristic algorithm removes hidden linedefs and resolve overlapping ones, e.g. back side of a crate which fills only bottom half of the level height, overlaps a wall -> this algorithm cuts the wall in this place and leaves only the other top half of the wall
 1. Work in progress...
 
-Requires `python`, `java`, `javac` and python dependencies listed below. To run the program use extract the original games into `./jars/...` folders, and use `./convert.sh` to convert
+Requires `python`, `java`, `javac` and python dependencies listed below. To run the program extract the original games into `./jars/...` folders, and use `./convert.sh` to convert
 
 ```bash
 python -m venv env
