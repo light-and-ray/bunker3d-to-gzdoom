@@ -1,7 +1,7 @@
 
 ## Bunker3D to GZDoom
 
-The goal of this project is to port maps and all the resources from an old 2005-2008 j2me mobile FPS game trilogy: Bunker3D, Laboratory3D and Castle3D by Netsoftware on [GZDoom](https://github.com/ZDoom/gzdoom) engine. The planned to serve as a base for a further enhanced port
+The goal of this project is to port all the maps and resources from an old 2005-2008 j2me mobile FPS game trilogy: Bunker3D, Laboratory3D and Castle3D by Netsoftware on [GZDoom](https://github.com/ZDoom/gzdoom) engine. The project is planned to serve as a base for a further enhanced port
 
 What does this project do?
 1. Run the java code extracted from the games, modified only to load and export data
@@ -10,7 +10,7 @@ What does this project do?
 
 ### `.b3d` map format
 
-Despite visual similarities with Doom, these maps have nothing similar with Doom's format. The file contains very complicated data, stored in about 100 arrays. I assume it was made to fit the game in order of hundreds kilobytes. The base geometry is described as sequencies of segments, they are stored as nibble values (halves of bytes). The other geometry is stored as descriptions of geometric shapes: rectangles, circles. The engine in one hand has less restrictions about lines - it's okay to have overlapping walls, walls in out of bounce; but in the other hand it doesn't support sector light (btw was added in Meat2Eat game), and different sector's floor and ceiling level. It doesn't have "sector" term - lines can have different height, but you can't see what's on top of them or under neath
+Despite visual similarities with Doom, these maps have nothing similar with Doom's format. The file contains very complicated data, stored in about 100 arrays. I assume it was made to fit the game in order of hundreds kilobytes. The base geometry is described as sequencies of segments, they are stored as nibble values (halves of bytes). The other geometry is stored as descriptions of geometric shapes: rectangles, circles, incomplete rectangles. The engine in one hand has less restrictions about lines - it's okay to have overlapping walls, walls in out of bounce; but in the other hand it doesn't support sector light (btw was added in Meat2Eat game), and different sector's floor and ceiling level. It doesn't have a "sector" term at all - lines can have different height, but you can't see what's on surfaces on top of them or under neath
 
 ### Dependencies
 
