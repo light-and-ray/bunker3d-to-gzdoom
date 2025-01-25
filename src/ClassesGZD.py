@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from enum import Enum
 from typing import Any
 from ClassesShared import HeightType
 from ClassesInterim import MapInterim
@@ -14,9 +15,15 @@ class SectorGZD:
     colorFloor: Any = None
     colorCeiling: Any = None
 
+
+class TextureMode(Enum):
+    MIDDLE = 0
+    TOP_AND_BOTTOM = 1
+
 @dataclass
 class SideGZD:
     sectorIdx: int
+    mode: TextureMode
     textureTop: Any = None
     textureBottom: Any = None
     textureMiddle: Any = None
@@ -83,5 +90,9 @@ class MapGZD:
         for i in range(len(self.sides)):
             if self.sides[i].sectorIdx == sectorIdx:
                 return i
-        self.sides.append(SideGZD(sectorIdx=sectorIdx))
+        if sectorIdx == self.SECTOR_BOTTOM_IDX:
+            mode = TextureMode.TOP_AND_BOTTOM
+        else:
+            mode = TextureMode.MIDDLE
+        self.sides.append(SideGZD(sectorIdx=sectorIdx, mode=mode))
         return len(self.sides) - 1

@@ -12,6 +12,9 @@
         "omgifol",
         "Sidedef",
         "sidedefs",
+        "texturebottom",
+        "texturemiddle",
+        "texturetop",
         "udmfmaps",
         "umap",
         "venv"

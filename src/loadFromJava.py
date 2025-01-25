@@ -46,6 +46,6 @@ def load(mapIndex):
         cratesAngles=read1DArray('CRATES_ANGLE'), doorsStartLineIdx=read1DArray('DOORS_START_LINE_IDX'),
     )
     data.brokenLines = BROKEN_LINES[mapIndex]
-    footer = read1DArray("FOOTER")
-    data.startPos = (footer[-2], footer[-1])
+    # footer = read1DArray("FOOTER")
+    data.startPos = (0, 0)
     return data
