@@ -14,7 +14,7 @@ def saveMap(map: MapGZD, mapIndex: int):
 
     for sector in (map.sectorFull, map.sectorBottom):
         umap.sectors.append(omg.USector(textureceiling="NONE", texturefloor="NONE",
-            heightfloor=sector.heightFloor, heightceiling=sector.heightCeiling, lightlevel=LIGHT_LEVEL))
+            heightfloor=int(sector.heightFloor), heightceiling=int(sector.heightCeiling), lightlevel=LIGHT_LEVEL))
 
     for side in map.sides:
         umap.sidedefs.append(omg.USidedef(sector=side.sectorIdx))

@@ -4,14 +4,14 @@ from typing import Any
 from ClassesShared import HeightType
 from ClassesInterim import MapInterim
 
-LEVEL_FLOOR = 0.0
-LEVEL_CEILING = 96.0
+LEVEL_FLOOR = 0
+LEVEL_CEILING = 96
 SCALE_FACTOR = 96 / 65536
 
 @dataclass
 class SectorGZD:
-    heightFloor: float
-    heightCeiling: float
+    heightFloor: int
+    heightCeiling: int
 
 class TextureMode(Enum):
     MIDDLE = 0
@@ -51,7 +51,7 @@ class MapGZD:
         self.lines: list[LineGZD] = []
 
         self.sectorFull = SectorGZD(heightFloor=LEVEL_FLOOR, heightCeiling=LEVEL_CEILING)
-        self.sectorBottom = SectorGZD(heightFloor=(LEVEL_CEILING+LEVEL_FLOOR)/2, heightCeiling=LEVEL_CEILING)
+        self.sectorBottom = SectorGZD(heightFloor=(LEVEL_CEILING+LEVEL_FLOOR)//2, heightCeiling=LEVEL_CEILING)
 
         for line in mapInterim.lines:
             v1Idx = self._addVertex(*line.v1.pair())
