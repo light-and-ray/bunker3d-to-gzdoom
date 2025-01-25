@@ -40,5 +40,13 @@ def saveMap(map: MapGZD, mapIndex: int):
     wad.to_file(wadPath)
 
 
+def copyFileFromTemplate(name: str):
+    origin = TEMPLATES_DIR + "/" + name
+    dist = RESULT_DIR + "/" + name
+    os.makedirs(os.path.dirname(dist), exist_ok=True)
+    shutil.copy(origin, dist)
+
 def saveMapInfo():
-    shutil.copy(TEMPLATES_DIR + "/MAPINFO", RESULT_DIR)
+    copyFileFromTemplate("MAPINFO")
+    copyFileFromTemplate("zscript.zc")
+    copyFileFromTemplate("zscript/B3DPlayer.zc")

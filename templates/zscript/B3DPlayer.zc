@@ -1,0 +1,14 @@
+class B3DPlayer : DoomPlayer
+{
+    const MAXBOB = 8.;
+
+    Default
+    {
+        Height 48;
+        // Speed 0.7;
+        Speed 1.2;
+        Radius 24;
+        Player.ViewHeight 48;
+        Player.ViewBob 0.5;
+    }
+}

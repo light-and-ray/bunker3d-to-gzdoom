@@ -1,4 +1,4 @@
-
+/*
 map C1M1 lookup "C1M1"
 {
    levelnum = 1
@@ -6,4 +6,9 @@ map C1M1 lookup "C1M1"
    next = "E1M2"
    secretnext = "E1M9"
    music = "$MUSIC_E1M1"
+} */
+
+GameInfo
+{
+   PlayerClasses = "B3DPlayer"
 }

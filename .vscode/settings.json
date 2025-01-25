@@ -8,6 +8,7 @@
         "Linedef",
         "linedefs",
         "MAPINFO",
+        "MAXBOB",
         "Netsoftware",
         "omgifol",
         "Sidedef",
@@ -18,6 +19,7 @@
         "twosided",
         "udmfmaps",
         "umap",
-        "venv"
+        "venv",
+        "zscript"
     ]
 }

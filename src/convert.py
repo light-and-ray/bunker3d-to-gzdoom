@@ -4,7 +4,7 @@ from ClassesInterim import MapInterim
 from ClassesGZD import MapGZD
 from saveMap import saveMap, saveMapInfo
 
-# saveMapInfo()
+saveMapInfo()
 
 for idx in range(1, 10):
     data = load(idx)
