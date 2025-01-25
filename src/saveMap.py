@@ -13,16 +13,16 @@ def saveMap(map: MapGZD, mapIndex: int):
     umap.vertexes = [omg.UVertex(v.x, v.y) for v in map.vertexes]
 
     for sector in (map.sectorFull, map.sectorBottom):
-        umap.sectors.append(omg.USector(textureceiling="NONE", texturefloor="NONE",
+        umap.sectors.append(omg.USector(textureceiling="CEIL1_1", texturefloor="FLOOR0_1",
             heightfloor=int(sector.heightFloor), heightceiling=int(sector.heightCeiling), lightlevel=LIGHT_LEVEL))
 
     for side in map.sides:
         umap.sidedefs.append(omg.USidedef(sector=side.sectorIdx))
         if side.mode == TextureMode.MIDDLE:
-            umap.sidedefs[-1].texturemiddle = "NONE"
+            umap.sidedefs[-1].texturemiddle = "STARTAN2"
         elif side.mode == TextureMode.TOP_AND_BOTTOM:
-            umap.sidedefs[-1].texturebottom = "NONE"
-            umap.sidedefs[-1].texturetop = "NONE"
+            umap.sidedefs[-1].texturebottom = "STARTAN2"
+            umap.sidedefs[-1].texturetop = "STARTAN2"
 
     for line in map.lines:
         umap.linedefs.append(omg.ULinedef(v1=line.vertexStartIdx, v2=line.vertexEndIdx,

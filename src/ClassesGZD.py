@@ -5,8 +5,8 @@ from ClassesShared import HeightType
 from ClassesInterim import MapInterim
 
 LEVEL_FLOOR = 0
-LEVEL_CEILING = 96
-SCALE_FACTOR = 96 / 65536
+LEVEL_CEILING = 84 # 84 for 56 player height, so 96 is for 64 player height
+SCALE_FACTOR = LEVEL_CEILING / 65536
 
 @dataclass
 class SectorGZD:
