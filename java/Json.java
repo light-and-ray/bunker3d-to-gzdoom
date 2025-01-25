@@ -21,15 +21,50 @@ public class Json {
             return toJson((byte[]) array);
         } else if (array instanceof int[]) {
             return toJson((int[]) array);
+        } else if (array instanceof short[]) {
+            return toJson((short[]) array);
         } else if (array instanceof byte[][]) {
             return toJson((byte[][]) array);
         } else if (array instanceof int[][]) {
             return toJson((int[][]) array);
+        } else if (array instanceof short[][]) {
+            return toJson((short[][]) array);
         } else if (array instanceof ArrayList) {
             return toJson((ArrayList<?>) array);
         } else {
             return "Unsupported type";
         }
+    }
+
+    private static String toJson(short[] array) {
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < array.length; i++) {
+            sb.append(array[i]);
+            if (i < array.length - 1) {
+                sb.append(",");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
+    private static String toJson(short[][] array) {
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < array.length; i++) {
+            sb.append("[");
+            for (int j = 0; j < array[i].length; j++) {
+                sb.append(array[i][j]);
+                if (j < array[i].length - 1) {
+                    sb.append(",");
+                }
+            }
+            sb.append("]");
+            if (i < array.length - 1) {
+                sb.append(",");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
     }
 
     private static String toJson(byte[] array) {
@@ -101,6 +136,8 @@ public class Json {
             if (obj instanceof Integer) {
                 sb.append(obj);
             } else if (obj instanceof Byte) {
+                sb.append(obj);
+            } else if (obj instanceof Short) {
                 sb.append(obj);
             } else if (obj instanceof ArrayList) {
                 sb.append(toJson((ArrayList<?>) obj));

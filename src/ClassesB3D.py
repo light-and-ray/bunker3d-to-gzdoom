@@ -26,7 +26,7 @@ class LineB3D:
 class MapB3D:
     def __init__(self, rawLines: list[list[int]], rawHeight: list[int],
             cratesStartLineIdx: list[int], cratesContent: list[int], cratesAngles: list[int],
-            doorsStartLineIdx: list[int], brokenLines: list[int]
+            doorsStartLineIdx: list[int]
     ):
         self.lines: list[LineB3D] = []
         for i in range(len(rawLines[0])):
@@ -53,6 +53,4 @@ class MapB3D:
                 startLineIdx=doorsStartLineIdx[idx],
                 texture=self.lines[doorsStartLineIdx[idx]].texture,
             ))
-
-        self.brokenLines = brokenLines
 

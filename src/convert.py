@@ -1,16 +1,15 @@
-from loadFromJava import loadB3DMap
+from loadFromJava import load
 from drawMap import drawMap
 from ClassesInterim import MapInterim
 from ClassesGZD import MapGZD
+from saveMap import saveMap, saveMapInfo
 
 
 for idx in range(1, 2):
-    map = loadB3DMap(idx)
-    map = MapInterim(map)
-    drawMap(map, name=f'c1m{idx}', show=False)
-    mapGZD = MapGZD(map)
-    for i, x in enumerate(mapGZD.vertexes): print(f"{i}: {x}")
-    for i, x in enumerate(mapGZD.sides): print(f"{i}: {x}")
-    for i, x in enumerate(mapGZD.lines): print(f"{i}: {x}")
-
+    data = load(idx)
+    mapInterim = MapInterim(data.map, data.brokenLines)
+    # drawMap(map, name=f'c1m{idx}', show=False)
+    mapGZD = MapGZD(mapInterim, startPos=data.startPos)
+    saveMapInfo()
+    saveMap(map=mapGZD, mapIndex=idx)
 

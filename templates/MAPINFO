@@ -1,0 +1,9 @@
+
+map C1M1 lookup "C1M1"
+{
+   levelnum = 1
+   titlepatch = "WILV00"
+   next = "E1M2"
+   secretnext = "E1M9"
+   music = "$MUSIC_E1M1"
+}

@@ -4,15 +4,15 @@ from ClassesShared import HeightType
 from ClassesInterim import MapInterim
 
 LEVEL_FLOOR = 0.0
-LEVEL_CEILING = 64.0
-SCALE_FACTOR = 64 / 65536
+LEVEL_CEILING = 96.0
+SCALE_FACTOR = 96 / 65536
 
 @dataclass
 class SectorGZD:
-    floorHeight: float
-    ceilingHeight: float
-    floorColor: Any = None
-    ceilingColor: Any = None
+    heightFloor: float
+    heightCeiling: float
+    colorFloor: Any = None
+    colorCeiling: Any = None
 
 @dataclass
 class SideGZD:
@@ -38,15 +38,15 @@ class MapGZD:
     SECTOR_FULL_IDX = 0
     SECTOR_BOTTOM_IDX = 1
 
-    def __init__(self, mapInterim: MapInterim):
+    def __init__(self, mapInterim: MapInterim, startPos: tuple[int]):
         self.vertexes: list[VertexGZD] = []
         self.sectorFull: SectorGZD = None
         self.sectorBottom: SectorGZD = None
         self.sides: list[SideGZD] = []
         self.lines: list[LineGZD] = []
 
-        self.sectorFull = SectorGZD(floorHeight=LEVEL_FLOOR, ceilingHeight=LEVEL_CEILING)
-        self.sectorBottom = SectorGZD(floorHeight=(LEVEL_CEILING+LEVEL_FLOOR)/2, ceilingHeight=LEVEL_CEILING)
+        self.sectorFull = SectorGZD(heightFloor=LEVEL_FLOOR, heightCeiling=LEVEL_CEILING)
+        self.sectorBottom = SectorGZD(heightFloor=(LEVEL_CEILING+LEVEL_FLOOR)/2, heightCeiling=LEVEL_CEILING)
 
         for line in mapInterim.lines:
             v1Idx = self._addVertex(*line.v1.pair())
@@ -66,6 +66,8 @@ class MapGZD:
         for i in range(len(self.vertexes)):
             self.vertexes[i].x *= SCALE_FACTOR
             self.vertexes[i].y *= SCALE_FACTOR
+
+        self.startPos = (startPos[0] * SCALE_FACTOR, startPos[1] * SCALE_FACTOR)
 
 
     def _addVertex(self, x, y) -> int:

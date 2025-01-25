@@ -1,9 +1,19 @@
 {
     "cSpell.words": [
+        "ednum",
+        "heightceiling",
+        "heightfloor",
         "javac",
+        "lightlevel",
+        "Linedef",
         "linedefs",
+        "MAPINFO",
         "Netsoftware",
         "omgifol",
+        "Sidedef",
+        "sidedefs",
+        "udmfmaps",
+        "umap",
         "venv"
     ]
 }

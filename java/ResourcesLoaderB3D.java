@@ -10,6 +10,7 @@ public class ResourcesLoaderB3D {
    public ArrayList<Integer> CRATES_START_LINE_IDX = new ArrayList<>();
    public ArrayList<Byte> CRATES_CONTENT = new ArrayList<>();
    public ArrayList<Byte> CRATES_ANGLE = new ArrayList<>();
+   public short[] FOOTER;
    public byte c;
    public boolean e;
    public int f = 10;
@@ -389,6 +390,7 @@ public class ResourcesLoaderB3D {
    }
 
    public void loadMapInner(short[] footer) {
+      this.FOOTER = footer;
       this.E = new byte[3][][][];
       this.loadMapPart((byte[])this.loadedMap[0], (byte[])this.loadedMap[1], (byte[])this.o, 0);
       this.loadMapPart((byte[])this.loadedMap[2], (byte[])this.loadedMap[3], (byte[])this.p, 1);

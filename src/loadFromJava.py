@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 import json, os
 from ClassesB3D import MapB3D
 
@@ -28,14 +29,23 @@ BROKEN_LINES = [
     [] #9
 ]
 
+@dataclass
+class LoadedData:
+    map: MapB3D = None
+    brokenLines: list[int] = None
+    startPos: tuple[int] = None
 
-def loadB3DMap(mapIndex):
+
+def load(mapIndex):
     returnCode = os.system(f'./bin/runJava.sh {mapIndex}')
     if (returnCode != 0):
         raise Exception(f"java returned {returnCode}")
-    map = MapB3D(rawLines=read2DArray('LINES_VERTEXES'), rawHeight=read1DArray('LINES_HEIGHT'),
+    data = LoadedData()
+    data.map = MapB3D(rawLines=read2DArray('LINES_VERTEXES'), rawHeight=read1DArray('LINES_HEIGHT'),
         cratesStartLineIdx=read1DArray('CRATES_START_LINE_IDX'), cratesContent=read1DArray('CRATES_CONTENT'),
         cratesAngles=read1DArray('CRATES_ANGLE'), doorsStartLineIdx=read1DArray('DOORS_START_LINE_IDX'),
-        brokenLines=BROKEN_LINES[mapIndex]
     )
-    return map
+    data.brokenLines = BROKEN_LINES[mapIndex]
+    footer = read1DArray("FOOTER")
+    data.startPos = (footer[-2], footer[-1])
+    return data

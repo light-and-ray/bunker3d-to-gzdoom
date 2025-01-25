@@ -15,27 +15,27 @@ class LineInterim:
 
 
 class MapInterim:
-    def __init__(self, mapB3D: MapB3D):
+    def __init__(self, mapB3D: MapB3D, brokenLines: list[int]):
         self.lines: list[LineInterim] = []
         for line in mapB3D.lines:
             self.lines.append(LineInterim(v1=line.v1, v2=line.v2, height=line.height, texture=line.texture))
-        self._removeCratesDoorsAndBrokenLines(mapB3D.crates, mapB3D.doors, mapB3D.brokenLines)
+        self._removeCratesDoorsAndBrokenLines(mapB3D.crates, mapB3D.doors, brokenLines)
         # self._fixVertexes()
         self._removeOverlaps()
 
 
     def _removeCratesDoorsAndBrokenLines(self, crates: list[CrateB3D], doors: list[DoorB3D], brokenLines: list[int]):
         linesToRemove: set[int] = set(brokenLines)
-        # linesToRemove: set[int] = set()
-        # for crate in crates:
-        #     linesToRemove.add(crate.startLineIdx)
-        #     linesToRemove.add(crate.startLineIdx+1)
-        #     linesToRemove.add(crate.startLineIdx+2)
-        #     linesToRemove.add(crate.startLineIdx+3)
-        # for door in doors:
-        #     linesToRemove.add(door.startLineIdx)
-        #     linesToRemove.add(door.startLineIdx+1)
-        #     linesToRemove.add(door.startLineIdx+2)
+
+        for crate in crates:
+            linesToRemove.add(crate.startLineIdx)
+            linesToRemove.add(crate.startLineIdx+1)
+            linesToRemove.add(crate.startLineIdx+2)
+            linesToRemove.add(crate.startLineIdx+3)
+        for door in doors:
+            linesToRemove.add(door.startLineIdx)
+            linesToRemove.add(door.startLineIdx+1)
+            linesToRemove.add(door.startLineIdx+2)
 
         newLines: list[LineInterim] = []
         for index, line in enumerate(self.lines):
