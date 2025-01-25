@@ -5,6 +5,7 @@ from ClassesInterim import MapInterim
 
 LEVEL_FLOOR = 0.0
 LEVEL_CEILING = 64.0
+SCALE_FACTOR = 64 / 65536
 
 @dataclass
 class SectorGZD:
@@ -61,6 +62,10 @@ class MapGZD:
                 sideFrontIdx = self._addSide(self.SECTOR_BOTTOM_IDX)
             self.lines.append(LineGZD(vertexStartIdx=v1Idx, vertexEndIdx=v2Idx,
                                       sideFrontIdx=sideFrontIdx, sideBackIdx=sideBackIdx))
+
+        for i in range(len(self.vertexes)):
+            self.vertexes[i].x *= SCALE_FACTOR
+            self.vertexes[i].y *= SCALE_FACTOR
 
 
     def _addVertex(self, x, y) -> int:
