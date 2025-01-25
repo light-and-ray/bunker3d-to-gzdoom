@@ -34,6 +34,8 @@ class LoadedData:
     map: MapB3D = None
     brokenLines: list[int] = None
     startPos: tuple[int] = None
+    colorCeiling: tuple[int] = None
+    colorFloor: tuple[int] = None
 
 
 def load(mapIndex):
@@ -46,6 +48,8 @@ def load(mapIndex):
         cratesAngles=read1DArray('CRATES_ANGLE'), doorsStartLineIdx=read1DArray('DOORS_START_LINE_IDX'),
     )
     data.brokenLines = BROKEN_LINES[mapIndex]
-    # footer = read1DArray("FOOTER")
+    footer = read1DArray("FOOTER")
+    data.colorCeiling = (footer[0], footer[1], footer[2])
+    data.colorFloor = (footer[3], footer[4], footer[5])
     data.startPos = (0, 0)
     return data

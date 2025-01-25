@@ -12,9 +12,6 @@ SCALE_FACTOR = 96 / 65536
 class SectorGZD:
     heightFloor: float
     heightCeiling: float
-    colorFloor: Any = None
-    colorCeiling: Any = None
-
 
 class TextureMode(Enum):
     MIDDLE = 0
