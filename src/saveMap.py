@@ -20,7 +20,7 @@ def saveMap(map: MapGZD, mapIndex: int):
         umap.sidedefs.append(omg.USidedef(sector=side.sectorIdx))
         if side.mode == TextureMode.MIDDLE:
             umap.sidedefs[-1].texturemiddle = "NONE"
-        else:
+        elif side.mode == TextureMode.TOP_AND_BOTTOM:
             umap.sidedefs[-1].texturebottom = "NONE"
             umap.sidedefs[-1].texturetop = "NONE"
 
