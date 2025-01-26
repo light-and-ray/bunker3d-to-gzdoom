@@ -48,5 +48,5 @@ def copyFileFromTemplate(name: str):
 
 def saveMapInfo():
     copyFileFromTemplate("MAPINFO")
-    copyFileFromTemplate("zscript.zc")
-    copyFileFromTemplate("zscript/B3DPlayer.zc")
+    copyFileFromTemplate("zscript.zs")
+    copyFileFromTemplate("zscript/B3DPlayer.zs")
