@@ -8,8 +8,8 @@ struct AutoCrouchData
 
 class B3DPlayer : DoomPlayer
 {
-    AutoCrouchData autoCrouchData;
     const MAXBOB = 8.;
+    AutoCrouchData autoCrouchData;
 
     Default
     {
@@ -22,14 +22,25 @@ class B3DPlayer : DoomPlayer
         Player.ViewBob 0.5;
     }
 
+    // overrides
+
 	override void Tick()
 	{
 		super.Tick();
-        performAutoCrouch();
+        performAutoCrouch_Tick();
 
 	}
 
-    void performAutoCrouch()
+    override void CheckCrouch(bool totallyfrozen)
+    {
+        performAutoCrouch_CheckCrouch();
+        super.CheckCrouch(totallyfrozen);
+    }
+
+
+    // own functions
+
+    void performAutoCrouch_Tick()
     {
         if (cursector.CenterCeiling() - pos.z <= autoCrouchData.HEIGHT_THRESHOLD)
         {
@@ -44,12 +55,11 @@ class B3DPlayer : DoomPlayer
         }
     }
 
-    override void CheckCrouch(bool totallyfrozen)
+    void performAutoCrouch_CheckCrouch()
     {
         if (autoCrouchData.wasCrouched) {
             player.cmd.buttons |= BT_CROUCH;
         }
-        super.CheckCrouch(totallyfrozen);
     }
 
 }
