@@ -29,24 +29,27 @@ class B3DPlayer : DoomPlayer
 
 	}
 
-void performAutoCrouch()
-{
-    // Console.printf("%f", autoCrouchData.HEIGHT_THRESHOLD);
-    let player = self.player;
-    UserCmd cmd = player.cmd;
-    if (cursector.CenterCeiling() - pos.z <= autoCrouchData.HEIGHT_THRESHOLD)
+    void performAutoCrouch()
     {
-        if (!autoCrouchData.wasCrouched) {
-            Console.printf('do crouch');
-            autoCrouchData.wasCrouched = true;
-        }
-    } else {
-        if (autoCrouchData.wasCrouched) {
-            Console.printf('do uncrouch');
-            player.crouching = 0;
-            autoCrouchData.wasCrouched = false;
+        if (cursector.CenterCeiling() - pos.z <= autoCrouchData.HEIGHT_THRESHOLD)
+        {
+            if (!autoCrouchData.wasCrouched) {
+                autoCrouchData.wasCrouched = true;
+            }
+        } else {
+            if (autoCrouchData.wasCrouched) {
+                player.crouching = 0;
+                autoCrouchData.wasCrouched = false;
+            }
         }
     }
-}
+
+    override void CheckCrouch(bool totallyfrozen)
+    {
+        if (autoCrouchData.wasCrouched) {
+            player.cmd.buttons |= BT_CROUCH;
+        }
+        super.CheckCrouch(totallyfrozen);
+    }
 
 }
