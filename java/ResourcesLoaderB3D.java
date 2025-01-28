@@ -1446,12 +1446,13 @@ public class ResourcesLoaderB3D {
                int height = var11.getHeight();
                BufferedImage transformedImage = new BufferedImage(height, width, BufferedImage.TYPE_INT_RGB);
                Graphics2D g2d = transformedImage.createGraphics();
+               g2d.translate(height / 2, width / 2); // move to the center of the new image
                g2d.rotate(Math.PI / 2); // rotate 90 degrees clockwise
                g2d.scale(-1, 1); // reflect about vertical center
-               g2d.translate(-width, 0); // adjust translation
+               g2d.translate(-width / 2, -height / 2); // adjust translation
                g2d.drawImage(var11, 0, 0, null);
                g2d.dispose();
-               this.C = transformedImage;
+               this.C = transformedImage; // assign the transformed image to C
             }
          } else {
             this.D = this.readImage("/" + String.valueOf(var10) + this.dataExt);
@@ -2195,31 +2196,6 @@ public class ResourcesLoaderB3D {
       this.cP = new int[var2];
    }
 
-   // private void a(int[] var1, int[] var2, int[] var3, int[] var4) {
-   //    if (this.bc && !this.aZ) {
-   //       this.bn[this.aG] = var1[this.aE];
-   //    }
-
-   //    if (this.bd && !this.ba) {
-   //       this.bn[this.aH] = var2[this.aE];
-   //    }
-
-   //    if (!this.bb) {
-   //       this.bn[this.aI] = var3[this.aE];
-   //    }
-
-   //    int[] var10000;
-   //    int var10001;
-   //    if (this.aJ == this.bK + 25920) {
-   //       var10000 = this.bn;
-   //       var10001 = this.aJ;
-   //    } else {
-   //       var10000 = this.bn;
-   //       var10001 = this.aJ - 240;
-   //    }
-
-   //    var10000[var10001] = var4[this.aE];
-   // }
 
 
    private void initFloorCeilingColor(short[] var1) {

@@ -11,6 +11,6 @@ for idx in range(1, 10):
     mapInterim = MapInterim(data.map, data.brokenLines)
     # drawMap(mapInterim, name=f'c1m{idx}', show=False)
     mapGZD = MapGZD(mapInterim, startPos=data.startPos)
-    saveMap(map=mapGZD, mapIndex=idx)
+    # saveMap(map=mapGZD, mapIndex=idx)
     saveTextures(textures=data.textures, mapIndex=idx)
 
