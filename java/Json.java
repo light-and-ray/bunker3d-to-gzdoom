@@ -31,6 +31,10 @@ public class Json {
             return toJson((short[][]) array);
         } else if (array instanceof ArrayList) {
             return toJson((ArrayList<?>) array);
+        } else if (array instanceof boolean[]) {
+            return toJson((boolean[]) array);
+        } else if (array instanceof boolean[][]) {
+            return toJson((boolean[][]) array);
         } else {
             return "Unsupported type";
         }
@@ -129,6 +133,37 @@ public class Json {
         return sb.toString();
     }
 
+    private static String toJson(boolean[] array) {
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < array.length; i++) {
+            sb.append(array[i]);
+            if (i < array.length - 1) {
+                sb.append(",");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
+    private static String toJson(boolean[][] array) {
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < array.length; i++) {
+            sb.append("[");
+            for (int j = 0; j < array[i].length; j++) {
+                sb.append(array[i][j]);
+                if (j < array[i].length - 1) {
+                    sb.append(",");
+                }
+            }
+            sb.append("]");
+            if (i < array.length - 1) {
+                sb.append(",");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
     private static String toJson(ArrayList<?> array) {
         StringBuilder sb = new StringBuilder("[");
         for (int i = 0; i < array.size(); i++) {
@@ -141,6 +176,8 @@ public class Json {
                 sb.append(obj);
             } else if (obj instanceof ArrayList) {
                 sb.append(toJson((ArrayList<?>) obj));
+            } else if (obj instanceof Boolean) {
+                sb.append(obj);
             } else {
                 sb.append("\"" + obj.toString() + "\"");
             }

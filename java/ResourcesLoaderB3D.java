@@ -3,6 +3,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class ResourcesLoaderB3D {
    public String ROOT_JAR = "../jars/b3d.d";
@@ -134,6 +135,19 @@ public class ResourcesLoaderB3D {
    public int[] cosTable;
    public int ff;
 
+
+   public short[] bW;
+   public short[] bX;
+   public int[] ei;
+   public int eP;
+   public int eQ;
+   public byte fl;
+   public byte fm;
+   public byte fn;
+   public byte fo;
+   public byte fp;
+   public byte fq;
+   private Random dR = new Random();
 
 
 
@@ -397,8 +411,8 @@ public class ResourcesLoaderB3D {
       this.modifyBigLumps01(this.E[0], this.E[1]);
       this.modifyBigLump1(this.E[1]);
       if (!this.gB) {
-         // this.loadMapPart((byte[])this.loadedMap[4], (byte[])this.loadedMap[5], (byte[])this.n, 2);
-         // this.b(this.E[2]);
+         this.loadMapPart((byte[])this.loadedMap[4], (byte[])this.loadedMap[5], (byte[])this.n, 2);
+         this.b(this.E[2]);
          // E[2][0] - palettes ?
          // this.readFoe(this.E[2]);
          // this.d(this.E[2]);
@@ -1069,5 +1083,120 @@ public class ResourcesLoaderB3D {
       return this.cos(90 - var1);
    }
 
+
+
+
+
+
+
+   private void b(byte[][][] bigLump2) {
+      int length = bigLump2[4].length;
+      this.bZ = new byte[length];
+      this.bW = new short[length];
+      this.ca = new byte[32];
+      this.bX = new short[length];
+      this.cb = new byte[length];
+      this.cj = new boolean[length];
+      this.cc = new byte[length];
+      this.cl = new boolean[48 + this.eY];
+      this.ce = new byte[length];
+      this.ck = new boolean[length];
+      this.cf = new byte[length];
+      this.z = new byte[length];
+      this.ei = new int[length];
+
+      int i;
+      for(i = 0; i < length; ++i) {
+         byte[] var10000;
+         int var10001;
+         byte var10002;
+         if (bigLump2[4][i][2] == -1) {
+            var10000 = this.cg;
+            var10001 = i;
+            var10002 = 10;
+         } else {
+            var10000 = this.cg;
+            var10001 = i;
+            var10002 = 0;
+         }
+
+         var10000[var10001] = var10002;
+         this.bT[i][0] = 128 + bigLump2[4][i][0] << 16 >> 2;
+         this.bT[i][1] = 128 + bigLump2[4][i][1] << 16 >> 2;
+         this.ei[i] = -1;
+         this.bZ[i] = bigLump2[4][i][2];
+         this.bW[i] = (short)(bigLump2[4][i][3] * 2);
+         this.ca[i] = bigLump2[4][i][4];
+         this.bX[i] = (short)(bigLump2[4][i][5] + 128);
+         this.cj[i] = true;
+         this.cc[i] = 1;
+         this.cb[i] = 1;
+         this.cl[i] = false;
+         this.cm[i] = true;
+         this.ch[i] = bigLump2[4][i][6];
+         this.cf[i] = bigLump2[4][i][7];
+         this.ck[i] = false;
+         byte var6;
+         if (this.ca[i] <= 0) {
+            var10000 = this.z;
+            var10001 = i;
+            var6 = (byte)(abs(this.F()) & 1);
+         } else {
+            var10000 = this.z;
+            var10001 = i;
+            var6 = 0;
+         }
+
+         var10000[var10001] = var6;
+         if (this.ca[i] > 0 && (this.ca[i] != 32 || this.selectedMap != 9)) {
+            var10000 = this.ce;
+            var10001 = i;
+            var10002 = 0;
+         } else {
+            var10000 = this.ce;
+            var10001 = i;
+            var10002 = 100;
+         }
+
+         var10000[var10001] = var10002;
+      }
+
+      this.eP = bigLump2[4].length;
+      this.fl = bigLump2[8][0][0];
+      this.fm = bigLump2[8][0][1];
+      this.fn = bigLump2[8][0][2];
+      this.fp = bigLump2[8][0][3];
+      this.fo = bigLump2[8][0][4];
+      this.eQ = bigLump2[7].length;
+      int var3 = 16;
+      int var4 = bigLump2[7].length;
+
+      for(i = 0; i < var4; ++i) {
+         this.cg[var3] = this.fl;
+         this.bT[var3][0] = 128 + bigLump2[7][i][0] << 16 >> 2;
+         this.bT[var3][1] = 128 + bigLump2[7][i][1] << 16 >> 2;
+         this.ca[var3] = bigLump2[7][i][2];
+         this.cm[var3] = true;
+         this.ch[var3] = bigLump2[7][i][3];
+         ++var3;
+      }
+
+      var3 = 32;
+      var4 = bigLump2[9].length;
+
+      for(i = 0; i < var4; ++i) {
+         this.cg[var3] = bigLump2[9][i][0];
+         this.bT[var3][0] = 128 + bigLump2[9][i][1] << 16 >> 2;
+         this.bT[var3][1] = 128 + bigLump2[9][i][2] << 16 >> 2;
+         this.cm[var3] = true;
+         ++var3;
+      }
+
+   }
+
+
+   private int F() {
+      return this.dR.nextInt();
+   }
 
 }
