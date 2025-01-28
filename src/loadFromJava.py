@@ -25,7 +25,7 @@ def read3DArray(arrayName: str) -> list[list[list[int | None]]]:
         return [[[int(num) if num is not None else None for num in row] if row is not None else None for row in plane] if plane is not None else None for plane in data]
 
 
-def load_image_from_1d_list(data, width, height) -> Image:
+def load_image_from_1d_list(data, width, height) -> Image.Image:
     img = Image.new('RGB', (width, height))
 
     # Load the pixel data into the image
@@ -64,6 +64,7 @@ class LoadedData:
     startPos: tuple[int] = None
     colorCeiling: tuple[int] = None
     colorFloor: tuple[int] = None
+    textures: list[Image.Image] = None
 
 
 def load(mapIndex):
@@ -84,9 +85,8 @@ def load(mapIndex):
     textures_data = read2DArray("TEXTURES_DATA")
     textures_w = read1DArray("TEXTURES_W")
     textures_h = read1DArray("TEXTURES_H")
-
+    data.textures = []
     for i in range(len(textures_data)):
-        load_image_from_1d_list(textures_data[i], textures_w[i], textures_h[i]).show()
-
+        data.textures.append(load_image_from_1d_list(textures_data[i], textures_w[i], textures_h[i]))
 
     return data

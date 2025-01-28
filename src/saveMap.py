@@ -40,6 +40,13 @@ def saveMap(map: MapGZD, mapIndex: int):
     wad.to_file(wadPath)
 
 
+def saveTextures(textures, mapIndex: int):
+    for i, texture in enumerate(textures):
+        path = RESULT_DIR + f"/textures/c1m{mapIndex}/texture{i}.png"
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        texture.save(path)
+
+
 def copyFileFromTemplate(name: str):
     origin = STATIC_DIR + "/" + name
     dist = RESULT_DIR + "/" + name
