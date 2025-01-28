@@ -1192,7 +1192,7 @@ public final class b3d_a extends Canvas {
       this.E[2] = (byte[][][])null;
       this.c(false);
       System.gc();
-      this.b(footer);
+      this.initFloorCeilingColor(footer);
       this.loadTextures(this.E[0], this.E[1], footer);
       this.gf = false;
       this.M();
@@ -2962,20 +2962,17 @@ public final class b3d_a extends Canvas {
       this.eS = var7;
    }
 
-   private void b(short[] var1) {
-      a var10000;
+   private void initFloorCeilingColor(short[] var1) {
       int var10001;
       if (!this.gB) {
          this.aV = var1[0] << 16 | var1[1] << 8 | var1[2];
-         var10000 = this;
          var10001 = var1[3] << 16 | var1[4] << 8 | var1[5];
       } else {
          this.aV = 4210752;
-         var10000 = this;
          var10001 = 6316128;
       }
 
-      var10000.aW = var10001;
+      this.aW = var10001;
       this.aV = (int)((long)this.aV | 0L);
       this.aW = (int)((long)this.aW | 0L);
    }

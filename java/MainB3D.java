@@ -40,8 +40,7 @@ public class MainB3D {
         Json.export("FOE2_foeW", loader.foeW);
         Json.export("FOE2_foeH", loader.foeH);
 
-        Json.export("BIG_LUMP_0", loader.E[0]);
-        Json.export("BIG_LUMP_1", loader.E[1]);
-        Json.export("BIG_LUMP_2", loader.E[2]);
+        Json.export("TEXTURES_N", loader.N);
+
     }
 }

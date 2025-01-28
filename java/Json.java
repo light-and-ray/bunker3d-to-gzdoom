@@ -1,6 +1,7 @@
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Json {
@@ -20,197 +21,27 @@ public class Json {
         if (array == null) {
             return "null";
         }
-        if (array instanceof byte[]) {
-            return toJson((byte[]) array);
-        } else if (array instanceof int[]) {
-            return toJson((int[]) array);
-        } else if (array instanceof short[]) {
-            return toJson((short[]) array);
-        } else if (array instanceof byte[][]) {
-            return toJson((byte[][]) array);
-        } else if (array instanceof byte[][][]) {
-            return toJson((byte[][][]) array);
-        } else if (array instanceof int[][]) {
-            return toJson((int[][]) array);
-        } else if (array instanceof short[][]) {
-            return toJson((short[][]) array);
-        } else if (array instanceof ArrayList) {
-            return toJson((ArrayList<?>) array);
-        } else if (array instanceof boolean[]) {
-            return toJson((boolean[]) array);
-        } else if (array instanceof boolean[][]) {
-            return toJson((boolean[][]) array);
+        if (array instanceof ArrayList) {
+            return toJsonArrayList((ArrayList<?>) array);
+        } else if (array.getClass().isArray()) {
+            return toJsonArray(array);
         } else {
-            return "Unsupported type";
+            return "\"" + array.toString() + "\"";
         }
     }
 
-    private static String toJson(short[] array) {
-        StringBuilder sb = new StringBuilder("[");
-        for (int i = 0; i < array.length; i++) {
-            sb.append(array[i]);
-            if (i < array.length - 1) {
-                sb.append(",");
-            }
-        }
-        sb.append("]");
-        return sb.toString();
-    }
-
-    private static String toJson(short[][] array) {
-        StringBuilder sb = new StringBuilder("[");
-        for (int i = 0; i < array.length; i++) {
-            sb.append("[");
-            for (int j = 0; j < array[i].length; j++) {
-                sb.append(array[i][j]);
-                if (j < array[i].length - 1) {
-                    sb.append(",");
-                }
-            }
-            sb.append("]");
-            if (i < array.length - 1) {
-                sb.append(",");
-            }
-        }
-        sb.append("]");
-        return sb.toString();
-    }
-
-    private static String toJson(byte[] array) {
-        StringBuilder sb = new StringBuilder("[");
-        for (int i = 0; i < array.length; i++) {
-            sb.append(array[i]);
-            if (i < array.length - 1) {
-                sb.append(",");
-            }
-        }
-        sb.append("]");
-        return sb.toString();
-    }
-
-    private static String toJson(int[] array) {
-        StringBuilder sb = new StringBuilder("[");
-        for (int i = 0; i < array.length; i++) {
-            sb.append(array[i]);
-            if (i < array.length - 1) {
-                sb.append(",");
-            }
-        }
-        sb.append("]");
-        return sb.toString();
-    }
-
-    private static String toJson(byte[][] array) {
-        StringBuilder sb = new StringBuilder("[");
-        for (int i = 0; i < array.length; i++) {
-            sb.append("[");
-            for (int j = 0; j < array[i].length; j++) {
-                sb.append(array[i][j]);
-                if (j < array[i].length - 1) {
-                    sb.append(",");
-                }
-            }
-            sb.append("]");
-            if (i < array.length - 1) {
-                sb.append(",");
-            }
-        }
-        sb.append("]");
-        return sb.toString();
-    }
-
-    private static String toJson(byte[][][] array) {
-        StringBuilder sb = new StringBuilder("[");
-        for (int i = 0; i < array.length; i++) {
-            sb.append("[");
-            for (int j = 0; j < array[i].length; j++) {
-                sb.append("[");
-                for (int k = 0; k < array[i][j].length; k++) {
-                    sb.append(array[i][j][k]);
-                    if (k < array[i][j].length - 1) {
-                        sb.append(",");
-                    }
-                }
-                sb.append("]");
-                if (j < array[i].length - 1) {
-                    sb.append(",");
-                }
-            }
-            sb.append("]");
-            if (i < array.length - 1) {
-                sb.append(",");
-            }
-        }
-        sb.append("]");
-        return sb.toString();
-    }
-
-    private static String toJson(int[][] array) {
-        StringBuilder sb = new StringBuilder("[");
-        for (int i = 0; i < array.length; i++) {
-            sb.append("[");
-            for (int j = 0; j < array[i].length; j++) {
-                sb.append(array[i][j]);
-                if (j < array[i].length - 1) {
-                    sb.append(",");
-                }
-            }
-            sb.append("]");
-            if (i < array.length - 1) {
-                sb.append(",");
-            }
-        }
-        sb.append("]");
-        return sb.toString();
-    }
-
-    private static String toJson(boolean[] array) {
-        StringBuilder sb = new StringBuilder("[");
-        for (int i = 0; i < array.length; i++) {
-            sb.append(array[i]);
-            if (i < array.length - 1) {
-                sb.append(",");
-            }
-        }
-        sb.append("]");
-        return sb.toString();
-    }
-
-    private static String toJson(boolean[][] array) {
-        StringBuilder sb = new StringBuilder("[");
-        for (int i = 0; i < array.length; i++) {
-            sb.append("[");
-            for (int j = 0; j < array[i].length; j++) {
-                sb.append(array[i][j]);
-                if (j < array[i].length - 1) {
-                    sb.append(",");
-                }
-            }
-            sb.append("]");
-            if (i < array.length - 1) {
-                sb.append(",");
-            }
-        }
-        sb.append("]");
-        return sb.toString();
-    }
-
-    private static String toJson(ArrayList<?> array) {
+    private static String toJsonArrayList(ArrayList<?> array) {
         StringBuilder sb = new StringBuilder("[");
         for (int i = 0; i < array.size(); i++) {
-            Object obj = array.get(i);
-            if (obj instanceof Integer) {
-                sb.append(obj);
-            } else if (obj instanceof Byte) {
-                sb.append(obj);
-            } else if (obj instanceof Short) {
-                sb.append(obj);
-            } else if (obj instanceof ArrayList) {
-                sb.append(toJson((ArrayList<?>) obj));
-            } else if (obj instanceof Boolean) {
-                sb.append(obj);
+            Object element = array.get(i);
+            if (element == null) {
+                sb.append("null");
+            } else if (element instanceof ArrayList) {
+                sb.append(toJsonArrayList((ArrayList<?>) element));
+            } else if (element instanceof Byte || element instanceof Short || element instanceof Integer || element instanceof Long || element instanceof Float || element instanceof Double || element instanceof Boolean) {
+                sb.append(element.toString());
             } else {
-                sb.append("\"" + obj.toString() + "\"");
+                sb.append("\"" + element.toString() + "\"");
             }
             if (i < array.size() - 1) {
                 sb.append(",");
@@ -219,4 +50,28 @@ public class Json {
         sb.append("]");
         return sb.toString();
     }
+
+    private static String toJsonArray(Object array) {
+        int length = Array.getLength(array);
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < length; i++) {
+            Object element = Array.get(array, i);
+            if (element == null) {
+                sb.append("null");
+            } else if (element.getClass().isArray()) {
+                sb.append(toJsonArray(element));
+            } else if (element instanceof Byte || element instanceof Short || element instanceof Integer || element instanceof Long || element instanceof Float || element instanceof Double || element instanceof Boolean) {
+                sb.append(element.toString());
+            } else {
+                sb.append("\"" + element.toString() + "\"");
+            }
+            if (i < length - 1) {
+                sb.append(",");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
+
 }
