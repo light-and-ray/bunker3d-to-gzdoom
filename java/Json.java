@@ -28,6 +28,8 @@ public class Json {
             return toJson((short[]) array);
         } else if (array instanceof byte[][]) {
             return toJson((byte[][]) array);
+        } else if (array instanceof byte[][][]) {
+            return toJson((byte[][][]) array);
         } else if (array instanceof int[][]) {
             return toJson((int[][]) array);
         } else if (array instanceof short[][]) {
@@ -104,6 +106,32 @@ public class Json {
             sb.append("[");
             for (int j = 0; j < array[i].length; j++) {
                 sb.append(array[i][j]);
+                if (j < array[i].length - 1) {
+                    sb.append(",");
+                }
+            }
+            sb.append("]");
+            if (i < array.length - 1) {
+                sb.append(",");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
+    private static String toJson(byte[][][] array) {
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < array.length; i++) {
+            sb.append("[");
+            for (int j = 0; j < array[i].length; j++) {
+                sb.append("[");
+                for (int k = 0; k < array[i][j].length; k++) {
+                    sb.append(array[i][j][k]);
+                    if (k < array[i][j].length - 1) {
+                        sb.append(",");
+                    }
+                }
+                sb.append("]");
                 if (j < array[i].length - 1) {
                     sb.append(",");
                 }

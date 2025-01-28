@@ -15,6 +15,12 @@ def read2DArray(arrayName: str) -> list[list[int]]:
         data = json.load(file)
         return [[int(num) for num in row] for row in data]
 
+def read3DArray(arrayName: str) -> list[list[list[int]]]:
+    filename = f'tmp/{arrayName}.json'
+    with open(filename, 'r') as file:
+        data = json.load(file)
+        return [[[int(num) for num in row] for row in plane] for plane in data]
+
 
 BROKEN_LINES = [
     [],

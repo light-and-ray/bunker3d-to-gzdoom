@@ -2058,7 +2058,7 @@ public final class b3d_a extends Canvas {
                var10001 = this.I;
             }
 
-            var15.a(var10001, var1, var2, var3);
+            this.a(var10001, var1, var2, var3);
          }
 
          if (this.q[6 * var2[9][var3][0] + 5] == 2) {
@@ -2517,18 +2517,18 @@ public final class b3d_a extends Canvas {
       int var10 = (var9[0] + var9[1] + var9[2]) / 3;
 
       for(int var8 = 0; var8 <= 2; ++var8) {
-         var9[var8] = a((int)(var9[var8] + var15), var16);
-         var9[var8] = a((int)(var10 + (var9[var8] - var10) * (var4 + var14) / var14), var16);
+         var9[var8] = clampValue((int)(var9[var8] + var15), var16);
+         var9[var8] = clampValue((int)(var10 + (var9[var8] - var10) * (var4 + var14) / var14), var16);
       }
 
       return var9[0] << var11 | var9[1] << var12 | var9[2] << var13;
    }
 
-   private static int a(int var0, int var1) {
-      if (var0 > var1) {
-         return var1;
+   private static int clampValue(int value, int maxValue) {
+      if (value > maxValue) {
+          return maxValue;
       } else {
-         return var0 < 0 ? 0 : var0;
+          return value < 0? 0 : value;
       }
    }
 

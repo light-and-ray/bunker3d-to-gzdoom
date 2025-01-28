@@ -2,7 +2,7 @@ import shutil, os
 import omg
 from ClassesGZD import MapGZD, TextureMode
 
-TEMPLATES_DIR = "templates"
+STATIC_DIR = "static"
 RESULT_DIR = "result.d"
 LIGHT_LEVEL = 160
 
@@ -41,7 +41,7 @@ def saveMap(map: MapGZD, mapIndex: int):
 
 
 def copyFileFromTemplate(name: str):
-    origin = TEMPLATES_DIR + "/" + name
+    origin = STATIC_DIR + "/" + name
     dist = RESULT_DIR + "/" + name
     os.makedirs(os.path.dirname(dist), exist_ok=True)
     shutil.copy(origin, dist)
