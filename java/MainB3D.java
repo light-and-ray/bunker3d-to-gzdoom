@@ -41,6 +41,18 @@ public class MainB3D {
         Json.export("FOE2_foeH", loader.foeH);
 
         Json.export("TEXTURES_N", loader.N);
+        Json.export("TEXTURES_cI", loader.cI);
+        Json.export("TEXTURES_cJ", loader.cJ);
+        Json.export("TEXTURES_cK", loader.cK);
+        Json.export("TEXTURES_cL", loader.cL);
+        Json.export("TEXTURES_cM", loader.cM);
+        Json.export("TEXTURES_cN", loader.cN);
+        Json.export("TEXTURES_cO", loader.cO);
+        Json.export("TEXTURES_cP", loader.cP);
+
+        Json.export("TEXTURES_DATA", loader.TEXTURES_DATA);
+        Json.export("TEXTURES_W", loader.TEXTURES_W);
+        Json.export("TEXTURES_H", loader.TEXTURES_H);
 
     }
 }

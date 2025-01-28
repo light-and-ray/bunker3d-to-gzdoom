@@ -18,7 +18,9 @@ public class ResourcesLoaderB3D {
    public ArrayList<Integer> CRATES_START_LINE_IDX = new ArrayList<>();
    public ArrayList<Byte> CRATES_CONTENT = new ArrayList<>();
    public ArrayList<Byte> CRATES_ANGLE = new ArrayList<>();
-   public short[] FOOTER;
+   public ArrayList<Integer> TEXTURES_W = new ArrayList<>();
+   public ArrayList<Integer> TEXTURES_H = new ArrayList<>();
+   public ArrayList<int[]> TEXTURES_DATA = new ArrayList<>();   public short[] FOOTER;
    public byte c;
    public boolean e;
    public int f = 10;
@@ -2163,6 +2165,9 @@ public class ResourcesLoaderB3D {
             }
 
             loadTextures_subfunction7(var39, var10001, var40, var41, var10004, var42, var10006, var43, var10008, var10009);
+            this.TEXTURES_W.add(var15);
+            this.TEXTURES_H.add(var16);
+            this.TEXTURES_DATA.add(this.I);
          }
       }
 

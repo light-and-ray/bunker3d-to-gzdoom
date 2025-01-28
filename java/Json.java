@@ -38,6 +38,8 @@ public class Json {
                 sb.append("null");
             } else if (element instanceof ArrayList) {
                 sb.append(toJsonArrayList((ArrayList<?>) element));
+            } else if (element instanceof int[]) {
+                sb.append(toJsonArray(element));
             } else if (element instanceof Byte || element instanceof Short || element instanceof Integer || element instanceof Long || element instanceof Float || element instanceof Double || element instanceof Boolean) {
                 sb.append(element.toString());
             } else {
@@ -59,13 +61,29 @@ public class Json {
             if (element == null) {
                 sb.append("null");
             } else if (element.getClass().isArray()) {
-                sb.append(toJsonArray(element));
+                if (element instanceof int[]) {
+                    sb.append(toJsonIntArray((int[]) element));
+                } else {
+                    sb.append(toJsonArray(element));
+                }
             } else if (element instanceof Byte || element instanceof Short || element instanceof Integer || element instanceof Long || element instanceof Float || element instanceof Double || element instanceof Boolean) {
                 sb.append(element.toString());
             } else {
                 sb.append("\"" + element.toString() + "\"");
             }
             if (i < length - 1) {
+                sb.append(",");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
+    private static String toJsonIntArray(int[] array) {
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < array.length; i++) {
+            sb.append(array[i]);
+            if (i < array.length - 1) {
                 sb.append(",");
             }
         }

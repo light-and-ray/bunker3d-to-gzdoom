@@ -25,16 +25,7 @@ def read3DArray(arrayName: str) -> list[list[list[int | None]]]:
         return [[[int(num) if num is not None else None for num in row] if row is not None else None for row in plane] if plane is not None else None for plane in data]
 
 
-def load_image_from_1d_list(data) -> Image:
-    # Get the dimensions of the image
-    width = int(len(data)**0.5)
-    height = width
-
-    # # Check if the length of the data is a perfect square
-    # if width * height!= len(data):
-    #     raise ValueError("The length of the data is not a perfect square")
-
-    # Create a new image with the same dimensions
+def load_image_from_1d_list(data, width, height) -> Image:
     img = Image.new('RGB', (width, height))
 
     # Load the pixel data into the image
@@ -89,10 +80,13 @@ def load(mapIndex):
     data.colorCeiling = (footer[0], footer[1], footer[2])
     data.colorFloor = (footer[3], footer[4], footer[5])
     data.startPos = (0, 0)
-    images = read2DArray("TEXTURES_N")
-    for x in images:
-        if not x: continue
-        print(len(x))
-        image = load_image_from_1d_list(x)
-        image.show()
+
+    textures_data = read2DArray("TEXTURES_DATA")
+    textures_w = read1DArray("TEXTURES_W")
+    textures_h = read1DArray("TEXTURES_H")
+
+    for i in range(len(textures_data)):
+        load_image_from_1d_list(textures_data[i], textures_w[i], textures_h[i]).show()
+
+
     return data
