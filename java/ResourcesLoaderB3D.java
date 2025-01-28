@@ -147,8 +147,14 @@ public class ResourcesLoaderB3D {
    public byte fo;
    public byte fp;
    public byte fq;
-   private Random dR = new Random();
-
+   public Random dR = new Random();
+   public short[][] bq;
+   public short[] bY;
+   public short[] bt;
+   public short[] bu;
+   public short[] foeW;
+   public short[] foeH;
+   public int[] bj;
 
 
    public ResourcesLoaderB3D() {
@@ -397,10 +403,10 @@ public class ResourcesLoaderB3D {
       }
 
       this.loadMapInner(footer);
-      this.q = null;
-      this.E = (byte[][][][])null;
-      this.M = null;
-      System.gc();
+      // this.q = null;
+      // this.E = (byte[][][][])null;
+      // this.M = null;
+      // System.gc();
    }
 
    public void loadMapInner(short[] footer) {
@@ -412,9 +418,9 @@ public class ResourcesLoaderB3D {
       this.modifyBigLump1(this.E[1]);
       if (!this.gB) {
          this.loadMapPart((byte[])this.loadedMap[4], (byte[])this.loadedMap[5], (byte[])this.n, 2);
-         this.b(this.E[2]);
+         this.readFoePart1(this.E[2]);
          // E[2][0] - palettes ?
-         // this.readFoe(this.E[2]);
+         this.readFoePart2(this.E[2]);
          // this.d(this.E[2]);
       }
 
@@ -1089,7 +1095,7 @@ public class ResourcesLoaderB3D {
 
 
 
-   private void b(byte[][][] bigLump2) {
+   private void readFoePart1(byte[][][] bigLump2) {
       int length = bigLump2[4].length;
       this.bZ = new byte[length];
       this.bW = new short[length];
@@ -1194,9 +1200,134 @@ public class ResourcesLoaderB3D {
 
    }
 
-
    private int F() {
       return this.dR.nextInt();
    }
 
+
+
+   private void readFoePart2(byte[][][] var1) {
+      // Image layer1 = null;
+      // Image layer2 = null;
+      // layer1 = this.readImage("/e" + this.dataExt);
+      // layer2 = this.readImage("/ee" + this.dataExt);
+      // int[] tmp = new int[1];
+      // layer1.getRGB(tmp, 0, 1, 0, 0, 1, 1);
+      // this.BACKGROUND_COLOR = tmp[0];
+      this.bq = new short[6][];
+      this.M = new int[this.bq.length];
+      int length = this.bq.length;
+      int var3 = (16 + var1[5].length + 2) * 2;
+
+      int offset;
+      for(offset = 0; offset < length; ++offset) {
+         this.bq[offset] = new short[var3];
+         this.M[offset] = 16 + var1[5].length + 2;
+         int var4 = this.bq[offset].length;
+
+         for(int var11 = 0; var11 < var4; ++var11) {
+            this.bq[offset][var11] = 0;
+         }
+      }
+
+      int totalSegments = 16 + var1[5].length;
+      this.bY = new short[totalSegments];
+      this.bt = new short[totalSegments];
+      this.bu = new short[totalSegments];
+      this.bj = new int[totalSegments];
+      this.foeW = new short[totalSegments];
+      this.foeH = new short[totalSegments];
+      int segNum = 0;
+      length = this.FOE_METADATA.length;
+
+      for(offset = 0; offset < length; offset += 7) {
+         this.readFoeSubfunction1(this.FOE_METADATA, segNum, offset);
+         this.bY[segNum] = this.FOE_METADATA[offset + 6];
+         ++segNum;
+      }
+
+      segNum = 16;
+      length = var1[5].length;
+
+      for(int var12 = 0; var12 < length; ++var12) {
+         if ((offset = (var1[5][var12][0] >= 50 ? var1[5][var12][0] - 50 : var1[5][var12][0]) * 7) / 7 >= 8) {
+            short[] var10000 = this.l;
+            var10000[offset] = (short)(var10000[offset] << 1);
+            var10000 = this.l;
+            var10000[offset + 1] = (short)(var10000[offset + 1] << 1);
+            var10000 = this.l;
+            var10000[offset + 2] = (short)(var10000[offset + 2] << 1);
+            var10000 = this.l;
+            var10000[offset + 3] = (short)(var10000[offset + 3] << 1);
+         }
+
+         this.readFoeSubfunction1(this.l, segNum, offset);
+         this.bY[segNum] = this.l[offset + 6];
+         ++segNum;
+      }
+
+      // int var16 = this.bq[0][this.M[0]] + 10;
+      // int var17 = this.bq[1][this.M[1]] + 10;
+      // int var18 = this.bq[2][this.M[2]] + 10;
+      // int var19 = this.bq[3][this.M[3]] + 10;
+      // int var20 = this.bq[4][this.M[4]] + 10;
+      // this.readFoeSubfunction2(var16, var17, var1[1].length, var18, var19, var20);
+      // segNum = 0;
+      // short var21 = 0;
+      // length = this.FOE_METADATA.length;
+
+      // for(offset = 0; offset < length; offset += 7) {
+      //    int[] layer1Cut = new int[this.FOE_METADATA[offset + 2] * this.FOE_METADATA[offset + 3]];
+      //    int[] layer2Cut = new int[this.FOE_METADATA[offset + 2] * this.FOE_METADATA[offset + 3]];
+      //    layer1.getRGB(layer1Cut, 0, this.FOE_METADATA[offset + 2], this.FOE_METADATA[offset + 0], this.FOE_METADATA[offset + 1], this.FOE_METADATA[offset + 2], this.FOE_METADATA[offset + 3]);
+      //    layer2.getRGB(layer2Cut, 0, this.FOE_METADATA[offset + 2], this.FOE_METADATA[offset + 0], this.FOE_METADATA[offset + 1], this.FOE_METADATA[offset + 2], this.FOE_METADATA[offset + 3]);
+      //    this.combineLayers(layer1Cut, layer2Cut, this.bp, var21, var1[0][0], var1[0][1]);
+      //    var21 = (short)(var21 + 50);
+      //    int var15 = this.foeH[segNum] / this.bu[segNum];
+      //    if (this.bt[segNum] == 0) {
+      //       this.b(segNum, var15, layer1Cut);
+      //    } else if (this.bt[segNum] == 1) {
+      //       this.a(segNum, var15, layer1Cut);
+      //    }
+
+      //    ++segNum;
+      // }
+
+   }
+
+   private void readFoeSubfunction1(short[] foeMData, int segNum, int offset) {
+      this.foeW[segNum] = foeMData[offset + 2];
+      this.foeH[segNum] = foeMData[offset + 3];
+      int var4 = this.foeH[segNum] / foeMData[offset + 5];
+      this.bq[foeMData[offset + 4]][segNum] = this.bq[foeMData[offset + 4]][this.M[foeMData[offset + 4]]];
+      this.bq[foeMData[offset + 4]][this.M[foeMData[offset + 4]] + 1] = (short)(this.bq[foeMData[offset + 4]][this.M[foeMData[offset + 4]]] + this.foeW[segNum] * var4);
+      int var10002 = this.M[foeMData[offset + 4]]++;
+      this.bt[segNum] = foeMData[offset + 4];
+      this.bu[segNum] = foeMData[offset + 5];
+      this.bj[segNum] = (foeMData[offset + 5] << 16 >> 3) * this.foeW[segNum] / this.foeH[segNum];
+      int[] var10000 = this.bj;
+      var10000[segNum] >>= 1;
+   }
+
+
+   // private void readFoeSubfunction2(int var1, int var2, int var3, int var4, int var5, int var6) {
+   //    this.bp = new int[2][(16 + var3) * 50];
+   //    this.bm = new int[50];
+   //    this.cY = new byte[var1];
+   //    this.cZ = new byte[var1];
+   //    this.da = new byte[var1];
+   //    this.db = new byte[var1];
+   //    this.dc = new byte[var1];
+   //    this.dd = new byte[var1];
+   //    this.de = new byte[var2];
+   //    this.df = new byte[var2];
+   //    this.dg = new byte[var4];
+   //    this.dh = new byte[var4];
+   //    this.di = new byte[var5];
+   //    this.dj = new byte[var5];
+   //    this.dk = new byte[var5];
+   //    this.dl = new byte[var5];
+   //    this.dm = new byte[var6];
+   //    this.dn = new byte[var6];
+   // }
 }

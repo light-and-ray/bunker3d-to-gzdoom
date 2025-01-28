@@ -9,7 +9,7 @@ public class MainB3D {
         loader.loadMap();
         Json.export("LINES_VERTEXES", loader.cW);
         Json.export("LINES_TEXTURES", loader.cX);
-        // Json.export("bz", loader.bz); // Lines: unknown (somehow connected with right doors, maybe texture mirroring)
+        Json.export("LINES_bz", loader.bz); // Lines: unknown (somehow connected with right doors, maybe texture mirroring)
         Json.export("LINES_HEIGHT", loader.by); // 0 - full, 1 - bottom half, 2 - top half
         Json.export("DOORS_START_LINE_IDX", loader.DOORS_START_LINE_IDX);
         Json.export("CRATES_START_LINE_IDX", loader.CRATES_START_LINE_IDX);
@@ -17,19 +17,28 @@ public class MainB3D {
         Json.export("CRATES_ANGLE", loader.CRATES_ANGLE);
         Json.export("FOOTER", loader.FOOTER);
 
-        Json.export("bZ", loader.bZ);
-        Json.export("bW", loader.bW);
-        Json.export("ca", loader.ca);
-        Json.export("bX", loader.bX);
-        Json.export("cb", loader.cb);
-        Json.export("cj", loader.cj);
-        Json.export("cc", loader.cc);
-        Json.export("cl", loader.cl);
-        Json.export("ce", loader.ce);
-        Json.export("ck", loader.ck);
-        Json.export("cf", loader.cf);
-        Json.export("z", loader.z);
-        Json.export("ei", loader.ei);
+        Json.export("FOE1_bZ", loader.bZ);
+        Json.export("FOE1_bW", loader.bW);
+        Json.export("FOE1_ca", loader.ca);
+        Json.export("FOE1_bX", loader.bX);
+        Json.export("FOE1_cb", loader.cb);
+        Json.export("FOE1_cj", loader.cj);
+        Json.export("FOE1_cc", loader.cc);
+        Json.export("FOE1_cl", loader.cl);
+        Json.export("FOE1_ce", loader.ce);
+        Json.export("FOE1_ck", loader.ck);
+        Json.export("FOE1_cf", loader.cf);
+        Json.export("FOE1_z", loader.z);
+        Json.export("FOE1_ei", loader.ei);
+
+        Json.export("FOE2_bq", loader.bq);
+        Json.export("FOE2_M", loader.M);
+        Json.export("FOE2_bY", loader.bY);
+        Json.export("FOE2_bt", loader.bt);
+        Json.export("FOE2_bu", loader.bu);
+        Json.export("FOE2_bj", loader.bj);
+        Json.export("FOE2_foeW", loader.foeW);
+        Json.export("FOE2_foeH", loader.foeH);
 
     }
 }
