@@ -1472,15 +1472,15 @@ public class ResourcesLoaderB3D {
 
          var10000.getRGB((int)var1[4][var3][0], (int)var1[4][var3][1], this.K, this.L, var10001, 0, this.K);
 
-         // if (!this.gB) {
-         //    if (var4 != 0) {
-         //       var10001 = this.G;
-         //    } else {
-         //       var10001 = this.I;
-         //    }
+         if (!this.gB) {
+            if (var4 != 0) {
+               var10001 = this.G;
+            } else {
+               var10001 = this.I;
+            }
 
-         //    this.a(var10001, var1, var2, var3);
-         // }
+            this.loadTextures_subfunction1(var10001, var1, var2, var3);
+         }
 
          if (this.q[6 * var2[9][var3][0] + 5] == 2) {
             var11 = this.readImage("/" + String.valueOf(var10) + var10 + this.dataExt);
