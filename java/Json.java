@@ -17,6 +17,9 @@ public class Json {
     }
 
     private static String toJson(Object array) {
+        if (array == null) {
+            return "null";
+        }
         if (array instanceof byte[]) {
             return toJson((byte[]) array);
         } else if (array instanceof int[]) {
