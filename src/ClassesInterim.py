@@ -171,7 +171,7 @@ class MapInterim:
             for oldLine in oldLines:
                 if isInside(*self.lineToTuple(newLine), *self.lineToTuple(oldLine)):
                     newLine.texture = oldLine.texture
-                    newLine.texture.offset += calculateOffset(*self.lineToTuple(newLine), *self.lineToTuple(oldLine))
+                    newLine.texture.offset = calculateOffset(*self.lineToTuple(newLine), *self.lineToTuple(oldLine))
                     newLine.texture.trimOffset(self.textures)
                     restored = True
                     break
