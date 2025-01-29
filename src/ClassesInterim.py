@@ -18,7 +18,7 @@ class MapInterim:
     def __init__(self, mapB3D: MapB3D, brokenLines: list[int]):
         self.lines: list[LineInterim] = []
         for line in mapB3D.lines:
-            self.lines.append(LineInterim(v1=line.v1, v2=line.v2, height=line.height, texture=line.texture))
+            self.lines.append(LineInterim(v1=line.v1, v2=line.v2, height=line.height))
         self._removeCratesDoorsAndBrokenLines(mapB3D.crates, mapB3D.doors, brokenLines)
         # self._fixVertexes()
         self._removeOverlaps()

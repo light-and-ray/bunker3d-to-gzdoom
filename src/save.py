@@ -1,12 +1,13 @@
-import shutil, os, glob
-import pathlib
+import shutil, os, pathlib
 import omg
+from PIL import Image
 from ClassesGZD import MapGZD, TextureMode
-from tools import generateTextureLumpName
+from io import BytesIO
 
 STATIC_DIR = "static"
 RESULT_DIR = "result.d"
 LIGHT_LEVEL = 160
+
 
 def saveMap(map: MapGZD, mapIndex: int):
     umap = omg.UMapEditor()
@@ -21,10 +22,10 @@ def saveMap(map: MapGZD, mapIndex: int):
     for side in map.sides:
         umap.sidedefs.append(omg.USidedef(sector=side.sectorIdx))
         if side.mode == TextureMode.MIDDLE:
-            umap.sidedefs[-1].texturemiddle = "STARTAN2"
+            umap.sidedefs[-1].texturemiddle = "B3D_T001"
         elif side.mode == TextureMode.TOP_AND_BOTTOM:
-            umap.sidedefs[-1].texturebottom = "STARTAN2"
-            umap.sidedefs[-1].texturetop = "STARTAN2"
+            umap.sidedefs[-1].texturebottom = "B3D_T001"
+            umap.sidedefs[-1].texturetop = "B3D_T001"
 
     for line in map.lines:
         umap.linedefs.append(omg.ULinedef(v1=line.vertexStartIdx, v2=line.vertexEndIdx,
@@ -42,10 +43,20 @@ def saveMap(map: MapGZD, mapIndex: int):
     wad.to_file(wadPath)
 
 
-def saveTextures(textures, mapIndex: int):
-    for texture in textures:
-        fileName = generateTextureLumpName()
-        path = RESULT_DIR + f"/textures/c1m{mapIndex}/{fileName}.png"
+def saveTexturesWAD(textures: dict[str, Image.Image], mapIndex: int):
+    wad = omg.WAD()
+    for name, texture in textures.items():
+        buffer = BytesIO()
+        texture.save(buffer, format='PNG')
+        wad.ztextures[name] = omg.Lump(buffer.getvalue())
+    wadPath = RESULT_DIR + f"/textures/textures_c1m{mapIndex}.wad"
+    os.makedirs(os.path.dirname(wadPath), exist_ok=True)
+    wad.to_file(wadPath)
+
+
+def saveTexturesPreview(textures: dict[str, Image.Image], mapIndex: int):
+    for name, texture in textures.items():
+        path = RESULT_DIR + f"/textures/c1m{mapIndex}/{name}.png"
         os.makedirs(os.path.dirname(path), exist_ok=True)
         texture.save(path)
 
