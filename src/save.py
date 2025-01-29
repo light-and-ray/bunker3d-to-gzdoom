@@ -2,12 +2,11 @@ import shutil, os, pathlib
 import omg
 from PIL import Image
 from ClassesGZD import MapGZD, TextureMode
-from io import BytesIO
 from tools import getCeilingLumpName, getFloorLumpName
 
 STATIC_DIR = "static"
 RESULT_DIR = "result.d"
-LIGHT_LEVEL = 160
+LIGHT_LEVEL = 220
 
 
 def saveMap(map: MapGZD, mapIndex: int):
