@@ -3,6 +3,7 @@ import omg
 from PIL import Image
 from ClassesGZD import MapGZD, TextureMode
 from io import BytesIO
+from tools import getCeilingLumpName, getFloorLumpName
 
 STATIC_DIR = "static"
 RESULT_DIR = "result.d"
@@ -16,7 +17,7 @@ def saveMap(map: MapGZD, mapIndex: int):
     umap.vertexes = [omg.UVertex(v.x, v.y) for v in map.vertexes]
 
     for sector in (map.sectorFull, map.sectorBottom):
-        umap.sectors.append(omg.USector(textureceiling="CEIL1_1", texturefloor="FLOOR0_1",
+        umap.sectors.append(omg.USector(textureceiling=getCeilingLumpName(mapIndex), texturefloor=getFloorLumpName(mapIndex),
             heightfloor=int(sector.heightFloor), heightceiling=int(sector.heightCeiling), lightlevel=LIGHT_LEVEL))
 
     for side in map.sides:
@@ -43,22 +44,18 @@ def saveMap(map: MapGZD, mapIndex: int):
     wad.to_file(wadPath)
 
 
-def saveTexturesWAD(textures: dict[str, Image.Image], mapIndex: int):
-    wad = omg.WAD()
-    for name, texture in textures.items():
-        buffer = BytesIO()
-        texture.save(buffer, format='PNG')
-        wad.ztextures[name] = omg.Lump(buffer.getvalue())
-    wadPath = RESULT_DIR + f"/textures/textures_c1m{mapIndex}.wad"
-    os.makedirs(os.path.dirname(wadPath), exist_ok=True)
-    wad.to_file(wadPath)
 
+def saveTextures(textures: dict[str, Image.Image], mapIndex: int, colorFloor: tuple[int], colorCeiling: tuple[int]):
+    path = RESULT_DIR + f"/textures/c1m{mapIndex}/{getFloorLumpName(mapIndex)}.png"
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    Image.new("RGB", (64, 64), color=colorFloor).save(path)
+    path = RESULT_DIR + f"/textures/c1m{mapIndex}/{getCeilingLumpName(mapIndex)}.png"
+    Image.new("RGB", (64, 64), color=colorCeiling).save(path)
 
-def saveTexturesPreview(textures: dict[str, Image.Image], mapIndex: int):
     for name, texture in textures.items():
         path = RESULT_DIR + f"/textures/c1m{mapIndex}/{name}.png"
-        os.makedirs(os.path.dirname(path), exist_ok=True)
         texture.save(path)
+
 
 
 def _copyFileFromStatic(name: str):

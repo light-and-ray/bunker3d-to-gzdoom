@@ -33,3 +33,8 @@ def generateTextureLumpName():
     _textureLumpIdx += 1
     return result
 
+def getCeilingLumpName(mapIndex):
+    return f"B3D_C{mapIndex:03}"
+
+def getFloorLumpName(mapIndex):
+    return f"B3D_F{mapIndex:03}"
