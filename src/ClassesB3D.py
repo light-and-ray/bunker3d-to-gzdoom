@@ -70,4 +70,15 @@ class MapB3D:
                 startLineIdx=doorsStartLineIdx[idx],
             ))
 
+        self._removeRepeatingTexturesTale()
+
+
+    def _removeRepeatingTexturesTale(self):
+        for line in self.lines:
+            i = len(line.texturesNames) - 1
+            while i > 0 and line.texturesNames[i] == line.texturesNames[i-1]:
+                i -= 1
+            line.texturesNames = line.texturesNames[:i+1]
+
+
 

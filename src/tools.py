@@ -1,5 +1,10 @@
 import math
 
+LEVEL_FLOOR = 0
+LEVEL_CEILING = 96
+SCALE_FACTOR = LEVEL_CEILING / 65536
+
+
 def get2DListValueRange(list_: list[list]):
     min = math.inf
     max = -math.inf

@@ -1,10 +1,14 @@
 from dataclasses import dataclass
 from typing import Any
 from PIL import Image
+import copy
 from ClassesB3D import MapB3D, CrateB3D, DoorB3D
-from algebraFunctions import resolveSegmentsOverlap, isInside, areOppositelyDirected, fixVertex, calculateOffset
+from algebraFunctions import (resolveSegmentsOverlap, isInside, areOppositelyDirected, fixVertex,
+    calculateOffset, vertexWithOffset
+)
 from ClassesShared import Vertex, HeightType
 from drawMap import drawMap
+from tools import SCALE_FACTOR
 
 
 @dataclass
@@ -36,6 +40,7 @@ class MapInterim:
         self._removeCratesDoorsAndBrokenLines(mapB3D.crates, mapB3D.doors, brokenLines)
         # self._fixVertexes()
         self._removeOverlaps()
+        self._cutMultitextureLines()
 
 
     def _removeCratesDoorsAndBrokenLines(self, crates: list[CrateB3D], doors: list[DoorB3D], brokenLines: list[int]):
@@ -198,6 +203,30 @@ class MapInterim:
                     break
             if isBroken:
                 continue
+            else:
+                i += 1
+                continue
+
+
+    def _cutMultitextureLines(self):
+        i = 0
+        while i < len(self.lines):
+            if len(self.lines[i].texture.names) > 1:
+                offset = self.lines[i].texture.offset + self.textures[self.lines[i].texture.names[0]].width
+                newV = vertexWithOffset(*self.lineToTuple(self.lines[i]), offset / SCALE_FACTOR)
+                if newV:
+                    newLine1 = self.lines[i]
+                    newLine2 = copy.deepcopy(self.lines[i])
+                    newLine1.v2 = Vertex(*newV)
+                    newLine2.v1 = Vertex(*newV)
+                    newLine2.texture.offset += offset
+                    newLine2.texture.trimOffset(self.textures)
+                    newLine1.texture.trimOffset(self.textures)
+                    self.lines = self.lines[:i] + [newLine1, newLine2] + self.lines[i+1:]
+                    continue
+                else:
+                    i += 1
+                    continue
             else:
                 i += 1
                 continue

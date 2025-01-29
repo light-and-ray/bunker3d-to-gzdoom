@@ -214,6 +214,25 @@ def calculateOffset(xA, yA, xB, yB, xC, yC, xD, yD):
     return offset
 
 
+def vertexWithOffset(xA, yA, xB, yB, offset):
+    # Calculate the length of the line segment
+    segment_length = math.sqrt((xB - xA) ** 2 + (yB - yA) ** 2)
+
+    # Check if the offset is within the line segment
+    if offset <= 0:
+        return None
+    elif offset >= segment_length:
+        return None
+
+    # Calculate the ratio of the offset to the segment length
+    ratio = offset / segment_length
+
+    # Calculate the coordinates of the vertex
+    x_vertex = xA + (xB - xA) * ratio
+    y_vertex = yA + (yB - yA) * ratio
+
+    return x_vertex, y_vertex
+
 
 
 def test():

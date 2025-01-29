@@ -3,10 +3,7 @@ from enum import Enum
 from typing import Any
 from ClassesShared import HeightType
 from ClassesInterim import MapInterim
-
-LEVEL_FLOOR = 0
-LEVEL_CEILING = 96
-SCALE_FACTOR = LEVEL_CEILING / 65536
+from tools import LEVEL_CEILING, LEVEL_FLOOR, SCALE_FACTOR
 
 @dataclass
 class SectorGZD:

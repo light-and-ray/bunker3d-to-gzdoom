@@ -12,7 +12,7 @@ if __name__ == "__main__":
     for idx in range(1, 10):
         data = load(idx)
         mapInterim = MapInterim(data.map, data.brokenLines)
-        # drawMap(data.map, name=f'c1m{idx}', show=False)
+        drawMap(mapInterim, name=f'c1m{idx}', show=False)
         mapGZD = MapGZD(mapInterim, startPos=data.startPos)
         saveMap(map=mapGZD, mapIndex=idx)
         saveTextures(textures=data.map.textures, mapIndex=idx, colorCeiling=data.colorCeiling, colorFloor=data.colorFloor)
