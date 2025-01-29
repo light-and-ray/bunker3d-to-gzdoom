@@ -3,8 +3,10 @@
 
 The goal of this project is to port all the maps and resources from an old 2005-2008 j2me mobile FPS game trilogy: Bunker3D, Laboratory3D and Castle3D by Netsoftware on [GZDoom](https://github.com/ZDoom/gzdoom) engine. The project is planned to serve as a base for a further enhanced port
 
+![](readmeImages/screenshot1.png)
+
 What does this project do?
-1. Run the java code extracted from the games, modified only to load and export data
+1. Runs the java code extracted from the games, modified only to load and export data
 1. Heuristic algorithm removes hidden linedefs and resolve overlapping ones, e.g. back side of a crate which fills only bottom half of the level height, overlaps a wall -> this algorithm cuts the wall in this place and leaves only the other top half of the wall
 1. Work in progress...
 
