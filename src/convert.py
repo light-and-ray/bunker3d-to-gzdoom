@@ -6,7 +6,7 @@ from saveMap import saveMap, saveMapInfo, saveTextures
 
 saveMapInfo()
 
-for idx in range(1, 2):
+for idx in range(1, 10):
     data = load(idx)
     mapInterim = MapInterim(data.map, data.brokenLines)
     drawMap(data.map, name=f'c1m{idx}', show=False)

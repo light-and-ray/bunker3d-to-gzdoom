@@ -65,6 +65,7 @@ class LoadedData:
     colorCeiling: tuple[int] = None
     colorFloor: tuple[int] = None
     textures: list[Image.Image] = None
+    linesTextures: list[list[int]] = None
 
 
 def load(mapIndex):
@@ -88,5 +89,36 @@ def load(mapIndex):
     data.textures = []
     for i in range(len(textures_data)):
         data.textures.append(load_image_from_1d_list(textures_data[i], textures_w[i], textures_h[i]))
+
+    cX = read1DArray("LINES_TEXTURES")
+    bs = read1DArray("LINES_bs")
+    bk = read1DArray("LINES_bk")
+    bA = read1DArray("LINES_bA")
+    br = read1DArray("LINES_br")
+
+    data.linesTextures = []
+
+    for i in range(len(cX)):
+        av = cX[i]
+        at = bs[av]
+
+        var6 = 1 if av < 32 else 7
+        brvar3list = []
+        var12s = []
+        var3s = []
+        for var7 in range(var6):
+            if var6 == 1:
+                var12 = av
+            else:
+                var12 = bA[(av - 32) * var6 + var7]
+
+            var3 = bk[var12]
+            var12s.append(var12)
+            var3s.append(var3)
+            brvar3list.append(br[var3])
+        # 18 = 0, 19 = 6, 21 = 6
+        # 1 = 0, 2 = 6, 4 = 6
+        data.linesTextures.append(var12s)
+        # print(f"{i}: {av=} {at=} {var12s=} {var3s=} {brvar3list=}")
 
     return data

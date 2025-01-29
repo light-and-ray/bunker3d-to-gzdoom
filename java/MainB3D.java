@@ -9,10 +9,12 @@ public class MainB3D {
         loader.loadMap();
         Json.export("LINES_VERTEXES", loader.cW);
         Json.export("LINES_TEXTURES", loader.cX);
-        Json.export("LINES_bz", loader.bz); // Lines: unknown (somehow connected with right doors, maybe texture mirroring)
+        Json.export("LINES_MIRRORING", loader.bz);
         Json.export("LINES_bs", loader.bs);
         Json.export("LINES_bk", loader.bk);
         Json.export("LINES_br", loader.br);
+        Json.export("LINES_bA", loader.bA);
+        Json.export("LINES_ANIMATED", loader.fE);
         Json.export("LINES_HEIGHT", loader.by); // 0 - full, 1 - bottom half, 2 - top half
         Json.export("DOORS_START_LINE_IDX", loader.DOORS_START_LINE_IDX);
         Json.export("CRATES_START_LINE_IDX", loader.CRATES_START_LINE_IDX);
@@ -46,6 +48,7 @@ public class MainB3D {
         Json.export("TEXTURES_DATA", loader.TEXTURES_DATA);
         Json.export("TEXTURES_W", loader.TEXTURES_W);
         Json.export("TEXTURES_H", loader.TEXTURES_H);
-
+        Json.export("ANIMATED_fH", loader.fH);
+        Json.export("ANIMATED_FRAMES", loader.fG);
     }
 }
