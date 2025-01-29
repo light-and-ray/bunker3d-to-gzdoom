@@ -22,10 +22,10 @@ def saveMap(map: MapGZD, mapIndex: int):
     for side in map.sides:
         umap.sidedefs.append(omg.USidedef(sector=side.sectorIdx))
         if side.mode == TextureMode.MIDDLE:
-            umap.sidedefs[-1].texturemiddle = "B3D_T001"
+            umap.sidedefs[-1].texturemiddle = side.textureMiddle
         elif side.mode == TextureMode.TOP_AND_BOTTOM:
-            umap.sidedefs[-1].texturebottom = "B3D_T001"
-            umap.sidedefs[-1].texturetop = "B3D_T001"
+            umap.sidedefs[-1].texturebottom = side.textureBottom
+            umap.sidedefs[-1].texturetop = side.textureMiddle
 
     for line in map.lines:
         umap.linedefs.append(omg.ULinedef(v1=line.vertexStartIdx, v2=line.vertexEndIdx,

@@ -22,9 +22,9 @@ class TextureMode(Enum):
 class SideGZD:
     sectorIdx: int
     mode: TextureMode
-    textureTop: Any = None
-    textureBottom: Any = None
-    textureMiddle: Any = None
+    textureTop: str = None
+    textureBottom: str = None
+    textureMiddle: str = None
 
 @dataclass
 class VertexGZD:
@@ -59,12 +59,12 @@ class MapGZD:
             sideFrontIdx = None
             sideBackIdx = None
             if line.height == HeightType.FULL:
-                sideFrontIdx = self._addSide(self.SECTOR_FULL_IDX, TextureMode.MIDDLE)
+                sideFrontIdx = self._addSide(self.SECTOR_FULL_IDX, TextureMode.MIDDLE, line.texturesNames[0])
             elif line.height == HeightType.BOTTOM:
-                sideFrontIdx = self._addSide(self.SECTOR_FULL_IDX, TextureMode.TOP_AND_BOTTOM)
-                sideBackIdx = self._addSide(self.SECTOR_BOTTOM_IDX, TextureMode.NO_TEXTURES)
+                sideFrontIdx = self._addSide(self.SECTOR_FULL_IDX, TextureMode.TOP_AND_BOTTOM, line.texturesNames[0])
+                sideBackIdx = self._addSide(self.SECTOR_BOTTOM_IDX, TextureMode.NO_TEXTURES, None)
             elif line.height == HeightType.TOP:
-                sideFrontIdx = self._addSide(self.SECTOR_BOTTOM_IDX, TextureMode.MIDDLE)
+                sideFrontIdx = self._addSide(self.SECTOR_BOTTOM_IDX, TextureMode.MIDDLE, line.texturesNames[0])
             self.lines.append(LineGZD(vertexStartIdx=v1Idx, vertexEndIdx=v2Idx,
                                       sideFrontIdx=sideFrontIdx, sideBackIdx=sideBackIdx))
 
@@ -84,11 +84,19 @@ class MapGZD:
         self.vertexes.append(VertexGZD(x=x, y=y))
         return len(self.vertexes) - 1
 
-    def _addSide(self, sectorIdx: int, mode: TextureMode):
+    def _addSide(self, sectorIdx: int, mode: TextureMode, texture):
+        if texture is None:
+            texture = "NONE"
+        newSide = SideGZD(sectorIdx=sectorIdx, mode=mode)
+        if mode == TextureMode.MIDDLE:
+            newSide.textureMiddle = texture
+        elif mode == TextureMode.TOP_AND_BOTTOM:
+            newSide.textureBottom = texture
+            newSide.textureTop = texture
         for i in range(len(self.sides)):
             side = self.sides[i]
-            if side.sectorIdx == sectorIdx and side.mode == mode:
+            if side == newSide:
                 return i
 
-        self.sides.append(SideGZD(sectorIdx=sectorIdx, mode=mode))
+        self.sides.append(newSide)
         return len(self.sides) - 1
