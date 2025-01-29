@@ -6,7 +6,7 @@ struct AutoCrouchData
 }
 
 
-class B3DPlayer : DoomPlayer
+class B3DPlayer : DoomPlayer replaces DoomPlayer
 {
     const MAXBOB = 8.;
     AutoCrouchData autoCrouchData;
@@ -24,12 +24,12 @@ class B3DPlayer : DoomPlayer
 
     // overrides
 
-	override void Tick()
-	{
-		super.Tick();
+    override void Tick()
+    {
+        super.Tick();
         performAutoCrouch_Tick();
 
-	}
+    }
 
     override void CheckCrouch(bool totallyfrozen)
     {
