@@ -20,6 +20,7 @@ class B3DPlayer : DoomPlayer replaces DoomPlayer
         Player.ViewHeight 48;
         Player.AttackZOffset 24;
         Player.ViewBob 0.5;
+        Player.StartItem "Z_NashMove";
     }
 
     // overrides

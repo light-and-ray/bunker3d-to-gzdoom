@@ -1,7 +1,9 @@
 {
     "cSpell.words": [
         "adddefaultmap",
+        "AUTOACTIVATE",
         "cursector",
+        "DECEL",
         "ednum",
         "heightceiling",
         "heightfloor",
@@ -13,6 +15,9 @@
         "linedefs",
         "MAPINFO",
         "MAXBOB",
+        "Muhandes",
+        "MULT",
+        "nashmove",
         "Netsoftware",
         "omgifol",
         "pixelratio",
@@ -27,6 +32,8 @@
         "twosided",
         "udmfmaps",
         "umap",
+        "UNDROPPABLE",
+        "UNTOSSABLE",
         "venv",
         "zdoom",
         "zscript"
