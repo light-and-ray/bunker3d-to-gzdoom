@@ -76,12 +76,11 @@ class MapGZD:
 
 
     def _addVertex(self, x, y) -> int:
-        x = float(x)
-        y = float(y)
+        newVertex = VertexGZD(x=float(x), y=float(y))
         for i in range(len(self.vertexes)):
-            if self.vertexes[i].x == x and self.vertexes[i].y == y:
+            if self.vertexes[i] == newVertex:
                 return i
-        self.vertexes.append(VertexGZD(x=x, y=y))
+        self.vertexes.append(newVertex)
         return len(self.vertexes) - 1
 
     def _addSide(self, sectorIdx: int, mode: TextureMode, texture):
