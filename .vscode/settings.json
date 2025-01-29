@@ -5,6 +5,7 @@
         "heightceiling",
         "heightfloor",
         "javac",
+        "levelnum",
         "lightlevel",
         "Linedef",
         "linedefs",
@@ -12,9 +13,12 @@
         "MAXBOB",
         "Netsoftware",
         "omgifol",
+        "pixelratio",
         "Sidedef",
         "sidedefs",
         "texturebottom",
+        "textureceiling",
+        "texturefloor",
         "texturemiddle",
         "texturetop",
         "totallyfrozen",
@@ -22,6 +26,7 @@
         "udmfmaps",
         "umap",
         "venv",
+        "zdoom",
         "zscript"
     ]
 }
