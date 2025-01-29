@@ -167,6 +167,7 @@ class MapInterim:
     def _restoreTextures(self, newLines: list[LineInterim], oldLines: list[LineInterim]):
         for newLine in newLines:
             restored = False
+            if newLine.texture is not None: continue
             for oldLine in oldLines:
                 if isInside(*self.lineToTuple(newLine), *self.lineToTuple(oldLine)):
                     newLine.texture = oldLine.texture
