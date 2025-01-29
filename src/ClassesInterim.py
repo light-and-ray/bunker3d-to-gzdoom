@@ -39,8 +39,8 @@ class MapInterim:
             self.lines.append(LineInterim(v1=line.v1, v2=line.v2, height=line.height, texture=texture))
         self._removeCratesDoorsAndBrokenLines(mapB3D.crates, mapB3D.doors, brokenLines)
         # self._fixVertexes()
-        self._removeOverlaps()
         self._cutMultitextureLines()
+        self._removeOverlaps()
 
 
     def _removeCratesDoorsAndBrokenLines(self, crates: list[CrateB3D], doors: list[DoorB3D], brokenLines: list[int]):
@@ -171,7 +171,7 @@ class MapInterim:
             for oldLine in oldLines:
                 if isInside(*self.lineToTuple(newLine), *self.lineToTuple(oldLine)):
                     newLine.texture = oldLine.texture
-                    newLine.texture.offset = calculateOffset(*self.lineToTuple(newLine), *self.lineToTuple(oldLine))
+                    newLine.texture.offset += calculateOffset(*self.lineToTuple(newLine), *self.lineToTuple(oldLine))
                     newLine.texture.trimOffset(self.textures)
                     restored = True
                     break
