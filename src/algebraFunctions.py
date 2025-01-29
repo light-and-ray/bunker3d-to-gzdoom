@@ -175,16 +175,51 @@ def fixVertex(x, y, xA, yA, xB, yB, threshold):
     return (proj_x, proj_y)
 
 
-def test():
-    oldLine1 = (7, 10, 8, 10)
-    oldLine2 = (9, 10, 6, 10)
-    tuples = ((9, 10, 8, 10), (7, 10, 6, 10), (8, 10, 7, 10))
-    print(resolveSegmentsOverlap(*oldLine1, *oldLine2), '\n')
 
-    for tup in tuples:
-        print(isInside(*tup, *oldLine1))
-        print(isInside(*tup, *oldLine2))
-        print(areOppositelyDirected(*oldLine1, *oldLine2))
-        print()
+
+def calculateOffset(xA, yA, xB, yB, xC, yC, xD, yD):
+    # Ensure the segments are in the same order (xA, yA) to (xB, yB) and (xC, yC) to (xD, yD)
+    if xA > xB or (xA == xB and yA > yB):
+        xA, xB = xB, xA
+        yA, yB = yB, yA
+    if xC > xD or (xC == xD and yC > yD):
+        xC, xD = xD, xC
+        yC, yD = yD, yC
+
+    # Calculate the vector of oldLine (CD)
+    oldVectorX = xD - xC
+    oldVectorY = yD - yC
+
+    # Calculate the vector from the first vertex of oldLine to the first vertex of newLine
+    vectorX = xA - xC
+    vectorY = yA - yC
+
+    # Calculate the dot product of the vector from the first vertex of oldLine to the first vertex of newLine and the old line vector
+    dotProduct = vectorX * oldVectorX + vectorY * oldVectorY
+
+    # Calculate the length squared of the old line vector
+    oldLengthSquared = oldVectorX ** 2 + oldVectorY ** 2
+
+    # Check if the old line has zero length
+    if oldLengthSquared == 0:
+        raise ValueError("Old line has zero length")
+
+    # Calculate the offset
+    offset = dotProduct / math.sqrt(oldLengthSquared)
+
+    # Check if the vectors are in the same direction
+    if oldVectorX * (xB - xA) + oldVectorY * (yB - yA) < 0:
+        offset = -offset
+
+    return offset
+
+
+
+
+def test():
+    newLine = (7, 7, 8, 8)
+    oldLine = (9, 9, 6, 6)
+    print(calculateOffset(*newLine, *oldLine))
+
 
 # test()

@@ -22,6 +22,7 @@ class TextureMode(Enum):
 class SideGZD:
     sectorIdx: int
     mode: TextureMode
+    offset: float
     textureTop: str = None
     textureBottom: str = None
     textureMiddle: str = None
@@ -59,12 +60,12 @@ class MapGZD:
             sideFrontIdx = None
             sideBackIdx = None
             if line.height == HeightType.FULL:
-                sideFrontIdx = self._addSide(self.SECTOR_FULL_IDX, TextureMode.MIDDLE, line.texturesNames[0])
+                sideFrontIdx = self._addSide(self.SECTOR_FULL_IDX, TextureMode.MIDDLE, line.texture.names[0], line.texture.offset)
             elif line.height == HeightType.BOTTOM:
-                sideFrontIdx = self._addSide(self.SECTOR_FULL_IDX, TextureMode.TOP_AND_BOTTOM, line.texturesNames[0])
-                sideBackIdx = self._addSide(self.SECTOR_BOTTOM_IDX, TextureMode.NO_TEXTURES, None)
+                sideFrontIdx = self._addSide(self.SECTOR_FULL_IDX, TextureMode.TOP_AND_BOTTOM, line.texture.names[0], line.texture.offset)
+                sideBackIdx = self._addSide(self.SECTOR_BOTTOM_IDX, TextureMode.NO_TEXTURES, None, None)
             elif line.height == HeightType.TOP:
-                sideFrontIdx = self._addSide(self.SECTOR_BOTTOM_IDX, TextureMode.MIDDLE, line.texturesNames[0])
+                sideFrontIdx = self._addSide(self.SECTOR_BOTTOM_IDX, TextureMode.MIDDLE, line.texture.names[0], line.texture.offset)
             self.lines.append(LineGZD(vertexStartIdx=v1Idx, vertexEndIdx=v2Idx,
                                       sideFrontIdx=sideFrontIdx, sideBackIdx=sideBackIdx))
 
@@ -83,10 +84,10 @@ class MapGZD:
         self.vertexes.append(newVertex)
         return len(self.vertexes) - 1
 
-    def _addSide(self, sectorIdx: int, mode: TextureMode, texture):
+    def _addSide(self, sectorIdx: int, mode: TextureMode, texture: str, offset: float):
         if texture is None:
             texture = "NONE"
-        newSide = SideGZD(sectorIdx=sectorIdx, mode=mode)
+        newSide = SideGZD(sectorIdx=sectorIdx, mode=mode, offset=offset)
         if mode == TextureMode.MIDDLE:
             newSide.textureMiddle = texture
         elif mode == TextureMode.TOP_AND_BOTTOM:

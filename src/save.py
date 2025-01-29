@@ -23,9 +23,12 @@ def saveMap(map: MapGZD, mapIndex: int):
         umap.sidedefs.append(omg.USidedef(sector=side.sectorIdx))
         if side.mode == TextureMode.MIDDLE:
             umap.sidedefs[-1].texturemiddle = side.textureMiddle
+            umap.sidedefs[-1].offsetx_mid = side.offset
         elif side.mode == TextureMode.TOP_AND_BOTTOM:
             umap.sidedefs[-1].texturebottom = side.textureBottom
             umap.sidedefs[-1].texturetop = side.textureMiddle
+            umap.sidedefs[-1].offsetx_bottom = side.offset
+            umap.sidedefs[-1].offsetx_top = side.offset
 
     for line in map.lines:
         umap.linedefs.append(omg.ULinedef(v1=line.vertexStartIdx, v2=line.vertexEndIdx,
@@ -33,7 +36,6 @@ def saveMap(map: MapGZD, mapIndex: int):
         if line.sideBackIdx is not None:
             umap.linedefs[-1].twosided = True
 
-    print(f"{map.startPos=}")
     umap.things.append(omg.UThing(x=map.startPos[0], y=map.startPos[1], ednum=1))
     mapName = f'c1m{mapIndex}'
     wad = omg.WAD()

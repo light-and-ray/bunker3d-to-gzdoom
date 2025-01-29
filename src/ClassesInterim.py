@@ -1,9 +1,21 @@
 from dataclasses import dataclass
 from typing import Any
+from PIL import Image
 from ClassesB3D import MapB3D, CrateB3D, DoorB3D
-from algebraFunctions import resolveSegmentsOverlap, isInside, areOppositelyDirected, fixVertex
+from algebraFunctions import resolveSegmentsOverlap, isInside, areOppositelyDirected, fixVertex, calculateOffset
 from ClassesShared import Vertex, HeightType
 from drawMap import drawMap
+
+
+@dataclass
+class TextureInterim:
+    names : list[str]
+    offset : float = 0.0
+    def trimOffset(self, textures: dict[str, Image.Image]):
+        while self.offset >= textures[self.names[0]].width:
+            self.offset -= textures[self.names[0]].width
+            if len(self.names) > 1:
+                self.names = self.names[1:]
 
 
 @dataclass
@@ -11,14 +23,16 @@ class LineInterim:
     v1 : Vertex
     v2 : Vertex
     height : HeightType
-    texturesNames : list[str]
+    texture : TextureInterim
 
 
 class MapInterim:
     def __init__(self, mapB3D: MapB3D, brokenLines: list[int]):
+        self.textures = mapB3D.textures
         self.lines: list[LineInterim] = []
         for line in mapB3D.lines:
-            self.lines.append(LineInterim(v1=line.v1, v2=line.v2, height=line.height, texturesNames=line.texturesNames))
+            texture = TextureInterim(names=line.texturesNames)
+            self.lines.append(LineInterim(v1=line.v1, v2=line.v2, height=line.height, texture=texture))
         self._removeCratesDoorsAndBrokenLines(mapB3D.crates, mapB3D.doors, brokenLines)
         # self._fixVertexes()
         self._removeOverlaps()
@@ -131,19 +145,32 @@ class MapInterim:
                             v1=Vertex(tup[0], tup[1]),
                             v2=Vertex(tup[2], tup[3]),
                             height=height,
-                            texturesNames=[None]
+                            texture=None
                         ))
                     else:
                         lines.append(LineInterim(
                             v1=Vertex(tup[2], tup[3]),
                             v2=Vertex(tup[0], tup[1]),
                             height=height,
-                            texturesNames=[None]
+                            texture=None,
                         ))
                 else:
                     lines.append(newLine)
 
         return lines
+
+    def _restoreTextures(self, newLines: list[LineInterim], oldLines: list[LineInterim]):
+        for newLine in newLines:
+            restored = False
+            for oldLine in oldLines:
+                if isInside(*self.lineToTuple(newLine), *self.lineToTuple(oldLine)):
+                    newLine.texture = oldLine.texture
+                    newLine.texture.offset += calculateOffset(*self.lineToTuple(newLine), *self.lineToTuple(oldLine))
+                    newLine.texture.trimOffset(self.textures)
+                    restored = True
+                    break
+            if not restored:
+                print(f"Warning: cannot restore line texture {newLine=}, {oldLine=}")
 
     def _removeOverlaps(self):
         i = 0
@@ -163,6 +190,7 @@ class MapInterim:
                     oldLine2 = self.lines[j]
                     del self.lines[j]
                     newLines = self._tuplesToLines(resolved, oldLine1, oldLine2)
+                    self._restoreTextures(newLines, [oldLine1, oldLine2])
                     # print(i, j, (self.lineToTuple(oldLine1), self.lineToTuple(oldLine2)), "->\n     ",
                     #       tuple((self.lineToTuple(line) for line in newLines)))
                     self.lines = self.lines[:i] + newLines + self.lines[i+1:]
