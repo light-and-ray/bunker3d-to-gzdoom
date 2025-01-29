@@ -24,3 +24,12 @@ def create2DList(a, b, default=0):
 
 def create1DList(a, default=0):
     return [default for _ in range(a)]
+
+
+_textureLumpIdx = 0
+def generateTextureLumpName():
+    global _textureLumpIdx
+    result = f'B3D_T{_textureLumpIdx:03}'
+    _textureLumpIdx += 1
+    return result
+

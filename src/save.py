@@ -1,6 +1,8 @@
-import shutil, os
+import shutil, os, glob
+import pathlib
 import omg
 from ClassesGZD import MapGZD, TextureMode
+from tools import generateTextureLumpName
 
 STATIC_DIR = "static"
 RESULT_DIR = "result.d"
@@ -41,19 +43,22 @@ def saveMap(map: MapGZD, mapIndex: int):
 
 
 def saveTextures(textures, mapIndex: int):
-    for i, texture in enumerate(textures):
-        path = RESULT_DIR + f"/textures/c1m{mapIndex}/texture{i}.png"
+    for texture in textures:
+        fileName = generateTextureLumpName()
+        path = RESULT_DIR + f"/textures/c1m{mapIndex}/{fileName}.png"
         os.makedirs(os.path.dirname(path), exist_ok=True)
         texture.save(path)
 
 
-def copyFileFromTemplate(name: str):
+def _copyFileFromStatic(name: str):
     origin = STATIC_DIR + "/" + name
     dist = RESULT_DIR + "/" + name
     os.makedirs(os.path.dirname(dist), exist_ok=True)
     shutil.copy(origin, dist)
 
-def saveMapInfo():
-    copyFileFromTemplate("MAPINFO")
-    copyFileFromTemplate("zscript.zs")
-    copyFileFromTemplate("zscript/B3DPlayer.zs")
+
+def saveStaticData():
+    for file in pathlib.Path(STATIC_DIR).rglob('*'):
+        if file.is_file():
+            file = os.path.relpath(file, STATIC_DIR)
+            _copyFileFromStatic(file)

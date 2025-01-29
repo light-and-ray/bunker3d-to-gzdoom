@@ -64,39 +64,25 @@ class LoadedData:
     startPos: tuple[int] = None
     colorCeiling: tuple[int] = None
     colorFloor: tuple[int] = None
-    textures: list[Image.Image] = None
-    linesTextures: list[list[int]] = None
 
 
-def load(mapIndex):
-    returnCode = os.system(f'./bin/runJava.sh {mapIndex}')
-    if (returnCode != 0):
-        raise Exception(f"java returned {returnCode}")
-    data = LoadedData()
-    data.map = MapB3D(rawLines=read2DArray('LINES_VERTEXES'), rawHeight=read1DArray('LINES_HEIGHT'),
-        cratesStartLineIdx=read1DArray('CRATES_START_LINE_IDX'), cratesContent=read1DArray('CRATES_CONTENT'),
-        cratesAngles=read1DArray('CRATES_ANGLE'), doorsStartLineIdx=read1DArray('DOORS_START_LINE_IDX'),
-    )
-    data.brokenLines = BROKEN_LINES[mapIndex]
-    footer = read1DArray("FOOTER")
-    data.colorCeiling = (footer[0], footer[1], footer[2])
-    data.colorFloor = (footer[3], footer[4], footer[5])
-    data.startPos = (0, 0)
-
+def _loadTextures():
     textures_data = read2DArray("TEXTURES_DATA")
     textures_w = read1DArray("TEXTURES_W")
     textures_h = read1DArray("TEXTURES_H")
-    data.textures = []
+    textures = []
     for i in range(len(textures_data)):
-        data.textures.append(load_image_from_1d_list(textures_data[i], textures_w[i], textures_h[i]))
+        textures.append(load_image_from_1d_list(textures_data[i], textures_w[i], textures_h[i]))
+    return textures
 
+def _loadLinesTextures():
     cX = read1DArray("LINES_TEXTURES")
     bs = read1DArray("LINES_bs")
     bk = read1DArray("LINES_bk")
     bA = read1DArray("LINES_bA")
     br = read1DArray("LINES_br")
 
-    data.linesTextures = []
+    linesTextures = []
 
     for i in range(len(cX)):
         av = cX[i]
@@ -117,8 +103,30 @@ def load(mapIndex):
             var3s.append(var3)
             brvar3list.append(br[var3])
         # 18 = 0, 19 = 6, 21 = 6
-        # 1 = 0, 2 = 6, 4 = 6
-        data.linesTextures.append(var12s)
+        # 0 = 0, 1 = 6, 3 = 6
+        linesTextures.append(var12s)
         # print(f"{i}: {av=} {at=} {var12s=} {var3s=} {brvar3list=}")
+    return linesTextures
+
+
+def load(mapIndex):
+    returnCode = os.system(f'./bin/runJava.sh {mapIndex}')
+    if (returnCode != 0):
+        raise Exception(f"java returned {returnCode}")
+    data = LoadedData()
+    textures = _loadTextures()
+    linesTextures = _loadLinesTextures()
+
+    data.map = MapB3D(rawLines=read2DArray('LINES_VERTEXES'), rawHeight=read1DArray('LINES_HEIGHT'),
+        cratesStartLineIdx=read1DArray('CRATES_START_LINE_IDX'), cratesContent=read1DArray('CRATES_CONTENT'),
+        cratesAngles=read1DArray('CRATES_ANGLE'), doorsStartLineIdx=read1DArray('DOORS_START_LINE_IDX'),
+        textures=textures, linesTextures=linesTextures
+    )
+
+    data.brokenLines = BROKEN_LINES[mapIndex]
+    footer = read1DArray("FOOTER")
+    data.colorCeiling = (footer[0], footer[1], footer[2])
+    data.colorFloor = (footer[3], footer[4], footer[5])
+    data.startPos = (0, 0)
 
     return data
