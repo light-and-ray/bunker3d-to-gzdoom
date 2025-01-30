@@ -50,10 +50,12 @@ class MapInterim:
             offset = 0
             for index in circle[:len(circle)//2]:
                 self.lines[index].texture.offset = offset
+                self.lines[index].texture.trimOffset(self.textures)
                 offset += lineLengthScaled
             offset = 0
             for index in circle[len(circle)//2:]:
                 self.lines[index].texture.offset = offset
+                self.lines[index].texture.trimOffset(self.textures)
                 offset += lineLengthScaled
 
 
@@ -228,16 +230,16 @@ class MapInterim:
         i = 0
         while i < len(self.lines):
             if len(self.lines[i].texture.names) > 1:
-                offset = self.lines[i].texture.offset + self.textures[self.lines[i].texture.names[0]].width
+                offset = self.textures[self.lines[i].texture.names[0]].width - self.lines[i].texture.offset
                 newV = vertexWithOffset(*self.lineToTuple(self.lines[i]), offset / SCALE_FACTOR)
                 if newV:
                     newLine1 = self.lines[i]
                     newLine2 = copy.deepcopy(self.lines[i])
                     newLine1.v2 = Vertex(*newV)
+                    newLine1.texture.names = newLine1.texture.names[:1]
                     newLine2.v1 = Vertex(*newV)
-                    newLine2.texture.offset += offset
-                    newLine2.texture.trimOffset(self.textures)
-                    newLine1.texture.trimOffset(self.textures)
+                    newLine2.texture.offset = 0
+                    newLine2.texture.names = newLine2.texture.names[1:]
                     self.lines = self.lines[:i] + [newLine1, newLine2] + self.lines[i+1:]
                     continue
                 else:
