@@ -49,7 +49,6 @@ public class MainB3D {
         Json.export("TEXTURES_DATA", loader.TEXTURES_DATA);
         Json.export("TEXTURES_W", loader.TEXTURES_W);
         Json.export("TEXTURES_H", loader.TEXTURES_H);
-        Json.export("ANIMATED_fH", loader.fH);
         Json.export("ANIMATED_FRAMES", loader.fG);
     }
 }

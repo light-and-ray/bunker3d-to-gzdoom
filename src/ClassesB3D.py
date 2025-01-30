@@ -74,28 +74,30 @@ class MapB3D:
                 startLineIdx=doorsStartLineIdx[idx],
             ))
 
-        self._applyMirroring(textureMirroring)
         self._removeRepeatingTexturesTale()
-        self._applyAnimation(animatedFrames, animatedLines)
+        self.mirroredDict = {}
+        self._applyAnimation(animatedFrames, animatedLines, textureMirroring)
+        self._applyMirroring(textureMirroring)
+
 
     def _applyMirroring(self, mirroringData: list[int]):
-        mirroredDict = {}
         for line, mirroring in zip(self.lines, mirroringData):
             needMirrorIdx = None
             if mirroring in [3, 15]:
                 needMirrorIdx = 0
-            if mirroring in [10]:
+            if mirroring in [5, 10]:
                 needMirrorIdx = 1
             if needMirrorIdx is not None:
                 if len(line.texturesNames) == 1:
                     while len(line.texturesNames) < 10:
                         line.texturesNames.append(line.texturesNames[0])
                 textureName = line.texturesNames[needMirrorIdx]
-                if textureName not in mirroredDict.keys():
+                if textureName not in self.mirroredDict.keys():
                     mirroredName = generateTextureMirroredLumpName()
-                    mirroredDict[textureName] = mirroredName
+                    self.mirroredDict[textureName] = mirroredName
                     self.textures[mirroredName] = self.textures[textureName].transpose(Image.FLIP_LEFT_RIGHT)
-                line.texturesNames[needMirrorIdx] = mirroredDict[textureName]
+                    self.textures[mirroredName].nonMirroredName = textureName
+                line.texturesNames[needMirrorIdx] = self.mirroredDict[textureName]
 
     def _removeRepeatingTexturesTale(self):
         for line in self.lines:
@@ -105,18 +107,27 @@ class MapB3D:
             line.texturesNames = line.texturesNames[:i+1]
 
 
-    def _applyAnimation(self, animatedFramesList: list[list[int]], animatedLinesList: list[list[int]]):
+    def _applyAnimation(self, animatedFramesList: list[list[int]], animatedLinesList: list[list[int]],
+                        textureMirroring: list[int]):
         self.animations: list[Animation] = []
-        for animatedFrames in animatedFramesList:
+        for animatedFrames, animatedLines in zip(animatedFramesList, animatedLinesList):
             if not animatedFrames: continue
             frames: list[str] = []
             if animatedFrames[-1] == animatedFrames[-2]:
                 animatedFrames = animatedFrames[:-1]
             for frameIdx in animatedFrames:
                 frames.append(list(self.textures.keys())[frameIdx])
-            name = frames[0]
-            self.animations.append(Animation(name=name, frames=frames))
+            animation = Animation(name=frames[0], frames=frames)
+            self.animations.append(animation)
+            if any([textureMirroring[x] == 5 for x in animatedLines]):
+                mirroredFrames = []
+                for frame in frames:
+                    mirroredName = generateTextureMirroredLumpName()
+                    self.mirroredDict[frame] = mirroredName
+                    self.textures[mirroredName] = self.textures[frame].transpose(Image.FLIP_LEFT_RIGHT)
+                    self.textures[mirroredName].nonMirroredName = frame
+                    mirroredFrames.append(mirroredName)
+                self.animations.append(Animation(name=mirroredFrames[0], frames=mirroredFrames))
 
-        for i in range(len(self.animations)):
-            for animatedLineIdx in animatedLinesList[i]:
-                self.lines[animatedLineIdx].texturesNames = [self.animations[i].name]
+            for animatedLineIdx in animatedLines:
+                self.lines[animatedLineIdx].texturesNames = [animation.name]
