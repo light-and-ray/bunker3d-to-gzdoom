@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from PIL import Image
 from typing import Any
-from ClassesShared import Vertex, HeightType
-from tools import generateTextureLumpName, generateTextureMirroredLumpName
+from ClassesShared import Vertex, HeightType, Animation
+from tools import generateTextureLumpName, generateTextureMirroredLumpName, generateAnimationName
 
 @dataclass
 class DoorB3D:
@@ -31,6 +31,7 @@ class MapB3D:
             doorsStartLineIdx: list[int],
             textures: list[Image.Image], linesTextures: list[list[int]],
             circles: list[list[int]], textureMirroring: list[int],
+            animatedFrames: list[list[int]], animatedLines: list[list[int]],
     ):
         self.circles = circles
 
@@ -75,6 +76,7 @@ class MapB3D:
 
         self._applyMirroring(textureMirroring)
         self._removeRepeatingTexturesTale()
+        self._applyAnimation(animatedFrames, animatedLines)
 
     def _applyMirroring(self, mirroringData: list[int]):
         mirroredDict = {}
@@ -103,4 +105,16 @@ class MapB3D:
             line.texturesNames = line.texturesNames[:i+1]
 
 
+    def _applyAnimation(self, animatedFramesList: list[list[int]], animatedLinesList: list[list[int]]):
+        self.animations: list[Animation] = []
+        for animatedFrames in animatedFramesList:
+            if not animatedFrames: continue
+            name = generateAnimationName()
+            frames: list[str] = []
+            for frameIdx in animatedFrames:
+                frames.append(list(self.textures.keys())[frameIdx])
+            self.animations.append(Animation(name=name, frames=frames))
 
+        for i in range(len(self.animations)):
+            for animatedLineIdx in animatedLinesList[i]:
+                self.lines[animatedLineIdx].texturesNames = [self.animations[i].name]

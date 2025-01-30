@@ -2,6 +2,7 @@ import shutil, os, pathlib
 import omg
 from PIL import Image
 from ClassesGZD import MapGZD, TextureMode
+from ClassesShared import Animation
 from tools import getCeilingLumpName, getFloorLumpName
 
 STATIC_DIR = "static"
@@ -55,11 +56,22 @@ def saveTextures(textures: dict[str, Image.Image], mapIndex: int, colorFloor: tu
     Image.new("RGB", (64, 64), color=colorFloor).save(path)
     path = f"{mapTexturesDir}/{getCeilingLumpName(mapIndex)}.png"
     Image.new("RGB", (64, 64), color=colorCeiling).save(path)
-    
+
     for name, texture in textures.items():
         path = f"{mapTexturesDir}/{name}.png"
         texture.save(path)
 
+
+def saveAnimations(animations: list[Animation]):
+    DURATION = 1
+    animdefs = ""
+    for animation in animations:
+        animdefs += f"texture {animation.name}\n"
+        for frame in animation.frames:
+            animdefs += f"    pic {frame} tics {DURATION}\n"
+        animdefs += "\n"
+    with open(RESULT_DIR + "/ANIMDEFS.txt", 'w') as f:
+        f.write(animdefs)
 
 
 def _copyFileFromStatic(name: str):
