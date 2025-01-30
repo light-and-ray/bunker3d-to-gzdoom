@@ -7,7 +7,7 @@ from tools import getCeilingLumpName, getFloorLumpName
 
 STATIC_DIR = "static"
 RESULT_DIR = "result.d"
-LIGHT_LEVEL = 240
+LIGHT_LEVEL = 220 # 250 is the closest to the original
 
 
 def saveMap(map: MapGZD, mapIndex: int):
