@@ -20,7 +20,9 @@ public class ResourcesLoaderB3D {
    public ArrayList<Byte> CRATES_ANGLE = new ArrayList<>();
    public ArrayList<Integer> TEXTURES_W = new ArrayList<>();
    public ArrayList<Integer> TEXTURES_H = new ArrayList<>();
-   public ArrayList<int[]> TEXTURES_DATA = new ArrayList<>();   public short[] FOOTER;
+   public ArrayList<int[]> TEXTURES_DATA = new ArrayList<>();
+   public short[] FOOTER;
+   public ArrayList<ArrayList<Integer>> CIRCLES_IDX = new ArrayList<>();
    public byte c;
    public boolean e;
    public int f = 10;
@@ -1108,9 +1110,11 @@ public class ResourcesLoaderB3D {
    public int modifyBigLump1_subfunction5(long var1, long var3, int var5, long var6, int var8, int var9, byte var10, byte var11, int var12) {
       int var15 = 360 / var5;
       int var14 = var12 * 4;
+      ArrayList<Integer> indexes = new ArrayList<>();
 
       int var13;
       for(var13 = var8; var13 < var8 + var5; ++var13) {
+         indexes.add(var13);
          this.cW[0][var13] = (int)((var6 * this.cos(var14) >> 16) + var1);
          this.cW[1][var13] = (int)((var6 * this.sin(var14) >> 16) + var3);
          var14 -= var15;
@@ -1120,6 +1124,7 @@ public class ResourcesLoaderB3D {
          this.cX[var13] = (byte)var9;
          this.bz[var13] = var11;
       }
+      this.CIRCLES_IDX.add(indexes);
 
       return var13;
    }

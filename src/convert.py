@@ -9,7 +9,7 @@ if __name__ == "__main__":
     colorsCeiling = []
     colorsFloor = []
 
-    for idx in range(1, 10):
+    for idx in range(8, 9):
         data = load(idx)
         mapInterim = MapInterim(data.map, data.brokenLines)
         # drawMap(mapInterim, name=f'c1m{idx}', show=False)

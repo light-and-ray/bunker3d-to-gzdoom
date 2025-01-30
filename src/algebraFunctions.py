@@ -234,6 +234,9 @@ def vertexWithOffset(xA, yA, xB, yB, offset):
     return x_vertex, y_vertex
 
 
+def segmentLength(xA, yA, xB, yB):
+    return math.sqrt((xB - xA) ** 2 + (yB - yA) ** 2)
+
 
 def test():
     newLine = (7, 7, 8, 8)

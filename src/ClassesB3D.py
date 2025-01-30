@@ -30,7 +30,10 @@ class MapB3D:
             cratesStartLineIdx: list[int], cratesContent: list[int], cratesAngles: list[int],
             doorsStartLineIdx: list[int],
             textures: list[Image.Image], linesTextures: list[list[int]],
+            circles: list[list[int]]
     ):
+        self.circles = circles
+
         self.textures: dict[str, Image.Image] = {}
         for texture in textures:
             self.textures[generateTextureLumpName()] = texture

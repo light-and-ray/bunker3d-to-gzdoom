@@ -120,7 +120,7 @@ def load(mapIndex):
     data.map = MapB3D(rawLines=read2DArray('LINES_VERTEXES'), rawHeight=read1DArray('LINES_HEIGHT'),
         cratesStartLineIdx=read1DArray('CRATES_START_LINE_IDX'), cratesContent=read1DArray('CRATES_CONTENT'),
         cratesAngles=read1DArray('CRATES_ANGLE'), doorsStartLineIdx=read1DArray('DOORS_START_LINE_IDX'),
-        textures=textures, linesTextures=linesTextures
+        textures=textures, linesTextures=linesTextures, circles=read2DArray("CIRCLES_IDX"),
     )
 
     data.brokenLines = BROKEN_LINES[mapIndex]

@@ -4,7 +4,7 @@ from PIL import Image
 import copy
 from ClassesB3D import MapB3D, CrateB3D, DoorB3D
 from algebraFunctions import (resolveSegmentsOverlap, isInside, areOppositelyDirected, fixVertex,
-    calculateOffset, vertexWithOffset
+    calculateOffset, vertexWithOffset, segmentLength,
 )
 from ClassesShared import Vertex, HeightType
 from drawMap import drawMap
@@ -37,10 +37,20 @@ class MapInterim:
         for line in mapB3D.lines:
             texture = TextureInterim(names=line.texturesNames)
             self.lines.append(LineInterim(v1=line.v1, v2=line.v2, height=line.height, texture=texture))
+        self._fillCirclesOffsets(mapB3D.circles)
         self._removeCratesDoorsAndBrokenLines(mapB3D.crates, mapB3D.doors, brokenLines)
         # self._fixVertexes()
         self._cutMultitextureLines()
         self._removeOverlaps()
+
+
+    def _fillCirclesOffsets(self, circles: list[list[int]]):
+        for circle in circles:
+            lineLengthScaled = segmentLength(*self.lineToTuple(self.lines[circle[0]])) * SCALE_FACTOR
+            offset = 0
+            for index in circle:
+                self.lines[index].texture.offset = offset
+                offset += lineLengthScaled
 
 
     def _removeCratesDoorsAndBrokenLines(self, crates: list[CrateB3D], doors: list[DoorB3D], brokenLines: list[int]):

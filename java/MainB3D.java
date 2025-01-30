@@ -20,6 +20,7 @@ public class MainB3D {
         Json.export("CRATES_START_LINE_IDX", loader.CRATES_START_LINE_IDX);
         Json.export("CRATES_CONTENT", loader.CRATES_CONTENT); // 0 - nothing, 1 - ammo, 2 - health, 3 - health+ammo, 7 - health+ammo, 6 - unknown
         Json.export("CRATES_ANGLE", loader.CRATES_ANGLE);
+        Json.export("CIRCLES_IDX", loader.CIRCLES_IDX);
         Json.export("FOOTER", loader.FOOTER);
 
         Json.export("FOE1_bZ", loader.bZ);
