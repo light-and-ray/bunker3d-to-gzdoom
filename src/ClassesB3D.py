@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from PIL import Image
 from typing import Any
 from ClassesShared import Vertex, HeightType
-from tools import generateTextureLumpName
+from tools import generateTextureLumpName, generateTextureMirroredLumpName
 
 @dataclass
 class DoorB3D:
@@ -30,7 +30,7 @@ class MapB3D:
             cratesStartLineIdx: list[int], cratesContent: list[int], cratesAngles: list[int],
             doorsStartLineIdx: list[int],
             textures: list[Image.Image], linesTextures: list[list[int]],
-            circles: list[list[int]]
+            circles: list[list[int]], textureMirroring: list[int],
     ):
         self.circles = circles
 
@@ -73,8 +73,27 @@ class MapB3D:
                 startLineIdx=doorsStartLineIdx[idx],
             ))
 
+        self._applyMirroring(textureMirroring)
         self._removeRepeatingTexturesTale()
 
+    def _applyMirroring(self, mirroringData: list[int]):
+        mirroredDict = {}
+        for line, mirroring in zip(self.lines, mirroringData):
+            needMirrorIdx = None
+            if mirroring in [3, 15]:
+                needMirrorIdx = 0
+            if mirroring in [10]:
+                needMirrorIdx = 1
+            if needMirrorIdx is not None:
+                if len(line.texturesNames) == 1:
+                    while len(line.texturesNames) < 10:
+                        line.texturesNames.append(line.texturesNames[0])
+                textureName = line.texturesNames[needMirrorIdx]
+                if textureName not in mirroredDict.keys():
+                    mirroredName = generateTextureMirroredLumpName()
+                    mirroredDict[textureName] = mirroredName
+                    self.textures[mirroredName] = self.textures[textureName].transpose(Image.FLIP_LEFT_RIGHT)
+                line.texturesNames[needMirrorIdx] = mirroredDict[textureName]
 
     def _removeRepeatingTexturesTale(self):
         for line in self.lines:

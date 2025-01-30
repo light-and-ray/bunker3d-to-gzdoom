@@ -47,14 +47,17 @@ def saveMap(map: MapGZD, mapIndex: int):
 
 
 def saveTextures(textures: dict[str, Image.Image], mapIndex: int, colorFloor: tuple[int], colorCeiling: tuple[int]):
-    path = RESULT_DIR + f"/textures/c1m{mapIndex}/{getFloorLumpName(mapIndex)}.png"
-    os.makedirs(os.path.dirname(path), exist_ok=True)
+    mapTexturesDir = RESULT_DIR + f"/textures/c1m{mapIndex}/"
+    if os.path.exists(mapTexturesDir):
+        shutil.rmtree(mapTexturesDir)
+    os.makedirs(mapTexturesDir)
+    path = f"{mapTexturesDir}/{getFloorLumpName(mapIndex)}.png"
     Image.new("RGB", (64, 64), color=colorFloor).save(path)
-    path = RESULT_DIR + f"/textures/c1m{mapIndex}/{getCeilingLumpName(mapIndex)}.png"
+    path = f"{mapTexturesDir}/{getCeilingLumpName(mapIndex)}.png"
     Image.new("RGB", (64, 64), color=colorCeiling).save(path)
-
+    
     for name, texture in textures.items():
-        path = RESULT_DIR + f"/textures/c1m{mapIndex}/{name}.png"
+        path = f"{mapTexturesDir}/{name}.png"
         texture.save(path)
 
 

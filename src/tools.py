@@ -39,6 +39,13 @@ def generateTextureLumpName():
     _textureLumpIdx += 1
     return result
 
+_textureMirroredLumpIdx = 0
+def generateTextureMirroredLumpName():
+    global _textureMirroredLumpIdx
+    result = f'B3D_TM{_textureMirroredLumpIdx:02}'
+    _textureMirroredLumpIdx += 1
+    return result
+
 def getCeilingLumpName(mapIndex):
     return f"B3D_C{mapIndex:03}"
 

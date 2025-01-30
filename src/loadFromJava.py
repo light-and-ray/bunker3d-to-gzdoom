@@ -121,6 +121,7 @@ def load(mapIndex):
         cratesStartLineIdx=read1DArray('CRATES_START_LINE_IDX'), cratesContent=read1DArray('CRATES_CONTENT'),
         cratesAngles=read1DArray('CRATES_ANGLE'), doorsStartLineIdx=read1DArray('DOORS_START_LINE_IDX'),
         textures=textures, linesTextures=linesTextures, circles=read2DArray("CIRCLES_IDX"),
+        textureMirroring=read1DArray("LINES_MIRRORING"),
     )
 
     data.brokenLines = BROKEN_LINES[mapIndex]
