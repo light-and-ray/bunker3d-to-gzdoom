@@ -52,9 +52,3 @@ def getCeilingLumpName(mapIndex):
 def getFloorLumpName(mapIndex):
     return f"B3D_F{mapIndex:03}"
 
-_animationIdx = 0
-def generateAnimationName():
-    global _animationIdx
-    result = f'B3D_A{_animationIdx:03}'
-    _animationIdx += 1
-    return result

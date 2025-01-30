@@ -10,7 +10,7 @@ if __name__ == "__main__":
     colorsCeiling = []
     colorsFloor = []
     animations: list[Animation] = []
-    for idx in range(9, 10):
+    for idx in range(1, 10):
         data = load(idx)
         animations.extend(data.map.animations)
         mapInterim = MapInterim(data.map, data.brokenLines)

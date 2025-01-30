@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from PIL import Image
 from typing import Any
 from ClassesShared import Vertex, HeightType, Animation
-from tools import generateTextureLumpName, generateTextureMirroredLumpName, generateAnimationName
+from tools import generateTextureLumpName, generateTextureMirroredLumpName
 
 @dataclass
 class DoorB3D:
@@ -109,10 +109,12 @@ class MapB3D:
         self.animations: list[Animation] = []
         for animatedFrames in animatedFramesList:
             if not animatedFrames: continue
-            name = generateAnimationName()
             frames: list[str] = []
+            if animatedFrames[-1] == animatedFrames[-2]:
+                animatedFrames = animatedFrames[:-1]
             for frameIdx in animatedFrames:
                 frames.append(list(self.textures.keys())[frameIdx])
+            name = frames[0]
             self.animations.append(Animation(name=name, frames=frames))
 
         for i in range(len(self.animations)):

@@ -63,7 +63,7 @@ def saveTextures(textures: dict[str, Image.Image], mapIndex: int, colorFloor: tu
 
 
 def saveAnimations(animations: list[Animation]):
-    DURATION = 1
+    DURATION = 5
     animdefs = ""
     for animation in animations:
         animdefs += f"texture {animation.name}\n"
