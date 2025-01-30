@@ -115,9 +115,12 @@ class MapB3D:
             frames: list[str] = []
             if animatedFrames[-1] == animatedFrames[-2]:
                 animatedFrames = animatedFrames[:-1]
+                duration = 4
+            else:
+                duration = 2
             for frameIdx in animatedFrames:
                 frames.append(list(self.textures.keys())[frameIdx])
-            animation = Animation(name=frames[0], frames=frames)
+            animation = Animation(name=frames[0], frames=frames, duration=duration)
             self.animations.append(animation)
             if any([textureMirroring[x] == 5 for x in animatedLines]):
                 mirroredFrames = []
@@ -127,7 +130,7 @@ class MapB3D:
                     self.textures[mirroredName] = self.textures[frame].transpose(Image.FLIP_LEFT_RIGHT)
                     self.textures[mirroredName].nonMirroredName = frame
                     mirroredFrames.append(mirroredName)
-                self.animations.append(Animation(name=mirroredFrames[0], frames=mirroredFrames))
+                self.animations.append(Animation(name=mirroredFrames[0], frames=mirroredFrames, duration=duration))
 
             for animatedLineIdx in animatedLines:
                 self.lines[animatedLineIdx].texturesNames = [animation.name]

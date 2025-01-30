@@ -17,3 +17,4 @@ class Vertex:
 class Animation:
     name: str
     frames: list[str]
+    duration: float

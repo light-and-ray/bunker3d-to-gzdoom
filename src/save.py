@@ -7,7 +7,7 @@ from tools import getCeilingLumpName, getFloorLumpName
 
 STATIC_DIR = "static"
 RESULT_DIR = "result.d"
-LIGHT_LEVEL = 220
+LIGHT_LEVEL = 240
 
 
 def saveMap(map: MapGZD, mapIndex: int):
@@ -63,12 +63,11 @@ def saveTextures(textures: dict[str, Image.Image], mapIndex: int, colorFloor: tu
 
 
 def saveAnimations(animations: list[Animation]):
-    DURATION = 5
     animdefs = ""
     for animation in animations:
         animdefs += f"texture {animation.name}\n"
         for frame in animation.frames:
-            animdefs += f"    pic {frame} tics {DURATION}\n"
+            animdefs += f"    pic {frame} tics {animation.duration}\n"
         animdefs += "\n"
     with open(RESULT_DIR + "/ANIMDEFS.txt", 'w') as f:
         f.write(animdefs)

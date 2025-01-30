@@ -5,16 +5,19 @@ from ClassesGZD import MapGZD
 from ClassesShared import Animation
 from save import saveMap, saveStaticData, saveTextures, saveAnimations
 
+MAPS = range(1, 10)
+# MAPS = [1, 9]
+
 if __name__ == "__main__":
     saveStaticData()
     colorsCeiling = []
     colorsFloor = []
     animations: list[Animation] = []
-    for idx in range(1, 10):
+    for idx in MAPS:
         data = load(idx)
         animations.extend(data.map.animations)
         mapInterim = MapInterim(data.map, data.brokenLines)
-        drawMap(mapInterim, name=f'c1m{idx}', show=False)
+        # drawMap(mapInterim, name=f'c1m{idx}', show=False)
         mapGZD = MapGZD(mapInterim, startPos=data.startPos)
         saveMap(map=mapGZD, mapIndex=idx)
         saveTextures(textures=data.map.textures, mapIndex=idx, colorCeiling=data.colorCeiling, colorFloor=data.colorFloor)
