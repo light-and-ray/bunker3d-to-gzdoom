@@ -6,7 +6,7 @@ if TYPE_CHECKING:
     from ClassesInterim import MapInterim
 
 
-def drawMap(map: 'MapInterim', show=True, name=None, resolution=1280, frame=30, wait=False):
+def drawMap(map: 'MapInterim', show=False, name=None, resolution=1280, frame=30, wait=False):
     min_x = min(min(line.v1.x, line.v2.x) for line in map.lines)
     max_x = max(max(line.v1.x, line.v2.x) for line in map.lines)
     min_y = min(min(line.v1.y, line.v2.y) for line in map.lines)

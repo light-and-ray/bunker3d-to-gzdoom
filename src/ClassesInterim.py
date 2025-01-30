@@ -171,7 +171,7 @@ class MapInterim:
             for oldLine in oldLines:
                 if isInside(*self.lineToTuple(newLine), *self.lineToTuple(oldLine)):
                     newLine.texture = oldLine.texture
-                    newLine.texture.offset += calculateOffset(*self.lineToTuple(newLine), *self.lineToTuple(oldLine))
+                    newLine.texture.offset += calculateOffset(*self.lineToTuple(newLine), *self.lineToTuple(oldLine)) * SCALE_FACTOR
                     newLine.texture.trimOffset(self.textures)
                     restored = True
                     break
@@ -190,7 +190,7 @@ class MapInterim:
                     continue
                 else:
                     # print(i, j)
-                    # if i > 170:
+                    # if i > 98:
                     #     drawMap(self, wait=True)
                     oldLine1 = self.lines[i]
                     oldLine2 = self.lines[j]
@@ -199,6 +199,7 @@ class MapInterim:
                     self._restoreTextures(newLines, [oldLine1, oldLine2])
                     # print(i, j, (self.lineToTuple(oldLine1), self.lineToTuple(oldLine2)), "->\n     ",
                     #       tuple((self.lineToTuple(line) for line in newLines)))
+                    # print(self.lines[100])
                     self.lines = self.lines[:i] + newLines + self.lines[i+1:]
                     isBroken = True
                     break
