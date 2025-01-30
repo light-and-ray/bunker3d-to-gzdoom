@@ -54,6 +54,7 @@ class MapInterim:
                 offset += lineLengthScaled
             offset = 0
             for index in circle[len(circle)//2:]:
+                self.lines[index].texture.names = self.lines[circle[len(circle)//2-1]].texture.names
                 self.lines[index].texture.offset = offset
                 self.lines[index].texture.trimOffset(self.textures)
                 offset += lineLengthScaled
