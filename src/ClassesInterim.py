@@ -8,7 +8,7 @@ from algebraFunctions import (resolveSegmentsOverlap, isInside, areOppositelyDir
 )
 from ClassesShared import Vertex, HeightType
 from drawMap import drawMap
-from tools import SCALE_FACTOR
+from tools import SCALE_FACTOR, WALL_HEIGHT
 
 
 @dataclass
@@ -48,7 +48,11 @@ class MapInterim:
         for circle in circles:
             lineLengthScaled = segmentLength(*self.lineToTuple(self.lines[circle[0]])) * SCALE_FACTOR
             offset = 0
-            for index in circle:
+            for index in circle[:len(circle)//2]:
+                self.lines[index].texture.offset = offset
+                offset += lineLengthScaled
+            offset = 0
+            for index in circle[len(circle)//2:]:
                 self.lines[index].texture.offset = offset
                 offset += lineLengthScaled
 
