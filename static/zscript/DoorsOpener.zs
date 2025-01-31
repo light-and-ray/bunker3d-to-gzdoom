@@ -13,6 +13,12 @@ class DoorSide_t
     double speed;
     int timeOpened;
     const WAIT_TIME = 35;
+
+    void print()
+    {
+        Console.printf("(%f, %f), (%f, %f), isOpened=%d, target=(%f, %f), speed=%f, timeOpened=%d",
+            xA, yA, xB, yB, isOpened, targetX, targetY, speed, timeOpened);
+    }
 }
 
 class DoorsOpener : Thinker
@@ -27,7 +33,7 @@ class DoorsOpener : Thinker
         int totalLines = Level.lines.size();
         for (int i = 0; i < totalLines; i++)
         {
-            double speed = Level.lines[i].GetUDMFFloat("b3dDoorSpeed");
+            double speed = Level.lines[i].GetUDMFFloat("user_b3d_door_speed");
             if (speed != 0.0)
             {
                 DoorSide_t side = new("DoorSide_t");
@@ -35,10 +41,11 @@ class DoorsOpener : Thinker
                 side.yA = Level.lines[i].v1.p.y;
                 side.xB = Level.lines[i].v2.p.x;
                 side.yB = Level.lines[i].v2.p.y;
-                side.poStartLine = Level.lines[i].GetUDMFInt("b3dDoorPOStartLine");
+                side.poStartLine = Level.lines[i].GetUDMFInt("user_b3d_door_po_start_line");
                 side.speed = speed;
                 doorSides.push(side);
                 doorSidesLastIdx += 1;
+                side.print();
             }
         }
     }
