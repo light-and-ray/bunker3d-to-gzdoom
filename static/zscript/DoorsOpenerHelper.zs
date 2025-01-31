@@ -1,9 +1,3 @@
-class Point_t
-{
-    double x;
-    double y;
-}
-
 class DoorsOpenerHelper
 {
     double distanceToSegment(double px, double py, double x1, double y1, double x2, double y2)
@@ -34,7 +28,7 @@ class DoorsOpenerHelper
         return distToA <= THRESHOLD || distToB <= THRESHOLD || distToSegment <= THRESHOLD;
     }
 
-    Point_t getTargetPoint(double xA, double yA, double xB, double yB)
+    Vector2 getTargetPoint(double xA, double yA, double xB, double yB)
     {
         double lipSize = 18.0;
 
@@ -48,7 +42,7 @@ class DoorsOpenerHelper
 
         double targetX = xA + vecX * (length - lipSize);
         double targetY = yA + vecY * (length - lipSize);
-        Point_t point;
+        Vector2 point;
         point.x = targetX;
         point.y = targetY;
         return point;

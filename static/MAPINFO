@@ -1,75 +1,76 @@
 
 adddefaultmap
 {
-   pixelratio = 1.0
-   lightmode = 3
+    pixelratio = 1.0
+    lightmode = 3
 }
 
 map C1M1 lookup "C1M1"
 {
-   levelnum = 1
-   next = "C1M2"
-   // music = "$MUSIC_E1M1"
+    levelnum = 1
+    next = "C1M2"
+    // music = "$MUSIC_E1M1"
 }
 
 map C1M2 lookup "C1M2"
 {
-   levelnum = 2
-   next = "C1M3"
-   // music = "$MUSIC_E1M1"
+    levelnum = 2
+    next = "C1M3"
+    // music = "$MUSIC_E1M1"
 }
 
 map C1M3 lookup "C1M3"
 {
-   levelnum = 3
-   next = "C1M4"
-   // music = "$MUSIC_E1M1"
+    levelnum = 3
+    next = "C1M4"
+    // music = "$MUSIC_E1M1"
 }
 
 map C1M4 lookup "C1M4"
 {
-   levelnum = 4
-   next = "C1M5"
-   // music = "$MUSIC_E1M1"
+    levelnum = 4
+    next = "C1M5"
+    // music = "$MUSIC_E1M1"
 }
 
 map C1M5 lookup "C1M5"
 {
-   levelnum = 5
-   next = "C1M6"
-   // music = "$MUSIC_E1M1"
+    levelnum = 5
+    next = "C1M6"
+    // music = "$MUSIC_E1M1"
 }
 
 map C1M6 lookup "C1M6"
 {
-   levelnum = 6
-   next = "C1M7"
-   // music = "$MUSIC_E1M1"
+    levelnum = 6
+    next = "C1M7"
+    // music = "$MUSIC_E1M1"
 }
 
 map C1M7 lookup "C1M7"
 {
-   levelnum = 7
-   next = "C1M8"
-   // music = "$MUSIC_E1M1"
+    levelnum = 7
+    next = "C1M8"
+    // music = "$MUSIC_E1M1"
 }
 
 map C1M8 lookup "C1M8"
 {
-   levelnum = 8
-   next = "C1M9"
-   // music = "$MUSIC_E1M1"
+    levelnum = 8
+    next = "C1M9"
+    // music = "$MUSIC_E1M1"
 }
 
 map C1M9 lookup "C1M9"
 {
-   levelnum = 9
-   // next = "C1M6"
-   // music = "$MUSIC_E1M1"
+    levelnum = 9
+    // next = "C1M6"
+    // music = "$MUSIC_E1M1"
 }
 
 
 GameInfo
 {
-   PlayerClasses = "B3DPlayer"
+    PlayerClasses = "B3DPlayer"
+    AddEventHandlers = "DoorsOpenerHandler"
 }

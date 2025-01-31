@@ -30,7 +30,7 @@ class DoorsOpener : Thinker
             double speed = Level.lines[i].GetUDMFFloat("b3dDoorSpeed");
             if (speed != 0.0)
             {
-                DoorSide_t side;
+                DoorSide_t side = new("DoorSide_t");
                 side.xA = Level.lines[i].v1.p.x;
                 side.yA = Level.lines[i].v1.p.y;
                 side.xB = Level.lines[i].v2.p.x;
@@ -55,7 +55,7 @@ class DoorsOpener : Thinker
                 doorSides[i].isOpened = true;
                 doorSides[i].timeOpened = Level.time;
                 Line poStartLine = Level.lines[doorSides[i].poStartLine];
-                Point_t targetPoint = helper.getTargetPoint(
+                Vector2 targetPoint = helper.getTargetPoint(
                     poStartLine.v1.p.x, poStartLine.v1.p.y,
                     poStartLine.v2.p.x, poStartLine.v2.p.y
                 );
@@ -65,4 +65,25 @@ class DoorsOpener : Thinker
             }
         }
     }
+
+    override void Tick()
+    {
+        super.Tick();
+        checkDoorsForOpen();
+    }
+}
+
+
+class DoorsOpenerHandler : EventHandler
+{
+    Array<DoorsOpener> openers;
+	override void PlayerEntered(PlayerEvent e)
+	{
+		PlayerInfo player = players[e.PlayerNumber];
+		if (!player) return;
+        DoorsOpener opener = new("DoorsOpener");;
+        opener.player = player.mo;
+        opener.initDoorSides();
+        openers.push(opener);
+	}
 }
