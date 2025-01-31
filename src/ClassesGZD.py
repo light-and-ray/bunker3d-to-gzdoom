@@ -51,7 +51,9 @@ class ThingGZD:
     x: int
     y: int
     type: int
+    angle: int
 
+POLYOBJECTS_SHIFT = 10000 / SCALE_FACTOR
 
 class MapGZD:
     SECTOR_FULL_IDX = 0
@@ -64,7 +66,7 @@ class MapGZD:
         self.sides: list[SideGZD] = []
         self.lines: list[LineGZD] = []
         self.things: list[ThingGZD] = []
-        self._lastPolyObjectNum = 0
+        self._lastPolyObjectNum = -1
 
         self.sectorFull = SectorGZD(heightFloor=LEVEL_FLOOR, heightCeiling=LEVEL_CEILING)
         self.sectorBottom = SectorGZD(heightFloor=(LEVEL_CEILING+LEVEL_FLOOR)//2, heightCeiling=LEVEL_CEILING)
@@ -75,6 +77,11 @@ class MapGZD:
         for i in range(len(mapInterim.doors)):
             doorB3D = mapInterim.doors[i]
             prevDoorB3D = mapInterim.doors[i-1] if i > 0 else None
+            for line in doorB3D.lines:
+                line.v1.x += POLYOBJECTS_SHIFT
+                line.v1.y += POLYOBJECTS_SHIFT
+                line.v2.x += POLYOBJECTS_SHIFT
+                line.v2.y += POLYOBJECTS_SHIFT
             lines = self._convertLines(doorB3D.lines)
             lines[0].polyObjectDef = self._genNewPolyObject()
             for line in (lines[0], lines[2]):
@@ -95,6 +102,12 @@ class MapGZD:
             self.things.append(ThingGZD(type=9300,
                 x = (self.vertexes[lines[0].v1].x + self.vertexes[lines[2].v1].x) // 2,
                 y = (self.vertexes[lines[0].v1].y + self.vertexes[lines[2].v1].y) // 2,
+                angle=lines[0].polyObjectDef.number,
+            ))
+            self.things.append(ThingGZD(type=9301,
+                x = self.vertexes[lines[0].v1].x-POLYOBJECTS_SHIFT,
+                y = self.vertexes[lines[0].v1].y-POLYOBJECTS_SHIFT,
+                angle=lines[0].polyObjectDef.number,
             ))
             if prevDoorB3D and prevDoorB3D.lines[1].v1 == doorB3D.lines[1].v2 and prevDoorB3D.lines[1].v2 == doorB3D.lines[1].v1:
                 prevDoorPolyObjectDef.mirror = lines[0].polyObjectDef.number
@@ -102,7 +115,7 @@ class MapGZD:
             prevDoorPolyObjectDef = lines[0].polyObjectDef
             self.lines.extend(lines)
 
-        self.things.append(ThingGZD(0, 0, 1)) # starting pos
+        self.things.append(ThingGZD(0, 0, 1, 0)) # starting pos
 
         for i in range(len(self.vertexes)):
             self.vertexes[i].x *= SCALE_FACTOR

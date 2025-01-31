@@ -61,6 +61,7 @@ def saveMap(map: MapGZD, mapIndex: int):
         umap.things[-1].class1 = True
         umap.things[-1].class2 = True
         umap.things[-1].class3 = True
+        umap.things[-1].angle = thing.angle
 
     mapName = f'c1m{mapIndex}'
     wad = omg.WAD()
