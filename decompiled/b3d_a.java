@@ -1678,6 +1678,7 @@ public final class b3d_a extends Canvas {
 
    }
 
+   // walls animations
    private void modifyBigLump1_subfunction4(int var1, int var2, byte[][][] var3) {
       int var4 = var2;
       if (var3[var2].length != 0) {

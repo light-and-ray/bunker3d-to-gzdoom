@@ -50,5 +50,23 @@ public class MainB3D {
         Json.export("TEXTURES_W", loader.TEXTURES_W);
         Json.export("TEXTURES_H", loader.TEXTURES_H);
         Json.export("ANIMATED_FRAMES", loader.fG);
+        // Json.export("UNKNOWN_dp", loader.dp);
+        // Json.export("UNKNOWN_dr", loader.dr);
+        // Json.export("UNKNOWN_ds", loader.ds);
+        // Json.export("UNKNOWN_dv", loader.dv);
+        // Json.export("UNKNOWN_dw", loader.dw);
+        // Json.export("UNKNOWN_dt", loader.dt);
+        // Json.export("UNKNOWN_dx", loader.dx);
+        // Json.export("UNKNOWN_dy", loader.dy);
+        // Json.export("UNKNOWN_dz", loader.dz);
+        // Json.export("UNKNOWN_dA", loader.dA);
+        // Json.export("UNKNOWN_dq", loader.dq);
+        // Json.export("UNKNOWN_dB", loader.dB);
+        // Json.export("UNKNOWN_du", loader.du);
+        Json.export("UNKNOWN_cg", loader.cg);
+        Json.export("UNKNOWN_bT", loader.bT);
+        Json.export("UNKNOWN_cm", loader.cm);
+        Json.export("UNKNOWN_cd", loader.cd);
+        Json.export("UNKNOWN_ch", loader.ch);
     }
 }
