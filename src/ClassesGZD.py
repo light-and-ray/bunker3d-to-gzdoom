@@ -36,14 +36,21 @@ class PolObjectGZD:
 
 @dataclass
 class LineGZD:
-    vertexStartIdx: int
-    vertexEndIdx: int
+    v1: int
+    v2: int
     sideFrontIdx: int
     sideBackIdx: int|None = None
     polyObjectDef: PolObjectGZD|None = None
     b3dDoorSpeed: float = None
     b3dDoorBroken: bool = None
     b3dDoorPOStartLine: int = None
+
+
+@dataclass
+class ThingGZD:
+    x: int
+    y: int
+    type: int
 
 
 class MapGZD:
@@ -56,7 +63,8 @@ class MapGZD:
         self.sectorBottom: SectorGZD = None
         self.sides: list[SideGZD] = []
         self.lines: list[LineGZD] = []
-        self._lastPolyObjectNum = -1
+        self.things: list[ThingGZD] = []
+        self._lastPolyObjectNum = 0
 
         self.sectorFull = SectorGZD(heightFloor=LEVEL_FLOOR, heightCeiling=LEVEL_CEILING)
         self.sectorBottom = SectorGZD(heightFloor=(LEVEL_CEILING+LEVEL_FLOOR)//2, heightCeiling=LEVEL_CEILING)
@@ -84,15 +92,25 @@ class MapGZD:
                     print("warning: unknown door speed", doorB3D.speed)
                     break
                 line.b3dDoorPOStartLine = len(self.lines)
+            self.things.append(ThingGZD(type=9300,
+                x = (self.vertexes[lines[0].v1].x + self.vertexes[lines[2].v1].x) // 2,
+                y = (self.vertexes[lines[0].v1].y + self.vertexes[lines[2].v1].y) // 2,
+            ))
             if prevDoorB3D and prevDoorB3D.lines[1].v1 == doorB3D.lines[1].v2 and prevDoorB3D.lines[1].v2 == doorB3D.lines[1].v1:
                 prevDoorPolyObjectDef.mirror = lines[0].polyObjectDef.number
                 lines[0].polyObjectDef.mirror = prevDoorPolyObjectDef.number
             prevDoorPolyObjectDef = lines[0].polyObjectDef
             self.lines.extend(lines)
 
+        self.things.append(ThingGZD(0, 0, 1)) # starting pos
+
         for i in range(len(self.vertexes)):
             self.vertexes[i].x *= SCALE_FACTOR
             self.vertexes[i].y *= SCALE_FACTOR
+
+        for i in range(len(self.things)):
+            self.things[i].x *= SCALE_FACTOR
+            self.things[i].y *= SCALE_FACTOR
 
 
     def _convertLines(self, liesInterim: list[LineInterim]):
@@ -109,7 +127,7 @@ class MapGZD:
                 sideBackIdx = self._addSide(self.SECTOR_BOTTOM_IDX, TextureMode.NO_TEXTURES, None, None)
             elif line.height == HeightType.TOP:
                 sideFrontIdx = self._addSide(self.SECTOR_BOTTOM_IDX, TextureMode.MIDDLE, line.texture.names[0], line.texture.offset)
-            linesGZD.append(LineGZD(vertexStartIdx=v1Idx, vertexEndIdx=v2Idx,
+            linesGZD.append(LineGZD(v1=v1Idx, v2=v2Idx,
                                       sideFrontIdx=sideFrontIdx, sideBackIdx=sideBackIdx))
         return linesGZD
 

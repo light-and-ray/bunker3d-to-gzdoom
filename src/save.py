@@ -32,7 +32,7 @@ def saveMap(map: MapGZD, mapIndex: int):
             umap.sidedefs[-1].offsetx_top = side.offset
 
     for line in map.lines:
-        umap.linedefs.append(omg.ULinedef(v1=line.vertexStartIdx, v2=line.vertexEndIdx,
+        umap.linedefs.append(omg.ULinedef(v1=line.v1, v2=line.v2,
                                           sidefront=line.sideFrontIdx, sideback=line.sideBackIdx))
         if line.sideBackIdx is not None:
             umap.linedefs[-1].twosided = True
@@ -48,7 +48,20 @@ def saveMap(map: MapGZD, mapIndex: int):
         if line.b3dDoorPOStartLine is not None:
             umap.linedefs[-1].user_b3d_door_po_start_line = line.b3dDoorPOStartLine
 
-    umap.things.append(omg.UThing(x=0, y=0, ednum=1))
+    for thing in map.things:
+        umap.things.append(omg.UThing(x=thing.x, y=thing.y, ednum=thing.type))
+        umap.things[-1].skill1 = True
+        umap.things[-1].skill2 = True
+        umap.things[-1].skill3 = True
+        umap.things[-1].skill4 = True
+        umap.things[-1].skill5 = True
+        umap.things[-1].single = True
+        umap.things[-1].coop = True
+        umap.things[-1].dm = True
+        umap.things[-1].class1 = True
+        umap.things[-1].class2 = True
+        umap.things[-1].class3 = True
+
     mapName = f'c1m{mapIndex}'
     wad = omg.WAD()
     wad.udmfmaps[mapName] = umap.to_lumps()

@@ -13,19 +13,11 @@ class DoorsOpenerHelper
 
     bool isPlayerCloseEnough(double playerX, double playerY, double xA, double yA, double xB, double yB)
     {
-        double THRESHOLD = 48.0;
-
-        // Calculate the distance from the player to point A
+        double THRESHOLD = 96.0;
         double distToA = sqrt((playerX - xA) ** 2 + (playerY - yA) ** 2);
-
-        // Calculate the distance from the player to point B
-        double distToB = sqrt((playerX - xB) ** 2 + (playerY - yB) ** 2);
-
-        // Calculate the distance from the player to the line segment AB
+        // double distToB = sqrt((playerX - xB) ** 2 + (playerY - yB) ** 2);
         double distToSegment = distanceToSegment(playerX, playerY, xA, yA, xB, yB);
-
-        // Check if the player is too close to either point A, point B, or the line segment AB
-        return distToA <= THRESHOLD || distToB <= THRESHOLD || distToSegment <= THRESHOLD;
+        return distToA <= THRESHOLD || distToSegment <= THRESHOLD;
     }
 
     Vector2 getTargetPoint(double xA, double yA, double xB, double yB)
