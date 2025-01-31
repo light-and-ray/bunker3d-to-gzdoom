@@ -264,5 +264,6 @@ class MapInterim:
             lines : list[LineInterim] = []
             for i in range(startIndex, startIndex+3):
                 lines.append(self.lines[i])
-            lines.append(LineInterim(v1=lines[0].v1, v2=lines[2].v2, texture=lines[1].texture, height=lines[0].height))
+            lines.append(LineInterim(v1=lines[2].v2, v2=lines[0].v1, texture=lines[1].texture, height=lines[0].height))
             self.doors.append(DoorInterim(lines=lines, speed=speed))
+

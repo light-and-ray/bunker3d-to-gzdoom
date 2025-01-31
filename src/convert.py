@@ -17,7 +17,6 @@ if __name__ == "__main__":
         data = load(idx)
         animations.extend(data.map.animations)
         mapInterim = MapInterim(data.map, data.brokenLines, data.doorsSpeed, data.doorsStartLineIdx)
-        print(mapInterim.doors)
         drawMap(data.map, name=f'c1m{idx}', show=False)
         mapGZD = MapGZD(mapInterim)
         saveMap(map=mapGZD, mapIndex=idx)

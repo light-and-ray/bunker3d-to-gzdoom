@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any
 from ClassesShared import HeightType
-from ClassesInterim import MapInterim
+from ClassesInterim import MapInterim, LineInterim
 from tools import LEVEL_CEILING, LEVEL_FLOOR, SCALE_FACTOR
 
 @dataclass
@@ -30,11 +30,18 @@ class VertexGZD:
     y: float
 
 @dataclass
+class PolObjectGZD:
+    number: int
+    mirror: int = None
+
+@dataclass
 class LineGZD:
     vertexStartIdx: int
     vertexEndIdx: int
     sideFrontIdx: int
     sideBackIdx: int|None = None
+    polyObjectDef: PolObjectGZD|None = None
+    b3dDoorSpeed: float = None
 
 
 class MapGZD:
@@ -47,11 +54,42 @@ class MapGZD:
         self.sectorBottom: SectorGZD = None
         self.sides: list[SideGZD] = []
         self.lines: list[LineGZD] = []
+        self._lastPolyObjectNum = -1
 
         self.sectorFull = SectorGZD(heightFloor=LEVEL_FLOOR, heightCeiling=LEVEL_CEILING)
         self.sectorBottom = SectorGZD(heightFloor=(LEVEL_CEILING+LEVEL_FLOOR)//2, heightCeiling=LEVEL_CEILING)
 
-        for line in mapInterim.lines:
+        self.lines.extend(self._convertLines(mapInterim.lines))
+
+        prevDoorPolyObjectDef: PolObjectGZD = None
+        for i in range(len(mapInterim.doors)):
+            doorB3D = mapInterim.doors[i]
+            prevDoorB3D = mapInterim.doors[i-1] if i > 0 else None
+            lines = self._convertLines(doorB3D.lines)
+            lines[0].polyObjectDef = self._genNewPolyObject()
+            for line in lines:
+                if doorB3D.speed == -1:
+                    line.b3dDoorSpeed = 0
+                elif doorB3D.speed == 8:
+                    line.b3dDoorSpeed = 2
+                elif doorB3D.speed == 24:
+                    line.b3dDoorSpeed = 1
+                else:
+                    print("warning: unknown door speed", doorB3D.speed)
+            if prevDoorB3D and prevDoorB3D.lines[1].v1 == doorB3D.lines[1].v2 and prevDoorB3D.lines[1].v2 == doorB3D.lines[1].v1:
+                prevDoorPolyObjectDef.mirror = lines[0].polyObjectDef.number
+                lines[0].polyObjectDef.mirror = prevDoorPolyObjectDef.number
+            prevDoorPolyObjectDef = lines[0].polyObjectDef
+            self.lines.extend(lines)
+
+        for i in range(len(self.vertexes)):
+            self.vertexes[i].x *= SCALE_FACTOR
+            self.vertexes[i].y *= SCALE_FACTOR
+
+
+    def _convertLines(self, liesInterim: list[LineInterim]):
+        linesGZD: list[LineGZD] = []
+        for line in liesInterim:
             v1Idx = self._addVertex(*line.v1.pair())
             v2Idx = self._addVertex(*line.v2.pair())
             sideFrontIdx = None
@@ -63,13 +101,9 @@ class MapGZD:
                 sideBackIdx = self._addSide(self.SECTOR_BOTTOM_IDX, TextureMode.NO_TEXTURES, None, None)
             elif line.height == HeightType.TOP:
                 sideFrontIdx = self._addSide(self.SECTOR_BOTTOM_IDX, TextureMode.MIDDLE, line.texture.names[0], line.texture.offset)
-            self.lines.append(LineGZD(vertexStartIdx=v1Idx, vertexEndIdx=v2Idx,
+            linesGZD.append(LineGZD(vertexStartIdx=v1Idx, vertexEndIdx=v2Idx,
                                       sideFrontIdx=sideFrontIdx, sideBackIdx=sideBackIdx))
-
-        for i in range(len(self.vertexes)):
-            self.vertexes[i].x *= SCALE_FACTOR
-            self.vertexes[i].y *= SCALE_FACTOR
-
+        return linesGZD
 
     def _addVertex(self, x, y) -> int:
         newVertex = VertexGZD(x=float(x), y=float(y))
@@ -95,3 +129,7 @@ class MapGZD:
 
         self.sides.append(newSide)
         return len(self.sides) - 1
+
+    def _genNewPolyObject(self):
+        self._lastPolyObjectNum += 1
+        return PolObjectGZD(number=self._lastPolyObjectNum)
