@@ -1,7 +1,9 @@
 from dataclasses import dataclass
 import json, os
 from ClassesB3D import MapB3D
+from ClassesShared import BrokenTextureData
 from PIL import Image
+from tools import WALL_HEIGHT
 
 
 def read1DArray(arrayName: str) -> list[int]:
@@ -57,10 +59,47 @@ BROKEN_LINES = [
     [] #9
 ]
 
+BROKEN_TEXTURES = [ # Doors (inside) and 45 degree with middled texture inside
+    None,
+    { # 1
+        18 : BrokenTextureData(nums=[0, 13, 0], offset=WALL_HEIGHT-18),
+        20 : BrokenTextureData(nums=[0]),
+        19 : BrokenTextureData(nums=[6]),
+        21 : BrokenTextureData(nums=[6]),
+    },
+    { # 2
+        21 : BrokenTextureData(nums=[4]),
+    },
+    { # 3
+        17 : BrokenTextureData(nums=[4]),
+    },
+    { # 4
+        23 : BrokenTextureData(nums=[4]),
+    },
+    { #5
+        18 : BrokenTextureData(nums=[0]),
+        20 : BrokenTextureData(nums=[4]),
+    },
+    { # 6
+        17 : BrokenTextureData(nums=[7]),
+    },
+    { # 7
+        18 : BrokenTextureData(nums=[6]),
+    },
+    { # 8
+        21 : BrokenTextureData(nums=[4]),
+    },
+    { # 9
+        19 : BrokenTextureData(nums=[6]),
+        20 : BrokenTextureData(nums=[6]),
+    },
+]
+
 @dataclass
 class LoadedData:
     map: MapB3D = None
     brokenLines: list[int] = None
+    brokenTextures: dict[int, BrokenTextureData] = None
     colorCeiling: tuple[int] = None
     colorFloor: tuple[int] = None
     doorsSpeed: list[int] = None
@@ -127,6 +166,7 @@ def load(mapIndex):
     )
 
     data.brokenLines = BROKEN_LINES[mapIndex]
+    data.brokenTextures = BROKEN_TEXTURES[mapIndex]
     footer = read1DArray("FOOTER")
     data.colorCeiling = (footer[0], footer[1], footer[2])
     data.colorFloor = (footer[3], footer[4], footer[5])

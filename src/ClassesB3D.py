@@ -40,7 +40,7 @@ class MapB3D:
             for index in linesTextures[i]:
                 keys = list(self.textures.keys())
                 if index >= len(keys):
-                    texturesNames.append(None)
+                    texturesNames.append(f"NONE_{index}")
                 else:
                     texturesNames.append(keys[index])
 

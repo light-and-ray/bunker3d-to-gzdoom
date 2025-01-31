@@ -42,6 +42,7 @@ class LineGZD:
     sideBackIdx: int|None = None
     polyObjectDef: PolObjectGZD|None = None
     b3dDoorSpeed: float = None
+    b3dDoorBroken: bool = None
 
 
 class MapGZD:
@@ -68,14 +69,19 @@ class MapGZD:
             lines = self._convertLines(doorB3D.lines)
             lines[0].polyObjectDef = self._genNewPolyObject()
             for line in lines:
+                line.b3dDoorBroken = False
                 if doorB3D.speed == -1:
                     line.b3dDoorSpeed = 0
                 elif doorB3D.speed == 8:
                     line.b3dDoorSpeed = 2
                 elif doorB3D.speed == 24:
                     line.b3dDoorSpeed = 1
+                elif doorB3D.speed == 2:
+                    line.b3dDoorSpeed = 2
+                    line.b3dDoorBroken = True
                 else:
                     print("warning: unknown door speed", doorB3D.speed)
+                    break
             if prevDoorB3D and prevDoorB3D.lines[1].v1 == doorB3D.lines[1].v2 and prevDoorB3D.lines[1].v2 == doorB3D.lines[1].v1:
                 prevDoorPolyObjectDef.mirror = lines[0].polyObjectDef.number
                 lines[0].polyObjectDef.mirror = prevDoorPolyObjectDef.number

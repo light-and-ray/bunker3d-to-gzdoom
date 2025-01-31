@@ -6,7 +6,7 @@ from ClassesB3D import MapB3D, CrateB3D
 from algebraFunctions import (resolveSegmentsOverlap, isInside, areOppositelyDirected, fixVertex,
     calculateOffset, vertexWithOffset, segmentLength,
 )
-from ClassesShared import Vertex, HeightType
+from ClassesShared import Vertex, HeightType, BrokenTextureData
 from drawMap import drawMap
 from tools import SCALE_FACTOR, WALL_HEIGHT
 
@@ -37,18 +37,35 @@ class DoorInterim:
 
 
 class MapInterim:
-    def __init__(self, mapB3D: MapB3D, brokenLines: list[int], doorsSpeed: list[int], doorsStartLineIdx: list[int]):
+    def __init__(self, mapB3D: MapB3D, brokenLines: list[int], doorsSpeed: list[int], doorsStartLineIdx: list[int],
+            brokenTextures: dict[int, BrokenTextureData]):
         self.textures = mapB3D.textures
         self.lines: list[LineInterim] = []
         for line in mapB3D.lines:
             texture = TextureInterim(names=line.texturesNames)
             self.lines.append(LineInterim(v1=line.v1, v2=line.v2, height=line.height, texture=texture))
+        self._fixBrokenTextures(brokenTextures)
         self._fillCirclesOffsets(mapB3D.circles)
         self._initDoors(doorsStartLineIdx, doorsSpeed)
         self._removeCratesDoorsAndBrokenLines(mapB3D.crates, doorsStartLineIdx, brokenLines)
         # self._fixVertexes()
         self._cutMultitextureLines()
         self._removeOverlaps()
+
+
+    def _fixBrokenTextures(self, brokenTextures: dict[int, BrokenTextureData]):
+        for lineNum, line in enumerate(self.lines):
+            if line.texture.names[0].startswith("NONE_"):
+                brokenNum = int(line.texture.names[0].removeprefix("NONE_"))
+                newNames = []
+                if brokenNum in brokenTextures:
+                    data = brokenTextures[brokenNum]
+                    for newNum in data.nums:
+                        newNames.append(list(self.textures.keys())[newNum])
+                    line.texture.names = newNames
+                    line.texture.offset = data.offset
+                else:
+                    print(f"warning: no fixing data for {lineNum} texture. Broken num = {brokenNum}")
 
 
     def _fillCirclesOffsets(self, circles: list[list[int]]):
@@ -266,4 +283,3 @@ class MapInterim:
                 lines.append(self.lines[i])
             lines.append(LineInterim(v1=lines[2].v2, v2=lines[0].v1, texture=lines[1].texture, height=lines[0].height))
             self.doors.append(DoorInterim(lines=lines, speed=speed))
-
