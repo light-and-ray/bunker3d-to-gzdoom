@@ -6,7 +6,7 @@ from ClassesShared import Animation
 from save import saveMap, saveStaticData, saveTextures, saveAnimations
 
 MAPS = range(1, 10)
-# MAPS = [1, 9]
+MAPS = [1]
 
 if __name__ == "__main__":
     saveStaticData()
@@ -16,9 +16,10 @@ if __name__ == "__main__":
     for idx in MAPS:
         data = load(idx)
         animations.extend(data.map.animations)
-        mapInterim = MapInterim(data.map, data.brokenLines)
-        # drawMap(mapInterim, name=f'c1m{idx}', show=False)
-        mapGZD = MapGZD(mapInterim, startPos=data.startPos)
+        mapInterim = MapInterim(data.map, data.brokenLines, data.doorsSpeed, data.doorsStartLineIdx)
+        print(mapInterim.doors)
+        drawMap(data.map, name=f'c1m{idx}', show=False)
+        mapGZD = MapGZD(mapInterim)
         saveMap(map=mapGZD, mapIndex=idx)
         saveTextures(textures=data.map.textures, mapIndex=idx, colorCeiling=data.colorCeiling, colorFloor=data.colorFloor)
     saveAnimations(animations)

@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Any
 from PIL import Image
 import copy
-from ClassesB3D import MapB3D, CrateB3D, DoorB3D
+from ClassesB3D import MapB3D, CrateB3D
 from algebraFunctions import (resolveSegmentsOverlap, isInside, areOppositelyDirected, fixVertex,
     calculateOffset, vertexWithOffset, segmentLength,
 )
@@ -30,15 +30,22 @@ class LineInterim:
     texture : TextureInterim
 
 
+@dataclass
+class DoorInterim:
+    lines: list[LineInterim]
+    speed: int
+
+
 class MapInterim:
-    def __init__(self, mapB3D: MapB3D, brokenLines: list[int]):
+    def __init__(self, mapB3D: MapB3D, brokenLines: list[int], doorsSpeed: list[int], doorsStartLineIdx: list[int]):
         self.textures = mapB3D.textures
         self.lines: list[LineInterim] = []
         for line in mapB3D.lines:
             texture = TextureInterim(names=line.texturesNames)
             self.lines.append(LineInterim(v1=line.v1, v2=line.v2, height=line.height, texture=texture))
         self._fillCirclesOffsets(mapB3D.circles)
-        self._removeCratesDoorsAndBrokenLines(mapB3D.crates, mapB3D.doors, brokenLines)
+        self._initDoors(doorsStartLineIdx, doorsSpeed)
+        self._removeCratesDoorsAndBrokenLines(mapB3D.crates, doorsStartLineIdx, brokenLines)
         # self._fixVertexes()
         self._cutMultitextureLines()
         self._removeOverlaps()
@@ -60,7 +67,7 @@ class MapInterim:
                 offset += lineLengthScaled
 
 
-    def _removeCratesDoorsAndBrokenLines(self, crates: list[CrateB3D], doors: list[DoorB3D], brokenLines: list[int]):
+    def _removeCratesDoorsAndBrokenLines(self, crates: list[CrateB3D], doorsStartLineIdx: list[int], brokenLines: list[int]):
         linesToRemove: set[int] = set(brokenLines)
 
         for crate in crates:
@@ -68,10 +75,10 @@ class MapInterim:
             linesToRemove.add(crate.startLineIdx+1)
             linesToRemove.add(crate.startLineIdx+2)
             linesToRemove.add(crate.startLineIdx+3)
-        for door in doors:
-            linesToRemove.add(door.startLineIdx)
-            linesToRemove.add(door.startLineIdx+1)
-            linesToRemove.add(door.startLineIdx+2)
+        for doorLineIdx in doorsStartLineIdx:
+            linesToRemove.add(doorLineIdx)
+            linesToRemove.add(doorLineIdx+1)
+            linesToRemove.add(doorLineIdx+2)
 
         newLines: list[LineInterim] = []
         for index, line in enumerate(self.lines):
@@ -251,3 +258,11 @@ class MapInterim:
                 continue
 
 
+    def _initDoors(self, doorsStartLineIdx: list[int], doorsSpeed: list[int]):
+        self.doors : list[DoorInterim] = []
+        for startIndex, speed in zip(doorsStartLineIdx, doorsSpeed):
+            lines : list[LineInterim] = []
+            for i in range(startIndex, startIndex+3):
+                lines.append(self.lines[i])
+            lines.append(LineInterim(v1=lines[0].v1, v2=lines[2].v2, texture=lines[1].texture, height=lines[0].height))
+            self.doors.append(DoorInterim(lines=lines, speed=speed))

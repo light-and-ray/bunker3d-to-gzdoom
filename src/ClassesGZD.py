@@ -41,7 +41,7 @@ class MapGZD:
     SECTOR_FULL_IDX = 0
     SECTOR_BOTTOM_IDX = 1
 
-    def __init__(self, mapInterim: MapInterim, startPos: tuple[int]):
+    def __init__(self, mapInterim: MapInterim):
         self.vertexes: list[VertexGZD] = []
         self.sectorFull: SectorGZD = None
         self.sectorBottom: SectorGZD = None
@@ -69,8 +69,6 @@ class MapGZD:
         for i in range(len(self.vertexes)):
             self.vertexes[i].x *= SCALE_FACTOR
             self.vertexes[i].y *= SCALE_FACTOR
-
-        self.startPos = (startPos[0] * SCALE_FACTOR, startPos[1] * SCALE_FACTOR)
 
 
     def _addVertex(self, x, y) -> int:

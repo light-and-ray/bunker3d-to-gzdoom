@@ -61,9 +61,10 @@ BROKEN_LINES = [
 class LoadedData:
     map: MapB3D = None
     brokenLines: list[int] = None
-    startPos: tuple[int] = None
     colorCeiling: tuple[int] = None
     colorFloor: tuple[int] = None
+    doorsSpeed: list[int] = None
+    doorsStartLineIdx: list[int] = None
 
 
 def _loadTextures():
@@ -119,7 +120,7 @@ def load(mapIndex):
 
     data.map = MapB3D(rawLines=read2DArray('LINES_VERTEXES'), rawHeight=read1DArray('LINES_HEIGHT'),
         cratesStartLineIdx=read1DArray('CRATES_START_LINE_IDX'), cratesContent=read1DArray('CRATES_CONTENT'),
-        cratesAngles=read1DArray('CRATES_ANGLE'), doorsStartLineIdx=read1DArray('DOORS_START_LINE_IDX'),
+        cratesAngles=read1DArray('CRATES_ANGLE'),
         textures=textures, linesTextures=linesTextures, circles=read2DArray("CIRCLES_IDX"),
         textureMirroring=read1DArray("LINES_MIRRORING"), animatedFrames=read2DArray("ANIMATED_FRAMES"),
         animatedLines=read2DArray("LINES_ANIMATED"),
@@ -129,6 +130,7 @@ def load(mapIndex):
     footer = read1DArray("FOOTER")
     data.colorCeiling = (footer[0], footer[1], footer[2])
     data.colorFloor = (footer[3], footer[4], footer[5])
-    data.startPos = (0, 0)
+    data.doorsSpeed = read1DArray("DOORS_SPEED")
+    data.doorsStartLineIdx=read1DArray('DOORS_START_LINE_IDX')
 
     return data

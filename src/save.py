@@ -37,7 +37,7 @@ def saveMap(map: MapGZD, mapIndex: int):
         if line.sideBackIdx is not None:
             umap.linedefs[-1].twosided = True
 
-    umap.things.append(omg.UThing(x=map.startPos[0], y=map.startPos[1], ednum=1))
+    umap.things.append(omg.UThing(x=0, y=0, ednum=1))
     mapName = f'c1m{mapIndex}'
     wad = omg.WAD()
     wad.udmfmaps[mapName] = umap.to_lumps()

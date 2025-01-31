@@ -4,11 +4,6 @@ from typing import Any
 from ClassesShared import Vertex, HeightType, Animation
 from tools import generateTextureLumpName, generateTextureMirroredLumpName
 
-@dataclass
-class DoorB3D:
-    startLineIdx : int
-    pair: Any = None
-    texture : Any = None
 
 @dataclass
 class CrateB3D:
@@ -28,7 +23,6 @@ class LineB3D:
 class MapB3D:
     def __init__(self, rawLines: list[list[int]], rawHeight: list[int],
             cratesStartLineIdx: list[int], cratesContent: list[int], cratesAngles: list[int],
-            doorsStartLineIdx: list[int],
             textures: list[Image.Image], linesTextures: list[list[int]],
             circles: list[list[int]], textureMirroring: list[int],
             animatedFrames: list[list[int]], animatedLines: list[list[int]],
@@ -66,12 +60,6 @@ class MapB3D:
                 content=cratesContent[idx],
                 angle=cratesAngles[idx],
                 textureName=self.lines[cratesStartLineIdx[idx]].texturesNames[0],
-            ))
-
-        self.doors: list[DoorB3D] = []
-        for idx in range(len(doorsStartLineIdx)):
-            self.doors.append(DoorB3D(
-                startLineIdx=doorsStartLineIdx[idx],
             ))
 
         self._removeRepeatingTexturesTale()
