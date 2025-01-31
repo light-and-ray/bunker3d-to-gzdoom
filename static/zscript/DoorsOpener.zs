@@ -1,6 +1,6 @@
-#include "./DoorsOpenerHelp.zs"
+#include "./DoorsOpenerHelper.zs"
 
-struct DoorSide_t
+class DoorSide_t
 {
     double xA;
     double yA;
@@ -18,7 +18,9 @@ struct DoorSide_t
 class DoorsOpener : Thinker
 {
     Array<DoorSide_t> doorSides;
+    int doorSidesLastIdx;
     PlayerPawn player;
+    DoorsOpenerHelper helper;
 
     void initDoorSides()
     {
@@ -28,16 +30,15 @@ class DoorsOpener : Thinker
             double speed = Level.lines[i].GetUDMFFloat("b3dDoorSpeed");
             if (speed != 0.0)
             {
-                doorSides.push(DoorSide_t(
-                    Level.lines[i].v1.x, Level.lines[i].v1.y,
-                    Level.lines[i].v2.x, Level.lines[i].v2.y,
-                    false,
-                    -1.0,
-                    -1.0, // <--- line 36
-                    Level.lines[i].GetUDMFInt("b3dDoorPOStartLine"),
-                    speed,
-                    0
-                ));
+                DoorSide_t side;
+                side.xA = Level.lines[i].v1.p.x;
+                side.yA = Level.lines[i].v1.p.y;
+                side.xB = Level.lines[i].v2.p.x;
+                side.yB = Level.lines[i].v2.p.y;
+                side.poStartLine = Level.lines[i].GetUDMFInt("b3dDoorPOStartLine");
+                side.speed = speed;
+                doorSides.push(side);
+                doorSidesLastIdx += 1;
             }
         }
     }
@@ -46,21 +47,21 @@ class DoorsOpener : Thinker
     {
         for (int i = 0; i < doorSides.size(); i++)
         {
-            if (isPlayerCloseEnough(player.pos.x, player.pos.y,
+            if (helper.isPlayerCloseEnough(player.pos.x, player.pos.y,
                 doorSides[i].xA, doorSides[i].yA,
-                doorSides[i].xB, doorSides[i].yB,
+                doorSides[i].xB, doorSides[i].yB
             ))
             {
                 doorSides[i].isOpened = true;
-                doorSides[i].timeOpened = Timer();
+                doorSides[i].timeOpened = Level.time;
                 Line poStartLine = Level.lines[doorSides[i].poStartLine];
-                Point_t targetPoint = getTargetPoint(
-                    poStartLine.v1.x, poStartLine.v1.y,
-                    poStartLine.v2.x, poStartLine.v2.y
+                Point_t targetPoint = helper.getTargetPoint(
+                    poStartLine.v1.p.x, poStartLine.v1.p.y,
+                    poStartLine.v2.p.x, poStartLine.v2.p.y
                 );
                 doorSides[i].targetX = targetPoint.x;
                 doorSides[i].targetY = targetPoint.y;
-                Polyobj_OR_MoveTo(poStartLine.arg0, doorSides[i].speed, doorSides[i].targetX, doorSides[i].targetY);
+                Polyobj_OR_MoveTo(poStartLine.args[0], doorSides[i].speed, doorSides[i].targetX, doorSides[i].targetY);
             }
         }
     }
