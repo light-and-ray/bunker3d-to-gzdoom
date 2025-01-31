@@ -1,5 +1,5 @@
 
-struct AutoCrouchData
+struct AutoCrouchData_t
 {
     bool wasCrouched;
     const HEIGHT_THRESHOLD = 48.;
@@ -9,7 +9,7 @@ struct AutoCrouchData
 class B3DPlayer : DoomPlayer replaces DoomPlayer
 {
     const MAXBOB = 8.;
-    AutoCrouchData autoCrouchData;
+    AutoCrouchData_t autoCrouchData;
 
     Default
     {

@@ -45,8 +45,8 @@ def saveMap(map: MapGZD, mapIndex: int):
             umap.linedefs[-1].b3dDoorSpeed = line.b3dDoorSpeed
         if line.b3dDoorBroken is not None:
             umap.linedefs[-1].b3dDoorBroken = line.b3dDoorBroken
-        if line.b3dDoorPO is not None:
-            umap.linedefs[-1].b3dDoorPO = line.b3dDoorPO
+        if line.b3dDoorPOStartLine is not None:
+            umap.linedefs[-1].b3dDoorPOStartLine = line.b3dDoorPOStartLine
 
     umap.things.append(omg.UThing(x=0, y=0, ednum=1))
     mapName = f'c1m{mapIndex}'
