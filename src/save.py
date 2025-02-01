@@ -51,6 +51,8 @@ def saveMap(map: MapGZD, mapIndex: int):
             umap.linedefs[-1].user_b3d_door_po_x = float(line.b3dDoorPOx)
         if line.b3dDoorPOy is not None:
             umap.linedefs[-1].user_b3d_door_po_y = float(line.b3dDoorPOy)
+        if line.b3dDoorBackSide is not None:
+            umap.linedefs[-1].user_b3d_door_back_side = int(line.b3dDoorBackSide)
 
     for thing in map.things:
         umap.things.append(omg.UThing(x=thing.x, y=thing.y, ednum=thing.type))

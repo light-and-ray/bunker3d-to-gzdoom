@@ -47,6 +47,7 @@ class LineGZD:
     b3dDoorPONum: int = None
     b3dDoorPOx: float = None
     b3dDoorPOy: float = None
+    b3dDoorBackSide: bool = None
 
 
 @dataclass
@@ -88,6 +89,7 @@ class MapGZD:
             self.things[i].x *= SCALE_FACTOR
             self.things[i].y *= SCALE_FACTOR
 
+
     def _genPOSector(self):
         self.sectors.append(SectorGZD(heightCeiling=LEVEL_CEILING, heightFloor=LEVEL_FLOOR))
         return len(self.sectors) - 1
@@ -116,18 +118,19 @@ class MapGZD:
                 if doorB3D.speed == -1:
                     line.b3dDoorSpeed = 0.0
                 elif doorB3D.speed == 8:
-                    line.b3dDoorSpeed = 2.0
-                elif doorB3D.speed == 24:
-                    line.b3dDoorSpeed = 1.0
+                    line.b3dDoorSpeed = 12.0
                 elif doorB3D.speed == 2:
-                    line.b3dDoorSpeed = 2.0
+                    line.b3dDoorSpeed = 12.0
                     line.b3dDoorBroken = True
+                elif doorB3D.speed == 24:
+                    line.b3dDoorSpeed = 6.0
                 else:
                     print("warning: unknown door speed", doorB3D.speed)
                     break
                 line.b3dDoorPONum = polyObjectDef.number
                 line.b3dDoorPOx = startingSpot.x * SCALE_FACTOR
                 line.b3dDoorPOy = startingSpot.y * SCALE_FACTOR
+            lines[2].b3dDoorBackSide = True
 
             self.things.append(ThingGZD(type=9300, # anchor
                 x = (self.vertexes[lines[0].v1].x + self.vertexes[lines[2].v1].x) // 2,

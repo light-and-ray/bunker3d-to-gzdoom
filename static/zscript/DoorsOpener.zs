@@ -35,11 +35,16 @@ class DoorsOpener : Thinker
             if (speed != 0.0)
             {
                 DoorSide_t side = new("DoorSide_t");
-                side.sideA = Level.lines[i].v1.p;
-                side.sideB = Level.lines[i].v2.p;
+                if (Level.lines[i].GetUDMFInt("user_b3d_door_back_side") != 0){
+                    side.sideA = Level.lines[i].v1.p;
+                    side.sideB = Level.lines[i].v2.p;
+                } else {
+                    side.sideA = Level.lines[i].v2.p;
+                    side.sideB = Level.lines[i].v1.p;
+                }
                 side.poNum = Level.lines[i].GetUDMFInt("user_b3d_door_po_num");
                 side.start.x = Level.lines[i].GetUDMFFloat("user_b3d_door_po_x");
-                side.start.y = Level.lines[i].GetUDMFFloat("user_b3d_door_po_x");
+                side.start.y = Level.lines[i].GetUDMFFloat("user_b3d_door_po_y");
                 Vector2 targetPoint = helper.getTargetPoint(side.sideA.x, side.sideA.y,
                         side.sideB.x, side.sideB.y, side.start.x, side.start.y);
                 side.target = targetPoint;
@@ -55,16 +60,20 @@ class DoorsOpener : Thinker
     {
         for (int i = 0; i < doorSides.size(); i++)
         {
-            // if (helper.isPlayerCloseEnough(player.pos.x, player.pos.y,
-            //     doorSides[i].A, doorSides[i].A,
-            //     doorSides[i].B, doorSides[i].B
-            // ))
-            // {
-            //     doorSides[i].isOpened = true;
-            //     doorSides[i].timeOpened = Level.time;
-            //     Line poStartLine = Level.lines[doorSides[i].poStartLine];
-            //     Polyobj_OR_MoveTo(poStartLine.args[0], doorSides[i].speed, doorSides[i].target.x, doorSides[i].target.y);
-            // }
+            if (helper.isPlayerCloseEnough(player.pos.x, player.pos.y,
+                doorSides[i].sideA.x, doorSides[i].sideA.y,
+                doorSides[i].sideB.x, doorSides[i].sideB.y
+            ))
+            {
+                DoorSide_t side = doorSides[i];
+                side.timeOpened = Level.time;
+                if (!side.isOpened) {
+                    side.print();
+                    Polyobj_OR_MoveTo(side.poNum, side.speed, side.target.x, side.target.y);
+                    side.isOpened = true;
+                }
+                break;
+            }
         }
     }
 
