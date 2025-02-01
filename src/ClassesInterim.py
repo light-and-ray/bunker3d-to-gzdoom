@@ -276,14 +276,23 @@ class MapInterim:
                 i += 1
                 continue
 
+    def getAllLines(self):
+        newList = self.lines[:]
+        for x in self.doors:
+            newList.extend(x.lines)
+            if x.boxLines:
+                newList.extend(x.boxLines)
+        return newList
 
-    def _moveDoorOnPosition(self, door: DoorInterim):
-        newX = max([x.v1.x for x in self.lines]) + 200 / SCALE_FACTOR
-        newY = 0.0
+    def _moveDoorOnNewPosition(self, door: DoorInterim):
+        newX = max([x.v1.x for x in self.getAllLines()]) + 200 / SCALE_FACTOR
+        newY = max([x.v1.y for x in self.getAllLines()]) + 200 / SCALE_FACTOR
         offsetX = newX - door.lines[0].v1.x
         offsetY = newY - door.lines[0].v1.y
         for line in door.lines:
             line.v1.x += offsetX
+            line.v1.y += offsetY
+            line.v2.x += offsetX
             line.v2.y += offsetY
 
 
@@ -332,9 +341,10 @@ class MapInterim:
             lines : list[LineInterim] = []
             for i in range(startIndex, startIndex+3):
                 lines.append(self.lines[i])
-            lines.append(LineInterim(v1=lines[2].v2, v2=lines[0].v1, texture=lines[1].texture, height=lines[0].height))
+            lines.append(LineInterim(v1=copy.copy(lines[2].v2), v2=copy.copy(lines[0].v1), texture=copy.deepcopy(lines[1].texture), height=lines[0].height))
             self.doors.append(DoorInterim(lines=lines, speed=speed, startingSpot=copy.copy(lines[0].v1)))
 
         for door in self.doors:
-            self._moveDoorOnPosition(door)
+            self._moveDoorOnNewPosition(door)
             door.boxLines = self._generateBoxAroundDoor(door.lines)
+
