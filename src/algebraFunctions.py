@@ -218,6 +218,20 @@ def vertexWithOffset(xA, yA, xB, yB, offset):
     # Calculate the length of the line segment
     segment_length = math.sqrt((xB - xA) ** 2 + (yB - yA) ** 2)
 
+    # Calculate the ratio of the offset to the segment length
+    ratio = offset / segment_length
+
+    # Calculate the coordinates of the vertex
+    x_vertex = xA + (xB - xA) * ratio
+    y_vertex = yA + (yB - yA) * ratio
+
+    return x_vertex, y_vertex
+
+
+def vertexWithOffset_checkInside(xA, yA, xB, yB, offset):
+    # Calculate the length of the line segment
+    segment_length = math.sqrt((xB - xA) ** 2 + (yB - yA) ** 2)
+
     # Check if the offset is within the line segment
     if offset <= 0:
         return None
@@ -236,6 +250,49 @@ def vertexWithOffset(xA, yA, xB, yB, offset):
 
 def segmentLength(xA, yA, xB, yB):
     return math.sqrt((xB - xA) ** 2 + (yB - yA) ** 2)
+
+
+def distance(p1, p2):
+    """Calculate the Euclidean distance between two points."""
+    return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
+
+def findFourthVertex(points):
+    """Find the fourth point of a rectangle given three points."""
+    # Calculate distances between all pairs of points
+    distances = {
+        'd12': distance(points[0], points[1]),
+        'd13': distance(points[0], points[2]),
+        'd23': distance(points[1], points[2]),
+    }
+
+    # Determine which points form the diagonal (longest distance)
+    diagonal_points = max(distances, key=distances.get)
+
+    # Identify the points that are not part of the diagonal
+    if diagonal_points == 'd12':
+        non_diagonal_points = [points[2]]
+        diagonal_p1, diagonal_p2 = points[0], points[1]
+    elif diagonal_points == 'd13':
+        non_diagonal_points = [points[1]]
+        diagonal_p1, diagonal_p2 = points[0], points[2]
+    else:  # d23
+        non_diagonal_points = [points[0]]
+        diagonal_p1, diagonal_p2 = points[1], points[2]
+
+    # The fourth point should form a diagonal with the non-diagonal point
+    # and should have the same midpoint as the known diagonal.
+    midpoint_x = (diagonal_p1[0] + diagonal_p2[0]) / 2
+    midpoint_y = (diagonal_p1[1] + diagonal_p2[1]) / 2
+
+    # Calculate the vector from one of the diagonal points to the midpoint
+    vector_to_midpoint_x = midpoint_x - diagonal_p1[0]
+    vector_to_midpoint_y = midpoint_y - diagonal_p1[1]
+
+    # Apply this vector to the non-diagonal point to find the fourth point
+    fourth_point_x = non_diagonal_points[0][0] + vector_to_midpoint_x
+    fourth_point_y = non_diagonal_points[0][1] + vector_to_midpoint_y
+
+    return (fourth_point_x, fourth_point_y)
 
 
 def test():

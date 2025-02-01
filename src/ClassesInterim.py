@@ -4,7 +4,7 @@ from PIL import Image
 import copy
 from ClassesB3D import MapB3D, CrateB3D
 from algebraFunctions import (resolveSegmentsOverlap, isInside, areOppositelyDirected, fixVertex,
-    calculateOffset, vertexWithOffset, segmentLength,
+    calculateOffset, vertexWithOffset, segmentLength, findFourthVertex, vertexWithOffset_checkInside,
 )
 from ClassesShared import Vertex, HeightType, BrokenTextureData
 from drawMap import drawMap
@@ -34,6 +34,8 @@ class LineInterim:
 class DoorInterim:
     lines: list[LineInterim]
     speed: int
+    startingSpot: Vertex
+    boxLines: list[LineInterim] = None
 
 
 class MapInterim:
@@ -256,7 +258,7 @@ class MapInterim:
         while i < len(self.lines):
             if len(self.lines[i].texture.names) > 1:
                 offset = self.textures[self.lines[i].texture.names[0]].width - self.lines[i].texture.offset
-                newV = vertexWithOffset(*self.lineToTuple(self.lines[i]), offset / SCALE_FACTOR)
+                newV = vertexWithOffset_checkInside(*self.lineToTuple(self.lines[i]), offset / SCALE_FACTOR)
                 if newV:
                     newLine1 = self.lines[i]
                     newLine2 = copy.deepcopy(self.lines[i])
@@ -275,6 +277,55 @@ class MapInterim:
                 continue
 
 
+    def _moveDoorOnPosition(self, door: DoorInterim):
+        newX = max([x.v1.x for x in self.lines]) + 200 / SCALE_FACTOR
+        newY = 0.0
+        offsetX = newX - door.lines[0].v1.x
+        offsetY = newY - door.lines[0].v1.y
+        for line in door.lines:
+            line.v1.x += offsetX
+            line.v2.y += offsetY
+
+
+    def _generateBoxAroundDoor(self, POLines: list[LineInterim]):
+        """
+            |ay                       |by
+        ax--A-------------------------B--bx
+            |                         |
+        dx--D-------------------------C--cx
+            |dy                       |cy
+        """
+        OFFSET = 50 / SCALE_FACTOR
+        DC = POLines[0]
+        CB = POLines[1]
+        BA = POLines[2]
+        AD = POLines[3]
+        dx = vertexWithOffset(*MapInterim.lineToTuple(DC), -OFFSET)
+        cx = vertexWithOffset(*MapInterim.lineToTuple(DC), segmentLength(*MapInterim.lineToTuple(DC))+OFFSET)
+        bx = vertexWithOffset(*MapInterim.lineToTuple(BA), -OFFSET)
+        ax = vertexWithOffset(*MapInterim.lineToTuple(BA), segmentLength(*MapInterim.lineToTuple(BA))+OFFSET)
+        cy = vertexWithOffset(*MapInterim.lineToTuple(CB), -OFFSET)
+        by = vertexWithOffset(*MapInterim.lineToTuple(CB), segmentLength(*MapInterim.lineToTuple(CB))+OFFSET)
+        ay = vertexWithOffset(*MapInterim.lineToTuple(AD), -OFFSET)
+        dy = vertexWithOffset(*MapInterim.lineToTuple(AD), segmentLength(*MapInterim.lineToTuple(AD))+OFFSET)
+        A = AD.v1.pair()
+        B = BA.v1.pair()
+        C = CB.v1.pair()
+        D = DC.v1.pair()
+        newAVertex = findFourthVertex([ay, A, ax])
+        newBVertex = findFourthVertex([by, B, bx])
+        newCVertex = findFourthVertex([cx, C, cy])
+        newDVertex = findFourthVertex([dy, D, dx])
+        newLines : list[LineInterim] = []
+        def getNewLine(new1Vertex, new2Vertex):
+            return LineInterim(Vertex(*new1Vertex), Vertex(*new2Vertex), POLines[0].height, TextureInterim([list(self.textures.keys())[0]]))
+        newLines.append(getNewLine(newAVertex, newBVertex))
+        newLines.append(getNewLine(newBVertex, newCVertex))
+        newLines.append(getNewLine(newCVertex, newDVertex))
+        newLines.append(getNewLine(newDVertex, newAVertex))
+        return newLines
+
+
     def _initDoors(self, doorsStartLineIdx: list[int], doorsSpeed: list[int]):
         self.doors : list[DoorInterim] = []
         for startIndex, speed in zip(doorsStartLineIdx, doorsSpeed):
@@ -282,4 +333,8 @@ class MapInterim:
             for i in range(startIndex, startIndex+3):
                 lines.append(self.lines[i])
             lines.append(LineInterim(v1=lines[2].v2, v2=lines[0].v1, texture=lines[1].texture, height=lines[0].height))
-            self.doors.append(DoorInterim(lines=lines, speed=speed))
+            self.doors.append(DoorInterim(lines=lines, speed=speed, startingSpot=copy.copy(lines[0].v1)))
+
+        for door in self.doors:
+            self._moveDoorOnPosition(door)
+            door.boxLines = self._generateBoxAroundDoor(door.lines)

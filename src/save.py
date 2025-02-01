@@ -16,7 +16,7 @@ def saveMap(map: MapGZD, mapIndex: int):
 
     umap.vertexes = [omg.UVertex(v.x, v.y) for v in map.vertexes]
 
-    for sector in (map.sectorFull, map.sectorBottom):
+    for sector in map.sectors:
         umap.sectors.append(omg.USector(textureceiling=getCeilingLumpName(mapIndex), texturefloor=getFloorLumpName(mapIndex),
             heightfloor=int(sector.heightFloor), heightceiling=int(sector.heightCeiling), lightlevel=LIGHT_LEVEL))
 

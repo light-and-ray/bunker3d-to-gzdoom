@@ -1,2 +1,2 @@
 #!/bin/bash
-gzdoom -iwad DOOM.WAD -file result.d +map c1m2
+gzdoom -iwad DOOM.WAD -file result.d +map c1m1

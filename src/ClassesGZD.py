@@ -1,9 +1,10 @@
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any
-from ClassesShared import HeightType
-from ClassesInterim import MapInterim, LineInterim
+from ClassesShared import HeightType, Vertex
+from ClassesInterim import MapInterim, LineInterim, DoorInterim, TextureInterim
 from tools import LEVEL_CEILING, LEVEL_FLOOR, SCALE_FACTOR
+from algebraFunctions import vertexWithOffset, segmentLength, findFourthVertex
 
 @dataclass
 class SectorGZD:
@@ -53,7 +54,6 @@ class ThingGZD:
     type: int
     angle: int
 
-POLYOBJECTS_SHIFT = 10000 / SCALE_FACTOR
 
 class MapGZD:
     SECTOR_FULL_IDX = 0
@@ -63,6 +63,7 @@ class MapGZD:
         self.vertexes: list[VertexGZD] = []
         self.sectorFull: SectorGZD = None
         self.sectorBottom: SectorGZD = None
+        self.sectors: list[SectorGZD] = []
         self.sides: list[SideGZD] = []
         self.lines: list[LineGZD] = []
         self.things: list[ThingGZD] = []
@@ -70,20 +71,43 @@ class MapGZD:
 
         self.sectorFull = SectorGZD(heightFloor=LEVEL_FLOOR, heightCeiling=LEVEL_CEILING)
         self.sectorBottom = SectorGZD(heightFloor=(LEVEL_CEILING+LEVEL_FLOOR)//2, heightCeiling=LEVEL_CEILING)
+        self.sectors.extend([self.sectorFull, self.sectorBottom])
 
         self.lines.extend(self._convertLines(mapInterim.lines))
+        self._convertDoors(mapInterim.doors)
 
+        self.things.append(ThingGZD(0, 0, 1, 0)) # starting pos
+
+        for i in range(len(self.vertexes)):
+            self.vertexes[i].x *= SCALE_FACTOR
+            self.vertexes[i].y *= SCALE_FACTOR
+
+        for i in range(len(self.things)):
+            self.things[i].x *= SCALE_FACTOR
+            self.things[i].y *= SCALE_FACTOR
+
+    def _genPOSector(self):
+        self.sectors.append(SectorGZD(heightCeiling=LEVEL_CEILING, heightFloor=LEVEL_FLOOR))
+        return len(self.sectors) - 1
+
+    def _convertDoors(self, doors: list[DoorInterim]):
         prevDoorPolyObjectDef: PolObjectGZD = None
-        for i in range(len(mapInterim.doors)):
-            doorB3D = mapInterim.doors[i]
-            prevDoorB3D = mapInterim.doors[i-1] if i > 0 else None
-            # for line in doorB3D.lines:
-            #     line.v1.x += POLYOBJECTS_SHIFT
-            #     line.v1.y += POLYOBJECTS_SHIFT
-            #     line.v2.x += POLYOBJECTS_SHIFT
-            #     line.v2.y += POLYOBJECTS_SHIFT
-            lines = self._convertLines(doorB3D.lines)
-            lines[0].polyObjectDef = self._genNewPolyObject()
+        for i in range(len(doors)):
+            doorB3D = doors[i]
+            prevDoorB3D = doors[i-1] if i > 0 else None
+            polyObjectDef = self._genNewPolyObject()
+
+            self.things.append(ThingGZD(type=9301, # starting spot
+                x = doorB3D.startingSpot.x,
+                y = doorB3D.startingSpot.y,
+                angle=polyObjectDef.number,
+            ))
+
+            poSector = self._genPOSector()
+            lines = self._convertLines(doorB3D.lines, forcedSector=poSector)
+            lines[0].polyObjectDef = polyObjectDef
+            boxLines = self._convertLines(doorB3D.boxLines, forcedSector=poSector)
+
             for line in (lines[0], lines[2]):
                 line.b3dDoorBroken = False
                 if doorB3D.speed == -1:
@@ -99,34 +123,22 @@ class MapGZD:
                     print("warning: unknown door speed", doorB3D.speed)
                     break
                 line.b3dDoorPOStartLine = len(self.lines)
-            # self.things.append(ThingGZD(type=9300,
-            #     x = (self.vertexes[lines[0].v1].x + self.vertexes[lines[2].v1].x) // 2,
-            #     y = (self.vertexes[lines[0].v1].y + self.vertexes[lines[2].v1].y) // 2,
-            #     angle=lines[0].polyObjectDef.number,
-            # ))
-            # self.things.append(ThingGZD(type=9301,
-            #     x = self.vertexes[lines[0].v1].x-POLYOBJECTS_SHIFT,
-            #     y = self.vertexes[lines[0].v1].y-POLYOBJECTS_SHIFT,
-            #     angle=lines[0].polyObjectDef.number,
-            # ))
+
+            self.things.append(ThingGZD(type=9300, # anchor
+                x = (self.vertexes[lines[0].v1].x + self.vertexes[lines[2].v1].x) // 2,
+                y = (self.vertexes[lines[0].v1].y + self.vertexes[lines[2].v1].y) // 2,
+                angle=polyObjectDef.number,
+            ))
+
             if prevDoorB3D and prevDoorB3D.lines[1].v1 == doorB3D.lines[1].v2 and prevDoorB3D.lines[1].v2 == doorB3D.lines[1].v1:
-                prevDoorPolyObjectDef.mirror = lines[0].polyObjectDef.number
-                lines[0].polyObjectDef.mirror = prevDoorPolyObjectDef.number
-            prevDoorPolyObjectDef = lines[0].polyObjectDef
+                prevDoorPolyObjectDef.mirror = polyObjectDef.number
+                polyObjectDef.mirror = prevDoorPolyObjectDef.number
+            prevDoorPolyObjectDef = polyObjectDef
             self.lines.extend(lines)
-
-        self.things.append(ThingGZD(0, 0, 1, 0)) # starting pos
-
-        for i in range(len(self.vertexes)):
-            self.vertexes[i].x *= SCALE_FACTOR
-            self.vertexes[i].y *= SCALE_FACTOR
-
-        for i in range(len(self.things)):
-            self.things[i].x *= SCALE_FACTOR
-            self.things[i].y *= SCALE_FACTOR
+            self.lines.extend(boxLines)
 
 
-    def _convertLines(self, liesInterim: list[LineInterim]):
+    def _convertLines(self, liesInterim: list[LineInterim], forcedSector: int|None = None):
         linesGZD: list[LineGZD] = []
         for line in liesInterim:
             v1Idx = self._addVertex(*line.v1.pair())
@@ -134,7 +146,8 @@ class MapGZD:
             sideFrontIdx = None
             sideBackIdx = None
             if line.height == HeightType.FULL:
-                sideFrontIdx = self._addSide(self.SECTOR_FULL_IDX, TextureMode.MIDDLE, line.texture.names[0], line.texture.offset)
+                sector = forcedSector if forcedSector is not None else self.SECTOR_FULL_IDX
+                sideFrontIdx = self._addSide(sector, TextureMode.MIDDLE, line.texture.names[0], line.texture.offset)
             elif line.height == HeightType.BOTTOM:
                 sideFrontIdx = self._addSide(self.SECTOR_FULL_IDX, TextureMode.TOP_AND_BOTTOM, line.texture.names[0], line.texture.offset)
                 sideBackIdx = self._addSide(self.SECTOR_BOTTOM_IDX, TextureMode.NO_TEXTURES, None, None)
