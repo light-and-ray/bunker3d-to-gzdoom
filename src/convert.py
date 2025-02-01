@@ -6,7 +6,7 @@ from ClassesShared import Animation
 from save import saveMap, saveStaticData, saveTextures, saveAnimations
 
 MAPS = range(1, 10)
-MAPS = [1]
+# MAPS = [1]
 
 if __name__ == "__main__":
     saveStaticData()
