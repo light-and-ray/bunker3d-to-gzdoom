@@ -342,7 +342,11 @@ class MapInterim:
             for i in range(startIndex, startIndex+3):
                 lines.append(self.lines[i])
             lines.append(LineInterim(v1=copy.copy(lines[2].v2), v2=copy.copy(lines[0].v1), texture=copy.deepcopy(lines[1].texture), height=lines[0].height))
-            self.doors.append(DoorInterim(lines=lines, speed=speed, startingSpot=copy.copy(lines[0].v1)))
+            startingSpot=Vertex(
+                x = (lines[0].v1.x + lines[2].v1.x) // 2,
+                y = (lines[0].v1.y + lines[2].v1.y) // 2,
+            )
+            self.doors.append(DoorInterim(lines=lines, speed=speed, startingSpot=startingSpot))
 
         for door in self.doors:
             self._moveDoorOnNewPosition(door)

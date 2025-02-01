@@ -88,9 +88,9 @@ class DoorsOpenerHandler : EventHandler
 	{
 		PlayerInfo player = players[e.PlayerNumber];
 		if (!player) return;
-        DoorsOpener opener = new("DoorsOpener");;
-        opener.player = player.mo;
-        opener.initDoorSides();
-        openers.push(opener);
+        // DoorsOpener opener = new("DoorsOpener");;
+        // opener.player = player.mo;
+        // opener.initDoorSides();
+        // openers.push(opener);
 	}
 }
