@@ -2,22 +2,19 @@
 
 class DoorSide_t
 {
-    double xA;
-    double yA;
-    double xB;
-    double yB;
+    Vector2 A;
+    Vector2 B;
+    Vector2 start;
     bool isOpened;
-    double targetX;
-    double targetY;
-    int poStartLine;
+    Vector2 target;
     double speed;
     int timeOpened;
     const WAIT_TIME = 35;
 
     void print()
     {
-        Console.printf("(%f, %f), (%f, %f), isOpened=%d, target=(%f, %f), speed=%f, timeOpened=%d",
-            xA, yA, xB, yB, isOpened, targetX, targetY, speed, timeOpened);
+        Console.printf("start=(%f, %f), isOpened=%d, target=(%f, %f), speed=%f, timeOpened=%d",
+            start.x, start.y, isOpened, target.x, target.y, speed, timeOpened);
     }
 }
 
@@ -37,11 +34,14 @@ class DoorsOpener : Thinker
             if (speed != 0.0)
             {
                 DoorSide_t side = new("DoorSide_t");
-                side.xA = Level.lines[i].v1.p.x;
-                side.yA = Level.lines[i].v1.p.y;
-                side.xB = Level.lines[i].v2.p.x;
-                side.yB = Level.lines[i].v2.p.y;
-                side.poStartLine = Level.lines[i].GetUDMFInt("user_b3d_door_po_start_line");
+                side.A = Level.lines[i].v1.p;
+                side.B = Level.lines[i].v2.p;
+                // Ting = Level.lines[i].GetUDMFInt("user_b3d_door_po_starting_spot");
+                // side.start = ; // po start spot pos
+                // Vector2 targetPoint = helper.getTargetPoint(
+                //     xA, yA, xB, yB,
+                // );
+                // side.target = targetPoint;
                 side.speed = speed;
                 doorSides.push(side);
                 doorSidesLastIdx += 1;
@@ -54,22 +54,16 @@ class DoorsOpener : Thinker
     {
         for (int i = 0; i < doorSides.size(); i++)
         {
-            if (helper.isPlayerCloseEnough(player.pos.x, player.pos.y,
-                doorSides[i].xA, doorSides[i].yA,
-                doorSides[i].xB, doorSides[i].yB
-            ))
-            {
-                doorSides[i].isOpened = true;
-                doorSides[i].timeOpened = Level.time;
-                Line poStartLine = Level.lines[doorSides[i].poStartLine];
-                Vector2 targetPoint = helper.getTargetPoint(
-                    poStartLine.v1.p.x, poStartLine.v1.p.y,
-                    poStartLine.v2.p.x, poStartLine.v2.p.y
-                );
-                doorSides[i].targetX = targetPoint.x;
-                doorSides[i].targetY = targetPoint.y;
-                Polyobj_OR_MoveTo(poStartLine.args[0], doorSides[i].speed, doorSides[i].targetX, doorSides[i].targetY);
-            }
+            // if (helper.isPlayerCloseEnough(player.pos.x, player.pos.y,
+            //     doorSides[i].A, doorSides[i].A,
+            //     doorSides[i].B, doorSides[i].B
+            // ))
+            // {
+            //     doorSides[i].isOpened = true;
+            //     doorSides[i].timeOpened = Level.time;
+            //     Line poStartLine = Level.lines[doorSides[i].poStartLine];
+            //     Polyobj_OR_MoveTo(poStartLine.args[0], doorSides[i].speed, doorSides[i].target.x, doorSides[i].target.y);
+            // }
         }
     }
 
