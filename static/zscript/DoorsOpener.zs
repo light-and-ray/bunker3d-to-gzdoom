@@ -2,19 +2,20 @@
 
 class DoorSide_t
 {
-    Vector2 A;
-    Vector2 B;
+    Vector2 sideA;
+    Vector2 sideB;
     Vector2 start;
     bool isOpened;
     Vector2 target;
     double speed;
     int timeOpened;
+    int poNum;
     const WAIT_TIME = 35;
 
     void print()
     {
-        Console.printf("start=(%f, %f), isOpened=%d, target=(%f, %f), speed=%f, timeOpened=%d",
-            start.x, start.y, isOpened, target.x, target.y, speed, timeOpened);
+        Console.printf("start=(%f, %f), isOpened=%d, target=(%f, %f), speed=%f, timeOpened=%d, poNum=%d",
+            start.x, start.y, isOpened, target.x, target.y, speed, timeOpened, poNum);
     }
 }
 
@@ -34,14 +35,14 @@ class DoorsOpener : Thinker
             if (speed != 0.0)
             {
                 DoorSide_t side = new("DoorSide_t");
-                side.A = Level.lines[i].v1.p;
-                side.B = Level.lines[i].v2.p;
-                // Ting = Level.lines[i].GetUDMFInt("user_b3d_door_po_starting_spot");
-                // side.start = ; // po start spot pos
-                // Vector2 targetPoint = helper.getTargetPoint(
-                //     xA, yA, xB, yB,
-                // );
-                // side.target = targetPoint;
+                side.sideA = Level.lines[i].v1.p;
+                side.sideB = Level.lines[i].v2.p;
+                side.poNum = Level.lines[i].GetUDMFInt("user_b3d_door_po_num");
+                side.start.x = Level.lines[i].GetUDMFFloat("user_b3d_door_po_x");
+                side.start.y = Level.lines[i].GetUDMFFloat("user_b3d_door_po_x");
+                Vector2 targetPoint = helper.getTargetPoint(side.sideA.x, side.sideA.y,
+                        side.sideB.x, side.sideB.y, side.start.x, side.start.y);
+                side.target = targetPoint;
                 side.speed = speed;
                 doorSides.push(side);
                 doorSidesLastIdx += 1;
@@ -82,9 +83,9 @@ class DoorsOpenerHandler : EventHandler
 	{
 		PlayerInfo player = players[e.PlayerNumber];
 		if (!player) return;
-        // DoorsOpener opener = new("DoorsOpener");;
-        // opener.player = player.mo;
-        // opener.initDoorSides();
-        // openers.push(opener);
+        DoorsOpener opener = new("DoorsOpener");;
+        opener.player = player.mo;
+        opener.initDoorSides();
+        openers.push(opener);
 	}
 }

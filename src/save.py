@@ -42,11 +42,15 @@ def saveMap(map: MapGZD, mapIndex: int):
             umap.linedefs[-1].arg0 = line.polyObjectDef.number
             umap.linedefs[-1].arg1 = line.polyObjectDef.mirror
         if line.b3dDoorSpeed is not None:
-            umap.linedefs[-1].user_b3d_door_speed = line.b3dDoorSpeed
+            umap.linedefs[-1].user_b3d_door_speed = float(line.b3dDoorSpeed)
         if line.b3dDoorBroken is not None:
             umap.linedefs[-1].user_b3d_door_broken = line.b3dDoorBroken
-        if line.b3dDoorPOStartingSpot is not None:
-            umap.linedefs[-1].user_b3d_door_po_starting_spot = line.b3dDoorPOStartingSpot
+        if line.b3dDoorPONum is not None:
+            umap.linedefs[-1].user_b3d_door_po_num = int(line.b3dDoorPONum)
+        if line.b3dDoorPOx is not None:
+            umap.linedefs[-1].user_b3d_door_po_x = float(line.b3dDoorPOx)
+        if line.b3dDoorPOy is not None:
+            umap.linedefs[-1].user_b3d_door_po_y = float(line.b3dDoorPOy)
 
     for thing in map.things:
         umap.things.append(omg.UThing(x=thing.x, y=thing.y, ednum=thing.type))

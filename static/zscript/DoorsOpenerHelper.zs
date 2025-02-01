@@ -20,10 +20,11 @@ class DoorsOpenerHelper
         return distToA <= THRESHOLD || distToSegment <= THRESHOLD;
     }
 
-    Vector2 getTargetPoint(double xA, double yA, double xB, double yB)
+    Vector2 getTargetPoint(double xA, double yA, double xB, double yB, double startingX, double startingY)
     {
         double lipSize = 18.0;
 
+        // Calculate the vector from A to B
         double vecX = xB - xA;
         double vecY = yB - yA;
 
@@ -32,8 +33,10 @@ class DoorsOpenerHelper
         vecX /= length;
         vecY /= length;
 
-        double targetX = xA + vecX * (length - lipSize);
-        double targetY = yA + vecY * (length - lipSize);
+        // Move the line segment to the starting vertex
+        double targetX = startingX + vecX * (length - lipSize);
+        double targetY = startingY + vecY * (length - lipSize);
+
         Vector2 point;
         point.x = targetX;
         point.y = targetY;

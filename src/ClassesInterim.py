@@ -341,8 +341,9 @@ class MapInterim:
             lines : list[LineInterim] = []
             for i in range(startIndex, startIndex+3):
                 lines.append(self.lines[i])
+            lines.append(LineInterim(v1=copy.copy(lines[2].v2), v2=copy.copy(lines[0].v1),
+                                    texture=copy.deepcopy(lines[1].texture), height=lines[0].height))
             if speed != -1:
-                lines.append(LineInterim(v1=copy.copy(lines[2].v2), v2=copy.copy(lines[0].v1), texture=copy.deepcopy(lines[1].texture), height=lines[0].height))
                 startingSpot=Vertex(
                     x = (lines[0].v1.x + lines[2].v1.x) // 2,
                     y = (lines[0].v1.y + lines[2].v1.y) // 2,
