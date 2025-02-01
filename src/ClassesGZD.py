@@ -77,11 +77,11 @@ class MapGZD:
         for i in range(len(mapInterim.doors)):
             doorB3D = mapInterim.doors[i]
             prevDoorB3D = mapInterim.doors[i-1] if i > 0 else None
-            for line in doorB3D.lines:
-                line.v1.x += POLYOBJECTS_SHIFT
-                line.v1.y += POLYOBJECTS_SHIFT
-                line.v2.x += POLYOBJECTS_SHIFT
-                line.v2.y += POLYOBJECTS_SHIFT
+            # for line in doorB3D.lines:
+            #     line.v1.x += POLYOBJECTS_SHIFT
+            #     line.v1.y += POLYOBJECTS_SHIFT
+            #     line.v2.x += POLYOBJECTS_SHIFT
+            #     line.v2.y += POLYOBJECTS_SHIFT
             lines = self._convertLines(doorB3D.lines)
             lines[0].polyObjectDef = self._genNewPolyObject()
             for line in (lines[0], lines[2]):
@@ -99,16 +99,16 @@ class MapGZD:
                     print("warning: unknown door speed", doorB3D.speed)
                     break
                 line.b3dDoorPOStartLine = len(self.lines)
-            self.things.append(ThingGZD(type=9300,
-                x = (self.vertexes[lines[0].v1].x + self.vertexes[lines[2].v1].x) // 2,
-                y = (self.vertexes[lines[0].v1].y + self.vertexes[lines[2].v1].y) // 2,
-                angle=lines[0].polyObjectDef.number,
-            ))
-            self.things.append(ThingGZD(type=9301,
-                x = self.vertexes[lines[0].v1].x-POLYOBJECTS_SHIFT,
-                y = self.vertexes[lines[0].v1].y-POLYOBJECTS_SHIFT,
-                angle=lines[0].polyObjectDef.number,
-            ))
+            # self.things.append(ThingGZD(type=9300,
+            #     x = (self.vertexes[lines[0].v1].x + self.vertexes[lines[2].v1].x) // 2,
+            #     y = (self.vertexes[lines[0].v1].y + self.vertexes[lines[2].v1].y) // 2,
+            #     angle=lines[0].polyObjectDef.number,
+            # ))
+            # self.things.append(ThingGZD(type=9301,
+            #     x = self.vertexes[lines[0].v1].x-POLYOBJECTS_SHIFT,
+            #     y = self.vertexes[lines[0].v1].y-POLYOBJECTS_SHIFT,
+            #     angle=lines[0].polyObjectDef.number,
+            # ))
             if prevDoorB3D and prevDoorB3D.lines[1].v1 == doorB3D.lines[1].v2 and prevDoorB3D.lines[1].v2 == doorB3D.lines[1].v1:
                 prevDoorPolyObjectDef.mirror = lines[0].polyObjectDef.number
                 lines[0].polyObjectDef.mirror = prevDoorPolyObjectDef.number

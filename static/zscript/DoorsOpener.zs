@@ -1,4 +1,4 @@
-#include "./DoorsOpenerHelper.zs"
+#include "zscript/DoorsOpenerHelper.zs"
 
 class DoorSide_t
 {
