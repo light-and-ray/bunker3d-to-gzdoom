@@ -10,6 +10,7 @@ class MachineGun : DoomWeapon
         +DontGib;
         Inventory.PickupMessage "$GOTSHOTGUN";
         Obituary "$OB_MPSHOTGUN";
+        Decal "BulletChip";
     }
     States
     {
