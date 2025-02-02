@@ -14,7 +14,7 @@ class B3DPlayer : DoomPlayer replaces DoomPlayer
     Default
     {
         Height 48;
-        Speed 0.7;
+        Speed 0.5;
         // Speed 1.2;
         Radius 24;
         Player.ViewHeight 48;

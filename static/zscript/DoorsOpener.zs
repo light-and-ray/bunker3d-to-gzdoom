@@ -10,7 +10,6 @@ class Door_t
     int timeOpened;
     int poNum;
     int poMirrorNum;
-    const WAIT_TIME = 35;
     void print()
     {
         Console.printf("start=(%f, %f), isOpened=%d, target=(%f, %f), speed=%f, timeEngaged=%d, timeOpened=%d, poNum=%d",
@@ -27,7 +26,7 @@ class DoorSide_t
 
 class DoorsOpener : Thinker
 {
-    const ENGAGED_DELAY = 10;
+    const CLOSE_DELAY = 17;
     const CLOSE_WAIT_TO_OPEN_FACTOR = 700;
     Array<DoorSide_t> doorSides;
     Array<Door_t> doors;
@@ -74,7 +73,6 @@ class DoorsOpener : Thinker
                     doors.push(side.door);
                 }
                 doorSides.push(side);
-                // side.door.print();
             }
         }
     }
@@ -83,7 +81,6 @@ class DoorsOpener : Thinker
     void doOpenDoor(Door_t door)
     {
         door.timeEngaged = Level.time;
-        // door.print();
         Polyobj_Stop(door.poNum);
         Polyobj_MoveTo(door.poNum, door.speed, door.target.x, door.target.y);
         door.isOpened = true;
@@ -93,14 +90,20 @@ class DoorsOpener : Thinker
     {
         for (int i = 0; i < doorSides.size(); i++)
         {
+            DoorSide_t side = doorSides[i];
             if (helper.isPlayerCloseEnough(player.pos.x, player.pos.y,
-                doorSides[i].sideVA.x, doorSides[i].sideVA.y,
-                doorSides[i].sideVB.x, doorSides[i].sideVB.y
+                side.sideVA.x, side.sideVA.y,
+                side.sideVB.x, side.sideVB.y
             ))
             {
-                DoorSide_t side = doorSides[i];
                 side.door.timeOpened = Level.time;
-                if (!side.door.isOpened && (Level.time - side.door.timeEngaged) > ENGAGED_DELAY) {
+                if (side.door.poMirrorNum != 0)
+                {
+                    Door_t mirrorDoor = doorsMap.get(side.door.poMirrorNum);
+                    mirrorDoor.timeOpened = Level.time;
+                }
+
+                if (!side.door.isOpened) {
                     doOpenDoor(side.door);
                     if (side.door.poMirrorNum != 0)
                     {
@@ -127,7 +130,7 @@ class DoorsOpener : Thinker
             Door_t door = doors[i];
             if (door.isOpened && (Level.time - door.timeEngaged) > CLOSE_WAIT_TO_OPEN_FACTOR / door.speed)
             {
-                if ((Level.time - door.timeOpened) > ENGAGED_DELAY)
+                if ((Level.time - door.timeOpened) > CLOSE_DELAY)
                 {
                     doCloseDoor(door);
                     if (door.poMirrorNum != 0)
