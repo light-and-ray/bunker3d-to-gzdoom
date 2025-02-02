@@ -33,7 +33,6 @@ class VertexGZD:
 @dataclass
 class PolObjectGZD:
     number: int
-    mirror: int = None
 
 @dataclass
 class LineGZD:
@@ -48,6 +47,7 @@ class LineGZD:
     b3dDoorPOx: float = None
     b3dDoorPOy: float = None
     b3dDoorBackSide: bool = None
+    b3dDoorPOMirrorNum: bool = None
 
 
 @dataclass
@@ -70,7 +70,7 @@ class MapGZD:
         self.sides: list[SideGZD] = []
         self.lines: list[LineGZD] = []
         self.things: list[ThingGZD] = []
-        self._lastPolyObjectNum = -1
+        self._lastPolyObjectNum = 0
 
         self.sectorFull = SectorGZD(heightFloor=LEVEL_FLOOR, heightCeiling=LEVEL_CEILING)
         self.sectorBottom = SectorGZD(heightFloor=(LEVEL_CEILING+LEVEL_FLOOR)//2, heightCeiling=LEVEL_CEILING)
@@ -95,7 +95,9 @@ class MapGZD:
         return len(self.sectors) - 1
 
     def _convertDoors(self, doors: list[DoorInterim]):
+        prevLines: list[LineGZD] = None
         prevDoorPolyObjectDef: PolObjectGZD = None
+
         for i in range(len(doors)):
             doorB3D = doors[i]
             prevDoorB3D = doors[i-1] if i > 0 else None
@@ -118,12 +120,12 @@ class MapGZD:
                 if doorB3D.speed == -1:
                     line.b3dDoorSpeed = 0.0
                 elif doorB3D.speed == 8:
-                    line.b3dDoorSpeed = 12.0
+                    line.b3dDoorSpeed = 18.0
                 elif doorB3D.speed == 2:
-                    line.b3dDoorSpeed = 12.0
+                    line.b3dDoorSpeed = 18.0
                     line.b3dDoorBroken = True
                 elif doorB3D.speed == 24:
-                    line.b3dDoorSpeed = 6.0
+                    line.b3dDoorSpeed = 7.2
                 else:
                     print("warning: unknown door speed", doorB3D.speed)
                     break
@@ -138,9 +140,12 @@ class MapGZD:
                 angle=polyObjectDef.number,
             ))
 
-            if prevDoorB3D and prevDoorB3D.lines[1].v1 == doorB3D.lines[1].v2 and prevDoorB3D.lines[1].v2 == doorB3D.lines[1].v1:
-                prevDoorPolyObjectDef.mirror = polyObjectDef.number
-                polyObjectDef.mirror = prevDoorPolyObjectDef.number
+            if prevDoorB3D and prevDoorB3D.nextIsMirror:
+                for line in lines:
+                    line.b3dDoorPOMirrorNum = prevDoorPolyObjectDef.number
+                for prevLine in prevLines:
+                    prevLine.b3dDoorPOMirrorNum = polyObjectDef.number
+            prevLines = lines
             prevDoorPolyObjectDef = polyObjectDef
             self.lines.extend(lines)
             self.lines.extend(boxLines)

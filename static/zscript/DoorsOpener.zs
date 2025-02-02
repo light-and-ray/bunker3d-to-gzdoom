@@ -9,6 +9,7 @@ class Door_t
     int timeEngaged;
     int timeOpened;
     int poNum;
+    int poMirrorNum;
     const WAIT_TIME = 35;
     void print()
     {
@@ -64,6 +65,7 @@ class DoorsOpener : Thinker
                     side.door.poNum = poNum;
                     side.door.start.x = Level.lines[i].GetUDMFFloat("user_b3d_door_po_x");
                     side.door.start.y = Level.lines[i].GetUDMFFloat("user_b3d_door_po_y");
+                    side.door.poMirrorNum = Level.lines[i].GetUDMFInt("user_b3d_door_po_mirror_num");
                     Vector2 targetPoint = helper.getTargetPoint(side.sideVA.x, side.sideVA.y,
                             side.sideVB.x, side.sideVB.y, side.door.start.x, side.door.start.y);
                     side.door.target = targetPoint;
@@ -72,9 +74,19 @@ class DoorsOpener : Thinker
                     doors.push(side.door);
                 }
                 doorSides.push(side);
-                side.door.print();
+                // side.door.print();
             }
         }
+    }
+
+
+    void doOpenDoor(Door_t door)
+    {
+        door.timeEngaged = Level.time;
+        // door.print();
+        Polyobj_Stop(door.poNum);
+        Polyobj_MoveTo(door.poNum, door.speed, door.target.x, door.target.y);
+        door.isOpened = true;
     }
 
     void checkDoorsForOpen()
@@ -89,14 +101,23 @@ class DoorsOpener : Thinker
                 DoorSide_t side = doorSides[i];
                 side.door.timeOpened = Level.time;
                 if (!side.door.isOpened && (Level.time - side.door.timeEngaged) > ENGAGED_DELAY) {
-                    side.door.timeEngaged = Level.time;
-                    side.door.print();
-                    Polyobj_Stop(side.door.poNum);
-                    Polyobj_MoveTo(side.door.poNum, side.door.speed, side.door.target.x, side.door.target.y);
-                    side.door.isOpened = true;
+                    doOpenDoor(side.door);
+                    if (side.door.poMirrorNum != 0)
+                    {
+                        doOpenDoor(doorsMap.get(side.door.poMirrorNum));
+                    }
                 }
             }
         }
+    }
+
+
+    void doCloseDoor(Door_t door)
+    {
+        door.timeEngaged = Level.time;
+        Polyobj_Stop(door.poNum);
+        Polyobj_MoveTo(door.poNum, door.speed, door.start.x, door.start.y);
+        door.isOpened = false;
     }
 
     void checkDoorsForClose()
@@ -104,19 +125,15 @@ class DoorsOpener : Thinker
         for (int i = 0; i < doors.size(); i++)
         {
             Door_t door = doors[i];
-            // if (door.poNum == 4)
-            // {
-            //     Console.printf("%f - %f", (Level.time - door.timeOpened), door.speed * CLOSE_WAIT_TO_OPEN_FACTOR);
-            //     door.print();
-            // }
             if (door.isOpened && (Level.time - door.timeEngaged) > CLOSE_WAIT_TO_OPEN_FACTOR / door.speed)
             {
                 if ((Level.time - door.timeOpened) > ENGAGED_DELAY)
                 {
-                    door.timeEngaged = Level.time;
-                    Polyobj_Stop(door.poNum);
-                    Polyobj_MoveTo(door.poNum, door.speed, door.start.x, door.start.y);
-                    door.isOpened = false;
+                    doCloseDoor(door);
+                    if (door.poMirrorNum != 0)
+                    {
+                        doCloseDoor(doorsMap.get(door.poMirrorNum));
+                    }
                 }
             }
         }

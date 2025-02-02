@@ -13,7 +13,7 @@ class DoorsOpenerHelper
 
     bool isPlayerCloseEnough(double playerX, double playerY, double xA, double yA, double xB, double yB)
     {
-        double THRESHOLD = 96.0;
+        double THRESHOLD = 78.0;
         double distToA = sqrt((playerX - xA) ** 2 + (playerY - yA) ** 2);
         // double distToB = sqrt((playerX - xB) ** 2 + (playerY - yB) ** 2);
         double distToSegment = distanceToSegment(playerX, playerY, xA, yA, xB, yB);

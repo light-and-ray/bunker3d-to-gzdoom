@@ -36,6 +36,7 @@ class DoorInterim:
     speed: int
     startingSpot: Vertex
     boxLines: list[LineInterim] = None
+    nextIsMirror: bool = False
 
 
 class MapInterim:
@@ -351,6 +352,10 @@ class MapInterim:
                 self.doors.append(DoorInterim(lines=lines, speed=speed, startingSpot=startingSpot))
             else:
                 self.lines.extend(lines)
+
+        for i in range(1, len(self.doors)):
+            if self.doors[i-1].lines[1].v1 == self.doors[i].lines[1].v2 and self.doors[i-1].lines[1].v2 == self.doors[i].lines[1].v1:
+                self.doors[i-1].nextIsMirror = True
 
         for door in self.doors:
             self._moveDoorOnNewPosition(door)
