@@ -98,6 +98,7 @@ def saveAnimations(animations: list[Animation]):
     animdefs = ""
     for animation in animations:
         animdefs += f"texture {animation.name}\n"
+        animdefs += f"    allowdecals\n"
         for frame in animation.frames:
             animdefs += f"    pic {frame} tics {animation.duration}\n"
         animdefs += "\n"

@@ -34,7 +34,7 @@ class MachineGun : DoomWeapon
             TNT1 A 2 A_Light1;
             Goto LightDone;
         Spawn:
-            SHTG A -1;
+            MP40 A -1;
             Stop;
     }
 }
