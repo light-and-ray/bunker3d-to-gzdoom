@@ -46,7 +46,7 @@ class MapInterim:
         self.lines: list[LineInterim] = []
         for line in mapB3D.lines:
             texture = TextureInterim(names=line.texturesNames)
-            self.lines.append(LineInterim(v1=line.v1, v2=line.v2, height=line.height, texture=texture))
+            self.lines.append(LineInterim(v1=copy.copy(line.v1), v2=copy.copy(line.v2), height=line.height, texture=texture))
         self._fixBrokenTextures(brokenTextures)
         self._fillCirclesOffsets(mapB3D.circles)
         self._initDoors(doorsStartLineIdx, doorsSpeed)
