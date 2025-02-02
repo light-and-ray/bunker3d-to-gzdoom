@@ -1,0 +1,1 @@
+MP40_fire = "sounds/MP40_fire.wav"

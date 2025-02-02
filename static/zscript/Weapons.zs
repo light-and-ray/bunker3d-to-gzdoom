@@ -25,10 +25,10 @@ class MachineGun : DoomWeapon
             Loop;
         Fire:
             MP40 A 2;
-            MP40 B 1 A_PlaySound("weapons/shotgf", CHAN_WEAPON);
-            MP40 B 1 Bright A_FireBullets(2, 1, 1, random (3, 5), "BulletPuff");
+            MP40 B 0 A_StartSound("MP40_fire");
+            MP40 B 0 Bright A_FireBullets(2, 1, 1, random (3, 5), "BulletPuff");
             MP40 B 2 A_GunFlash;
-            MP40 A 2;
+            MP40 B 2;
             MP40 A 0 A_ReFire;
             Goto Ready;
         Flash:
