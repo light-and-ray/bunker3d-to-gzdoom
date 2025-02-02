@@ -21,6 +21,9 @@ class B3DPlayer : DoomPlayer replaces DoomPlayer
         Player.AttackZOffset 24;
         Player.ViewBob 0.5;
         Player.StartItem "Z_NashMove";
+        Player.StartItem "MachineGun";
+        Player.StartItem "Clip", 1000;
+        Player.WeaponSlot 3, "MachineGun";
     }
 
     // overrides

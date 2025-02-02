@@ -151,13 +151,13 @@ class DoorsOpener : Thinker
 class DoorsOpenerHandler : EventHandler
 {
     Array<DoorsOpener> openers;
-	override void PlayerEntered(PlayerEvent e)
-	{
-		PlayerInfo player = players[e.PlayerNumber];
-		if (!player) return;
+    override void PlayerEntered(PlayerEvent e)
+    {
+        PlayerInfo player = players[e.PlayerNumber];
+        if (!player) return;
         DoorsOpener opener = new("DoorsOpener");;
         opener.player = player.mo;
         opener.initDoors();
         openers.push(opener);
-	}
+    }
 }
