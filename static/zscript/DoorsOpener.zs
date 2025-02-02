@@ -6,14 +6,14 @@ class Door_t
     bool isOpened;
     Vector2 target;
     double speed;
-    int timeOpened;
     int timeEngaged;
+    int timeOpened;
     int poNum;
     const WAIT_TIME = 35;
     void print()
     {
-        Console.printf("start=(%f, %f), isOpened=%d, target=(%f, %f), speed=%f, timeOpened=%d, poNum=%d",
-            start.x, start.y, isOpened, target.x, target.y, speed, timeOpened, poNum);
+        Console.printf("start=(%f, %f), isOpened=%d, target=(%f, %f), speed=%f, timeEngaged=%d, timeOpened=%d, poNum=%d",
+            start.x, start.y, isOpened, target.x, target.y, speed, timeEngaged, timeOpened, poNum);
     }
 }
 
@@ -26,8 +26,10 @@ class DoorSide_t
 
 class DoorsOpener : Thinker
 {
-    const OPEN_ENGAGED_DELAY = 10;
+    const ENGAGED_DELAY = 10;
+    const CLOSE_WAIT_TO_OPEN_FACTOR = 700;
     Array<DoorSide_t> doorSides;
+    Array<Door_t> doors;
     Map<Int, Door_t> doorsMap;
     int doorSidesLastIdx;
     PlayerPawn player;
@@ -52,7 +54,7 @@ class DoorsOpener : Thinker
 
                 int poNum = Level.lines[i].GetUDMFInt("user_b3d_door_po_num");
 
-                if (doorsMap.CheckKey(poNum))
+                if (doorsMap.checkKey(poNum))
                 {
                     side.door = doorsMap.get(poNum);
                 }
@@ -66,7 +68,8 @@ class DoorsOpener : Thinker
                             side.sideVB.x, side.sideVB.y, side.door.start.x, side.door.start.y);
                     side.door.target = targetPoint;
                     side.door.speed = speed;
-                    doorsMap.Insert(poNum, side.door);
+                    doorsMap.insert(poNum, side.door);
+                    doors.push(side.door);
                 }
                 doorSides.push(side);
                 side.door.print();
@@ -85,13 +88,36 @@ class DoorsOpener : Thinker
             {
                 DoorSide_t side = doorSides[i];
                 side.door.timeOpened = Level.time;
-                if (!side.door.isOpened && (Level.time - side.door.timeEngaged) > OPEN_ENGAGED_DELAY) {
+                if (!side.door.isOpened && (Level.time - side.door.timeEngaged) > ENGAGED_DELAY) {
                     side.door.timeEngaged = Level.time;
                     side.door.print();
-                    Polyobj_OR_MoveTo(side.door.poNum, side.door.speed, side.door.target.x, side.door.target.y);
+                    Polyobj_Stop(side.door.poNum);
+                    Polyobj_MoveTo(side.door.poNum, side.door.speed, side.door.target.x, side.door.target.y);
                     side.door.isOpened = true;
                 }
-                break;
+            }
+        }
+    }
+
+    void checkDoorsForClose()
+    {
+        for (int i = 0; i < doors.size(); i++)
+        {
+            Door_t door = doors[i];
+            // if (door.poNum == 4)
+            // {
+            //     Console.printf("%f - %f", (Level.time - door.timeOpened), door.speed * CLOSE_WAIT_TO_OPEN_FACTOR);
+            //     door.print();
+            // }
+            if (door.isOpened && (Level.time - door.timeEngaged) > CLOSE_WAIT_TO_OPEN_FACTOR / door.speed)
+            {
+                if ((Level.time - door.timeOpened) > ENGAGED_DELAY)
+                {
+                    door.timeEngaged = Level.time;
+                    Polyobj_Stop(door.poNum);
+                    Polyobj_MoveTo(door.poNum, door.speed, door.start.x, door.start.y);
+                    door.isOpened = false;
+                }
             }
         }
     }
@@ -100,6 +126,7 @@ class DoorsOpener : Thinker
     {
         super.Tick();
         checkDoorsForOpen();
+        checkDoorsForClose();
     }
 }
 
