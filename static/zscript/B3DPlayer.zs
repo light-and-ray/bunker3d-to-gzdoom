@@ -8,14 +8,14 @@ struct AutoCrouchData_t
 
 class B3DPlayer : DoomPlayer replaces DoomPlayer
 {
-    const MAXBOB = 8.;
+    const MAXBOB = 6.;
     AutoCrouchData_t autoCrouchData;
 
     Default
     {
         Height 48;
-        // Speed 0.7;
-        Speed 1.2;
+        Speed 0.7;
+        // Speed 1.2;
         Radius 24;
         Player.ViewHeight 48;
         Player.AttackZOffset 24;
