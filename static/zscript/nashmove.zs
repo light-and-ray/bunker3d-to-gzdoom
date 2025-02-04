@@ -27,7 +27,7 @@ class Z_NashMove : CustomInventory
 
     // How much to reduce the slippery movement.
     // Lower number = less slippery.
-    const DECEL_MULT = 0.9;
+    double DECEL_MULT;
 
     //===========================================================================
     //
@@ -65,12 +65,16 @@ class Z_NashMove : CustomInventory
     {
         if (Owner && Owner is "PlayerPawn")
         {
+            if (speed == 0) {
+                speed = Owner.speed;
+                DECEL_MULT = 0.9 * speed;
+            }
             if (bIsOnFloor())
             {
                 // bump up the player's speed to compensate for the deceleration
                 // TO DO: math here is shit and wrong, please fix
-                double s = 1.0 + (1.0 - DECEL_MULT);
-                Owner.A_SetSpeed(s * 2);
+                double s = speed + (speed - DECEL_MULT);
+                Owner.A_SetSpeed(s * 4);
 
                 // decelerate the player, if not in pain
                 if (!bIsInPain())
@@ -81,6 +85,10 @@ class Z_NashMove : CustomInventory
 
                 // // make the view bobbing match the player's movement
                 // PlayerPawn(Owner).ViewBob = DECEL_MULT;
+            }
+            else
+            {
+                Owner.A_SetSpeed(speed*2);
             }
         }
 
