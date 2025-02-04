@@ -120,12 +120,12 @@ class MapGZD:
                 if doorB3D.speed == -1:
                     line.b3dDoorSpeed = 0.0
                 elif doorB3D.speed == 8:
-                    line.b3dDoorSpeed = 18.0
+                    line.b3dDoorSpeed = 25.4
                 elif doorB3D.speed == 2:
-                    line.b3dDoorSpeed = 18.0
+                    line.b3dDoorSpeed = 25.4
                     line.b3dDoorBroken = True
                 elif doorB3D.speed == 24:
-                    line.b3dDoorSpeed = 7.2
+                    line.b3dDoorSpeed = 5.7
                 else:
                     print("warning: unknown door speed", doorB3D.speed)
                     break
