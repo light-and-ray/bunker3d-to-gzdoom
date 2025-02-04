@@ -26,7 +26,7 @@ class DoorSide_t
 
 class DoorsOpener : Thinker
 {
-    const CLOSE_DELAY = 17;
+    const CLOSE_DELAY = 26;
     const CLOSE_WAIT_TO_OPEN_FACTOR = 700;
     Array<DoorSide_t> doorSides;
     Array<Door_t> doors;
@@ -80,7 +80,11 @@ class DoorsOpener : Thinker
 
     void doOpenDoor(Door_t door)
     {
-        door.timeEngaged = Level.time;
+        if ((Level.time - door.timeEngaged) > CLOSE_WAIT_TO_OPEN_FACTOR / door.speed) { // is fully closed
+            door.timeEngaged = Level.time;
+        } else {
+            door.timeEngaged = Level.time - (CLOSE_WAIT_TO_OPEN_FACTOR / door.speed) + (Level.time - door.timeEngaged);
+        }
         Polyobj_Stop(door.poNum);
         Polyobj_MoveTo(door.poNum, door.speed, door.target.x, door.target.y);
         door.isOpened = true;
@@ -128,7 +132,7 @@ class DoorsOpener : Thinker
         for (int i = 0; i < doors.size(); i++)
         {
             Door_t door = doors[i];
-            if (door.isOpened && (Level.time - door.timeEngaged) > CLOSE_WAIT_TO_OPEN_FACTOR / door.speed)
+            if (door.isOpened && (Level.time - door.timeEngaged) > CLOSE_WAIT_TO_OPEN_FACTOR / door.speed + CLOSE_DELAY)
             {
                 if ((Level.time - door.timeOpened) > CLOSE_DELAY)
                 {
