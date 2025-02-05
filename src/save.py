@@ -27,7 +27,7 @@ def saveMap(map: MapGZD, mapIndex: int):
             umap.sidedefs[-1].offsetx_mid = side.offset
         elif side.mode == TextureMode.TOP_AND_BOTTOM:
             umap.sidedefs[-1].texturebottom = side.textureBottom
-            umap.sidedefs[-1].texturetop = side.textureMiddle
+            umap.sidedefs[-1].texturetop = side.textureTop
             umap.sidedefs[-1].offsetx_bottom = side.offset
             umap.sidedefs[-1].offsetx_top = side.offset
 
