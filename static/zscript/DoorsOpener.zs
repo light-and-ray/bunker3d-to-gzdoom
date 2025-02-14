@@ -15,6 +15,12 @@ class Door_t
         Console.printf("start=(%f, %f), isOpened=%d, target=(%f, %f), speed=%f, timeEngaged=%d, timeOpened=%d, poNum=%d",
             start.x, start.y, isOpened, target.x, target.y, speed, timeEngaged, timeOpened, poNum);
     }
+    const IMPRECISE_THRESHOLD = 200;
+    bool isCloseImprecise(int playerX, int playerY)
+    {
+        return (playerX > start.x - IMPRECISE_THRESHOLD && playerX < start.x + IMPRECISE_THRESHOLD
+          && playerY > start.y - IMPRECISE_THRESHOLD && playerY < start.y + IMPRECISE_THRESHOLD);
+    }
 }
 
 class DoorSide_t
@@ -95,7 +101,8 @@ class DoorsOpener : Thinker
         for (int i = 0; i < doorSides.size(); i++)
         {
             DoorSide_t side = doorSides[i];
-            if (helper.isPlayerCloseEnough(player.pos.x, player.pos.y,
+            if (side.door.isCloseImprecise(player.pos.x, player.pos.y) &&
+                helper.isPlayerCloseEnough(player.pos.x, player.pos.y,
                 side.sideVA.x, side.sideVA.y,
                 side.sideVB.x, side.sideVB.y
             ))
