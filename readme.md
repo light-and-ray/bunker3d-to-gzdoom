@@ -1,7 +1,7 @@
 
 ## Bunker3D to GZDoom
 
-The goal of this project is to port all the maps and resources from an old 2005-2008 j2me mobile FPS game trilogy: Bunker3D, Laboratory3D and Castle3D by Netsoftware on [GZDoom](https://github.com/ZDoom/gzdoom) engine. The project is planned to serve as a base for a further enhanced port
+The goal of this project is to port all the maps and resources from an old 2006-2008 j2me mobile FPS game trilogy: Bunker3D, Laboratory3D and Castle3D by Netsoftware on [GZDoom](https://github.com/ZDoom/gzdoom) engine. The project is planned to serve as a base for a further enhanced port
 
 ![](readmeImages/screenshot1.png)
 
