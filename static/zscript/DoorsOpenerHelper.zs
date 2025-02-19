@@ -43,3 +43,6 @@ class DoorsOpenerHelper
         return point;
     }
 }
+
+class FreezeChecker : Actor
+{    }

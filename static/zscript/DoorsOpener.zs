@@ -40,9 +40,13 @@ class DoorsOpener : Thinker
     int doorSidesLastIdx;
     PlayerPawn player;
     DoorsOpenerHelper helper;
+    Actor freezeChecker;
 
     void initDoors()
     {
+        Vector3 freezeCheckerPos;
+        freezeChecker = Actor.Spawn("FreezeChecker", freezeCheckerPos);
+
         int totalLines = Level.lines.size();
         for (int i = 0; i < totalLines; i++)
         {
@@ -156,6 +160,9 @@ class DoorsOpener : Thinker
     override void Tick()
     {
         super.Tick();
+        if (freezeChecker.isFrozen()) {
+            return;
+        }
         checkDoorsForOpen();
         checkDoorsForClose();
     }
