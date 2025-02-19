@@ -32,6 +32,8 @@ class MachineGun : DoomWeapon
         Inventory.PickupMessage "$GOTSHOTGUN";
         Obituary "$OB_MPSHOTGUN";
         Decal "BulletChip";
+        Weapon.WeaponScaleX 1.2;
+        Weapon.WeaponScaleY 1.2;
     }
     States
     {
