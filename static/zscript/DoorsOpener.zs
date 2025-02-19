@@ -160,7 +160,7 @@ class DoorsOpener : Thinker
     override void Tick()
     {
         super.Tick();
-        if (freezeChecker.isFrozen()) {
+        if (freezeChecker.isFrozen() && !(player.player.cmd.buttons & BT_USE)) {
             return;
         }
         checkDoorsForOpen();
