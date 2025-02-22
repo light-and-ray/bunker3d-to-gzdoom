@@ -68,5 +68,9 @@ public class MainB3D {
         // Json.export("UNKNOWN_cm", loader.cm);
         // Json.export("UNKNOWN_cd", loader.cd);
         // Json.export("UNKNOWN_ch", loader.ch);
+
+        Json.export("SPRITES_DATA", loader.SPRITES_DATA);
+        Json.export("SPRITES_W", loader.SPRITES_W);
+        Json.export("SPRITES_H", loader.SPRITES_H);
     }
 }

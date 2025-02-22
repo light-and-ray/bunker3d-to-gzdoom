@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import java.awt.image.BufferedImage;
@@ -23,6 +24,10 @@ public class ResourcesLoaderB3D {
    public ArrayList<int[]> TEXTURES_DATA = new ArrayList<>();
    public short[] FOOTER;
    public ArrayList<ArrayList<Integer>> CIRCLES_IDX = new ArrayList<>();
+   public ArrayList<Short> SPRITES_W = new ArrayList<>();
+   public ArrayList<Short> SPRITES_H = new ArrayList<>();
+   public ArrayList<int[]> SPRITES_DATA = new ArrayList<>();
+
    public byte c;
    public boolean e;
    public int f = 10;
@@ -82,7 +87,6 @@ public class ResourcesLoaderB3D {
    public int[] O;
    public int P;
    public int Q;
-   public int BACKGROUND_COLOR;
    public int selectedMap;
    public boolean gB;
    public int[] bi;
@@ -188,12 +192,31 @@ public class ResourcesLoaderB3D {
    public int[] cO;
    public int[] cP;
 
+   public int[][] bp;
+   public int[] bm;
+   public byte[] cY;
+   public byte[] cZ;
+   public byte[] da;
+   public byte[] db;
+   public byte[] dc;
+   public byte[] dd;
+   public byte[] de;
+   public byte[] df;
+   public byte[] dg;
+   public byte[] dh;
+   public byte[] di;
+   public byte[] dj;
+   public byte[] dk;
+   public byte[] dl;
+   public byte[] dm;
+   public byte[] dn;
+
 
    public ResourcesLoaderB3D() {
    }
 
 
-   private BufferedImage readImage(String filePath) {
+   public BufferedImage readImage(String filePath) {
       try (FileInputStream fileInputStream = new FileInputStream(new File(ROOT_JAR + filePath))) {
           byte[] header = new byte[2];
           fileInputStream.read(header);
@@ -476,7 +499,7 @@ public class ResourcesLoaderB3D {
          this.readFoePart1(this.E[2]);
          // E[2][0] - palettes ?
          this.readFoePart2(this.E[2]);
-         // this.d(this.E[2]);
+         this.loadSprites(this.E[2]);
       }
 
       // this.loadedMap = (byte[][])null;
@@ -1153,7 +1176,7 @@ public class ResourcesLoaderB3D {
 
 
 
-   private void readFoePart1(byte[][][] bigLump2) {
+   public void readFoePart1(byte[][][] bigLump2) {
       int length = bigLump2[4].length;
       this.bZ = new byte[length];
       this.bW = new short[length];
@@ -1258,20 +1281,20 @@ public class ResourcesLoaderB3D {
 
    }
 
-   private int F() {
+   public int F() {
       return this.dR.nextInt();
    }
 
 
 
-   private void readFoePart2(byte[][][] var1) {
-      // Image layer1 = null;
-      // Image layer2 = null;
-      // layer1 = this.readImage("/e" + this.dataExt);
-      // layer2 = this.readImage("/ee" + this.dataExt);
-      // int[] tmp = new int[1];
-      // layer1.getRGB(tmp, 0, 1, 0, 0, 1, 1);
-      // this.BACKGROUND_COLOR = tmp[0];
+   public void readFoePart2(byte[][][] var1) {
+      BufferedImage layer1 = null;
+      BufferedImage layer2 = null;
+      layer1 = this.readImage("/e" + this.dataExt);
+      layer2 = this.readImage("/ee" + this.dataExt);
+      int[] tmp = new int[1];
+      layer1.getRGB(0, 0, 1, 1, tmp, 0, 1);
+      this.backgroundColor = tmp[0];
       this.bq = new short[6][];
       this.M = new int[this.bq.length];
       int length = this.bq.length;
@@ -1324,12 +1347,12 @@ public class ResourcesLoaderB3D {
          ++segNum;
       }
 
-      // int var16 = this.bq[0][this.M[0]] + 10;
-      // int var17 = this.bq[1][this.M[1]] + 10;
-      // int var18 = this.bq[2][this.M[2]] + 10;
-      // int var19 = this.bq[3][this.M[3]] + 10;
-      // int var20 = this.bq[4][this.M[4]] + 10;
-      // this.readFoeSubfunction2(var16, var17, var1[1].length, var18, var19, var20);
+      int var16 = this.bq[0][this.M[0]] + 10;
+      int var17 = this.bq[1][this.M[1]] + 10;
+      int var18 = this.bq[2][this.M[2]] + 10;
+      int var19 = this.bq[3][this.M[3]] + 10;
+      int var20 = this.bq[4][this.M[4]] + 10;
+      this.readFoeSubfunction2(var16, var17, var1[1].length, var18, var19, var20);
       // segNum = 0;
       // short var21 = 0;
       // length = this.FOE_METADATA.length;
@@ -1353,7 +1376,7 @@ public class ResourcesLoaderB3D {
 
    }
 
-   private void readFoeSubfunction1(short[] foeMData, int segNum, int offset) {
+   public void readFoeSubfunction1(short[] foeMData, int segNum, int offset) {
       this.foeW[segNum] = foeMData[offset + 2];
       this.foeH[segNum] = foeMData[offset + 3];
       int var4 = this.foeH[segNum] / foeMData[offset + 5];
@@ -1368,26 +1391,26 @@ public class ResourcesLoaderB3D {
    }
 
 
-   // private void readFoeSubfunction2(int var1, int var2, int var3, int var4, int var5, int var6) {
-   //    this.bp = new int[2][(16 + var3) * 50];
-   //    this.bm = new int[50];
-   //    this.cY = new byte[var1];
-   //    this.cZ = new byte[var1];
-   //    this.da = new byte[var1];
-   //    this.db = new byte[var1];
-   //    this.dc = new byte[var1];
-   //    this.dd = new byte[var1];
-   //    this.de = new byte[var2];
-   //    this.df = new byte[var2];
-   //    this.dg = new byte[var4];
-   //    this.dh = new byte[var4];
-   //    this.di = new byte[var5];
-   //    this.dj = new byte[var5];
-   //    this.dk = new byte[var5];
-   //    this.dl = new byte[var5];
-   //    this.dm = new byte[var6];
-   //    this.dn = new byte[var6];
-   // }
+   public void readFoeSubfunction2(int var1, int var2, int var3, int var4, int var5, int var6) {
+      this.bp = new int[2][(16 + var3) * 50];
+      this.bm = new int[50];
+      this.cY = new byte[var1];
+      this.cZ = new byte[var1];
+      this.da = new byte[var1];
+      this.db = new byte[var1];
+      this.dc = new byte[var1];
+      this.dd = new byte[var1];
+      this.de = new byte[var2];
+      this.df = new byte[var2];
+      this.dg = new byte[var4];
+      this.dh = new byte[var4];
+      this.di = new byte[var5];
+      this.dj = new byte[var5];
+      this.dk = new byte[var5];
+      this.dl = new byte[var5];
+      this.dm = new byte[var6];
+      this.dn = new byte[var6];
+   }
 
 
 
@@ -1400,7 +1423,7 @@ public class ResourcesLoaderB3D {
 
 
 
-   private void loadTextures_subfunction1(int[] var1, byte[][][] var2, byte[][][] var3, int var4) {
+   public void loadTextures_subfunction1(int[] var1, byte[][][] var2, byte[][][] var3, int var4) {
       byte var5 = var2[2][var4][0];
       byte var6 = var2[2][var4][1];
       byte var7 = var2[2][var4][2];
@@ -1413,7 +1436,7 @@ public class ResourcesLoaderB3D {
 
    }
 
-   private void loadTextures_subfunction2(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+   public void loadTextures_subfunction2(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
       int var11 = var4 * var5 + var3;
       int var10 = 0;
       int var14 = var4 + var7;
@@ -1436,7 +1459,7 @@ public class ResourcesLoaderB3D {
    }
 
 
-   private void loadTextures_subfunction3(byte[][][] var1, byte[][][] var2, int var3, int var4, int var5, int var6, int var7) {
+   public void loadTextures_subfunction3(byte[][][] var1, byte[][][] var2, int var3, int var4, int var5, int var6, int var7) {
       byte var8 = var2[9][var3][0];
       byte var9 = var1[2][var3][5];
       byte var10 = this.q[6 * var8];
@@ -1513,7 +1536,7 @@ public class ResourcesLoaderB3D {
 
 
 
-   private void loadTextures_subfunction4(int[] var1, int var2, int var3, int var4, byte var5, int var6, int var7) {
+   public void loadTextures_subfunction4(int[] var1, int var2, int var3, int var4, byte var5, int var6, int var7) {
       if (var5 == 0) {
          if (this.Q != 15 && this.Q != 60) {
             this.loadTextures_subfunction2(this.I, var1, var6, var7, var2, var3, var4);
@@ -1549,7 +1572,7 @@ public class ResourcesLoaderB3D {
 
 
 
-   private int loadTextures_subfunction5(byte var1, byte var2, byte var3, byte var4, byte var5, short var6, int var7, short var8, byte var9) {
+   public int loadTextures_subfunction5(byte var1, byte var2, byte var3, byte var4, byte var5, short var6, int var7, short var8, byte var9) {
       this.bk[var3] = var7;
       int var10 = this.loadTextures_subfunction6((byte)0, var1, (short)var8, var7);
       var10 = this.loadTextures_subfunction6(var9, var2, (short)0, var10);
@@ -1560,7 +1583,7 @@ public class ResourcesLoaderB3D {
    }
 
 
-    private int loadTextures_subfunction6(byte var1, byte var2, short var3, int var4) {
+    public int loadTextures_subfunction6(byte var1, byte var2, short var3, int var4) {
       this.br[var4] = (short)var1;
       int var5 = var4 + 1;
       this.br[var5] = (short)var2;
@@ -1572,7 +1595,7 @@ public class ResourcesLoaderB3D {
 
 
 
-   private static void loadTextures_subfunction7(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int[] var8, boolean var9) {
+   public static void loadTextures_subfunction7(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int[] var8, boolean var9) {
       int var17 = var3 + var4;
       int var10;
       int var11;
@@ -1625,7 +1648,7 @@ public class ResourcesLoaderB3D {
 
 
 
-   private void loadTextures_subfunction8(int[] var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
+   public void loadTextures_subfunction8(int[] var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
       int var10 = 1;
       boolean var11 = false;
       int var12 = var1.length;
@@ -1651,7 +1674,7 @@ public class ResourcesLoaderB3D {
    }
 
 
-   private void loadTextures_subfunction9(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+   public void loadTextures_subfunction9(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
       int var11 = var4 * var5 + var3;
       int var10 = 0;
       int var14 = var4 + var7;
@@ -1685,7 +1708,7 @@ public class ResourcesLoaderB3D {
 
 
 
-   private void loadTextures_subfunction10(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+   public void loadTextures_subfunction10(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
       int var12 = var4 * var5 + var3;
       int var13 = 2 * var6 - 1;
       int var11 = 0;
@@ -1713,7 +1736,7 @@ public class ResourcesLoaderB3D {
 
 
 
-   private void loadTextures_subfunction11(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+   public void loadTextures_subfunction11(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
       int var12 = (var4 + var7 - 1) * var5 + var3;
       int var13 = 2 * var6 - 1;
       int var11 = 0;
@@ -1738,7 +1761,7 @@ public class ResourcesLoaderB3D {
 
    }
 
-   private void loadTextures_subfunction12(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+   public void loadTextures_subfunction12(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
       int var11 = var4 * var5 + var3;
       int var10 = 0;
       int var14 = var4 + var7;
@@ -1763,7 +1786,7 @@ public class ResourcesLoaderB3D {
 
 
 
-   private void loadTextures_subfunction13(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+   public void loadTextures_subfunction13(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
       int var12 = var4 * var5 + var3;
       int var9 = var5 * var7;
       int var11 = 0;
@@ -1787,7 +1810,7 @@ public class ResourcesLoaderB3D {
 
    }
 
-   private void loadTextures_subfunction14(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+   public void loadTextures_subfunction14(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
       int var11 = var4 * var5 + (var3 + var5 - 1);
       int var10 = 0;
       int var14 = var4 + var7;
@@ -1830,7 +1853,7 @@ public class ResourcesLoaderB3D {
    }
 
 
-   private void loadTextures_subfunction15(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+   public void loadTextures_subfunction15(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       int var15;
       int var16;
       int var17;
@@ -1892,7 +1915,7 @@ public class ResourcesLoaderB3D {
    }
 
 
-   private int loadTextures_subfunction16(int var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
+   public int loadTextures_subfunction16(int var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
       int[] var9 = new int[3];
       byte var11;
       byte var12;
@@ -1933,7 +1956,7 @@ public class ResourcesLoaderB3D {
       return var9[0] << var11 | var9[1] << var12 | var9[2] << var13;
    }
 
-   private static int clampValue(int value, int maxValue) {
+   public static int clampValue(int value, int maxValue) {
       if (value > maxValue) {
           return maxValue;
       } else {
@@ -1945,7 +1968,7 @@ public class ResourcesLoaderB3D {
 
 
 
-   private void loadTextures(byte[][][] bigLump0, byte[][][] bigLump1, short[] footer) {
+   public void loadTextures(byte[][][] bigLump0, byte[][][] bigLump1, short[] footer) {
       int var20 = 0;
       this.N = new int[bigLump1[9].length][];
       this.O = new int[bigLump1[9].length];
@@ -2190,7 +2213,7 @@ public class ResourcesLoaderB3D {
 
 
 
-   private void d(int var1, int var2) {
+   public void d(int var1, int var2) {
       this.cI = new int[var1];
       this.cJ = new int[var1];
       this.cK = new int[var1];
@@ -2203,7 +2226,7 @@ public class ResourcesLoaderB3D {
 
 
 
-   private void initFloorCeilingColor(short[] var1) {
+   public void initFloorCeilingColor(short[] var1) {
       int var10001;
       if (!this.gB) {
          this.aV = var1[0] << 16 | var1[1] << 8 | var1[2];
@@ -2221,6 +2244,142 @@ public class ResourcesLoaderB3D {
 
 
 
+   public void loadSprites(byte[][][] var1) {
+      int[][] var8 = new int[var1[5].length][];
+      int[][] var9 = new int[var1[5].length][];
+      boolean var2 = false;
+      int var7 = var1[5].length;
+
+      int var4;
+      for(int spriteFileNum = 0; spriteFileNum <= 1; ++spriteFileNum) {
+         BufferedImage backLayer = this.readImage(this.spriteFiles[spriteFileNum] + this.dataExt);
+         BufferedImage frontLayer = this.readImage(this.spriteFiles[spriteFileNum + 2] + this.dataExt);
+
+         for(var4 = 0; var4 < var7; ++var4) {
+            if (spriteFileNum == 0) {
+               if (var1[5][var4][0] >= 50) {
+                  continue;
+               }
+            } else {
+               if (var1[5][var4][0] < 50) {
+                  continue;
+               }
+
+               var1[5][var4][0] = (byte)(var1[5][var4][0] - 50);
+            }
+
+            int var3 = var1[5][var4][0] * 7;
+            var8[var4] = new int[this.l[var3 + 2] * this.l[var3 + 3]];
+            var9[var4] = new int[this.l[var3 + 2] * this.l[var3 + 3]];
+            this.SPRITES_W.add(this.l[var3 + 2]);
+            this.SPRITES_H.add(this.l[var3 + 3]);
+            backLayer.getRGB(this.l[var3 + 0], this.l[var3 + 1], this.l[var3 + 2], this.l[var3 + 3], var8[var4], 0, this.l[var3 + 2]);
+            if (var1[5][var4][0] == 26) {
+               int var12 = this.l[var3 + 2] * this.l[var3 + 3];
+
+               for(int var13 = 0; var13 < var12; ++var13) {
+                  if (var8[var4][var13] != this.backgroundColor) {
+                     var8[var4][var13] = 176;
+                  }
+               }
+            } else {
+               backLayer.getRGB(this.l[var3 + 0], this.l[var3 + 1], this.l[var3 + 2], this.l[var3 + 3], var8[var4], 0, this.l[var3 + 2]);
+            }
+
+            frontLayer.getRGB(this.l[var3 + 0], this.l[var3 + 1], this.l[var3 + 2], this.l[var3 + 3], var9[var4], 0, this.l[var3 + 2]);
+         }
+      }
+
+      short var15 = 800;
+      var7 = var1[5].length;
+
+      for(var4 = 0; var4 < var7; ++var4) {
+         this.combineLayers(var8[var4], var9[var4], this.bp, var15, var1[6][var4], var1[1][var4]);
+         this.SPRITES_DATA.add(var8[var4]);
+         var15 = (short)(var15 + 50);
+      }
+
+      // var7 = 16 + var1[5].length;
+
+      // for(int var14 = 16; var14 < var7; ++var14) {
+      //    int var6 = this.foeH[var14] / this.bu[var14];
+      //    if (this.bt[var14] == 0) {
+      //       this.b(var14, var6, var8[var14 - 16]);
+      //    } else if (this.bt[var14] == 1) {
+      //       this.a(var14, var6, var8[var14 - 16]);
+      //    } else if (this.bt[var14] == 2) {
+      //       this.c(var14, var6, var8[var14 - 16]);
+      //    } else if (this.bt[var14] == 3) {
+      //       this.d(var14, var6, var8[var14 - 16]);
+      //    } else if (this.bt[var14] == 4) {
+      //       this.e(var14, var6, var8[var14 - 16]);
+      //    }
+      // }
+
+      // this.F = (byte[][][])null;
+      // System.gc();
+   }
+
+   private void combineLayers(int[] layer1, int[] layer2, int[][] colorData, short startIndex, byte[] palette1, byte[] palette2) {
+      boolean isBackground = false;
+      byte colorIndex = 1;
+      int layerLength = layer1.length;
+      byte[] colorMap = new byte[256];
+      int[] colorIndices = new int[50];
+      short dataIndex = startIndex;
+      short uniqueColorIndex = 0;
+
+      int i;
+      int colorValue;
+      int pixel;
+
+      for(i = 0; i < layerLength; ++i) {
+         pixel = layer1[i];
+         if (pixel == this.backgroundColor) {
+            layer1[i] = this.backgroundColor;
+         } else {
+            colorValue = pixel & 255;
+            // if (colorMap[colorValue] > 0) {
+            //    layer1[i] = colorIndices[colorMap[colorValue]];
+            // } else {
+               // colorMap[colorValue] = colorIndex;
+               // colorIndices[colorIndex] = uniqueColorIndex;
+               // ++colorIndex;
+               int color1 = this.loadTextures_subfunction16(palette1[0], palette1[1], palette1[2], palette1[3], palette1[4], colorValue, false);
+               int color2 = this.loadTextures_subfunction16(palette2[0], palette2[1], palette2[2], palette2[3], palette2[4], colorValue, false);
+               // colorData[0][dataIndex] = (int)((long)color1 | 0L);
+               // colorData[1][dataIndex] = (int)((long)color2 | 0L);
+               layer1[i] = color1;
+               // ++dataIndex;
+            // }
+         }
+      }
+
+      // this.F = new byte[32][32][32];
+      // colorIndices = new int[50];
+
+      for(i = 0; i < layerLength; ++i) {
+         if ((pixel = layer2[i]) != this.backgroundColor) {
+            // int red = (pixel & 0xFF0000) >> 19;
+            // int green = (pixel & 0x00FF00) >> 11;
+            // int blue = (pixel & 0x0000FF) >> 3;
+            // if (this.F[red][green][blue] > 0) {
+            //    layer1[i] = colorIndices[this.F[red][green][blue]];
+            // } else {
+               // this.F[red][green][blue] = colorIndex;
+               // colorIndices[colorIndex] = uniqueColorIndex;
+               // ++colorIndex;
+               // if (layer2[i] != this.backgroundColor) {
+               //    colorData[0][dataIndex] = (int)((long)pixel | 0L);
+               //    colorData[1][dataIndex] = (int)((long)pixel | 0L);
+               // }
+                  layer1[i] = pixel;
+               // ++dataIndex;
+            // }
+         }
+      }
+
+   }
 
 
 

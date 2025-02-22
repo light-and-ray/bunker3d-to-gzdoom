@@ -1185,7 +1185,7 @@ public final class b3d_a extends Canvas {
          this.readFoePart1(this.E[2]);
          // E[2][0] - palettes ?
          this.readFoePart2(this.E[2]);
-         this.d(this.E[2]);
+         this.loadSprites(this.E[2]);
       }
 
       this.loadedMap = (byte[][])null;
@@ -1945,7 +1945,7 @@ public final class b3d_a extends Canvas {
 
    }
 
-   private void d(byte[][][] var1) {
+   private void loadSprites(byte[][][] var1) {
       int[][] var8 = new int[var1[5].length][];
       int[][] var9 = new int[var1[5].length][];
       boolean var2 = false;

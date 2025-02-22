@@ -115,6 +115,16 @@ def _loadTextures():
         textures.append(load_image_from_1d_list(textures_data[i], textures_w[i], textures_h[i]))
     return textures
 
+def _loadTSprites():
+    sprites_data = read2DArray("SPRITES_DATA")
+    sprites_w = read1DArray("SPRITES_W")
+    sprites_h = read1DArray("SPRITES_H")
+    sprites = []
+    for i in range(len(sprites_data)):
+        sprites.append(load_image_from_1d_list(sprites_data[i], sprites_w[i], sprites_h[i]))
+        sprites[-1].show()
+    # return textures
+
 def _loadLinesTextures():
     cX = read1DArray("LINES_TEXTURES")
     bs = read1DArray("LINES_bs")
@@ -156,6 +166,7 @@ def load(mapIndex):
     data = LoadedData()
     textures = _loadTextures()
     linesTextures = _loadLinesTextures()
+    _loadTSprites()
 
     data.map = MapB3D(rawLines=read2DArray('LINES_VERTEXES'), rawHeight=read1DArray('LINES_HEIGHT'),
         cratesStartLineIdx=read1DArray('CRATES_START_LINE_IDX'), cratesContent=read1DArray('CRATES_CONTENT'),
