@@ -5,23 +5,32 @@ from ClassesShared import BrokenTextureData
 from PIL import Image
 from tools import WALL_HEIGHT, makeBackgroundTransparent
 
+def readSingleValue(jsonName: str) -> int:
+    filename = f'tmp/{jsonName}.json'
+    with open(filename, 'r') as file:
+        data = json.load(file)
+        # Check if the JSON file contains a single string
+        if isinstance(data, str):
+            return int(data)
+        else:
+            raise ValueError("The JSON file does not contain a single string.")
 
-def read1DArray(arrayName: str) -> list[int]:
-    filename = f'tmp/{arrayName}.json'
+def read1DArray(jsonName: str) -> list[int]:
+    filename = f'tmp/{jsonName}.json'
     with open(filename, 'r') as file:
         data = json.load(file)
         return [int(num) for num in data]
 
 
-def read2DArray(arrayName: str) -> list[list[int | None]]:
-    filename = f'tmp/{arrayName}.json'
+def read2DArray(jsonName: str) -> list[list[int | None]]:
+    filename = f'tmp/{jsonName}.json'
     with open(filename, 'r') as file:
         data = json.load(file)
         return [[int(num) if num is not None else None for num in row] if row is not None else None for row in data]
 
-def read3DArray(arrayName: str) -> list[list[list[int | None]]]:
+def read3DArray(jsonName: str) -> list[list[list[int | None]]]:
 
-    filename = f'tmp/{arrayName}.json'
+    filename = f'tmp/{jsonName}.json'
     with open(filename, 'r') as file:
         data = json.load(file)
         return [[[int(num) if num is not None else None for num in row] if row is not None else None for row in plane] if plane is not None else None for plane in data]
@@ -106,6 +115,8 @@ class LoadedData:
     doorsSpeed: list[int] = None
     doorsStartLineIdx: list[int] = None
     thingsOnDrawing: list[list[int]] = None
+    spawnPos: list[int] = None
+    spawnAngle: int = None
 
 
 def _loadTextures():
@@ -200,6 +211,10 @@ def load(mapIndex):
     things_cd = read1DArray("THINGS_cd")
     thingsSpecial = read1DArray('THINGS_SPECIAL') + [None] * 50
 
-    for i, sprite, visible, cd, color, special in zip(range(100), thingsSprite, thingsVisible, things_cd, thingsColor, thingsSpecial):
-        print(i, ':', sprite, visible, cd, color, special)
+    # for i, sprite, visible, cd, color, special in zip(range(100), thingsSprite, thingsVisible, things_cd, thingsColor, thingsSpecial):
+    #     print(i, ':', sprite, visible, cd, color, special)
+
+    data.spawnPos = read1DArray('SPAWN_POS')
+    data.spawnAngle = readSingleValue('SPAWN_ANGLE')
+
     return data

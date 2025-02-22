@@ -1012,6 +1012,8 @@ public class ResourcesLoaderB3D {
       this.fk = var1;
       this.fz[0] = var2;
       this.fz[1] = var4;
+      this.fz[0] = (this.fz[0] << 16) / 75000L;
+      this.fz[1] = (this.fz[1] << 16) / 75000L;
       this.eR = var6;
       this.eS = var7;
    }

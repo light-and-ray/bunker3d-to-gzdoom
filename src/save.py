@@ -102,7 +102,7 @@ def saveAnimations(animations: list[Animation]):
         for frame in animation.frames:
             animdefs += f"    pic {frame} tics {animation.duration}\n"
         animdefs += "\n"
-    with open(RESULT_DIR + "/ANIMDEFS.txt", 'w') as f:
+    with open(RESULT_DIR + "/ANIMDEFS", 'w') as f:
         f.write(animdefs)
 
 

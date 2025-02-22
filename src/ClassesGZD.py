@@ -62,7 +62,7 @@ class MapGZD:
     SECTOR_FULL_IDX = 0
     SECTOR_BOTTOM_IDX = 1
 
-    def __init__(self, mapInterim: MapInterim):
+    def __init__(self, mapInterim: MapInterim, spawnPos: list[int], spawnAngle: int):
         self.vertexes: list[VertexGZD] = []
         self.sectorFull: SectorGZD = None
         self.sectorBottom: SectorGZD = None
@@ -79,7 +79,7 @@ class MapGZD:
         self.lines.extend(self._convertLines(mapInterim.lines))
         self._convertDoors(mapInterim.doors)
 
-        self.things.append(ThingGZD(0, 0, 1, 0)) # starting pos
+        self.things.append(ThingGZD(spawnPos[0], spawnPos[1], 1, spawnAngle+90)) # starting pos
 
         for i in range(len(self.vertexes)):
             self.vertexes[i].x *= SCALE_FACTOR

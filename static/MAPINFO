@@ -68,6 +68,13 @@ map C1M9 lookup "C1M9"
     // music = "$MUSIC_E1M1"
 }
 
+clearepisodes
+
+episode C1M1
+{
+   name = "Bunker 3D"
+}
+
 
 GameInfo
 {

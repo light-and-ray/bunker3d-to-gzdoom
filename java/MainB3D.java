@@ -55,6 +55,10 @@ public class MainB3D {
         Json.export("SPRITES_W", loader.SPRITES_W);
         Json.export("SPRITES_H", loader.SPRITES_H);
 
+        Json.export("SPAWN_POS", loader.fz);
+        Json.export("SPAWN_ANGLE", loader.eR);
+
+
         // Json.export("UNKNOWN_cD", loader.cD);
         // Json.export("UNKNOWN_cE", loader.cE);
         // Json.export("UNKNOWN_bZ", loader.bZ);
