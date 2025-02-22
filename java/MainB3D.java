@@ -17,6 +17,7 @@ public class MainB3D {
         Json.export("LINES_ANIMATED", loader.fE);
         Json.export("LINES_HEIGHT", loader.by); // 0 - full, 1 - bottom half, 2 - top half
         Json.export("DOORS_START_LINE_IDX", loader.DOORS_START_LINE_IDX);
+        Json.export("DOORS_SPEED", loader.dt); // -1 - closed, 8 - fast, 24 - slow
         Json.export("CRATES_START_LINE_IDX", loader.CRATES_START_LINE_IDX);
         Json.export("CRATES_CONTENT", loader.CRATES_CONTENT); // 0 - nothing, 1 - ammo, 2 - health, 3 - health+ammo, 7 - health+ammo, 6 - unknown
         Json.export("CRATES_ANGLE", loader.CRATES_ANGLE);
@@ -28,23 +29,11 @@ public class MainB3D {
         Json.export("TEXTURES_H", loader.TEXTURES_H);
         Json.export("ANIMATED_FRAMES", loader.fG);
 
-        Json.export("DOORS_dr", loader.dr);
-        Json.export("DOORS_ds", loader.ds);
-        Json.export("DOORS_dv", loader.dv);
-        Json.export("DOORS_dw", loader.dw);
-        Json.export("DOORS_SPEED", loader.dt); // -1 - closed, 8 - fast, 24 - slow
-        Json.export("DOORS_dx", loader.dx);
-        Json.export("DOORS_dy", loader.dy);
-        Json.export("DOORS_dz", loader.dz);
-        Json.export("DOORS_dA", loader.dA);
-        Json.export("DOORS_dB", loader.dB);
-        Json.export("DOORS_du", loader.du);
-
         // THINGS SPECIALS
         // lamp: 127 (on), -2 (off), -1 (flick);
         // npc: -20 (foe), -2 (boss), 26 (friendly1), 32 (final boss), 30 (friendly2)
         Json.export("THINGS_SPECIAL", loader.ca);
-        Json.export("THINGS_SPRITE", loader.cg);
+        Json.export("THINGS_SPRITE", loader.cg); // 0-15 (npc), 16-31 (lamp), 32-47 (decoration), 48+ (crate content)
         Json.export("THINGS_POS", loader.bT);
         Json.export("THINGS_VISIBLE", loader.cm);
         Json.export("THINGS_cd", loader.cd);
