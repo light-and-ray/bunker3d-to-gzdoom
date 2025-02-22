@@ -832,7 +832,7 @@ public class ResourcesLoaderB3D {
       this.cC = (byte)(16 + bigLump1[8][0][5]);
       this.cB = bigLump1[8][0][6];
       var12 = this.eX;
-      this.eY = bigLump1[12].length;
+      this.eY = bigLump1[12].length; // number of crates
       int var24 = 48 + this.eY;
       this.cg = new byte[var24];
       this.bT = new int[var24][2];
@@ -1259,7 +1259,7 @@ public class ResourcesLoaderB3D {
       int var3 = 16;
       int var4 = bigLump2[7].length;
 
-      for(i = 0; i < var4; ++i) {
+      for(i = 0; i < var4; ++i) { // lamps
          this.cg[var3] = this.fl;
          this.bT[var3][0] = 128 + bigLump2[7][i][0] << 16 >> 2;
          this.bT[var3][1] = 128 + bigLump2[7][i][1] << 16 >> 2;
@@ -1272,7 +1272,7 @@ public class ResourcesLoaderB3D {
       var3 = 32;
       var4 = bigLump2[9].length;
 
-      for(i = 0; i < var4; ++i) {
+      for(i = 0; i < var4; ++i) { // decorations
          this.cg[var3] = bigLump2[9][i][0];
          this.bT[var3][0] = 128 + bigLump2[9][i][1] << 16 >> 2;
          this.bT[var3][1] = 128 + bigLump2[9][i][2] << 16 >> 2;

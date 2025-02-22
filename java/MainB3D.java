@@ -23,29 +23,6 @@ public class MainB3D {
         Json.export("CIRCLES_IDX", loader.CIRCLES_IDX);
         Json.export("FOOTER", loader.FOOTER);
 
-        Json.export("FOE1_bZ", loader.bZ);
-        Json.export("FOE1_bW", loader.bW);
-        Json.export("FOE1_ca", loader.ca);
-        Json.export("FOE1_bX", loader.bX);
-        Json.export("FOE1_cb", loader.cb);
-        Json.export("FOE1_cj", loader.cj);
-        Json.export("FOE1_cc", loader.cc);
-        Json.export("FOE1_cl", loader.cl);
-        Json.export("FOE1_ce", loader.ce);
-        Json.export("FOE1_ck", loader.ck);
-        Json.export("FOE1_cf", loader.cf);
-        Json.export("FOE1_z", loader.z);
-        Json.export("FOE1_ei", loader.ei);
-
-        Json.export("FOE2_bq", loader.bq);
-        Json.export("FOE2_M", loader.M);
-        Json.export("FOE2_bY", loader.bY);
-        Json.export("FOE2_bt", loader.bt);
-        Json.export("FOE2_bu", loader.bu);
-        Json.export("FOE2_bj", loader.bj);
-        Json.export("FOE2_foeW", loader.foeW);
-        Json.export("FOE2_foeH", loader.foeH);
-
         Json.export("TEXTURES_DATA", loader.TEXTURES_DATA);
         Json.export("TEXTURES_W", loader.TEXTURES_W);
         Json.export("TEXTURES_H", loader.TEXTURES_H);
@@ -63,15 +40,40 @@ public class MainB3D {
         Json.export("DOORS_dB", loader.dB);
         Json.export("DOORS_du", loader.du);
 
-        // Json.export("UNKNOWN_cg", loader.cg);
-        // Json.export("UNKNOWN_bT", loader.bT);
-        // Json.export("UNKNOWN_cm", loader.cm);
-        // Json.export("UNKNOWN_cd", loader.cd);
-        // Json.export("UNKNOWN_ch", loader.ch);
+        Json.export("THINGS_SPRITE", loader.cg);
+        Json.export("THINGS_POS", loader.bT);
+        Json.export("THINGS_VISIBLE", loader.cm);
+        Json.export("THINGS_cd", loader.cd);
+        Json.export("THINGS_COLOR", loader.ch);
 
         Json.export("SPRITES_DATA_COLOR_1", loader.SPRITES_DATA_COLOR_1);
         Json.export("SPRITES_DATA_COLOR_2", loader.SPRITES_DATA_COLOR_2);
         Json.export("SPRITES_W", loader.SPRITES_W);
         Json.export("SPRITES_H", loader.SPRITES_H);
+        Json.export("THINGS_SPECIAL", loader.ca); // lamp: 127 (on), -2 (off), -1 (flick); npc: -20 (foe), -2 (boss), 26 (friendly)
+        Json.export("UNKNOWN_cD", loader.cD);
+        Json.export("UNKNOWN_cE", loader.cE);
+
+        // Json.export("UNKNOWN_bZ", loader.bZ);
+        // Json.export("UNKNOWN_bW", loader.bW);
+        // Json.export("UNKNOWN_bX", loader.bX);
+        // Json.export("UNKNOWN_cb", loader.cb);
+        // Json.export("UNKNOWN_cj", loader.cj);
+        // Json.export("UNKNOWN_cc", loader.cc);
+        Json.export("UNKNOWN_cl", loader.cl);
+        // Json.export("UNKNOWN_ce", loader.ce);
+        // Json.export("UNKNOWN_ck", loader.ck);
+        // Json.export("UNKNOWN_cf", loader.cf);
+        // Json.export("UNKNOWN_z", loader.z);
+        // Json.export("UNKNOWN_ei", loader.ei);
+
+        // Json.export("FOE2_bq", loader.bq);
+        // Json.export("FOE2_M", loader.M);
+        // Json.export("FOE2_bY", loader.bY);
+        // Json.export("FOE2_bt", loader.bt);
+        // Json.export("FOE2_bu", loader.bu);
+        // Json.export("FOE2_bj", loader.bj);
+        // Json.export("FOE2_foeW", loader.foeW);
+        // Json.export("FOE2_foeH", loader.foeH);
     }
 }

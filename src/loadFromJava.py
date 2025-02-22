@@ -105,6 +105,7 @@ class LoadedData:
     colorFloor: tuple[int] = None
     doorsSpeed: list[int] = None
     doorsStartLineIdx: list[int] = None
+    thingsOnDrawing: list[list[int]] = None
 
 
 def _loadTextures():
@@ -192,4 +193,13 @@ def load(mapIndex):
     data.doorsSpeed = read1DArray("DOORS_SPEED")
     data.doorsStartLineIdx=read1DArray('DOORS_START_LINE_IDX')
 
+    data.thingsOnDrawing = read2DArray('THINGS_POS')
+    thingsSprite = read1DArray("THINGS_SPRITE")
+    thingsColor = read1DArray("THINGS_COLOR")
+    thingsVisible = read1DArray("THINGS_VISIBLE")
+    things_cd = read1DArray("THINGS_cd")
+    thingsSpecial = read1DArray('THINGS_SPECIAL')
+
+    for i, sprite, visible, cd, color, special in zip(range(100), thingsSprite, thingsVisible, things_cd, thingsColor, thingsSpecial):
+        print(i, ':', sprite, visible, cd, color, special)
     return data
