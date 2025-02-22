@@ -36,6 +36,7 @@ def load_image_from_1d_list(data, width, height) -> Image.Image:
     for y in range(height):
         for x in range(width):
             # Extract the RGB channels from the integer pixel value
+            # if index < len(data):
             pixel = data[index]
             r = (pixel >> 16) & 0xFF
             g = (pixel >> 8) & 0xFF
@@ -115,15 +116,18 @@ def _loadTextures():
         textures.append(load_image_from_1d_list(textures_data[i], textures_w[i], textures_h[i]))
     return textures
 
-def _loadTSprites():
-    sprites_data = read2DArray("SPRITES_DATA")
+def _loadSprites():
+    sprites_data_color_1 = read2DArray("SPRITES_DATA_COLOR_1")
+    sprites_data_color_2 = read2DArray("SPRITES_DATA_COLOR_2")
     sprites_w = read1DArray("SPRITES_W")
     sprites_h = read1DArray("SPRITES_H")
-    sprites = []
-    for i in range(len(sprites_data)):
-        sprites.append(load_image_from_1d_list(sprites_data[i], sprites_w[i], sprites_h[i]))
-        sprites[-1].show()
-    # return textures
+    sprites_color_1 = []
+    for i in range(len(sprites_data_color_1)):
+        sprites_color_1.append(load_image_from_1d_list(sprites_data_color_1[i], sprites_w[i], sprites_h[i]))
+    sprites_color_2 = []
+    for i in range(len(sprites_data_color_2)):
+        sprites_color_2.append(load_image_from_1d_list(sprites_data_color_2[i], sprites_w[i], sprites_h[i]))
+    return [sprites_color_1, sprites_color_2]
 
 def _loadLinesTextures():
     cX = read1DArray("LINES_TEXTURES")
@@ -166,7 +170,11 @@ def load(mapIndex):
     data = LoadedData()
     textures = _loadTextures()
     linesTextures = _loadLinesTextures()
-    _loadTSprites()
+    sprites = _loadSprites()
+    os.makedirs(f"tmp/sprites/map{mapIndex}", exist_ok=True)
+    for i in range(len(sprites[0])):
+        for color in (0, 1):
+            sprites[color][i].save(f"tmp/sprites/map{mapIndex}/sprite_{color}_{i}.png")
 
     data.map = MapB3D(rawLines=read2DArray('LINES_VERTEXES'), rawHeight=read1DArray('LINES_HEIGHT'),
         cratesStartLineIdx=read1DArray('CRATES_START_LINE_IDX'), cratesContent=read1DArray('CRATES_CONTENT'),

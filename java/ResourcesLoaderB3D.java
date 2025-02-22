@@ -24,9 +24,10 @@ public class ResourcesLoaderB3D {
    public ArrayList<int[]> TEXTURES_DATA = new ArrayList<>();
    public short[] FOOTER;
    public ArrayList<ArrayList<Integer>> CIRCLES_IDX = new ArrayList<>();
-   public ArrayList<Short> SPRITES_W = new ArrayList<>();
-   public ArrayList<Short> SPRITES_H = new ArrayList<>();
-   public ArrayList<int[]> SPRITES_DATA = new ArrayList<>();
+   public short[] SPRITES_W;
+   public short[] SPRITES_H;
+   public ArrayList<int[]> SPRITES_DATA_COLOR_1 = new ArrayList<>();
+   public ArrayList<int[]> SPRITES_DATA_COLOR_2 = new ArrayList<>();
 
    public byte c;
    public boolean e;
@@ -2249,6 +2250,8 @@ public class ResourcesLoaderB3D {
       int[][] var9 = new int[var1[5].length][];
       boolean var2 = false;
       int var7 = var1[5].length;
+      this.SPRITES_W = new short[var7];
+      this.SPRITES_H = new short[var7];
 
       int var4;
       for(int spriteFileNum = 0; spriteFileNum <= 1; ++spriteFileNum) {
@@ -2256,6 +2259,7 @@ public class ResourcesLoaderB3D {
          BufferedImage frontLayer = this.readImage(this.spriteFiles[spriteFileNum + 2] + this.dataExt);
 
          for(var4 = 0; var4 < var7; ++var4) {
+            // System.out.println("" + spriteFileNum + ": " + var1[5][var4][0]);
             if (spriteFileNum == 0) {
                if (var1[5][var4][0] >= 50) {
                   continue;
@@ -2271,9 +2275,10 @@ public class ResourcesLoaderB3D {
             int var3 = var1[5][var4][0] * 7;
             var8[var4] = new int[this.l[var3 + 2] * this.l[var3 + 3]];
             var9[var4] = new int[this.l[var3 + 2] * this.l[var3 + 3]];
-            this.SPRITES_W.add(this.l[var3 + 2]);
-            this.SPRITES_H.add(this.l[var3 + 3]);
+            this.SPRITES_W[var4] = this.l[var3 + 2];
+            this.SPRITES_H[var4] = this.l[var3 + 3];
             backLayer.getRGB(this.l[var3 + 0], this.l[var3 + 1], this.l[var3 + 2], this.l[var3 + 3], var8[var4], 0, this.l[var3 + 2]);
+            // System.out.println(var1[5][var4][0]);
             if (var1[5][var4][0] == 26) {
                int var12 = this.l[var3 + 2] * this.l[var3 + 3];
 
@@ -2294,8 +2299,10 @@ public class ResourcesLoaderB3D {
       var7 = var1[5].length;
 
       for(var4 = 0; var4 < var7; ++var4) {
-         this.combineLayers(var8[var4], var9[var4], this.bp, var15, var1[6][var4], var1[1][var4]);
-         this.SPRITES_DATA.add(var8[var4]);
+         int[] layer1Color2 = new int[var8[var4].length];
+         this.combineLayers(var8[var4], var9[var4], this.bp, var15, var1[6][var4], var1[1][var4], layer1Color2);
+         this.SPRITES_DATA_COLOR_1.add(var8[var4]);
+         this.SPRITES_DATA_COLOR_2.add(layer1Color2);
          var15 = (short)(var15 + 50);
       }
 
@@ -2320,14 +2327,14 @@ public class ResourcesLoaderB3D {
       // System.gc();
    }
 
-   private void combineLayers(int[] layer1, int[] layer2, int[][] colorData, short startIndex, byte[] palette1, byte[] palette2) {
-      boolean isBackground = false;
-      byte colorIndex = 1;
+   private void combineLayers(int[] layer1, int[] layer2, int[][] colorData, short startIndex, byte[] palette1, byte[] palette2, int[] layer1Color2) {
+      // boolean isBackground = false;
+      // byte colorIndex = 1;
       int layerLength = layer1.length;
-      byte[] colorMap = new byte[256];
-      int[] colorIndices = new int[50];
-      short dataIndex = startIndex;
-      short uniqueColorIndex = 0;
+      // byte[] colorMap = new byte[256];
+      // int[] colorIndices = new int[50];
+      // short dataIndex = startIndex;
+      // short uniqueColorIndex = 0;
 
       int i;
       int colorValue;
@@ -2337,6 +2344,9 @@ public class ResourcesLoaderB3D {
          pixel = layer1[i];
          if (pixel == this.backgroundColor) {
             layer1[i] = this.backgroundColor;
+            if (layer1Color2 != null) {
+               layer1Color2[i] = this.backgroundColor;
+            }
          } else {
             colorValue = pixel & 255;
             // if (colorMap[colorValue] > 0) {
@@ -2350,6 +2360,9 @@ public class ResourcesLoaderB3D {
                // colorData[0][dataIndex] = (int)((long)color1 | 0L);
                // colorData[1][dataIndex] = (int)((long)color2 | 0L);
                layer1[i] = color1;
+               if (layer1Color2 != null) {
+                  layer1Color2[i] = color2;
+               }
                // ++dataIndex;
             // }
          }
@@ -2374,6 +2387,9 @@ public class ResourcesLoaderB3D {
                //    colorData[1][dataIndex] = (int)((long)pixel | 0L);
                // }
                   layer1[i] = pixel;
+                  if (layer1Color2 != null) {
+                     layer1Color2[i] = pixel;
+                  }
                // ++dataIndex;
             // }
          }
