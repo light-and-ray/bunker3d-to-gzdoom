@@ -56,10 +56,10 @@ def getFloorLumpName(mapIndex):
 def makeBackgroundTransparent(inputImage):
     img = inputImage.convert('RGBA')
     pixels = img.load()
-    background_color = pixels[0, 0][:3]
+    background_color = pixels[0, 0]
     for x in range(img.width):
         for y in range(img.height):
-            pixel_color = pixels[x, y][:3]
+            pixel_color = pixels[x, y]
             if pixel_color == background_color:
                 pixels[x, y] = (0, 0, 0, 0)
     return img
