@@ -3,7 +3,7 @@ import json, os
 from ClassesB3D import MapB3D
 from ClassesShared import BrokenTextureData
 from PIL import Image
-from tools import WALL_HEIGHT
+from tools import WALL_HEIGHT, makeBackgroundTransparent
 
 
 def read1DArray(arrayName: str) -> list[int]:
@@ -117,17 +117,17 @@ def _loadTextures():
     return textures
 
 def _loadSprites():
-    sprites_data_color_1 = read2DArray("SPRITES_DATA_COLOR_1")
-    sprites_data_color_2 = read2DArray("SPRITES_DATA_COLOR_2")
     sprites_w = read1DArray("SPRITES_W")
     sprites_h = read1DArray("SPRITES_H")
-    sprites_color_1 = []
-    for i in range(len(sprites_data_color_1)):
-        sprites_color_1.append(load_image_from_1d_list(sprites_data_color_1[i], sprites_w[i], sprites_h[i]))
-    sprites_color_2 = []
-    for i in range(len(sprites_data_color_2)):
-        sprites_color_2.append(load_image_from_1d_list(sprites_data_color_2[i], sprites_w[i], sprites_h[i]))
-    return [sprites_color_1, sprites_color_2]
+    all_sprites = []
+    for sprites_data in (read2DArray("SPRITES_DATA_COLOR_1"), read2DArray("SPRITES_DATA_COLOR_2")):
+        sprites = []
+        for i in range(len(sprites_data)):
+            sprite = load_image_from_1d_list(sprites_data[i], sprites_w[i], sprites_h[i])
+            sprite = makeBackgroundTransparent(sprite)
+            sprites.append(sprite)
+        all_sprites.append(sprites)
+    return all_sprites
 
 def _loadLinesTextures():
     cX = read1DArray("LINES_TEXTURES")

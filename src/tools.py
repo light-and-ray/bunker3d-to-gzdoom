@@ -52,3 +52,15 @@ def getCeilingLumpName(mapIndex):
 def getFloorLumpName(mapIndex):
     return f"B3D_F{mapIndex:03}"
 
+
+def makeBackgroundTransparent(inputImage):
+    img = inputImage.convert('RGBA')
+    pixels = img.load()
+    background_color = pixels[0, 0][:3]
+    for x in range(img.width):
+        for y in range(img.height):
+            pixel_color = pixels[x, y][:3]
+            if pixel_color == background_color:
+                pixels[x, y] = (0, 0, 0, 0)
+    return img
+
