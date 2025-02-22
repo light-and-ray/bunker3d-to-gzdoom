@@ -198,7 +198,7 @@ def load(mapIndex):
     thingsColor = read1DArray("THINGS_COLOR")
     thingsVisible = read1DArray("THINGS_VISIBLE")
     things_cd = read1DArray("THINGS_cd")
-    thingsSpecial = read1DArray('THINGS_SPECIAL')
+    thingsSpecial = read1DArray('THINGS_SPECIAL') + [None] * 50
 
     for i, sprite, visible, cd, color, special in zip(range(100), thingsSprite, thingsVisible, things_cd, thingsColor, thingsSpecial):
         print(i, ':', sprite, visible, cd, color, special)

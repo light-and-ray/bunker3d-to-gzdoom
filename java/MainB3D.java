@@ -40,6 +40,10 @@ public class MainB3D {
         Json.export("DOORS_dB", loader.dB);
         Json.export("DOORS_du", loader.du);
 
+        // THINGS SPECIALS
+        // lamp: 127 (on), -2 (off), -1 (flick);
+        // npc: -20 (foe), -2 (boss), 26 (friendly1), 32 (final boss), 30 (friendly2)
+        Json.export("THINGS_SPECIAL", loader.ca);
         Json.export("THINGS_SPRITE", loader.cg);
         Json.export("THINGS_POS", loader.bT);
         Json.export("THINGS_VISIBLE", loader.cm);
@@ -50,17 +54,16 @@ public class MainB3D {
         Json.export("SPRITES_DATA_COLOR_2", loader.SPRITES_DATA_COLOR_2);
         Json.export("SPRITES_W", loader.SPRITES_W);
         Json.export("SPRITES_H", loader.SPRITES_H);
-        Json.export("THINGS_SPECIAL", loader.ca); // lamp: 127 (on), -2 (off), -1 (flick); npc: -20 (foe), -2 (boss), 26 (friendly)
-        Json.export("UNKNOWN_cD", loader.cD);
-        Json.export("UNKNOWN_cE", loader.cE);
 
+        // Json.export("UNKNOWN_cD", loader.cD);
+        // Json.export("UNKNOWN_cE", loader.cE);
         // Json.export("UNKNOWN_bZ", loader.bZ);
         // Json.export("UNKNOWN_bW", loader.bW);
         // Json.export("UNKNOWN_bX", loader.bX);
         // Json.export("UNKNOWN_cb", loader.cb);
         // Json.export("UNKNOWN_cj", loader.cj);
         // Json.export("UNKNOWN_cc", loader.cc);
-        Json.export("UNKNOWN_cl", loader.cl);
+        // Json.export("UNKNOWN_cl", loader.cl);
         // Json.export("UNKNOWN_ce", loader.ce);
         // Json.export("UNKNOWN_ck", loader.ck);
         // Json.export("UNKNOWN_cf", loader.cf);
