@@ -43,7 +43,7 @@ class MapB3D:
             cratesStartLineIdx: list[int], cratesContent: list[int], cratesAngles: list[int],
             textures: list[Image.Image], linesTextures: list[list[int]],
             circles: list[list[int]], textureMirroring: list[int],
-            animatedFrames: list[list[int]], animatedLines: list[list[int]],
+            animatedFrames: list[list[int]], animatedLines: list[list[int]], sprites: list[list[Image.Image]],
             thingsPos: list[list[int]], thingsSprites: list[int], thingsColors: list[int],
             thingsVisible: list[int], thingsSpecials: list[int],
     ):
@@ -52,6 +52,8 @@ class MapB3D:
         self.textures: dict[str, Image.Image] = {}
         for texture in textures:
             self.textures[generateTextureLumpName()] = texture
+
+        self.sprites = sprites
 
         self.lines: list[LineB3D] = []
 
@@ -89,7 +91,9 @@ class MapB3D:
 
         self.things: list[ThingB3D] = []
         for i in range(48):
-            if not thingsVisible[i]: continue
+            if not thingsVisible[i]:
+                # self.things.append(None)
+                continue
             if i >= 0 and i < 16:
                 category = ThingCategory.NPC
             elif i >= 16 and i < 32:

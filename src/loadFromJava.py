@@ -192,7 +192,7 @@ def load(mapIndex):
         cratesAngles=read1DArray('CRATES_ANGLE'),
         textures=textures, linesTextures=linesTextures, circles=read2DArray("CIRCLES_IDX"),
         textureMirroring=read1DArray("LINES_MIRRORING"), animatedFrames=read2DArray("ANIMATED_FRAMES"),
-        animatedLines=read2DArray("LINES_ANIMATED"),
+        animatedLines=read2DArray("LINES_ANIMATED"), sprites=sprites,
         thingsPos=read2DArray('THINGS_POS'), thingsSprites=read1DArray("THINGS_SPRITE"), thingsColors=read1DArray("THINGS_COLOR"),
         thingsVisible=read1DArray("THINGS_VISIBLE"), thingsSpecials = read1DArray('THINGS_SPECIAL'),
     )

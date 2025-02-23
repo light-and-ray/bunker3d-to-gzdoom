@@ -71,6 +71,7 @@ def drawMap(map: 'MapInterim|MapB3D', show=False, name=None, resolution=1280, fr
 
     if hasattr(map, 'things'):
         for i, thing in enumerate(map.things):
+            if not thing: continue
             x, y = rescale(*thing.pos.pair())
             dwg.add(dwg.circle((x, y), 4, fill=svgwrite.rgb(255, 0, 0)))
             # dwg.add(dwg.text(str(i), insert=(x, y),

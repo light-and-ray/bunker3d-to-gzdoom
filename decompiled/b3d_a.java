@@ -1796,7 +1796,7 @@ public final class b3d_a extends Canvas {
       int var3 = 16;
       int var4 = bigLump2[7].length;
 
-      for(i = 0; i < var4; ++i) {
+      for(i = 0; i < var4; ++i) { // lamps
          this.cg[var3] = this.fl;
          this.bT[var3][0] = 128 + bigLump2[7][i][0] << 16 >> 2;
          this.bT[var3][1] = 128 + bigLump2[7][i][1] << 16 >> 2;
@@ -1809,7 +1809,7 @@ public final class b3d_a extends Canvas {
       var3 = 32;
       var4 = bigLump2[9].length;
 
-      for(i = 0; i < var4; ++i) {
+      for(i = 0; i < var4; ++i) { // decorations
          this.cg[var3] = bigLump2[9][i][0];
          this.bT[var3][0] = 128 + bigLump2[9][i][1] << 16 >> 2;
          this.bT[var3][1] = 128 + bigLump2[9][i][2] << 16 >> 2;

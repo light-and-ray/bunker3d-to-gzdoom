@@ -39,6 +39,12 @@ class DoorInterim:
     nextIsMirror: bool = False
 
 
+@dataclass
+class DecorationInterim:
+    pos: Vertex
+    sprite: Image.Image
+
+
 class MapInterim:
     def __init__(self, mapB3D: MapB3D, brokenLines: list[int], doorsSpeed: list[int], doorsStartLineIdx: list[int],
             brokenTextures: dict[int, BrokenTextureData]):
