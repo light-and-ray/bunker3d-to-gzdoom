@@ -25,8 +25,8 @@ if __name__ == "__main__":
         saveMap(map=mapGZD, mapIndex=idx)
         saveTextures(textures=data.map.textures, mapIndex=idx, colorCeiling=data.colorCeiling, colorFloor=data.colorFloor)
         saveSprites(sprites=mapGZD.sprites, mapIndex=idx)
-        zscripts[mapName] = mapGZD.zscripts
-        ednums.extend(mapGZD.ednums)
+        zscripts[mapName] = [a.zscript for a in mapGZD.actors]
+        ednums.extend([a.ednum for a in mapGZD.actors])
     saveAnimations(animations)
     saveZScripts(zscripts)
     saveEdnums(ednums)

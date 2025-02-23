@@ -42,7 +42,8 @@ class DoorInterim:
 @dataclass
 class DecorationInterim:
     pos: Vertex
-    sprite: Image.Image
+    spriteIdx: int
+    colorIdx: int
 
 
 class MapInterim:
@@ -62,10 +63,10 @@ class MapInterim:
         self._removeOverlaps()
 
         self.decorations: list[DecorationInterim] = []
+        self.sprites = mapB3D.sprites
         for thing in mapB3D.things:
             if thing.category != ThingCategory.DECORATION: continue
-            sprite = mapB3D.sprites[thing.color][thing.sprite]
-            self.decorations.append(DecorationInterim(pos=thing.pos, sprite=sprite))
+            self.decorations.append(DecorationInterim(pos=thing.pos, spriteIdx=thing.sprite, colorIdx=thing.color))
 
 
     def _fixBrokenTextures(self, brokenTextures: dict[int, BrokenTextureData]):

@@ -68,6 +68,12 @@ class EdnumGZD:
     className: str
 
 
+@dataclass
+class ActorGZD:
+    ednum: EdnumGZD
+    zscript: str
+
+
 class MapGZD:
     SECTOR_FULL_IDX = 0
     SECTOR_BOTTOM_IDX = 1
@@ -80,8 +86,7 @@ class MapGZD:
         self.sides: list[SideGZD] = []
         self.lines: list[LineGZD] = []
         self.things: list[ThingGZD] = []
-        self.ednums: list[EdnumGZD] = []
-        self.zscripts: list[str] = []
+        self.actors: list[ActorGZD] = []
         self._lastPolyObjectNum = 0
 
         self.sectorFull = SectorGZD(heightFloor=LEVEL_FLOOR, heightCeiling=LEVEL_CEILING)
@@ -94,21 +99,25 @@ class MapGZD:
         self.things.append(ThingGZD(spawnPos[0], spawnPos[1], 1, spawnAngle+90)) # starting pos
 
         self.sprites: dict[str, Image.Image] = {}
+        self._keysToActor: dict[tuple[int], ActorGZD] = dict()
         for decoration in mapInterim.decorations:
-            spriteName = generateSpriteName()
-            className = generateDecorationClassName()
-            zscript = generateDecorationZScript(className, spriteName, decoration.sprite)
-            ednum = EdnumGZD(num=generateEdnum(), className=className)
-            spriteFileName = spriteName + "A0"
-            self.sprites[spriteFileName] = decoration.sprite
+            key = (decoration.spriteIdx, decoration.colorIdx)
+            if key not in self._keysToActor:
+                spriteName = generateSpriteName()
+                className = generateDecorationClassName()
+                sprite = mapInterim.sprites[decoration.colorIdx][decoration.spriteIdx]
+                zscript = generateDecorationZScript(className, spriteName, sprite)
+                ednum = EdnumGZD(num=generateEdnum(), className=className)
+                spriteFileName = spriteName + "A0"
+                self.sprites[spriteFileName] = sprite
+                self.actors.append(ActorGZD(ednum=ednum, zscript=zscript))
+                self._keysToActor[key] = self.actors[-1]
             self.things.append(ThingGZD(
                 x = decoration.pos.x,
                 y = decoration.pos.y,
-                type = ednum.num,
+                type = self._keysToActor[key].ednum.num,
                 angle = 0,
             ))
-            self.ednums.append(ednum)
-            self.zscripts.append(zscript)
 
 
         for i in range(len(self.vertexes)):
