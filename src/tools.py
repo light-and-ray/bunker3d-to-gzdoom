@@ -1,6 +1,6 @@
 import math
 import struct
-import zlib
+from PIL import Image
 
 LEVEL_FLOOR = 0
 WALL_HEIGHT = 96
@@ -102,3 +102,17 @@ def addOffsets(png_data, x_offset, y_offset):
         new_png_data = png_data[:grab_index] + new_grab_chunk + png_data[grab_index+grab_length+12:]
 
     return new_png_data
+
+
+def isBottomRowTransparent(image: Image.Image):
+    if image.mode != 'RGBA':
+        raise Exception("is not rgba")
+
+    width, height = image.size
+    bottom_row = image.crop((0, height - 1, width, height))
+
+    for pixel in bottom_row.getdata():
+        if pixel[3] != 0:  # Check the alpha value
+            return False
+    return True
+
