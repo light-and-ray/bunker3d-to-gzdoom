@@ -1,2 +1,2 @@
 #!/bin/bash
-gzdoom -iwad DOOM.WAD -file result.d
+gzdoom -iwad DOOM.WAD -file result.d "$@"

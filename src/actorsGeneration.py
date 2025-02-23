@@ -31,7 +31,6 @@ def generateDecorationZScript(className: str, spriteName: str, sprite: Image.Ima
     code +=  "    {\n"
     code += f"        Height {sprite.height};\n"
     code += f"        Radius {sprite.width};\n"
-    # code += f"        +SOLID;\n"
     if isPinnedToCeiling:
         code += "        +NOGRAVITY;\n"
     code +=  "    }\n"

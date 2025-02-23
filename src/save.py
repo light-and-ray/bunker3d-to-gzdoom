@@ -122,15 +122,15 @@ def saveAnimations(animations: list[Animation]):
 
 
 def saveZScripts(zscriptsDict: dict[str, list[str]]):
-    directory = RESULT_DIR + "/zscript.generated"
+    directory = RESULT_DIR + "/zscript/generated"
     if os.path.exists(directory):
         shutil.rmtree(directory)
     os.makedirs(directory)
 
     includes = "version 4.11\n"
     for name in list(zscriptsDict.keys()):
-        includes += f'#include "zscript.generated/{name}.zs"\n'
-    with open(RESULT_DIR + "/zscript.gen", 'w') as f:
+        includes += f'#include "zscript/generated/{name}.zs"\n'
+    with open(RESULT_DIR + "/zscript.generated", 'w') as f:
         f.write(includes)
 
     for name, zscripts in zscriptsDict.items():

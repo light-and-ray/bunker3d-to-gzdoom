@@ -237,3 +237,5 @@ class MapGZD:
     def _genNewPolyObject(self):
         self._lastPolyObjectNum += 1
         return PolObjectGZD(number=self._lastPolyObjectNum)
+
+
