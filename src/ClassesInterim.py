@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Any
 from PIL import Image
 import copy
-from ClassesB3D import MapB3D, CrateB3D
+from ClassesB3D import MapB3D, CrateB3D, ThingCategory
 from algebraFunctions import (resolveSegmentsOverlap, isInside, areOppositelyDirected, fixVertex,
     calculateOffset, vertexWithOffset, segmentLength, findFourthVertex, vertexWithOffset_checkInside,
 )
@@ -60,6 +60,12 @@ class MapInterim:
         # self._fixVertexes()
         self._cutMultitextureLines()
         self._removeOverlaps()
+
+        self.decorations: list[DecorationInterim] = []
+        for thing in mapB3D.things:
+            if thing.category != ThingCategory.DECORATION: continue
+            sprite = mapB3D.sprites[thing.color][thing.sprite]
+            self.decorations.append(DecorationInterim(pos=thing.pos, sprite=sprite))
 
 
     def _fixBrokenTextures(self, brokenTextures: dict[int, BrokenTextureData]):

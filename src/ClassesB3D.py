@@ -25,15 +25,11 @@ class ThingCategory(Enum):
     LAMP = 1
     DECORATION = 2
 
-class ThingColor(Enum):
-    COLOR_1 = 0
-    COLOR_2 = 0
-
 @dataclass
 class ThingB3D:
     pos: Vertex
     category: ThingCategory
-    color: ThingColor
+    color: int
     special: int|None
     sprite: int|None
 
@@ -113,13 +109,8 @@ class MapB3D:
             else:
                 sprite = thingsSprites[i] - 16
 
-            if thingsColors[i] == 0:
-                color = ThingColor.COLOR_1
-            else:
-                color = ThingColor.COLOR_2
-
             self.things.append(ThingB3D(pos=Vertex(*thingsPos[i]), category=category,
-                    color=color, special=special, sprite=sprite))
+                    color=thingsColors[i], special=special, sprite=sprite))
 
 
 
