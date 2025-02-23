@@ -1,9 +1,10 @@
+from io import BytesIO
 import shutil, os, pathlib
 import omg
 from PIL import Image
-from ClassesGZD import MapGZD, TextureMode
+from ClassesGZD import MapGZD, TextureMode, EdnumGZD
 from ClassesShared import Animation
-from tools import getCeilingLumpName, getFloorLumpName
+from tools import getCeilingLumpName, getFloorLumpName, addOffsets
 
 STATIC_DIR = "static"
 RESULT_DIR = "result.d"
@@ -78,7 +79,6 @@ def saveMap(map: MapGZD, mapIndex: int):
     wad.to_file(wadPath)
 
 
-
 def saveTextures(textures: dict[str, Image.Image], mapIndex: int, colorFloor: tuple[int], colorCeiling: tuple[int]):
     mapTexturesDir = RESULT_DIR + f"/textures/c1m{mapIndex}/"
     if os.path.exists(mapTexturesDir):
@@ -94,6 +94,21 @@ def saveTextures(textures: dict[str, Image.Image], mapIndex: int, colorFloor: tu
         texture.save(path)
 
 
+def saveSprites(sprites: dict[str, Image.Image], mapIndex: int):
+    mapSpritesDir = RESULT_DIR + f"/sprites/c1m{mapIndex}/"
+    if os.path.exists(mapSpritesDir):
+        shutil.rmtree(mapSpritesDir)
+    os.makedirs(mapSpritesDir)
+
+    for name, sprite in sprites.items():
+        path = f"{mapSpritesDir}/{name}.png"
+        buffer = BytesIO()
+        sprite.save(buffer, format="PNG")
+        buffer = addOffsets(buffer.getvalue(), sprite.width//2, sprite.height)
+        with open(path, 'wb') as f:
+            f.write(buffer)
+
+
 def saveAnimations(animations: list[Animation]):
     animdefs = ""
     for animation in animations:
@@ -104,6 +119,38 @@ def saveAnimations(animations: list[Animation]):
         animdefs += "\n"
     with open(RESULT_DIR + "/ANIMDEFS", 'w') as f:
         f.write(animdefs)
+
+
+def saveZScripts(zscriptsDict: dict[str, list[str]]):
+    directory = RESULT_DIR + "/zscript.generated"
+    if os.path.exists(directory):
+        shutil.rmtree(directory)
+    os.makedirs(directory)
+
+    includes = "version 4.11\n"
+    for name in list(zscriptsDict.keys()):
+        includes += f'#include "zscript.generated/{name}.zs"\n'
+    with open(RESULT_DIR + "/zscript.gen", 'w') as f:
+        f.write(includes)
+
+    for name, zscripts in zscriptsDict.items():
+        filePath = directory + f"/{name}.zs"
+        code = ""
+        for zscript in zscripts:
+            code += zscript + "\n\n"
+        with open(filePath, 'w') as f:
+            f.write(code)
+
+
+def saveEdnums(ednums: list[EdnumGZD]):
+    code = ""
+    code += "DoomEdNums\n"
+    code += "{\n"
+    for ednum in ednums:
+        code += f'    {ednum.num} = "{ednum.className}"\n'
+    code += "}\n"
+    with open(RESULT_DIR + "/MAPINFO.ednums", 'w') as f:
+        f.write(code)
 
 
 def _copyFileFromStatic(name: str):

@@ -1,4 +1,6 @@
 import math
+import struct
+import zlib
 
 LEVEL_FLOOR = 0
 WALL_HEIGHT = 96
@@ -64,3 +66,39 @@ def makeBackgroundTransparent(inputImage):
                 pixels[x, y] = (0, 0, 0, 0)
     return img
 
+
+def addOffsets(png_data, x_offset, y_offset):
+    def find_chunk(data, chunk_type):
+        index = 8  # Skip the PNG header
+        while index < len(data):
+            length = struct.unpack(">I", data[index:index+4])[0]
+            if data[index+4:index+8] == chunk_type:
+                return index, length
+            index += length + 12  # Move to the next chunk
+        return -1, -1
+
+    def create_grab_chunk(x, y):
+        grab_data = struct.pack(">i", x) + struct.pack(">i", y)
+        chunk_data = b'grAb' + grab_data
+        crc = struct.pack(">I", zlib.crc32(chunk_data) & 0xffffffff)
+        return struct.pack(">I", 8) + chunk_data + crc
+
+    import zlib
+
+    grab_index, grab_length = find_chunk(png_data, b'grAb')
+    if grab_index != -1:
+        if struct.unpack(">i", png_data[grab_index+8:grab_index+12])[0] == x_offset and \
+           struct.unpack(">i", png_data[grab_index+12:grab_index+16])[0] == y_offset:
+            return png_data  # No offset changes needed
+
+    # Create new grAb chunk
+    new_grab_chunk = create_grab_chunk(x_offset, y_offset)
+
+    # Insert or replace the grAb chunk
+    if grab_index == -1:
+        idat_index, _ = find_chunk(png_data, b'IDAT')
+        new_png_data = png_data[:idat_index] + new_grab_chunk + png_data[idat_index:]
+    else:
+        new_png_data = png_data[:grab_index] + new_grab_chunk + png_data[grab_index+grab_length+12:]
+
+    return new_png_data

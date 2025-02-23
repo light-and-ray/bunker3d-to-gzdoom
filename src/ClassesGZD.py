@@ -1,8 +1,12 @@
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any
+from PIL import Image
 from ClassesShared import HeightType, Vertex
 from ClassesInterim import MapInterim, LineInterim, DoorInterim, TextureInterim
+from actorsGeneration import ( generateSpriteName, generateDecorationClassName, generateDecorationZScript,
+    generateEdnum,
+)
 from tools import LEVEL_CEILING, LEVEL_FLOOR, SCALE_FACTOR
 from algebraFunctions import vertexWithOffset, segmentLength, findFourthVertex
 
@@ -58,6 +62,12 @@ class ThingGZD:
     angle: int
 
 
+@dataclass
+class EdnumGZD:
+    num: int
+    className: str
+
+
 class MapGZD:
     SECTOR_FULL_IDX = 0
     SECTOR_BOTTOM_IDX = 1
@@ -70,6 +80,8 @@ class MapGZD:
         self.sides: list[SideGZD] = []
         self.lines: list[LineGZD] = []
         self.things: list[ThingGZD] = []
+        self.ednums: list[EdnumGZD] = []
+        self.zscripts: list[str] = []
         self._lastPolyObjectNum = 0
 
         self.sectorFull = SectorGZD(heightFloor=LEVEL_FLOOR, heightCeiling=LEVEL_CEILING)
@@ -80,6 +92,24 @@ class MapGZD:
         self._convertDoors(mapInterim.doors)
 
         self.things.append(ThingGZD(spawnPos[0], spawnPos[1], 1, spawnAngle+90)) # starting pos
+
+        self.sprites: dict[str, Image.Image] = {}
+        for decoration in mapInterim.decorations:
+            spriteName = generateSpriteName()
+            className = generateDecorationClassName()
+            zscript = generateDecorationZScript(className, spriteName, decoration.sprite)
+            ednum = EdnumGZD(num=generateEdnum(), className=className)
+            spriteFileName = spriteName + "A0"
+            self.sprites[spriteFileName] = decoration.sprite
+            self.things.append(ThingGZD(
+                x = decoration.pos.x,
+                y = decoration.pos.y,
+                type = ednum.num,
+                angle = 0,
+            ))
+            self.ednums.append(ednum)
+            self.zscripts.append(zscript)
+
 
         for i in range(len(self.vertexes)):
             self.vertexes[i].x *= SCALE_FACTOR

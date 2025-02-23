@@ -8,6 +8,7 @@
         "cursector",
         "DECEL",
         "ednum",
+        "ednums",
         "gzdoom",
         "heightceiling",
         "heightfloor",
@@ -46,6 +47,7 @@
         "UNTOSSABLE",
         "venv",
         "zdoom",
-        "zscript"
+        "zscript",
+        "zscripts"
     ]
 }
