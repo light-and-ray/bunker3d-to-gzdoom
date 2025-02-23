@@ -17,7 +17,7 @@ if __name__ == "__main__":
         data = load(idx)
         animations.extend(data.map.animations)
         mapInterim = MapInterim(data.map, data.brokenLines, data.doorsSpeed, data.doorsStartLineIdx, data.brokenTextures)
-        drawMap(data.map, name=f'c1m{idx}', show=False, things=data.thingsOnDrawing)
+        drawMap(data.map, name=f'c1m{idx}', show=False)
         mapGZD = MapGZD(mapInterim, data.spawnPos, data.spawnAngle)
         saveMap(map=mapGZD, mapIndex=idx)
         saveTextures(textures=data.map.textures, mapIndex=idx, colorCeiling=data.colorCeiling, colorFloor=data.colorFloor)

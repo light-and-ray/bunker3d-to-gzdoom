@@ -114,7 +114,6 @@ class LoadedData:
     colorFloor: tuple[int] = None
     doorsSpeed: list[int] = None
     doorsStartLineIdx: list[int] = None
-    thingsOnDrawing: list[list[int]] = None
     spawnPos: list[int] = None
     spawnAngle: int = None
 
@@ -194,6 +193,8 @@ def load(mapIndex):
         textures=textures, linesTextures=linesTextures, circles=read2DArray("CIRCLES_IDX"),
         textureMirroring=read1DArray("LINES_MIRRORING"), animatedFrames=read2DArray("ANIMATED_FRAMES"),
         animatedLines=read2DArray("LINES_ANIMATED"),
+        thingsPos=read2DArray('THINGS_POS'), thingsSprites=read1DArray("THINGS_SPRITE"), thingsColors=read1DArray("THINGS_COLOR"),
+        thingsVisible=read1DArray("THINGS_VISIBLE"), thingsSpecials = read1DArray('THINGS_SPECIAL'),
     )
 
     data.brokenLines = BROKEN_LINES[mapIndex]
@@ -203,16 +204,6 @@ def load(mapIndex):
     data.colorFloor = (footer[3], footer[4], footer[5])
     data.doorsSpeed = read1DArray("DOORS_SPEED")
     data.doorsStartLineIdx=read1DArray('DOORS_START_LINE_IDX')
-
-    data.thingsOnDrawing = read2DArray('THINGS_POS')
-    thingsSprite = read1DArray("THINGS_SPRITE")
-    thingsColor = read1DArray("THINGS_COLOR")
-    thingsVisible = read1DArray("THINGS_VISIBLE")
-    things_cd = read1DArray("THINGS_cd")
-    thingsSpecial = read1DArray('THINGS_SPECIAL') + [None] * 50
-
-    # for i, sprite, visible, cd, color, special in zip(range(100), thingsSprite, thingsVisible, things_cd, thingsColor, thingsSpecial):
-    #     print(i, ':', sprite, visible, cd, color, special)
 
     data.spawnPos = read1DArray('SPAWN_POS')
     data.spawnAngle = readSingleValue('SPAWN_ANGLE')

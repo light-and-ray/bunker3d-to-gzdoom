@@ -3,6 +3,7 @@ from PIL import Image
 from typing import Any
 from ClassesShared import Vertex, HeightType, Animation
 from tools import generateTextureLumpName, generateTextureMirroredLumpName
+from enum import Enum
 
 
 @dataclass
@@ -19,6 +20,23 @@ class LineB3D:
     height : HeightType
     texturesNames : list[str]
 
+class ThingCategory(Enum):
+    NPC = 0
+    LAMP = 1
+    DECORATION = 2
+
+class ThingColor(Enum):
+    COLOR_1 = 0
+    COLOR_2 = 0
+
+@dataclass
+class ThingB3D:
+    pos: Vertex
+    category: ThingCategory
+    color: ThingColor
+    special: int|None
+    sprite: int|None
+
 
 class MapB3D:
     def __init__(self, rawLines: list[list[int]], rawHeight: list[int],
@@ -26,6 +44,8 @@ class MapB3D:
             textures: list[Image.Image], linesTextures: list[list[int]],
             circles: list[list[int]], textureMirroring: list[int],
             animatedFrames: list[list[int]], animatedLines: list[list[int]],
+            thingsPos: list[list[int]], thingsSprites: list[int], thingsColors: list[int],
+            thingsVisible: list[int], thingsSpecials: list[int],
     ):
         self.circles = circles
 
@@ -66,6 +86,38 @@ class MapB3D:
         self.mirroredDict = {}
         self._applyAnimation(animatedFrames, animatedLines, textureMirroring)
         self._applyMirroring(textureMirroring)
+
+        self.things: list[ThingB3D] = []
+        for i in range(48):
+            if not thingsVisible[i]: continue
+            if i >= 0 and i < 16:
+                category = ThingCategory.NPC
+            elif i >= 16 and i < 32:
+                category = ThingCategory.LAMP
+            elif i >= 32 and i < 48:
+                category = ThingCategory.DECORATION
+            else:
+                raise Exception("Can't be here")
+
+            if category == ThingCategory.DECORATION:
+                special = None
+            else:
+                special = thingsSpecials[i]
+
+            if category == ThingCategory.NPC:
+                sprite = None
+            else:
+                sprite = thingsSprites[i] - 16
+
+            if thingsColors[i] == 0:
+                color = ThingColor.COLOR_1
+            else:
+                color = ThingColor.COLOR_2
+
+            self.things.append(ThingB3D(pos=Vertex(*thingsPos[i]), category=category,
+                    color=color, special=special, sprite=sprite))
+
+
 
 
     def _applyMirroring(self, mirroringData: list[int]):

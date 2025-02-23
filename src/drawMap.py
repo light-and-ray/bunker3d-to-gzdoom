@@ -4,9 +4,10 @@ import svgwrite
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ClassesInterim import MapInterim
+    from ClassesB3D import MapB3D
 
 
-def drawMap(map: 'MapInterim', show=False, name=None, resolution=1280, frame=30, wait=False, things=None):
+def drawMap(map: 'MapInterim|MapB3D', show=False, name=None, resolution=1280, frame=30, wait=False):
     min_x = min(min(line.v1.x, line.v2.x) for line in map.lines)
     max_x = max(max(line.v1.x, line.v2.x) for line in map.lines)
     min_y = min(min(line.v1.y, line.v2.y) for line in map.lines)
@@ -68,12 +69,12 @@ def drawMap(map: 'MapInterim', show=False, name=None, resolution=1280, frame=30,
         dwg.add(dwg.text(str(i), insert=(midpoint_x-8, midpoint_y+4),
                          fill='black', font_size=12, font_family='sans-serif'))
 
-    if things:
-        for i, thing in enumerate(things):
-            x, y = rescale(*thing)
+    if hasattr(map, 'things'):
+        for i, thing in enumerate(map.things):
+            x, y = rescale(*thing.pos.pair())
             dwg.add(dwg.circle((x, y), 4, fill=svgwrite.rgb(255, 0, 0)))
-            dwg.add(dwg.text(str(i), insert=(x, y),
-                         fill='black', font_size=12, font_family='sans-serif'))
+            # dwg.add(dwg.text(str(i), insert=(x, y),
+            #              fill='black', font_size=12, font_family='sans-serif'))
 
 
 
