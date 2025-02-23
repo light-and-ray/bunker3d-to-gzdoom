@@ -174,10 +174,18 @@ def _loadLinesTextures():
     return linesTextures
 
 
-def load(mapIndex):
-    returnCode = os.system(f'./bin/runJava.sh {mapIndex}')
+def _run(command: str):
+    returnCode = os.system(command)
     if (returnCode != 0):
         raise Exception(f"java returned {returnCode}")
+
+_isJavaCompiled = False
+def load(mapIndex):
+    global _isJavaCompiled
+    if not _isJavaCompiled:
+        _isJavaCompiled = True
+        _run(f'./bin/runJavaCompile.sh')
+    _run(f'./bin/runJavaB3D.sh {mapIndex}')
     data = LoadedData()
     textures = _loadTextures()
     linesTextures = _loadLinesTextures()
