@@ -2275,6 +2275,9 @@ public class ResourcesLoaderB3D {
             }
 
             int var3 = var1[5][var4][0] * 7;
+            if (this.l[var3 + 2] == 26) {
+               this.l[var3 + 2] = 25;
+            }
             var8[var4] = new int[this.l[var3 + 2] * this.l[var3 + 3]];
             var9[var4] = new int[this.l[var3 + 2] * this.l[var3 + 3]];
             this.SPRITES_W[var4] = this.l[var3 + 2];
