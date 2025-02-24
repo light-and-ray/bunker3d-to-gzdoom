@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from enum import Enum
 from typing import Any
 from PIL import Image
 import copy
@@ -45,6 +46,18 @@ class DecorationInterim:
     spriteIdx: int
     colorIdx: int
 
+class LampSpecial(Enum):
+    ON = 127
+    OFF = -2
+    FLICK = -1
+
+@dataclass
+class LampInterim:
+    pos: Vertex
+    spriteIdx: int
+    colorIdx: int
+    special: LampSpecial
+
 
 class MapInterim:
     def __init__(self, mapB3D: MapB3D, brokenLines: list[int], doorsSpeed: list[int], doorsStartLineIdx: list[int],
@@ -62,11 +75,17 @@ class MapInterim:
         self._cutMultitextureLines()
         self._removeOverlaps()
 
-        self.decorations: list[DecorationInterim] = []
         self.sprites = mapB3D.sprites
+
+        self.decorations: list[DecorationInterim] = []
         for thing in mapB3D.things:
             if thing.category != ThingCategory.DECORATION: continue
             self.decorations.append(DecorationInterim(pos=thing.pos, spriteIdx=thing.sprite, colorIdx=thing.color))
+
+        self.lamps: list[LampInterim] = []
+        for thing in mapB3D.things:
+            if thing.category != ThingCategory.LAMP: continue
+            self.lamps.append(LampInterim(pos=thing.pos, spriteIdx=thing.sprite, colorIdx=thing.color, special=LampSpecial(thing.special)))
 
 
     def _fixBrokenTextures(self, brokenTextures: dict[int, BrokenTextureData]):
