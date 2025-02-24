@@ -9,7 +9,7 @@ from algebraFunctions import (resolveSegmentsOverlap, isInside, areOppositelyDir
 )
 from ClassesShared import Vertex, HeightType, BrokenTextureData
 from drawMap import drawMap
-from tools import SCALE_FACTOR, WALL_HEIGHT
+from tools import SCALE_FACTOR
 
 
 @dataclass

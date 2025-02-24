@@ -1,5 +1,4 @@
-import math
-import struct
+import math, zlib, struct
 from PIL import Image
 
 LEVEL_FLOOR = 0
@@ -83,8 +82,6 @@ def addOffsets(png_data, x_offset, y_offset):
         crc = struct.pack(">I", zlib.crc32(chunk_data) & 0xffffffff)
         return struct.pack(">I", 8) + chunk_data + crc
 
-    import zlib
-
     grab_index, grab_length = find_chunk(png_data, b'grAb')
     if grab_index != -1:
         if struct.unpack(">i", png_data[grab_index+8:grab_index+12])[0] == x_offset and \
@@ -112,7 +109,7 @@ def isBottomRowTransparent(image: Image.Image):
     bottom_row = image.crop((0, height - 1, width, height))
 
     for pixel in bottom_row.getdata():
-        if pixel[3] != 0:  # Check the alpha value
+        if pixel[3] != 0:
             return False
     return True
 

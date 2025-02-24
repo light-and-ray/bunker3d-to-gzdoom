@@ -3,7 +3,7 @@
 //
 //===========================================================================
 //
-// nashmove.pk3
+// nashmove.pk3 (modified)
 //
 // Less slippery player movement. Works for any player class.
 //
@@ -29,12 +29,6 @@ class Z_NashMove : CustomInventory
     // Lower number = less slippery.
     double DECEL_MULT;
 
-    //===========================================================================
-    //
-    //
-    //
-    //===========================================================================
-
     bool bIsOnFloor(void)
     {
         return (Owner.Pos.Z == Owner.FloorZ) || (Owner.bOnMObj);
@@ -55,11 +49,6 @@ class Z_NashMove : CustomInventory
         return Owner.Vel.Length();
     }
 
-    //===========================================================================
-    //
-    //
-    //
-    //===========================================================================
 
     override void Tick(void)
     {
@@ -95,11 +84,6 @@ class Z_NashMove : CustomInventory
         Super.Tick();
     }
 
-    //===========================================================================
-    //
-    //
-    //
-    //===========================================================================
     States
     {
     Use:

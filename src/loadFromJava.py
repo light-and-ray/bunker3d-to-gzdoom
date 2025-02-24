@@ -9,7 +9,6 @@ def readSingleValue(jsonName: str) -> int:
     filename = f'tmp/{jsonName}.json'
     with open(filename, 'r') as file:
         data = json.load(file)
-        # Check if the JSON file contains a single string
         if isinstance(data, str):
             return int(data)
         else:
@@ -21,7 +20,6 @@ def read1DArray(jsonName: str) -> list[int]:
         data = json.load(file)
         return [int(num) for num in data]
 
-
 def read2DArray(jsonName: str) -> list[list[int | None]]:
     filename = f'tmp/{jsonName}.json'
     with open(filename, 'r') as file:
@@ -29,7 +27,6 @@ def read2DArray(jsonName: str) -> list[list[int | None]]:
         return [[int(num) if num is not None else None for num in row] if row is not None else None for row in data]
 
 def read3DArray(jsonName: str) -> list[list[list[int | None]]]:
-
     filename = f'tmp/{jsonName}.json'
     with open(filename, 'r') as file:
         data = json.load(file)
@@ -38,14 +35,10 @@ def read3DArray(jsonName: str) -> list[list[list[int | None]]]:
 
 def load_image_from_1d_list(data, width, height) -> Image.Image:
     img = Image.new('RGB', (width, height))
-
-    # Load the pixel data into the image
     pixels = img.load()
     index = 0
     for y in range(height):
         for x in range(width):
-            # Extract the RGB channels from the integer pixel value
-            # if index < len(data):
             pixel = data[index]
             r = (pixel >> 16) & 0xFF
             g = (pixel >> 8) & 0xFF
@@ -179,6 +172,7 @@ def _run(command: str):
     if (returnCode != 0):
         raise Exception(f"java returned {returnCode}")
 
+
 _isJavaCompiled = False
 def load(mapIndex):
     global _isJavaCompiled
@@ -217,3 +211,4 @@ def load(mapIndex):
     data.spawnAngle = readSingleValue('SPAWN_ANGLE')
 
     return data
+

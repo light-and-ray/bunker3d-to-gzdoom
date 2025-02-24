@@ -1,3 +1,3 @@
 #!/bin/bash -ex
 cd java
-javac *.java
+exec javac *.java

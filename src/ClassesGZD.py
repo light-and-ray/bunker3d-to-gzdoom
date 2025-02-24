@@ -2,13 +2,12 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any
 from PIL import Image
-from ClassesShared import HeightType, Vertex
-from ClassesInterim import MapInterim, LineInterim, DoorInterim, TextureInterim
+from ClassesShared import HeightType
+from ClassesInterim import MapInterim, LineInterim, DoorInterim
 from actorsGeneration import ( generateSpriteName, generateDecorationClassName, generateDecorationZScript,
     generateEdnum,
 )
 from tools import LEVEL_CEILING, LEVEL_FLOOR, SCALE_FACTOR
-from algebraFunctions import vertexWithOffset, segmentLength, findFourthVertex
 
 @dataclass
 class SectorGZD:
