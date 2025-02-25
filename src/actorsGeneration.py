@@ -1,5 +1,6 @@
 from PIL import Image
 from tools import isBottomRowTransparent
+from ClassesInterim import LampSpecial
 
 _spriteNameIdx = 0
 def generateSpriteName():
@@ -77,13 +78,18 @@ def generateLampZScript(className: str, spriteName: str, spriteA: Image.Image):
     code +=  "    States\n"
     code +=  "    {\n"
     code +=  "        Spawn:\n"
-    code +=  "            TNT1 A 0;\n"
-    code +=  "            goto LightON;\n"
+    code += f"            TNT1 A 0 A_JumpIf(args[0] == {LampSpecial.ON.value}, \"LightON\");\n"
+    code += f"            TNT1 A 0 A_JumpIf(args[0] == {LampSpecial.OFF.value}, \"LightOFF\");\n"
+    code += f"            TNT1 A 0 A_JumpIf(args[0] == {LampSpecial.FLICK.value}, \"LightFLICK\");\n"
     code +=  "        LightON:\n"
     code += f"            {spriteName} A 5 ThrustThingZ(0,35,0,1);\n"
     code +=  "            Loop;\n"
     code +=  "        LightOFF:\n"
     code += f"            {spriteName} B 5 ThrustThingZ(0,35,0,1);\n"
+    code +=  "            Loop;\n"
+    code +=  "        LightFLICK:\n"
+    code += f"            {spriteName} A 10 ThrustThingZ(0,35,0,1);\n"
+    code += f"            {spriteName} B 20;\n"
     code +=  "            Loop;\n"
     code +=  "        Death:\n"
     code += f"            {spriteName} C 5 ThrustThingZ(0,35,0,1);\n"

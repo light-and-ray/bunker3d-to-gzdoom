@@ -59,6 +59,7 @@ class ThingGZD:
     y: int
     type: int
     angle: int
+    arg0: int|None = None
 
 
 @dataclass
@@ -98,11 +99,11 @@ class MapGZD:
         self.things.append(ThingGZD(spawnPos[0], spawnPos[1], 1, spawnAngle+90)) # starting pos
 
         self.sprites: dict[str, Image.Image] = {}
-        self._keysToActor: dict[tuple[int], ActorGZD] = dict()
 
+        self._keysToDecoration: dict[tuple[int], ActorGZD] = dict()
         for decoration in mapInterim.decorations:
             key = (decoration.spriteIdx, decoration.colorIdx)
-            if key not in self._keysToActor:
+            if key not in self._keysToDecoration:
                 spriteName = generateSpriteName()
                 className = generateDecorationClassName()
                 sprite = mapInterim.sprites[decoration.colorIdx][decoration.spriteIdx]
@@ -110,17 +111,18 @@ class MapGZD:
                 ednum = EdnumGZD(num=generateEdnum(), className=className)
                 self.sprites[spriteName + "A0"] = sprite
                 self.actors.append(ActorGZD(ednum=ednum, zscript=zscript))
-                self._keysToActor[key] = self.actors[-1]
+                self._keysToDecoration[key] = self.actors[-1]
             self.things.append(ThingGZD(
                 x = decoration.pos.x,
                 y = decoration.pos.y,
-                type = self._keysToActor[key].ednum.num,
+                type = self._keysToDecoration[key].ednum.num,
                 angle = 0,
             ))
 
+        self._keysToLamp: dict[tuple[int], ActorGZD] = dict()
         for lamp in mapInterim.lamps:
             key = (lamp.spriteIdx, lamp.colorIdx)
-            if key not in self._keysToActor:
+            if key not in self._keysToLamp:
                 spriteName = generateSpriteName()
                 className = generateLampClassName()
                 spriteA = mapInterim.sprites[lamp.colorIdx][lamp.spriteIdx]
@@ -132,12 +134,13 @@ class MapGZD:
                 self.sprites[spriteName + "B0"] = spriteB
                 self.sprites[spriteName + "C0"] = spriteC
                 self.actors.append(ActorGZD(ednum=ednum, zscript=zscript))
-                self._keysToActor[key] = self.actors[-1]
+                self._keysToLamp[key] = self.actors[-1]
             self.things.append(ThingGZD(
                 x = lamp.pos.x,
                 y = lamp.pos.y,
-                type = self._keysToActor[key].ednum.num,
+                type = self._keysToLamp[key].ednum.num,
                 angle = 0,
+                arg0 = lamp.special.value,
             ))
 
         for i in range(len(self.vertexes)):
