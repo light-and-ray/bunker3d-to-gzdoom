@@ -5,7 +5,7 @@ from PIL import Image
 from ClassesShared import HeightType
 from ClassesInterim import MapInterim, LineInterim, DoorInterim
 from actorsGeneration import ( generateSpriteName, generateDecorationClassName, generateDecorationZScript,
-    generateEdnum,
+    generateEdnum, generateLampClassName, generateLampZScript,
 )
 from tools import LEVEL_CEILING, LEVEL_FLOOR, SCALE_FACTOR
 
@@ -99,6 +99,7 @@ class MapGZD:
 
         self.sprites: dict[str, Image.Image] = {}
         self._keysToActor: dict[tuple[int], ActorGZD] = dict()
+
         for decoration in mapInterim.decorations:
             key = (decoration.spriteIdx, decoration.colorIdx)
             if key not in self._keysToActor:
@@ -107,8 +108,7 @@ class MapGZD:
                 sprite = mapInterim.sprites[decoration.colorIdx][decoration.spriteIdx]
                 zscript = generateDecorationZScript(className, spriteName, sprite)
                 ednum = EdnumGZD(num=generateEdnum(), className=className)
-                spriteFileName = spriteName + "A0"
-                self.sprites[spriteFileName] = sprite
+                self.sprites[spriteName + "A0"] = sprite
                 self.actors.append(ActorGZD(ednum=ednum, zscript=zscript))
                 self._keysToActor[key] = self.actors[-1]
             self.things.append(ThingGZD(
@@ -118,6 +118,27 @@ class MapGZD:
                 angle = 0,
             ))
 
+        for lamp in mapInterim.lamps:
+            key = (lamp.spriteIdx, lamp.colorIdx)
+            if key not in self._keysToActor:
+                spriteName = generateSpriteName()
+                className = generateLampClassName()
+                spriteA = mapInterim.sprites[lamp.colorIdx][lamp.spriteIdx]
+                spriteB = mapInterim.sprites[lamp.colorIdx][lamp.spriteIdx+1]
+                spriteC = mapInterim.sprites[lamp.colorIdx][lamp.spriteIdx+2]
+                zscript = generateLampZScript(className, spriteName, spriteA)
+                ednum = EdnumGZD(num=generateEdnum(), className=className)
+                self.sprites[spriteName + "A0"] = spriteA
+                self.sprites[spriteName + "B0"] = spriteB
+                self.sprites[spriteName + "C0"] = spriteC
+                self.actors.append(ActorGZD(ednum=ednum, zscript=zscript))
+                self._keysToActor[key] = self.actors[-1]
+            self.things.append(ThingGZD(
+                x = lamp.pos.x,
+                y = lamp.pos.y,
+                type = self._keysToActor[key].ednum.num,
+                angle = 0,
+            ))
 
         for i in range(len(self.vertexes)):
             self.vertexes[i].x *= SCALE_FACTOR

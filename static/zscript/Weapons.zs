@@ -34,6 +34,7 @@ class MachineGun : DoomWeapon
         Decal "BulletChip";
         Weapon.WeaponScaleX 1.2;
         Weapon.WeaponScaleY 1.2;
+        +WEAPON.NOAUTOAIM;
     }
     States
     {
