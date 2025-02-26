@@ -74,7 +74,7 @@ def drawMap(map: 'MapInterim|MapB3D', show=False, name=None, resolution=1280, fr
             if not thing: continue
             x, y = rescale(*thing.pos.pair())
             dwg.add(dwg.circle((x, y), 4, fill=svgwrite.rgb(255, 0, 0)))
-            dwg.add(dwg.text(str(thing._index), insert=(x, y),
+            dwg.add(dwg.text(str(thing.index), insert=(x, y),
                          fill='black', font_size=12, font_family='sans-serif'))
 
 

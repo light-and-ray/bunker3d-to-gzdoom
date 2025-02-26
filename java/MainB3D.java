@@ -51,11 +51,11 @@ public class MainB3D {
         Json.export("FOE_SPRITES_DATA_COLOR_2", loader.FOE_SPRITES_DATA_COLOR_2);
         Json.export("FOE_SPRITES_W", loader.FOE_SPRITES_W);
         Json.export("FOE_SPRITES_H", loader.FOE_SPRITES_H);
+        Json.export("FOE_ANGLES", loader.bW);
 
         // Json.export("UNKNOWN_cD", loader.cD);
         // Json.export("UNKNOWN_cE", loader.cE);
         // Json.export("UNKNOWN_bZ", loader.bZ);
-        // Json.export("UNKNOWN_bW", loader.bW);
         // Json.export("UNKNOWN_bX", loader.bX);
         // Json.export("UNKNOWN_cb", loader.cb);
         // Json.export("UNKNOWN_cj", loader.cj);

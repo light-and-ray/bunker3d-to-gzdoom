@@ -21,10 +21,11 @@ if __name__ == "__main__":
     for idx in MAPS:
         data = load(idx)
         animations.extend(data.map.animations)
-        mapInterim = MapInterim(data.map, data.brokenLines, data.doorsSpeed, data.doorsStartLineIdx, data.brokenTextures)
+        mapInterim = MapInterim(data.map, brokenLines=data.brokenLines, doorsSpeed=data.doorsSpeed,
+                doorsStartLineIdx=data.doorsStartLineIdx, brokenTextures=data.brokenTextures, foeAngles=data.foeAngles)
         mapName = f'c1m{idx}'
         drawMap(data.map, name=mapName, show=False)
-        mapGZD = MapGZD(mapInterim, data.spawnPos, data.spawnAngle, mapIndex=idx)
+        mapGZD = MapGZD(mapInterim, spawnPos=data.spawnPos, spawnAngle=data.spawnAngle, mapIndex=idx)
         saveMap(map=mapGZD, mapIndex=idx)
         saveTextures(textures=data.map.textures, mapIndex=idx, colorCeiling=data.colorCeiling, colorFloor=data.colorFloor)
         saveSprites(sprites=mapGZD.sprites, mapIndex=idx)

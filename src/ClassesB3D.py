@@ -32,7 +32,7 @@ class ThingB3D:
     color: int
     special: int|None
     sprite: int|None
-    _index: int
+    index: int
 
 
 class MapB3D:
@@ -112,7 +112,7 @@ class MapB3D:
                 sprite = thingsSprites[i] - 16
 
             self.things.append(ThingB3D(pos=Vertex(*thingsPos[i]), category=category,
-                    color=thingsColors[i], special=special, sprite=sprite, _index=i))
+                    color=thingsColors[i], special=special, sprite=sprite, index=i))
 
 
 

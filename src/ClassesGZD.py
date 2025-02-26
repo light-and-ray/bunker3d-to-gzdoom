@@ -170,7 +170,7 @@ class MapGZD:
                 x = foe.pos.x,
                 y = foe.pos.y,
                 type = self._keysToLamp[key].ednum.num,
-                angle = 0,
+                angle = (foe.angle+90)%360,
                 arg0 = int(foe.isBoss),
             ))
 

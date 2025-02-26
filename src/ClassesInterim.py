@@ -70,11 +70,12 @@ class FoeInterim:
     pos: Vertex
     colorIdx: int
     isBoss: bool
+    angle: int
 
 
 class MapInterim:
     def __init__(self, mapB3D: MapB3D, brokenLines: list[int], doorsSpeed: list[int], doorsStartLineIdx: list[int],
-            brokenTextures: dict[int, BrokenTextureData]):
+            brokenTextures: dict[int, BrokenTextureData], foeAngles: list[int]):
         self.textures = mapB3D.textures
         self.lines: list[LineInterim] = []
         for line in mapB3D.lines:
@@ -107,7 +108,8 @@ class MapInterim:
             special = NpcSpecial(thing.special)
             if special not in (NpcSpecial.FOE, NpcSpecial.BOSS): continue
             isBoss = (special == NpcSpecial.BOSS)
-            self.foes.append(FoeInterim(pos=thing.pos, colorIdx=thing.color, isBoss=isBoss))
+            angle = foeAngles[thing.index]
+            self.foes.append(FoeInterim(pos=thing.pos, colorIdx=thing.color, isBoss=isBoss, angle=angle))
 
 
     def _fixBrokenTextures(self, brokenTextures: dict[int, BrokenTextureData]):

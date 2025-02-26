@@ -109,6 +109,7 @@ class LoadedData:
     doorsStartLineIdx: list[int] = None
     spawnPos: list[int] = None
     spawnAngle: int = None
+    foeAngles: list[int] = None
 
 
 def _loadTextures():
@@ -227,6 +228,8 @@ def load(mapIndex):
 
     data.spawnPos = read1DArray('SPAWN_POS')
     data.spawnAngle = readSingleValue('SPAWN_ANGLE')
+
+    data.foeAngles = read1DArray('FOE_ANGLES')
 
     return data
 
