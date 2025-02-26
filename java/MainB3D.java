@@ -36,7 +36,7 @@ public class MainB3D {
         Json.export("THINGS_SPRITE", loader.cg); // 0-15 (npc), 16-31 (lamp), 32-47 (decoration), 48+ (crate content)
         Json.export("THINGS_POS", loader.bT);
         Json.export("THINGS_VISIBLE", loader.cm);
-        Json.export("THINGS_cd", loader.cd);
+        // Json.export("THINGS_cd", loader.cd);
         Json.export("THINGS_COLOR", loader.ch);
 
         Json.export("SPRITES_DATA_COLOR_1", loader.SPRITES_DATA_COLOR_1);

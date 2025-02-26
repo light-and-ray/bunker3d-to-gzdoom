@@ -4177,7 +4177,7 @@ public final class b3d_a extends Canvas {
       int var3;
       if (var1 < this.eP && this.cg[var1] < 8 && !this.cl[var1]) {
          label94: {
-            a var10000;
+            b3d_a var10000;
             byte var10001;
             byte var10002;
             byte var10003;
@@ -4317,7 +4317,7 @@ public final class b3d_a extends Canvas {
       this.bE = this.bR[var1];
       this.bF = this.bS[var1];
       this.bI = this.bV[var1];
-      a var10000;
+      b3d_a var10000;
       byte var10001;
       if (this.bO) {
          var10000 = this;
@@ -6176,7 +6176,7 @@ public final class b3d_a extends Canvas {
                var10001 = var4;
                var9 = 8;
             } else {
-               a var10000;
+               b3d_a var10000;
                byte var10002;
                if ((this.ca[var4] != 32 || this.selectedMap != 9) && this.ca[var4] > 0) {
                   var10000 = this;
@@ -7136,7 +7136,7 @@ public final class b3d_a extends Canvas {
 
    private void L() {
       this.I();
-      a var10000;
+      b3d_a var10000;
       int var10001;
       if (this.fe != 3) {
          var10000 = this;
@@ -7964,7 +7964,7 @@ public final class b3d_a extends Canvas {
       } else if (var1 != 50 && this.fL != 1) {
          if (var1 != 56 && this.fL != 6) {
             if (var1 == 53 || this.fL == 8) {
-               a var10000;
+               b3d_a var10000;
                byte var10001;
                label197:
                switch(this.hg) {
@@ -8972,327 +8972,327 @@ public final class b3d_a extends Canvas {
       }
    }
 
-   static int[][] a(a var0) {
+   static int[][] a(b3d_a var0) {
       return var0.cW;
    }
 
-   static int[] b(a var0) {
+   static int[] b(b3d_a var0) {
       return var0.cU;
    }
 
-   static long[] c(a var0) {
+   static long[] c(b3d_a var0) {
       return var0.fz;
    }
 
-   static int a(a var0, int var1) {
+   static int a(b3d_a var0, int var1) {
       return var0.fM = var1;
    }
 
-   static int d(a var0) {
+   static int d(b3d_a var0) {
       return var0.fK;
    }
 
-   static int e(a var0) {
+   static int e(b3d_a var0) {
       return var0.fL;
    }
 
-   static int f(a var0) {
+   static int f(b3d_a var0) {
       return var0.fM;
    }
 
-   static boolean a(a var0, boolean var1) {
+   static boolean a(b3d_a var0, boolean var1) {
       return var0.fN = var1;
    }
 
-   static int b(a var0, int var1) {
+   static int b(b3d_a var0, int var1) {
       return var0.fL = var1;
    }
 
-   static int g(a var0) {
+   static int g(b3d_a var0) {
       return var0.fg;
    }
 
-   static int c(a var0, int var1) {
+   static int c(b3d_a var0, int var1) {
       return var0.fK = var1;
    }
 
-   static boolean h(a var0) {
+   static boolean h(b3d_a var0) {
       return var0.fN;
    }
 
-   static void i(a var0) {
+   static void i(b3d_a var0) {
       var0.K();
    }
 
-   static long a(a var0, long var1) {
+   static long a(b3d_a var0, long var1) {
       return var0.eC = var1;
    }
 
-   static long b(a var0, long var1) {
+   static long b(b3d_a var0, long var1) {
       return var0.fP = var1;
    }
 
-   static long j(a var0) {
+   static long j(b3d_a var0) {
       return var0.eC;
    }
 
-   static long k(a var0) {
+   static long k(b3d_a var0) {
       return var0.fO;
    }
 
-   static long c(a var0, long var1) {
+   static long c(b3d_a var0, long var1) {
       return var0.fO = var1;
    }
 
-   static long l(a var0) {
+   static long l(b3d_a var0) {
       return var0.fP;
    }
 
-   static long d(a var0, long var1) {
+   static long d(b3d_a var0, long var1) {
       return var0.cp = var1;
    }
 
-   static long m(a var0) {
+   static long m(b3d_a var0) {
       return var0.cp;
    }
 
-   static boolean n(a var0) {
+   static boolean n(b3d_a var0) {
       return var0.gB;
    }
 
-   static long d(a var0, int var1) {
+   static long d(b3d_a var0, int var1) {
       return var0.cp >>= var1;
    }
 
-   static long e(a var0, long var1) {
+   static long e(b3d_a var0, long var1) {
       return var0.cn = var1;
    }
 
-   static long f(a var0, long var1) {
+   static long f(b3d_a var0, long var1) {
       return var0.co = var1;
    }
 
-   static long o(a var0) {
+   static long o(b3d_a var0) {
       return var0.cn;
    }
 
-   static long g(a var0, long var1) {
+   static long g(b3d_a var0, long var1) {
       return var0.cq = var1;
    }
 
-   static boolean p(a var0) {
+   static boolean p(b3d_a var0) {
       return var0.fy;
    }
 
-   static boolean b(a var0, boolean var1) {
+   static boolean b(b3d_a var0, boolean var1) {
       return var0.fy = var1;
    }
 
-   static boolean q(a var0) {
+   static boolean q(b3d_a var0) {
       return var0.fr;
    }
 
-   static void r(a var0) {
+   static void r(b3d_a var0) {
       var0.P();
    }
 
-   static long s(a var0) {
+   static long s(b3d_a var0) {
       return var0.fQ;
    }
 
-   static void t(a var0) {
+   static void t(b3d_a var0) {
       var0.J();
    }
 
-   static long h(a var0, long var1) {
+   static long h(b3d_a var0, long var1) {
       return var0.fQ = var1;
    }
 
-   static long u(a var0) {
+   static long u(b3d_a var0) {
       return var0.fS;
    }
 
-   static void v(a var0) {
+   static void v(b3d_a var0) {
       var0.V();
    }
 
-   static long i(a var0, long var1) {
+   static long i(b3d_a var0, long var1) {
       return var0.fS = var1;
    }
 
-   static boolean w(a var0) {
+   static boolean w(b3d_a var0) {
       return var0.ec;
    }
 
-   static long x(a var0) {
+   static long x(b3d_a var0) {
       return var0.fR;
    }
 
-   static void y(a var0) {
+   static void y(b3d_a var0) {
       var0.H();
    }
 
-   static long j(a var0, long var1) {
+   static long j(b3d_a var0, long var1) {
       return var0.fR = var1;
    }
 
-   static long z(a var0) {
+   static long z(b3d_a var0) {
       return var0.fX;
    }
 
-   static boolean A(a var0) {
+   static boolean A(b3d_a var0) {
       return var0.fJ;
    }
 
-   static boolean c(a var0, boolean var1) {
+   static boolean c(b3d_a var0, boolean var1) {
       return var0.fr = var1;
    }
 
-   static boolean d(a var0, boolean var1) {
+   static boolean d(b3d_a var0, boolean var1) {
       return var0.fw = var1;
    }
 
-   static Player B(a var0) {
+   static Player B(b3d_a var0) {
       return var0.hp;
    }
 
-   static long C(a var0) {
+   static long C(b3d_a var0) {
       return var0.eF;
    }
 
-   static boolean e(a var0, boolean var1) {
+   static boolean e(b3d_a var0, boolean var1) {
       return var0.ft = var1;
    }
 
-   static long D(a var0) {
+   static long D(b3d_a var0) {
       return var0.eG;
    }
 
-   static boolean f(a var0, boolean var1) {
+   static boolean f(b3d_a var0, boolean var1) {
       return var0.fu = var1;
    }
 
-   static int E(a var0) {
+   static int E(b3d_a var0) {
       return var0.em;
    }
 
-   static void F(a var0) {
+   static void F(b3d_a var0) {
       var0.m();
    }
 
-   static boolean[] G(a var0) {
+   static boolean[] G(b3d_a var0) {
       return var0.fY;
    }
 
-   static long H(a var0) {
+   static long H(b3d_a var0) {
       return var0.eD;
    }
 
-   static int e(a var0, int var1) {
+   static int e(b3d_a var0, int var1) {
       return var0.eT = var1;
    }
 
-   static int I(a var0) {
+   static int I(b3d_a var0) {
       return var0.eU;
    }
 
-   static void J(a var0) {
+   static void J(b3d_a var0) {
       var0.r();
    }
 
-   static void K(a var0) {
+   static void K(b3d_a var0) {
       var0.z();
    }
 
-   static void L(a var0) {
+   static void L(b3d_a var0) {
       var0.aa();
    }
 
-   static int M(a var0) {
+   static int M(b3d_a var0) {
       return var0.fj;
    }
 
-   static long N(a var0) {
+   static long N(b3d_a var0) {
       return var0.eE;
    }
 
-   static int f(a var0, int var1) {
+   static int f(b3d_a var0, int var1) {
       return var0.eq = var1;
    }
 
-   static void O(a var0) {
+   static void O(b3d_a var0) {
       var0.A();
    }
 
-   static int P(a var0) {
+   static int P(b3d_a var0) {
       return var0.en;
    }
 
-   static boolean Q(a var0) {
+   static boolean Q(b3d_a var0) {
       return var0.eu;
    }
 
-   static boolean g(a var0, boolean var1) {
+   static boolean g(b3d_a var0, boolean var1) {
       return var0.eu = var1;
    }
 
-   static void R(a var0) {
+   static void R(b3d_a var0) {
       var0.v();
    }
 
-   static void S(a var0) {
+   static void S(b3d_a var0) {
       var0.y();
    }
 
-   static void T(a var0) {
+   static void T(b3d_a var0) {
       var0.L();
    }
 
-   static boolean U(a var0) {
+   static boolean U(b3d_a var0) {
       return var0.es;
    }
 
-   static void a(a var0, int var1, int var2, int var3) {
+   static void a(b3d_a var0, int var1, int var2, int var3) {
       var0.b(var1, var2, var3);
    }
 
-   static long k(a var0, long var1) {
+   static long k(b3d_a var0, long var1) {
       return var0.eE = var1;
    }
 
-   static long V(a var0) {
+   static long V(b3d_a var0) {
       return var0.fU;
    }
 
-   static void W(a var0) {
+   static void W(b3d_a var0) {
       var0.B();
    }
 
-   static long l(a var0, long var1) {
+   static long l(b3d_a var0, long var1) {
       return var0.fU = var1;
    }
 
-   static long X(a var0) {
+   static long X(b3d_a var0) {
       return var0.fV;
    }
 
-   static void h(a var0, boolean var1) {
+   static void h(b3d_a var0, boolean var1) {
       var0.d(var1);
    }
 
-   static long m(a var0, long var1) {
+   static long m(b3d_a var0, long var1) {
       return var0.fV = var1;
    }
 
-   static long Y(a var0) {
+   static long Y(b3d_a var0) {
       return var0.fW;
    }
 
-   static long n(a var0, long var1) {
+   static long n(b3d_a var0, long var1) {
       return var0.fW = var1;
    }
 
-   static void Z(a var0) {
+   static void Z(b3d_a var0) {
       var0.O();
    }
 }

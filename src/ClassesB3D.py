@@ -32,6 +32,7 @@ class ThingB3D:
     color: int
     special: int|None
     sprite: int|None
+    _index: int
 
 
 class MapB3D:
@@ -88,7 +89,6 @@ class MapB3D:
         self.things: list[ThingB3D] = []
         for i in range(48):
             if not thingsVisible[i]:
-                # self.things.append(None)
                 continue
             if i >= 0 and i < 16:
                 category = ThingCategory.NPC
@@ -110,7 +110,7 @@ class MapB3D:
                 sprite = thingsSprites[i] - 16
 
             self.things.append(ThingB3D(pos=Vertex(*thingsPos[i]), category=category,
-                    color=thingsColors[i], special=special, sprite=sprite))
+                    color=thingsColors[i], special=special, sprite=sprite, _index=i))
 
 
 
