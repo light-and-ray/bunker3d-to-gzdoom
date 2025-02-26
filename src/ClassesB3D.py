@@ -41,6 +41,7 @@ class MapB3D:
             textures: list[Image.Image], linesTextures: list[list[int]],
             circles: list[list[int]], textureMirroring: list[int],
             animatedFrames: list[list[int]], animatedLines: list[list[int]], sprites: list[list[Image.Image]],
+            foeSprites: list[list[Image.Image]],
             thingsPos: list[list[int]], thingsSprites: list[int], thingsColors: list[int],
             thingsVisible: list[int], thingsSpecials: list[int],
     ):
@@ -51,6 +52,7 @@ class MapB3D:
             self.textures[generateTextureLumpName()] = texture
 
         self.sprites = sprites
+        self.foeSprites = foeSprites
 
         self.lines: list[LineB3D] = []
 
@@ -105,7 +107,7 @@ class MapB3D:
                 special = thingsSpecials[i]
 
             if category == ThingCategory.NPC:
-                sprite = None
+                sprite = thingsSprites[i]
             else:
                 sprite = thingsSprites[i] - 16
 

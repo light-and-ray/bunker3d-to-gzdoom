@@ -5,7 +5,7 @@ from PIL import Image
 from ClassesShared import HeightType
 from ClassesInterim import MapInterim, LineInterim, DoorInterim
 from actorsGeneration import ( generateSpriteName, generateDecorationClassName, generateDecorationZScript,
-    generateEdnum, generateLampClassName, generateLampZScript,
+    generateEdnum, generateLampClassName, generateLampZScript, generateFoeClassName, generateFoeZScript,
 )
 from tools import LEVEL_CEILING, LEVEL_FLOOR, SCALE_FACTOR
 

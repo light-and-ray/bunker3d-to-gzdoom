@@ -58,6 +58,19 @@ class LampInterim:
     colorIdx: int
     special: LampSpecial
 
+class NpcSpecial(Enum):
+    FOE = -20
+    BOSS = -2
+    FRIENDLY1 = 26
+    FRIENDLY2 = 30
+    FINALBOSS = 32
+
+@dataclass
+class FoeInterim:
+    pos: Vertex
+    colorIdx: int
+    isBoss: bool
+
 
 class MapInterim:
     def __init__(self, mapB3D: MapB3D, brokenLines: list[int], doorsSpeed: list[int], doorsStartLineIdx: list[int],
@@ -76,6 +89,7 @@ class MapInterim:
         self._removeOverlaps()
 
         self.sprites = mapB3D.sprites
+        self.foeSprites = mapB3D.foeSprites
 
         self.decorations: list[DecorationInterim] = []
         for thing in mapB3D.things:
@@ -86,6 +100,14 @@ class MapInterim:
         for thing in mapB3D.things:
             if thing.category != ThingCategory.LAMP: continue
             self.lamps.append(LampInterim(pos=thing.pos, spriteIdx=thing.sprite, colorIdx=thing.color, special=LampSpecial(thing.special)))
+
+        self.foes: list[LampInterim] = []
+        for thing in mapB3D.things:
+            if thing.category != ThingCategory.NPC: continue
+            special = NpcSpecial(thing.special)
+            if special not in (NpcSpecial.FOE, NpcSpecial.BOSS): continue
+            isBoss = (special == NpcSpecial.BOSS)
+            self.foes.append(FoeInterim(pos=thing.pos, colorIdx=thing.color, isBoss=isBoss))
 
 
     def _fixBrokenTextures(self, brokenTextures: dict[int, BrokenTextureData]):

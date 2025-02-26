@@ -71,4 +71,27 @@ def generateLampZScript(className: str, spriteName: str, spriteA: Image.Image):
     return code
 
 
-# Scale 1.3; for npcs
+_foeClassNameIdx = 0
+def generateFoeClassName():
+    global _foeClassNameIdx
+    result = f'B3DFoe{_foeClassNameIdx:03}'
+    _foeClassNameIdx += 1
+    return result
+
+def generateFoeZScript(className: str, spriteName: str, sprite1: Image.Image):
+    code = ""
+    code += f"class {className} : BaseFoe\n"
+    code +=  "{\n"
+    code +=  "    Default\n"
+    code +=  "    {\n"
+    code += f"        Height {sprite1.height};\n"
+    code += f"        Radius {sprite1.width};\n"
+    code +=  "    }\n"
+    code +=  "    States\n"
+    code +=  "    {\n"
+    code +=  "        Spawn:\n"
+    code += f"            {spriteName} C 0 NoDelay A_JumpIf(true, \"SpawnBase\");\n"
+    code += f"            stop;\n"
+    code +=  "    }\n"
+    code +=  "}\n"
+    return code
