@@ -3,7 +3,7 @@ import json, os
 from ClassesB3D import MapB3D
 from ClassesShared import BrokenTextureData
 from PIL import Image
-from tools import WALL_HEIGHT, makeBackgroundTransparent, fixFoeSprite
+from tools import WALL_HEIGHT, makeBackgroundTransparent, fixFoeSprite, mirrorVertically
 
 def readSingleValue(jsonName: str) -> int:
     filename = f'tmp/{jsonName}.json'
@@ -119,7 +119,8 @@ def _loadTextures():
     textures_h = read1DArray("TEXTURES_H")
     textures = []
     for i in range(len(textures_data)):
-        textures.append(load_image_from_1d_list(textures_data[i], textures_w[i], textures_h[i]))
+        texture = load_image_from_1d_list(textures_data[i], textures_w[i], textures_h[i])
+        textures.append(texture)
     return textures
 
 def _loadSprites():
@@ -131,6 +132,8 @@ def _loadSprites():
         for i in range(len(sprites_data)):
             sprite = load_image_from_1d_list(sprites_data[i], sprites_w[i], sprites_h[i])
             sprite = makeBackgroundTransparent(sprite)
+            if sprite.width == 96: # bomb
+                sprite = mirrorVertically(sprite)
             sprites.append(sprite)
         all_sprites.append(sprites)
     return all_sprites

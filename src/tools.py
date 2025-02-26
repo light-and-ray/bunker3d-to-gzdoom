@@ -126,3 +126,7 @@ def fixFoeSprite(image: Image.Image) -> Image.Image:
     pixels[1, 0] = (0, 0, 0, 0)
     return image
 
+def mirrorVertically(image: Image.Image) -> Image.Image:
+    mirrored_image = image.transpose(Image.FLIP_TOP_BOTTOM)
+    return mirrored_image
+
