@@ -1,6 +1,5 @@
 from PIL import Image
 from tools import isBottomRowTransparent
-from ClassesInterim import LampSpecial
 
 _spriteNameIdx = 0
 def generateSpriteName():
@@ -56,50 +55,20 @@ def generateLampClassName():
     return result
 
 def generateLampZScript(className: str, spriteName: str, spriteA: Image.Image):
-    flickMinDuration = 3
     code = ""
-    code += f"class {className} : Actor\n"
+    code += f"class {className} : BaseLamp\n"
     code +=  "{\n"
     code +=  "    Default\n"
     code +=  "    {\n"
     code += f"        Height {spriteA.height};\n"
     code += f"        DeathHeight {spriteA.height};\n"
     code += f"        Radius {spriteA.width};\n"
-    code +=  "        Health 1;\n"
-    code +=  "        GibHealth 11;\n"
-    code +=  "        +NOGRAVITY;\n"
-    code +=  "        +DONTFALL;\n"
-    code +=  "        +SHOOTABLE;\n"
-    code +=  "        +DONTTHRUST;\n"
-    code +=  "        +NOBLOOD;\n"
-    code +=  "        +NOBLOODDECALS;\n"
-    code +=  "        +SPAWNCEILING;\n"
     code +=  "    }\n"
     code +=  "    States\n"
     code +=  "    {\n"
     code +=  "        Spawn:\n"
-    code += f"            TNT1 A 0 A_JumpIf(args[0] == {LampSpecial.ON.value}, \"LightON\");\n"
-    code += f"            TNT1 A 0 A_JumpIf(args[0] == {LampSpecial.OFF.value}, \"LightOFF\");\n"
-    code += f"            TNT1 A 0 A_JumpIf(args[0] == {LampSpecial.FLICK.value}, \"LightFlickOn\");\n"
-    code +=  "        LightON:\n"
-    code += f"            {spriteName} A 5;\n"
-    code +=  "            loop;\n"
-    code +=  "        LightOFF:\n"
-    code += f"            {spriteName} B 5;\n"
-    code +=  "            loop;\n"
-    code +=  "        LightFlickOn:\n"
-    code += f"            {spriteName} A {flickMinDuration} A_JumpIf(random(0,3) == 0, \"LightFlickOff\");\n"
-    code +=  "            loop;\n"
-    code +=  "        LightFlickOff:\n"
-    code += f"            {spriteName} B {flickMinDuration} A_JumpIf(random(0,3) == 0, \"LightFlickOn\");\n"
-    code +=  "            loop;\n"
-    code +=  "        Death:\n"
-    code += f"            {spriteName} C 5;\n"
-    code +=  "            loop;\n"
-    code +=  "        XDeath:\n"
-    code += f"            TNT1 A 0 A_Jump(145, \"Death\");\n"
-    code += f"            {spriteName} C 5 "" { bDONTFALL = false; bNOGRAVITY = false; }\n"
-    code +=  "            goto Death;\n"
+    code += f"            {spriteName} C 0 NoDelay A_JumpIf(true, \"SpawnBase\");\n"
+    code += f"            stop;\n"
     code +=  "    }\n"
     code +=  "}\n"
     return code

@@ -129,6 +129,7 @@ def saveZScripts(zscriptsDict: dict[str, list[str]]):
     os.makedirs(directory)
 
     includes = "version 4.11\n"
+    includes += '#include "zscript/BaseLamp.zs"\n'
     for name in list(zscriptsDict.keys()):
         includes += f'#include "zscript/generated/{name}.zs"\n'
     with open(RESULT_DIR + "/zscript.generated", 'w') as f:
