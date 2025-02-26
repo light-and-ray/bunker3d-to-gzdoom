@@ -124,7 +124,7 @@ def _generateFoeTexturesInner(patchName: str, spriteName: str, patch: Image.Imag
 def generateFoeTexturesDef(patchName: str, patch: Image.Image, mapIndex: int) -> str:
     textures = ""
     patchSuffixes = ["_front", "_left", "_back", "_right"]
-    rotationSuffixesList = [['9', '1', 'G'], ['4', 'B', '3', 'A', '2'], ['C', '5', 'D'], ['6', 'E', '7', 'F', '8']]
+    rotationSuffixesList = [['9', '1', 'G'], ['B', '3', 'A', '2'], ['4', 'C', '5', 'D', '6'], ['E', '7', 'F', '8']]
     for patchSuffix, rotationSuffixes in zip(patchSuffixes, rotationSuffixesList):
         if patchName.endswith(patchSuffix):
             baseName = patchName.removesuffix(patchSuffix)
