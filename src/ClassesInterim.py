@@ -77,6 +77,7 @@ class FoeInterim:
 class FriendlyInterim:
     pos: Vertex
     colorIdx: int
+    spriteIdx: int
     isSecond: bool
 
 
@@ -125,7 +126,7 @@ class MapInterim:
             special = NpcSpecial(thing.special)
             if special not in (NpcSpecial.FRIENDLY1, NpcSpecial.FRIENDLY2): continue
             isSecond = (special == NpcSpecial.FRIENDLY2)
-            self.friendlies.append(FriendlyInterim(pos=thing.pos, colorIdx=thing.color, isSecond=isSecond))
+            self.friendlies.append(FriendlyInterim(pos=thing.pos, colorIdx=thing.color, isSecond=isSecond, spriteIdx=thing.sprite))
 
 
     def _fixBrokenTextures(self, brokenTextures: dict[int, BrokenTextureData]):

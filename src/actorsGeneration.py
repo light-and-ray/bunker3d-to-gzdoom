@@ -134,3 +134,37 @@ def generateFoeTexturesDef(patchName: str, patch: Image.Image, mapIndex: int) ->
                 textures += "\n"
     return textures
 
+
+
+_npcSpriteNameIdx = 0
+def generateNpcSpriteName():
+    global _npcSpriteNameIdx
+    result = f'N{_npcSpriteNameIdx:03}'
+    _npcSpriteNameIdx += 1
+    return result
+
+_friendlyClassNameIdx = 0
+def generateFriendlyClassName():
+    global _friendlyClassNameIdx
+    result = f'B3DFriendly{_friendlyClassNameIdx:03}'
+    _friendlyClassNameIdx += 1
+    return result
+
+def generateFriendlyZScript(className: str, spriteName: str, spriteA: Image.Image):
+    code = ""
+    code += f"class {className} : BaseFriendly\n"
+    code +=  "{\n"
+    code +=  "    Default\n"
+    code +=  "    {\n"
+    code += f"        Height {spriteA.height};\n"
+    code += f"        DeathHeight {spriteA.height};\n"
+    code += f"        Radius {spriteA.width};\n"
+    code +=  "    }\n"
+    code +=  "    States\n"
+    code +=  "    {\n"
+    code +=  "        Spawn:\n"
+    code += f"            {spriteName} C 0 NoDelay A_JumpIf(true, \"SpawnBase\");\n"
+    code += f"            stop;\n"
+    code +=  "    }\n"
+    code +=  "}\n"
+    return code

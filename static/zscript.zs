@@ -6,4 +6,5 @@ version 4.11
 #include "zscript/BaseDecoration.zs"
 #include "zscript/BaseLamp.zs"
 #include "zscript/BaseFoe.zs"
+#include "zscript/BaseFriendly.zs"
 #include "zscript/generated/include.zs"

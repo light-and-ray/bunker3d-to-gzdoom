@@ -6,7 +6,8 @@ from ClassesShared import HeightType
 from ClassesInterim import MapInterim, LineInterim, DoorInterim
 from actorsGeneration import ( generateDecorationSpriteName, generateDecorationClassName, generateDecorationZScript,
     generateEdnum, generateLampSpriteName, generateLampClassName, generateLampZScript, generateFoeClassName,
-    generateFoeSpriteName, generateFoeZScript, generateFoeTexturesDef
+    generateFoeSpriteName, generateFoeZScript, generateFoeTexturesDef, generateFriendlyClassName, generateFriendlyZScript,
+    generateNpcSpriteName,
 )
 from tools import LEVEL_CEILING, LEVEL_FLOOR, SCALE_FACTOR
 
@@ -174,6 +175,35 @@ class MapGZD:
                 angle = (foe.angle+90)%360,
                 arg0 = foe.walkDistance,
                 arg1 = int(foe.isBoss),
+            ))
+
+        self._keysToFriendly: dict[tuple[int], ActorGZD] = dict()
+        for friendly in mapInterim.friendlies:
+            key = (friendly.spriteIdx, friendly.colorIdx)
+            if key not in self._keysToFriendly:
+                spriteName = generateNpcSpriteName()
+                className = generateFriendlyClassName()
+                if not friendly.isSecond:
+                    spriteA = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx]
+                    spriteB = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+1]
+                else:
+                    spriteA = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+4]
+                    spriteB = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+5]
+                spriteC = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+2]
+                spriteD = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+3]
+                zscript = generateFriendlyZScript(className, spriteName, spriteA)
+                ednum = EdnumGZD(num=generateEdnum(), className=className)
+                self.sprites[spriteName + "A0"] = spriteA
+                self.sprites[spriteName + "B0"] = spriteB
+                self.sprites[spriteName + "C0"] = spriteC
+                self.sprites[spriteName + "D0"] = spriteD
+                self.actors.append(ActorGZD(ednum=ednum, zscript=zscript))
+                self._keysToFriendly[key] = self.actors[-1]
+            self.things.append(ThingGZD(
+                x = friendly.pos.x,
+                y = friendly.pos.y,
+                type = self._keysToFriendly[key].ednum.num,
+                angle = 0,
             ))
 
 
