@@ -73,6 +73,12 @@ class FoeInterim:
     angle: int
     walkDistance: int
 
+@dataclass
+class FriendlyInterim:
+    pos: Vertex
+    colorIdx: int
+    isSecond: bool
+
 
 class MapInterim:
     def __init__(self, mapB3D: MapB3D, brokenLines: list[int], doorsSpeed: list[int], doorsStartLineIdx: list[int],
@@ -112,6 +118,14 @@ class MapInterim:
             angle = foeAngles[thing.index]
             walkDistance = foeWalkDistances[thing.index]
             self.foes.append(FoeInterim(pos=thing.pos, colorIdx=thing.color, isBoss=isBoss, angle=angle, walkDistance=walkDistance))
+
+        self.friendlies: list[FriendlyInterim] = []
+        for thing in mapB3D.things:
+            if thing.category != ThingCategory.NPC: continue
+            special = NpcSpecial(thing.special)
+            if special not in (NpcSpecial.FRIENDLY1, NpcSpecial.FRIENDLY2): continue
+            isSecond = (special == NpcSpecial.FRIENDLY2)
+            self.friendlies.append(FriendlyInterim(pos=thing.pos, colorIdx=thing.color, isSecond=isSecond))
 
 
     def _fixBrokenTextures(self, brokenTextures: dict[int, BrokenTextureData]):
