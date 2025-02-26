@@ -1,12 +1,6 @@
 from PIL import Image
 from tools import isBottomRowTransparent
 
-_spriteNameIdx = 0
-def generateSpriteName():
-    global _spriteNameIdx
-    result = f'S{_spriteNameIdx:03}'
-    _spriteNameIdx += 1
-    return result
 
 _lastEdnum = 0
 def generateEdnum():
@@ -15,6 +9,13 @@ def generateEdnum():
     _lastEdnum += 1
     return result
 
+
+_decorationSpriteNameIdx = 0
+def generateDecorationSpriteName():
+    global _decorationSpriteNameIdx
+    result = f'D{_decorationSpriteNameIdx:03}'
+    _decorationSpriteNameIdx += 1
+    return result
 
 _decorationClassNameIdx = 0
 def generateDecorationClassName():
@@ -44,6 +45,13 @@ def generateDecorationZScript(className: str, spriteName: str, sprite: Image.Ima
     return code
 
 
+_lampSpriteNameIdx = 0
+def generateLampSpriteName():
+    global _lampSpriteNameIdx
+    result = f'L{_lampSpriteNameIdx:03}'
+    _lampSpriteNameIdx += 1
+    return result
+
 _lampClassNameIdx = 0
 def generateLampClassName():
     global _lampClassNameIdx
@@ -71,6 +79,13 @@ def generateLampZScript(className: str, spriteName: str, spriteA: Image.Image):
     return code
 
 
+_foeSpriteNameIdx = 0
+def generateFoeSpriteName():
+    global _foeSpriteNameIdx
+    result = f'F{_foeSpriteNameIdx:03}'
+    _foeSpriteNameIdx += 1
+    return result
+
 _foeClassNameIdx = 0
 def generateFoeClassName():
     global _foeClassNameIdx
@@ -78,14 +93,15 @@ def generateFoeClassName():
     _foeClassNameIdx += 1
     return result
 
-def generateFoeZScript(className: str, spriteName: str, sprite1: Image.Image):
+def generateFoeZScript(className: str, spriteName: str, sprite0: Image.Image):
     code = ""
+    foeScale = 1.2
     code += f"class {className} : BaseFoe\n"
     code +=  "{\n"
     code +=  "    Default\n"
     code +=  "    {\n"
-    code += f"        Height {sprite1.height};\n"
-    code += f"        Radius {sprite1.width};\n"
+    code += f"        Height {sprite0.height*foeScale};\n"
+    code += f"        Radius {sprite0.width*foeScale};\n"
     code +=  "    }\n"
     code +=  "    States\n"
     code +=  "    {\n"

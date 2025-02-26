@@ -2,12 +2,12 @@ class BaseFoe : Actor
 {
     Default
     {
-        Scale 1.3;
+        Scale 1.2;
     }
     States
     {
         SpawnBase:
-            #### A 25;
+            #### C 25;
             Loop;
     }
 }

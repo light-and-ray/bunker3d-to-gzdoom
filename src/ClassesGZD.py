@@ -4,8 +4,9 @@ from typing import Any
 from PIL import Image
 from ClassesShared import HeightType
 from ClassesInterim import MapInterim, LineInterim, DoorInterim
-from actorsGeneration import ( generateSpriteName, generateDecorationClassName, generateDecorationZScript,
-    generateEdnum, generateLampClassName, generateLampZScript, generateFoeClassName, generateFoeZScript,
+from actorsGeneration import ( generateDecorationSpriteName, generateDecorationClassName, generateDecorationZScript,
+    generateEdnum, generateLampSpriteName, generateLampClassName, generateLampZScript, generateFoeClassName,
+    generateFoeSpriteName, generateFoeZScript,
 )
 from tools import LEVEL_CEILING, LEVEL_FLOOR, SCALE_FACTOR
 
@@ -99,12 +100,13 @@ class MapGZD:
         self.things.append(ThingGZD(spawnPos[0], spawnPos[1], 1, spawnAngle+90)) # starting pos
 
         self.sprites: dict[str, Image.Image] = {}
+        self.patches: dict[str, Image.Image] = {}
 
         self._keysToDecoration: dict[tuple[int], ActorGZD] = dict()
         for decoration in mapInterim.decorations:
             key = (decoration.spriteIdx, decoration.colorIdx)
             if key not in self._keysToDecoration:
-                spriteName = generateSpriteName()
+                spriteName = generateDecorationSpriteName()
                 className = generateDecorationClassName()
                 sprite = mapInterim.sprites[decoration.colorIdx][decoration.spriteIdx]
                 zscript = generateDecorationZScript(className, spriteName, sprite)
@@ -123,7 +125,7 @@ class MapGZD:
         for lamp in mapInterim.lamps:
             key = (lamp.spriteIdx, lamp.colorIdx)
             if key not in self._keysToLamp:
-                spriteName = generateSpriteName()
+                spriteName = generateLampSpriteName()
                 className = generateLampClassName()
                 spriteA = mapInterim.sprites[lamp.colorIdx][lamp.spriteIdx]
                 spriteB = mapInterim.sprites[lamp.colorIdx][lamp.spriteIdx+1]
@@ -142,6 +144,32 @@ class MapGZD:
                 angle = 0,
                 arg0 = lamp.special.value,
             ))
+
+        self._keysToFoe: dict[tuple[int], ActorGZD] = dict()
+        for foe in mapInterim.foes:
+            key = (foe.colorIdx)
+            if key not in self._keysToLamp:
+                spriteName = generateFoeSpriteName()
+                className = generateFoeClassName()
+                ednum = EdnumGZD(num=generateEdnum(), className=className)
+                patches_names = ["A_front", "B_front", "A_left", "B_left", "A_back", "B_back",
+                                "A_right", "B_right"]
+                sprite_names = ["C0", "D0", "F0", "G0", "H0", "I0", "J0", "K0"]
+                for i, name in enumerate(patches_names):
+                    self.patches[spriteName + name] = mapInterim.foeSprites[foe.colorIdx][i]
+                for i, name in enumerate(sprite_names):
+                    self.sprites[spriteName + name] = mapInterim.foeSprites[foe.colorIdx][len(patches_names)+i]
+                zscript = generateFoeZScript(className, spriteName, self.sprites[spriteName + "C0"])
+                self.actors.append(ActorGZD(ednum=ednum, zscript=zscript))
+                self._keysToLamp[key] = self.actors[-1]
+            self.things.append(ThingGZD(
+                x = foe.pos.x,
+                y = foe.pos.y,
+                type = self._keysToLamp[key].ednum.num,
+                angle = 0,
+                arg0 = int(foe.isBoss),
+            ))
+
 
         for i in range(len(self.vertexes)):
             self.vertexes[i].x *= SCALE_FACTOR

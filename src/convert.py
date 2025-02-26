@@ -3,7 +3,9 @@ from drawMap import drawMap
 from ClassesInterim import MapInterim
 from ClassesGZD import MapGZD, EdnumGZD
 from ClassesShared import Animation
-from save import saveMap, saveStaticData, saveTextures, saveAnimations, saveSprites, saveZScripts, saveEdnums
+from save import (saveMap, saveStaticData, saveTextures, saveAnimations, saveSprites, saveZScripts, saveEdnums,
+    savePatches,
+)
 
 MAPS = range(1, 10)
 # MAPS = [1]
@@ -25,6 +27,7 @@ if __name__ == "__main__":
         saveMap(map=mapGZD, mapIndex=idx)
         saveTextures(textures=data.map.textures, mapIndex=idx, colorCeiling=data.colorCeiling, colorFloor=data.colorFloor)
         saveSprites(sprites=mapGZD.sprites, mapIndex=idx)
+        savePatches(patches=mapGZD.patches, mapIndex=idx)
         zscripts[mapName] = [a.zscript for a in mapGZD.actors]
         ednums.extend([a.ednum for a in mapGZD.actors])
     saveAnimations(animations)

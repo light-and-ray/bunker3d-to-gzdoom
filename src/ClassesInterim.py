@@ -101,7 +101,7 @@ class MapInterim:
             if thing.category != ThingCategory.LAMP: continue
             self.lamps.append(LampInterim(pos=thing.pos, spriteIdx=thing.sprite, colorIdx=thing.color, special=LampSpecial(thing.special)))
 
-        self.foes: list[LampInterim] = []
+        self.foes: list[FoeInterim] = []
         for thing in mapB3D.things:
             if thing.category != ThingCategory.NPC: continue
             special = NpcSpecial(thing.special)

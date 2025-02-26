@@ -107,6 +107,13 @@ def saveSprites(sprites: dict[str, Image.Image], mapIndex: int):
         buffer = addOffsets(buffer.getvalue(), sprite.width//2, sprite.height)
         saveToFile(mapSpritesDir + f"/{name}.png", buffer)
 
+def savePatches(patches: dict[str, Image.Image], mapIndex: int):
+    mapPatchesDir = RESULT_DIR + f"/patches/c1m{mapIndex}/"
+    if os.path.exists(mapPatchesDir):
+        shutil.rmtree(mapPatchesDir)
+    os.makedirs(mapPatchesDir)
+    for name, patch in patches.items():
+        patch.save(mapPatchesDir + f"/{name}.png")
 
 def saveAnimations(animations: list[Animation]):
     animdefs = ""
