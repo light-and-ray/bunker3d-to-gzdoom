@@ -26,22 +26,19 @@ def generateDecorationClassName():
 def generateDecorationZScript(className: str, spriteName: str, sprite: Image.Image):
     code = ""
     isPinnedToCeiling = isBottomRowTransparent(sprite)
-    code += f"class {className} : Actor\n"
+    baseClassName = "BaseCeilingDecoration" if isPinnedToCeiling else "BaseFloorDecoration"
+    code += f"class {className} : {baseClassName}\n"
     code +=  "{\n"
     code +=  "    Default\n"
     code +=  "    {\n"
     code += f"        Height {sprite.height};\n"
     code += f"        Radius {sprite.width};\n"
-    if isPinnedToCeiling:
-        code += "        +NOGRAVITY;\n"
-        code += "        +SPAWNCEILING;\n"
     code +=  "    }\n"
     code +=  "    States\n"
     code +=  "    {\n"
     code +=  "        Spawn:\n"
-    code += f"            {spriteName} A 25"
-    code += ";\n"
-    code +=  "            Loop;\n"
+    code += f"            {spriteName} C 0 NoDelay A_JumpIf(true, \"SpawnBase\");\n"
+    code += f"            stop;\n"
     code +=  "    }\n"
     code +=  "}\n"
     return code

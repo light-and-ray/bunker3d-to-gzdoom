@@ -130,6 +130,7 @@ def saveZScripts(zscriptsDict: dict[str, list[str]]):
 
     includes = "version 4.11\n"
     includes += '#include "zscript/BaseLamp.zs"\n'
+    includes += '#include "zscript/BaseDecoration.zs"\n'
     for name in list(zscriptsDict.keys()):
         includes += f'#include "zscript/generated/{name}.zs"\n'
     with open(RESULT_DIR + "/zscript.generated", 'w') as f:
