@@ -56,6 +56,7 @@ def generateLampClassName():
     return result
 
 def generateLampZScript(className: str, spriteName: str, spriteA: Image.Image):
+    flickMinDuration = 3
     code = ""
     code += f"class {className} : Actor\n"
     code +=  "{\n"
@@ -79,16 +80,18 @@ def generateLampZScript(className: str, spriteName: str, spriteA: Image.Image):
     code +=  "        Spawn:\n"
     code += f"            TNT1 A 0 A_JumpIf(args[0] == {LampSpecial.ON.value}, \"LightON\");\n"
     code += f"            TNT1 A 0 A_JumpIf(args[0] == {LampSpecial.OFF.value}, \"LightOFF\");\n"
-    code += f"            TNT1 A 0 A_JumpIf(args[0] == {LampSpecial.FLICK.value}, \"LightFLICK\");\n"
+    code += f"            TNT1 A 0 A_JumpIf(args[0] == {LampSpecial.FLICK.value}, \"LightFlickOn\");\n"
     code +=  "        LightON:\n"
     code += f"            {spriteName} A 5;\n"
     code +=  "            loop;\n"
     code +=  "        LightOFF:\n"
     code += f"            {spriteName} B 5;\n"
     code +=  "            loop;\n"
-    code +=  "        LightFLICK:\n"
-    code += f"            {spriteName} A 10;\n"
-    code += f"            {spriteName} B 20;\n"
+    code +=  "        LightFlickOn:\n"
+    code += f"            {spriteName} A {flickMinDuration} A_JumpIf(random(0,3) == 0, \"LightFlickOff\");\n"
+    code +=  "            loop;\n"
+    code +=  "        LightFlickOff:\n"
+    code += f"            {spriteName} B {flickMinDuration} A_JumpIf(random(0,3) == 0, \"LightFlickOn\");\n"
     code +=  "            loop;\n"
     code +=  "        Death:\n"
     code += f"            {spriteName} C 5;\n"
