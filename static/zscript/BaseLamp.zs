@@ -25,10 +25,10 @@ class BaseLamp : Actor
             #### B 5;
             loop;
         LightFlickOn:
-            #### A 3 A_JumpIf(random(0, 3) == 0, "LightFlickOff");
+            #### A 3 A_JumpIf(random(0, 2) == 0, "LightFlickOff");
             loop;
         LightFlickOff:
-            #### B 3 A_JumpIf(random(0, 3) == 0, "LightFlickOn");
+            #### B 3 A_JumpIf(random(0, 2) == 0, "LightFlickOn");
             loop;
         Death:
             #### C 5;
