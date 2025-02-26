@@ -4,7 +4,7 @@ import omg
 from PIL import Image
 from ClassesGZD import MapGZD, TextureMode, EdnumGZD
 from ClassesShared import Animation
-from tools import getCeilingLumpName, getFloorLumpName, addOffsets
+from tools import getCeilingLumpName, getFloorLumpName, addOffsets, saveToFile
 
 STATIC_DIR = "static"
 RESULT_DIR = "result.d"
@@ -102,12 +102,10 @@ def saveSprites(sprites: dict[str, Image.Image], mapIndex: int):
     os.makedirs(mapSpritesDir)
 
     for name, sprite in sprites.items():
-        path = f"{mapSpritesDir}/{name}.png"
         buffer = BytesIO()
         sprite.save(buffer, format="PNG")
         buffer = addOffsets(buffer.getvalue(), sprite.width//2, sprite.height)
-        with open(path, 'wb') as f:
-            f.write(buffer)
+        saveToFile(mapSpritesDir + f"/{name}.png", buffer)
 
 
 def saveAnimations(animations: list[Animation]):
@@ -118,8 +116,7 @@ def saveAnimations(animations: list[Animation]):
         for frame in animation.frames:
             animdefs += f"    pic {frame} tics {animation.duration}\n"
         animdefs += "\n"
-    with open(RESULT_DIR + "/ANIMDEFS", 'w') as f:
-        f.write(animdefs)
+    saveToFile(RESULT_DIR + "/ANIMDEFS", animdefs)
 
 
 def saveZScripts(zscriptsDict: dict[str, list[str]]):
@@ -131,16 +128,13 @@ def saveZScripts(zscriptsDict: dict[str, list[str]]):
     includes = ""
     for name in list(zscriptsDict.keys()):
         includes += f'#include "zscript/generated/{name}.zs"\n'
-    with open(RESULT_DIR + "/zscript/generated/include.zs", 'w') as f:
-        f.write(includes)
+    saveToFile(directory + "/include.zs", includes)
 
     for name, zscripts in zscriptsDict.items():
-        filePath = directory + f"/{name}.zs"
         code = ""
         for zscript in zscripts:
             code += zscript + "\n\n"
-        with open(filePath, 'w') as f:
-            f.write(code)
+        saveToFile(directory + f"/{name}.zs", code)
 
 
 def saveEdnums(ednums: list[EdnumGZD]):
@@ -150,8 +144,7 @@ def saveEdnums(ednums: list[EdnumGZD]):
     for ednum in ednums:
         code += f'    {ednum.num} = "{ednum.className}"\n'
     code += "}\n"
-    with open(RESULT_DIR + "/MAPINFO.ednums", 'w') as f:
-        f.write(code)
+    saveToFile(RESULT_DIR + "/MAPINFO.ednums", code)
 
 
 def _copyFileFromStatic(name: str):

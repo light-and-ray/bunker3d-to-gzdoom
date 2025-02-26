@@ -113,3 +113,9 @@ def isBottomRowTransparent(image: Image.Image):
             return False
     return True
 
+
+def saveToFile(filepath, data):
+    mode = 'w' if isinstance(data, str) else 'wb'
+    with open(filepath, mode) as f:
+        f.write(data)
+
