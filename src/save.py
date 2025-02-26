@@ -128,12 +128,10 @@ def saveZScripts(zscriptsDict: dict[str, list[str]]):
         shutil.rmtree(directory)
     os.makedirs(directory)
 
-    includes = "version 4.11\n"
-    includes += '#include "zscript/BaseLamp.zs"\n'
-    includes += '#include "zscript/BaseDecoration.zs"\n'
+    includes = ""
     for name in list(zscriptsDict.keys()):
         includes += f'#include "zscript/generated/{name}.zs"\n'
-    with open(RESULT_DIR + "/zscript.generated", 'w') as f:
+    with open(RESULT_DIR + "/zscript/generated/include.zs", 'w') as f:
         f.write(includes)
 
     for name, zscripts in zscriptsDict.items():

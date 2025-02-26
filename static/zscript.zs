@@ -3,3 +3,6 @@ version 4.11
 #include "zscript/B3DPlayer.zs"
 #include "zscript/nashmove.zs"
 #include "zscript/DoorsOpener.zs"
+#include "zscript/BaseLamp.zs"
+#include "zscript/BaseDecoration.zs"
+#include "zscript/generated/include.zs"
