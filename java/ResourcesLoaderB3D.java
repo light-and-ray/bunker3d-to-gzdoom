@@ -28,6 +28,10 @@ public class ResourcesLoaderB3D {
    public short[] SPRITES_H;
    public ArrayList<int[]> SPRITES_DATA_COLOR_1 = new ArrayList<>();
    public ArrayList<int[]> SPRITES_DATA_COLOR_2 = new ArrayList<>();
+   public ArrayList<Short> FOE_SPRITES_W = new ArrayList<>();
+   public ArrayList<Short> FOE_SPRITES_H = new ArrayList<>();
+   public ArrayList<int[]> FOE_SPRITES_DATA_COLOR_1 = new ArrayList<>();
+   public ArrayList<int[]> FOE_SPRITES_DATA_COLOR_2 = new ArrayList<>();
 
    public byte c;
    public boolean e;
@@ -1356,26 +1360,34 @@ public class ResourcesLoaderB3D {
       int var19 = this.bq[3][this.M[3]] + 10;
       int var20 = this.bq[4][this.M[4]] + 10;
       this.readFoeSubfunction2(var16, var17, var1[1].length, var18, var19, var20);
-      // segNum = 0;
-      // short var21 = 0;
-      // length = this.FOE_METADATA.length;
+      segNum = 0;
+      short var21 = 0;
+      length = this.FOE_METADATA.length;
 
-      // for(offset = 0; offset < length; offset += 7) {
-      //    int[] layer1Cut = new int[this.FOE_METADATA[offset + 2] * this.FOE_METADATA[offset + 3]];
-      //    int[] layer2Cut = new int[this.FOE_METADATA[offset + 2] * this.FOE_METADATA[offset + 3]];
-      //    layer1.getRGB(layer1Cut, 0, this.FOE_METADATA[offset + 2], this.FOE_METADATA[offset + 0], this.FOE_METADATA[offset + 1], this.FOE_METADATA[offset + 2], this.FOE_METADATA[offset + 3]);
-      //    layer2.getRGB(layer2Cut, 0, this.FOE_METADATA[offset + 2], this.FOE_METADATA[offset + 0], this.FOE_METADATA[offset + 1], this.FOE_METADATA[offset + 2], this.FOE_METADATA[offset + 3]);
-      //    this.combineLayers(layer1Cut, layer2Cut, this.bp, var21, var1[0][0], var1[0][1]);
-      //    var21 = (short)(var21 + 50);
-      //    int var15 = this.foeH[segNum] / this.bu[segNum];
-      //    if (this.bt[segNum] == 0) {
-      //       this.b(segNum, var15, layer1Cut);
-      //    } else if (this.bt[segNum] == 1) {
-      //       this.a(segNum, var15, layer1Cut);
-      //    }
+      for(offset = 0; offset < length; offset += 7) {
+         if (this.FOE_METADATA[offset + 2] == 34) {
+            this.FOE_METADATA[offset + 2] = 33;
+         }
+         this.FOE_SPRITES_W.add(this.FOE_METADATA[offset + 2]);
+         this.FOE_SPRITES_H.add(this.FOE_METADATA[offset + 3]);
+         int[] layer1Cut = new int[this.FOE_METADATA[offset + 2] * this.FOE_METADATA[offset + 3]];
+         int[] layer2Cut = new int[this.FOE_METADATA[offset + 2] * this.FOE_METADATA[offset + 3]];
+         layer1.getRGB(this.FOE_METADATA[offset + 0], this.FOE_METADATA[offset + 1], this.FOE_METADATA[offset + 2], this.FOE_METADATA[offset + 3], layer1Cut, 0, this.FOE_METADATA[offset + 2]);
+         layer2.getRGB(this.FOE_METADATA[offset + 0], this.FOE_METADATA[offset + 1], this.FOE_METADATA[offset + 2], this.FOE_METADATA[offset + 3], layer2Cut, 0, this.FOE_METADATA[offset + 2]);
+         int[] layer1CutColor2 = new int[layer1Cut.length];
+         this.combineLayers(layer1Cut, layer2Cut, this.bp, var21, var1[0][0], var1[0][1], layer1CutColor2);
+         this.FOE_SPRITES_DATA_COLOR_1.add(layer1Cut);
+         this.FOE_SPRITES_DATA_COLOR_2.add(layer1CutColor2);
+         var21 = (short)(var21 + 50);
+         // int var15 = this.foeH[segNum] / this.bu[segNum];
+         // if (this.bt[segNum] == 0) {
+         //    this.b(segNum, var15, layer1Cut);
+         // } else if (this.bt[segNum] == 1) {
+         //    this.a(segNum, var15, layer1Cut);
+         // }
 
-      //    ++segNum;
-      // }
+         ++segNum;
+      }
 
    }
 

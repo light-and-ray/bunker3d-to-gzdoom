@@ -133,6 +133,19 @@ def _loadSprites():
         all_sprites.append(sprites)
     return all_sprites
 
+def _loadFoeSprites():
+    sprites_w = read1DArray("FOE_SPRITES_W")
+    sprites_h = read1DArray("FOE_SPRITES_H")
+    all_sprites = []
+    for sprites_data in (read2DArray("FOE_SPRITES_DATA_COLOR_1"), read2DArray("FOE_SPRITES_DATA_COLOR_2")):
+        sprites = []
+        for i in range(len(sprites_data)):
+            sprite = load_image_from_1d_list(sprites_data[i], sprites_w[i], sprites_h[i])
+            sprite = makeBackgroundTransparent(sprite)
+            sprites.append(sprite)
+        all_sprites.append(sprites)
+    return all_sprites
+
 def _loadLinesTextures():
     cX = read1DArray("LINES_TEXTURES")
     bs = read1DArray("LINES_bs")
@@ -184,10 +197,14 @@ def load(mapIndex):
     textures = _loadTextures()
     linesTextures = _loadLinesTextures()
     sprites = _loadSprites()
+    foeSprites = _loadFoeSprites()
     os.makedirs(f"tmp/sprites/map{mapIndex}", exist_ok=True)
     for i in range(len(sprites[0])):
         for color in (0, 1):
             sprites[color][i].save(f"tmp/sprites/map{mapIndex}/sprite_{color}_{i}.png")
+    for i in range(len(foeSprites[0])):
+        for color in (0, 1):
+            foeSprites[color][i].save(f"tmp/sprites/map{mapIndex}/foe_{color}_{i}.png")
 
     data.map = MapB3D(rawLines=read2DArray('LINES_VERTEXES'), rawHeight=read1DArray('LINES_HEIGHT'),
         cratesStartLineIdx=read1DArray('CRATES_START_LINE_IDX'), cratesContent=read1DArray('CRATES_CONTENT'),
