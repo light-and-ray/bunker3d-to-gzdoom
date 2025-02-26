@@ -106,8 +106,31 @@ def generateFoeZScript(className: str, spriteName: str, sprite0: Image.Image):
     code +=  "    States\n"
     code +=  "    {\n"
     code +=  "        Spawn:\n"
-    code += f"            {spriteName} C 0 NoDelay A_JumpIf(true, \"SpawnBase\");\n"
+    code += f"            {spriteName} A 0 NoDelay A_JumpIf(true, \"SpawnBase\");\n"
     code += f"            stop;\n"
     code +=  "    }\n"
     code +=  "}\n"
     return code
+
+def _generateFoeTexturesInner(patchName: str, spriteName: str, patch: Image.Image, mapIndex: int) -> str:
+    textures = ""
+    textures += f"Sprite {spriteName}, {patch.width}, {patch.height}\n"
+    textures +=  "{\n"
+    textures += f"    Patch \"patches/c1m{mapIndex}/{patchName}.png\", 0, 0\n"
+    textures += f"    Offset {patch.width//2}, {patch.height}\n"
+    textures +=  "}\n"
+    return textures
+
+def generateFoeTexturesDef(patchName: str, patch: Image.Image, mapIndex: int) -> str:
+    textures = ""
+    patchSuffixes = ["_front", "_left", "_back", "_right"]
+    rotationSuffixesList = [['9', '1', 'G'], ['4', 'B', '3', 'A', '2'], ['C', '5', 'D'], ['6', 'E', '7', 'F', '8']]
+    for patchSuffix, rotationSuffixes in zip(patchSuffixes, rotationSuffixesList):
+        if patchName.endswith(patchSuffix):
+            baseName = patchName.removesuffix(patchSuffix)
+            for rotationSuffix in rotationSuffixes:
+                spriteName = baseName + rotationSuffix
+                textures += _generateFoeTexturesInner(patchName, spriteName, patch, mapIndex)
+                textures += "\n"
+    return textures
+

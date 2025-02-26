@@ -7,7 +7,7 @@ class BaseFoe : Actor
     States
     {
         SpawnBase:
-            #### C 25;
+            #### A 25;
             Loop;
     }
 }

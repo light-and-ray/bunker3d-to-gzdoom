@@ -6,7 +6,7 @@ from ClassesShared import HeightType
 from ClassesInterim import MapInterim, LineInterim, DoorInterim
 from actorsGeneration import ( generateDecorationSpriteName, generateDecorationClassName, generateDecorationZScript,
     generateEdnum, generateLampSpriteName, generateLampClassName, generateLampZScript, generateFoeClassName,
-    generateFoeSpriteName, generateFoeZScript,
+    generateFoeSpriteName, generateFoeZScript, generateFoeTexturesDef
 )
 from tools import LEVEL_CEILING, LEVEL_FLOOR, SCALE_FACTOR
 
@@ -79,7 +79,7 @@ class MapGZD:
     SECTOR_FULL_IDX = 0
     SECTOR_BOTTOM_IDX = 1
 
-    def __init__(self, mapInterim: MapInterim, spawnPos: list[int], spawnAngle: int):
+    def __init__(self, mapInterim: MapInterim, spawnPos: list[int], spawnAngle: int, mapIndex: int):
         self.vertexes: list[VertexGZD] = []
         self.sectorFull: SectorGZD = None
         self.sectorBottom: SectorGZD = None
@@ -101,6 +101,7 @@ class MapGZD:
 
         self.sprites: dict[str, Image.Image] = {}
         self.patches: dict[str, Image.Image] = {}
+        self.texturesDefs: list[str] = []
 
         self._keysToDecoration: dict[tuple[int], ActorGZD] = dict()
         for decoration in mapInterim.decorations:
@@ -156,7 +157,10 @@ class MapGZD:
                                 "A_right", "B_right"]
                 sprite_names = ["C0", "D0", "F0", "G0", "H0", "I0", "J0", "K0"]
                 for i, name in enumerate(patches_names):
-                    self.patches[spriteName + name] = mapInterim.foeSprites[foe.colorIdx][i]
+                    patchName = spriteName + name
+                    patch = mapInterim.foeSprites[foe.colorIdx][i]
+                    self.patches[patchName] = patch
+                    self.texturesDefs.append(generateFoeTexturesDef(patchName, patch, mapIndex))
                 for i, name in enumerate(sprite_names):
                     self.sprites[spriteName + name] = mapInterim.foeSprites[foe.colorIdx][len(patches_names)+i]
                 zscript = generateFoeZScript(className, spriteName, self.sprites[spriteName + "C0"])

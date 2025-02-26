@@ -123,7 +123,14 @@ def saveAnimations(animations: list[Animation]):
         for frame in animation.frames:
             animdefs += f"    pic {frame} tics {animation.duration}\n"
         animdefs += "\n"
-    saveToFile(RESULT_DIR + "/ANIMDEFS", animdefs)
+    saveToFile(RESULT_DIR + "/ANIMDEFS.generated", animdefs)
+
+def saveTexturesDef(texturesList: list[str]):
+    allTexturesDefs = ""
+    for texturesDef in texturesList:
+        allTexturesDefs += texturesDef
+        allTexturesDefs += "\n"
+    saveToFile(RESULT_DIR + "/TEXTURES.generated", allTexturesDefs)
 
 
 def saveZScripts(zscriptsDict: dict[str, list[str]]):
