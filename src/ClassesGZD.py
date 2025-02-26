@@ -61,6 +61,7 @@ class ThingGZD:
     type: int
     angle: int
     arg0: int|None = None
+    arg1: int|None = None
 
 
 @dataclass
@@ -171,7 +172,8 @@ class MapGZD:
                 y = foe.pos.y,
                 type = self._keysToLamp[key].ednum.num,
                 angle = (foe.angle+90)%360,
-                arg0 = int(foe.isBoss),
+                arg0 = foe.walkDistance,
+                arg1 = int(foe.isBoss),
             ))
 
 

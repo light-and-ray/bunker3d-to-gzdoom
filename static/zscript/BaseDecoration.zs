@@ -6,7 +6,7 @@ class BaseFloorDecoration : Actor
     {
         SpawnBase:
             #### A 25;
-            Loop;
+            loop;
     }
 }
 

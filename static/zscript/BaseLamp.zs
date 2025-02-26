@@ -35,7 +35,7 @@ class BaseLamp : Actor
             loop;
         XDeath:
             #### C 0 A_Jump(145, "Death");
-            #### C 5  { bDONTFALL = false; bNOGRAVITY = false; }
+            #### C 5 { bDONTFALL = false; bNOGRAVITY = false; }
             goto Death;
     }
 }
