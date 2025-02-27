@@ -22,7 +22,7 @@ vn 1.0 0.0 0.0
 vn -1.0 0.0 0.0
 
 g top
-usemtl B3D_T014
+usemtl CRATE_03
 f 3/3/4 4/4/4 8/1/4 7/2/4
 
 g side 1
@@ -42,5 +42,5 @@ usemtl B3D_T014
 f 4/4/5 1/1/5 5/2/5 8/3/5
 
 g bottom
-usemtl B3D_T014
+usemtl CRATE_03
 f 1/1/2 2/2/2 6/3/2 5/4/2
