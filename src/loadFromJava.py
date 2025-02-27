@@ -204,13 +204,13 @@ def load(mapIndex):
     linesTextures = _loadLinesTextures()
     sprites = _loadSprites()
     foeSprites = _loadFoeSprites()
-    # os.makedirs(f"tmp/sprites/map{mapIndex}", exist_ok=True)
-    # for i in range(len(sprites[0])):
-    #     for color in (0, 1):
-    #         sprites[color][i].save(f"tmp/sprites/map{mapIndex}/sprite_{color}_{i}.png")
-    # for i in range(len(foeSprites[0])):
-    #     for color in (0, 1):
-    #         foeSprites[color][i].save(f"tmp/sprites/map{mapIndex}/foe_{color}_{i}.png")
+    os.makedirs(f"tmp/sprites/map{mapIndex}", exist_ok=True)
+    for i in range(len(sprites[0])):
+        for color in (0, 1):
+            sprites[color][i].save(f"tmp/sprites/map{mapIndex}/sprite_{color}_{i}.png")
+    for i in range(len(foeSprites[0])):
+        for color in (0, 1):
+            foeSprites[color][i].save(f"tmp/sprites/map{mapIndex}/foe_{color}_{i}.png")
 
     data.map = MapB3D(rawLines=read2DArray('LINES_VERTEXES'), rawHeight=read1DArray('LINES_HEIGHT'),
         cratesStartLineIdx=read1DArray('CRATES_START_LINE_IDX'), cratesContent=read1DArray('CRATES_CONTENT'),

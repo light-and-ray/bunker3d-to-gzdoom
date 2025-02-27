@@ -8,17 +8,18 @@ from enum import Enum
 
 @dataclass
 class CrateB3D:
-    startLineIdx : int
-    angle : int
-    content : int
-    textureName : str
+    startLineIdx: int
+    angle: int
+    content: int
+    textureName: str
+    spriteIdx: int
 
 @dataclass
 class LineB3D:
-    v1 : Vertex
-    v2 : Vertex
-    height : HeightType
-    texturesNames : list[str]
+    v1: Vertex
+    v2: Vertex
+    height: HeightType
+    texturesNames: list[str]
 
 class ThingCategory(Enum):
     NPC = 0
@@ -81,6 +82,7 @@ class MapB3D:
                 content=cratesContent[idx],
                 angle=cratesAngles[idx],
                 textureName=self.lines[cratesStartLineIdx[idx]].texturesNames[0],
+                spriteIdx=thingsSprites[48]-16,
             ))
 
         self._removeRepeatingTexturesTale()
@@ -113,8 +115,6 @@ class MapB3D:
 
             self.things.append(ThingB3D(pos=Vertex(*thingsPos[i]), category=category,
                     color=thingsColors[i], special=special, sprite=sprite, index=i))
-
-
 
 
     def _applyMirroring(self, mirroringData: list[int]):

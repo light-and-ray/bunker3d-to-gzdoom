@@ -80,6 +80,19 @@ class FriendlyInterim:
     spriteIdx: int
     isSecond: bool
 
+class CrateContent(Enum):
+    NONE = 0
+    HEALTH = 1
+    AMMO = 2
+    BOTH = 3
+
+@dataclass
+class CrateInterim:
+    pos: Vertex
+    colorIdx: int
+    spriteIdx: int
+    content: CrateContent
+
 
 class MapInterim:
     def __init__(self, mapB3D: MapB3D, brokenLines: list[int], doorsSpeed: list[int], doorsStartLineIdx: list[int],
@@ -127,6 +140,25 @@ class MapInterim:
             if special not in (NpcSpecial.FRIENDLY1, NpcSpecial.FRIENDLY2): continue
             isSecond = (special == NpcSpecial.FRIENDLY2)
             self.friendlies.append(FriendlyInterim(pos=thing.pos, colorIdx=thing.color, isSecond=isSecond, spriteIdx=thing.sprite))
+
+        self.crates: list[CrateInterim] = []
+        for crate in mapB3D.crates:
+            content: CrateContent = None
+            isAmmo = crate.content & 0b001
+            isHealth = crate.content & 0b010
+            isSecondColor = crate.content & 0b100
+            if isAmmo and isHealth:
+                content = CrateContent.BOTH
+            elif isAmmo:
+                content = CrateContent.AMMO
+            elif isHealth:
+                content = CrateContent.HEALTH
+            else:
+                content = CrateContent.NONE
+            v1 = mapB3D.lines[crate.startLineIdx].v1
+            v2 = mapB3D.lines[crate.startLineIdx+1].v2
+            pos = Vertex(x=(v1.x+v2.x)/2, y=(v1.y+v2.y)/2)
+            self.crates.append(CrateInterim(pos=pos, colorIdx=int(isSecondColor), content=content, spriteIdx=crate.spriteIdx))
 
 
     def _fixBrokenTextures(self, brokenTextures: dict[int, BrokenTextureData]):
