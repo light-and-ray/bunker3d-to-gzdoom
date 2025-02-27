@@ -7,7 +7,8 @@ from ClassesInterim import MapInterim, LineInterim, DoorInterim
 from actorsGeneration import ( generateDecorationSpriteName, generateDecorationClassName, generateDecorationZScript,
     generateEdnum, generateLampSpriteName, generateLampClassName, generateLampZScript, generateFoeClassName,
     generateFoeSpriteName, generateFoeZScript, generateFoeTexturesDef, generateFriendlyClassName, generateFriendlyZScript,
-    generateNpcSpriteName, generateCrateClassName, generateCrateSpriteName, generateCrateZScript,
+    generateNpcSpriteName, generateCrateClassName, generateCrateSpriteName, generateCrateZScript, generateCrateModeldef,
+    generateCrateObj,
 )
 from tools import LEVEL_CEILING, LEVEL_FLOOR, SCALE_FACTOR
 
@@ -78,6 +79,13 @@ class ActorGZD:
     zscript: str
 
 
+@dataclass
+class ModelGZD:
+    modelPath: str
+    modelObj: str
+    modelDef: str
+
+
 class MapGZD:
     SECTOR_FULL_IDX = 0
     SECTOR_BOTTOM_IDX = 1
@@ -91,6 +99,7 @@ class MapGZD:
         self.lines: list[LineGZD] = []
         self.things: list[ThingGZD] = []
         self.actors: list[ActorGZD] = []
+        self.models: list[ModelGZD] = []
         self._lastPolyObjectNum = 0
 
         self.sectorFull = SectorGZD(heightFloor=LEVEL_FLOOR, heightCeiling=LEVEL_CEILING)
@@ -213,15 +222,21 @@ class MapGZD:
             if key not in self._keysToCrates:
                 spriteName = generateCrateSpriteName()
                 className = generateCrateClassName()
-                print(crate.colorIdx)
                 spriteB = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+1]
                 spriteC = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+2]
                 spriteD = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+3]
                 zscript = generateCrateZScript(className, spriteName)
                 ednum = EdnumGZD(num=generateEdnum(), className=className)
-                self.sprites[spriteName + "B0"] = spriteB
-                self.sprites[spriteName + "C0"] = spriteC
-                self.sprites[spriteName + "D0"] = spriteD
+                modelPath = f"models/{spriteName}A0.obj"
+                model = ModelGZD(
+                    modelPath=modelPath,
+                    modelObj=generateCrateObj(crate.textureName, crate.textureName),
+                    modelDef=generateCrateModeldef(spriteName, className, modelPath),
+                )
+                self.models.append(model)
+                self.sprites[spriteName+"B0"] = spriteB
+                self.sprites[spriteName+"C0"] = spriteC
+                self.sprites[spriteName+"D0"] = spriteD
                 self.actors.append(ActorGZD(ednum=ednum, zscript=zscript))
                 self._keysToCrates[key] = self.actors[-1]
             self.things.append(ThingGZD(

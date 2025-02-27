@@ -1,10 +1,10 @@
 from loadFromJava import load
 from drawMap import drawMap
 from ClassesInterim import MapInterim
-from ClassesGZD import MapGZD, EdnumGZD
+from ClassesGZD import MapGZD, EdnumGZD, ModelGZD
 from ClassesShared import Animation
 from save import (saveMap, saveStaticData, saveTextures, saveAnimations, saveSprites, saveZScripts, saveEdnums,
-    savePatches, saveTexturesDef,
+    savePatches, saveTexturesDef, saveModels,
 )
 
 MAPS = range(1, 10)
@@ -18,6 +18,7 @@ if __name__ == "__main__":
     texturesDefs: list[str] = []
     zscripts: dict[str, list[str]] = dict()
     ednums: list[EdnumGZD] = []
+    models: list[ModelGZD] = []
     for idx in MAPS:
         data = load(idx)
         animations.extend(data.map.animations)
@@ -34,8 +35,10 @@ if __name__ == "__main__":
         zscripts[mapName] = [a.zscript for a in mapGZD.actors]
         ednums.extend([a.ednum for a in mapGZD.actors])
         texturesDefs.extend(mapGZD.texturesDefs)
+        models.extend(mapGZD.models)
     saveAnimations(animations)
     saveZScripts(zscripts)
     saveEdnums(ednums)
     saveTexturesDef(texturesDefs)
+    saveModels(models)
 

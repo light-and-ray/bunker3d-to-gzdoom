@@ -13,8 +13,8 @@ class BaseCrate : Actor
     States
     {
         SpawnBase:
-            #### B 25;
-            #### C 25;
+            #### A 25;
+            // #### C 25;
             loop;
     }
 }

@@ -2,7 +2,7 @@ from io import BytesIO
 import shutil, os, pathlib
 import omg
 from PIL import Image
-from ClassesGZD import MapGZD, TextureMode, EdnumGZD
+from ClassesGZD import MapGZD, TextureMode, EdnumGZD, ModelGZD
 from ClassesShared import Animation
 from tools import getCeilingLumpName, getFloorLumpName, addOffsets, saveToFile
 
@@ -161,6 +161,19 @@ def saveEdnums(ednums: list[EdnumGZD]):
         code += f'    {ednum.num} = "{ednum.className}"\n'
     code += "}\n"
     saveToFile(RESULT_DIR + "/MAPINFO.ednums", code)
+
+
+def saveModels(models: list[ModelGZD]):
+    modeldef = ""
+    for model in models:
+        modeldef += model.modelDef
+        modeldef += "\n"
+    saveToFile(RESULT_DIR + "/MODELDEF.generated", modeldef)
+
+    for model in models:
+        savePath = RESULT_DIR + "/" + model.modelPath
+        os.makedirs(os.path.dirname(savePath), exist_ok=True)
+        saveToFile(savePath, model.modelObj)
 
 
 def _copyFileFromStatic(name: str):
