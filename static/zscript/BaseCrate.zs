@@ -1,4 +1,4 @@
-class CrateCrate : Actor
+class BaseCrate : Actor
 {
     Default
     {
@@ -12,9 +12,9 @@ class CrateCrate : Actor
     }
     States
     {
-        Spawn:
-            D000 A 25;
-            D000 B 25;
+        SpawnBase:
+            #### B 25;
+            #### C 25;
             loop;
     }
 }

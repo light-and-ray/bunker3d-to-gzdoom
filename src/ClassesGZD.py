@@ -7,7 +7,7 @@ from ClassesInterim import MapInterim, LineInterim, DoorInterim
 from actorsGeneration import ( generateDecorationSpriteName, generateDecorationClassName, generateDecorationZScript,
     generateEdnum, generateLampSpriteName, generateLampClassName, generateLampZScript, generateFoeClassName,
     generateFoeSpriteName, generateFoeZScript, generateFoeTexturesDef, generateFriendlyClassName, generateFriendlyZScript,
-    generateNpcSpriteName,
+    generateNpcSpriteName, generateCrateClassName, generateCrateSpriteName, generateCrateZScript,
 )
 from tools import LEVEL_CEILING, LEVEL_FLOOR, SCALE_FACTOR
 
@@ -205,6 +205,31 @@ class MapGZD:
                 y = friendly.pos.y,
                 type = self._keysToFriendly[key].ednum.num,
                 angle = 0,
+            ))
+
+        self._keysToCrates: dict[tuple[int], ActorGZD] = dict()
+        for crate in mapInterim.crates:
+            key = (crate.spriteIdx, crate.colorIdx, crate.textureName)
+            if key not in self._keysToCrates:
+                spriteName = generateCrateSpriteName()
+                className = generateCrateClassName()
+                print(crate.colorIdx)
+                spriteB = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+1]
+                spriteC = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+2]
+                spriteD = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+3]
+                zscript = generateCrateZScript(className, spriteName)
+                ednum = EdnumGZD(num=generateEdnum(), className=className)
+                self.sprites[spriteName + "B0"] = spriteB
+                self.sprites[spriteName + "C0"] = spriteC
+                self.sprites[spriteName + "D0"] = spriteD
+                self.actors.append(ActorGZD(ednum=ednum, zscript=zscript))
+                self._keysToCrates[key] = self.actors[-1]
+            self.things.append(ThingGZD(
+                x = crate.pos.x,
+                y = crate.pos.y,
+                type = self._keysToCrates[key].ednum.num,
+                angle = 0,
+                arg0=crate.content.value,
             ))
 
 

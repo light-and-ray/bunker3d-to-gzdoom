@@ -92,6 +92,7 @@ class CrateInterim:
     colorIdx: int
     spriteIdx: int
     content: CrateContent
+    textureName: str
 
 
 class MapInterim:
@@ -144,9 +145,9 @@ class MapInterim:
         self.crates: list[CrateInterim] = []
         for crate in mapB3D.crates:
             content: CrateContent = None
-            isAmmo = crate.content & 0b001
-            isHealth = crate.content & 0b010
-            isSecondColor = crate.content & 0b100
+            isAmmo = (crate.content & 0b001) != 0
+            isHealth = (crate.content & 0b010) != 0
+            isSecondColor = (crate.content & 0b100) != 0
             if isAmmo and isHealth:
                 content = CrateContent.BOTH
             elif isAmmo:
@@ -158,7 +159,8 @@ class MapInterim:
             v1 = mapB3D.lines[crate.startLineIdx].v1
             v2 = mapB3D.lines[crate.startLineIdx+1].v2
             pos = Vertex(x=(v1.x+v2.x)/2, y=(v1.y+v2.y)/2)
-            self.crates.append(CrateInterim(pos=pos, colorIdx=int(isSecondColor), content=content, spriteIdx=crate.spriteIdx))
+            self.crates.append(CrateInterim(pos=pos, colorIdx=int(isSecondColor), content=content,
+                                    spriteIdx=crate.spriteIdx, textureName=crate.textureName))
 
 
     def _fixBrokenTextures(self, brokenTextures: dict[int, BrokenTextureData]):

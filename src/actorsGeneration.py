@@ -164,8 +164,40 @@ def generateFriendlyZScript(className: str, spriteName: str, spriteA: Image.Imag
     code +=  "    States\n"
     code +=  "    {\n"
     code +=  "        Spawn:\n"
-    code += f"            {spriteName} C 0 NoDelay A_JumpIf(true, \"SpawnBase\");\n"
+    code += f"            {spriteName} A 0 NoDelay A_JumpIf(true, \"SpawnBase\");\n"
     code += f"            stop;\n"
     code +=  "    }\n"
     code +=  "}\n"
     return code
+
+
+_crateSpriteNameIdx = 0
+def generateCrateSpriteName():
+    global _crateSpriteNameIdx
+    result = f'C{_crateSpriteNameIdx:03}'
+    _crateSpriteNameIdx += 1
+    return result
+
+_crateClassNameIdx = 0
+def generateCrateClassName():
+    global _crateClassNameIdx
+    result = f'B3DCrate{_crateClassNameIdx:03}'
+    _crateClassNameIdx += 1
+    return result
+
+def generateCrateZScript(className: str, spriteName: str):
+    code = ""
+    code += f"class {className} : BaseCrate\n"
+    code +=  "{\n"
+    code +=  "    Default\n"
+    code +=  "    {\n"
+    code +=  "    }\n"
+    code +=  "    States\n"
+    code +=  "    {\n"
+    code +=  "        Spawn:\n"
+    code += f"            {spriteName} B 0 NoDelay A_JumpIf(true, \"SpawnBase\");\n"
+    code += f"            stop;\n"
+    code +=  "    }\n"
+    code +=  "}\n"
+    return code
+
