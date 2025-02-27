@@ -47,7 +47,8 @@ class B3DPlayer : DoomPlayer replaces DoomPlayer
 
     void performAutoCrouch_Tick()
     {
-        if (cursector.CenterCeiling() - pos.z <= autoCrouchData.HEIGHT_THRESHOLD)
+        if ((cursector.CenterCeiling() - pos.z <= autoCrouchData.HEIGHT_THRESHOLD)
+                && !(player.cheats & CF_FLY || player.cheats & CF_NOCLIP2))
         {
             if (!autoCrouchData.wasCrouched) {
                 autoCrouchData.wasCrouched = true;

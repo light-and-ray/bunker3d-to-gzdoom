@@ -1,7 +1,6 @@
 Model CrateCrate
 {
     Model 0 "models/crate.obj"
-    Skin 0 ""
     Scale 48.0 48.0 48.0
     Offset -24 24 0
     FrameIndex D000 B 0 0

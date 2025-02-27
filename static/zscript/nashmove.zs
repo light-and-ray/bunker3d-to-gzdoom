@@ -31,6 +31,9 @@ class Z_NashMove : CustomInventory
 
     bool bIsOnFloor(void)
     {
+        if (Owner.player.cheats & CF_FLY || Owner.player.cheats & CF_NOCLIP2) {
+            return false;
+        }
         return (Owner.Pos.Z == Owner.FloorZ) || (Owner.bOnMObj);
     }
 

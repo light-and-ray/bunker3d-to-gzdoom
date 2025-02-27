@@ -28,7 +28,6 @@ class MachineGun : DoomWeapon
         Weapon.AmmoGive 8;
         Tag "Machine Gun";
         Weapon.AmmoType "B3DClip";
-        // +DontGib;
         Inventory.PickupMessage "$GOTSHOTGUN";
         Obituary "$OB_MPSHOTGUN";
         Decal "BulletChip";
