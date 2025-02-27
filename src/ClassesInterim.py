@@ -7,9 +7,10 @@ from ClassesB3D import MapB3D, CrateB3D, ThingCategory
 from algebraFunctions import (resolveSegmentsOverlap, isInside, areOppositelyDirected, fixVertex,
     calculateOffset, vertexWithOffset, segmentLength, findFourthVertex, vertexWithOffset_checkInside,
 )
-from ClassesShared import Vertex, HeightType, BrokenTextureData
+from ClassesShared import Vertex, HeightType
 from drawMap import drawMap
 from tools import SCALE_FACTOR
+from fixes import BrokenTextureData
 
 
 @dataclass

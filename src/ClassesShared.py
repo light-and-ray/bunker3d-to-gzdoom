@@ -18,8 +18,3 @@ class Animation:
     name: str
     frames: list[str]
     duration: float
-
-@dataclass
-class BrokenTextureData:
-    nums: list[int]
-    offset: float = None

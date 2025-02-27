@@ -11,6 +11,7 @@ from actorsGeneration import ( generateDecorationSpriteName, generateDecorationC
     generateCrateObj,
 )
 from tools import LEVEL_CEILING, LEVEL_FLOOR, SCALE_FACTOR
+from fixes import CRATE_TOP_TEXTURES
 
 @dataclass
 class SectorGZD:
@@ -230,7 +231,7 @@ class MapGZD:
                 modelPath = f"models/{spriteName}A0.obj"
                 model = ModelGZD(
                     modelPath=modelPath,
-                    modelObj=generateCrateObj(crate.textureName, crate.textureName),
+                    modelObj=generateCrateObj(crate.textureName, CRATE_TOP_TEXTURES[mapIndex][crate.colorIdx]),
                     modelDef=generateCrateModeldef(spriteName, className, modelPath),
                 )
                 self.models.append(model)
