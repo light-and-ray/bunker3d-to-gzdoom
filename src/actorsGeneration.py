@@ -239,7 +239,7 @@ def generateCrateObj(sideTextureName: str, topTextureName: str):
     code +=  "\n"
     code +=  "g side 3\n"
     code += f"usemtl {sideTextureName}\n"
-    code +=  "f 1/1/1 2/2/1 3/3/1 4/4/1\n"
+    code +=  "f 1/2/1 2/1/1 3/4/1 4/3/1\n"
     code +=  "\n"
     code +=  "g side 4\n"
     code += f"usemtl {sideTextureName}\n"
