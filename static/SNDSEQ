@@ -1,0 +1,6 @@
+
+:bunkerDoor
+    door 0
+    playrepeat bunker_door_open
+    stopsound bunker_door_stop
+end
