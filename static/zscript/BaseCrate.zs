@@ -13,7 +13,8 @@ class CrateCrate : Actor
     States
     {
         Spawn:
-            M000 A 25;
+            D000 A 25;
+            D000 B 25;
             loop;
     }
 }
