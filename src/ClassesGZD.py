@@ -244,7 +244,7 @@ class MapGZD:
                 x = crate.pos.x,
                 y = crate.pos.y,
                 type = self._keysToCrates[key].ednum.num,
-                angle = 0,
+                angle = crate.angle,
                 arg0=crate.content.value,
             ))
 

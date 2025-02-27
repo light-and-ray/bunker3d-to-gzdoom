@@ -252,6 +252,15 @@ def segmentLength(xA, yA, xB, yB):
     return math.sqrt((xB - xA) ** 2 + (yB - yA) ** 2)
 
 
+def segmentAngle(xA, yA, xB, yB):
+    dx = xB - xA
+    dy = yB - yA
+    angle_rad = math.atan2(dy, dx)
+    angle_deg = math.degrees(angle_rad)
+    if angle_deg < 0:
+        angle_deg += 360
+    return angle_deg
+
 
 def findFourthVertex(vertexes):
     """

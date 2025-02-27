@@ -17,5 +17,14 @@ class BaseCrate : Actor
             // #### C 25;
             loop;
     }
+
+    override void PostBeginPlay()
+    {
+        Super.PostBeginPlay();
+        if (angle % 90 != 0) {
+            A_SetSize(Radius/2);
+        }
+    }
+
 }
 
