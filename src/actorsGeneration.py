@@ -93,7 +93,7 @@ def generateFoeClassName():
     _foeClassNameIdx += 1
     return result
 
-def generateFoeZScript(className: str, spriteName: str, sprite0: Image.Image):
+def generateFoeZScript(className: str, spriteName: str, sprite0: Image.Image, spriteCorpse: Image.Image):
     code = ""
     foeScale = 1.2
     code += f"class {className} : BaseFoe\n"
@@ -101,6 +101,7 @@ def generateFoeZScript(className: str, spriteName: str, sprite0: Image.Image):
     code +=  "    Default\n"
     code +=  "    {\n"
     code += f"        Height {sprite0.height*foeScale*1.2};\n"
+    code += f"        DeathHeight {spriteCorpse.height*1.3};\n"
     code += f"        Radius {sprite0.width*foeScale/2*1.2};\n"
     code +=  "    }\n"
     code +=  "    States\n"
@@ -150,14 +151,14 @@ def generateFriendlyClassName():
     _friendlyClassNameIdx += 1
     return result
 
-def generateFriendlyZScript(className: str, spriteName: str, spriteA: Image.Image):
+def generateFriendlyZScript(className: str, spriteName: str, spriteA: Image.Image, spriteCorpse: Image.Image):
     code = ""
     code += f"class {className} : BaseFriendly\n"
     code +=  "{\n"
     code +=  "    Default\n"
     code +=  "    {\n"
-    code += f"        Height {spriteA.height};\n"
-    code += f"        DeathHeight {spriteA.height};\n"
+    code += f"        Height {spriteA.height*1.3};\n"
+    code += f"        DeathHeight {spriteCorpse.height*1.3};\n"
     code += f"        Radius {spriteA.width/2*1.3};\n"
     code +=  "    }\n"
     code +=  "    States\n"

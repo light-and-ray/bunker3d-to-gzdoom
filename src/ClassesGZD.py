@@ -165,7 +165,7 @@ class MapGZD:
                     self.texturesDefs.append(generateFoeTexturesDef(patchName, patch, mapIndex))
                 for i, name in enumerate(sprite_names):
                     self.sprites[spriteName + name] = mapInterim.foeSprites[foe.colorIdx][len(patches_names)+i]
-                zscript = generateFoeZScript(className, spriteName, self.sprites[spriteName + "C0"])
+                zscript = generateFoeZScript(className, spriteName, self.sprites[spriteName+"C0"], self.sprites[spriteName+"H0"])
                 self.actors.append(ActorGZD(ednum=ednum, zscript=zscript))
                 self._keysToLamp[key] = self.actors[-1]
             self.things.append(ThingGZD(
@@ -191,7 +191,7 @@ class MapGZD:
                     spriteB = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+5]
                 spriteC = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+2]
                 spriteD = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+3]
-                zscript = generateFriendlyZScript(className, spriteName, spriteA)
+                zscript = generateFriendlyZScript(className, spriteName, spriteA, spriteD)
                 ednum = EdnumGZD(num=generateEdnum(), className=className)
                 self.sprites[spriteName + "A0"] = spriteA
                 self.sprites[spriteName + "B0"] = spriteB
