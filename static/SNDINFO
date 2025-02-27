@@ -1,3 +1,5 @@
 MP40_fire = "sounds/MP40_fire.wav"
 bunker_door_open = "sounds/bunker_door_open.wav"
 bunker_door_stop = "sounds/bunker_door_stop.wav"
+bunker_door_heavy_open = "sounds/bunker_door_heavy_open.wav"
+bunker_door_heavy_stop = "sounds/bunker_door_heavy_stop.wav"

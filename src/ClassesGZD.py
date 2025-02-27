@@ -38,6 +38,7 @@ class VertexGZD:
 @dataclass
 class PolObjectGZD:
     number: int
+    soundSeq: int
 
 @dataclass
 class LineGZD:
@@ -227,7 +228,7 @@ class MapGZD:
         for i in range(len(doors)):
             doorB3D = doors[i]
             prevDoorB3D = doors[i-1] if i > 0 else None
-            polyObjectDef = self._genNewPolyObject()
+            polyObjectDef = self._genNewPolyObject(doorB3D.speed)
 
             startingSpot = ThingGZD(type=9301,
                 x = doorB3D.startingSpot.x,
@@ -321,8 +322,11 @@ class MapGZD:
         self.sides.append(newSide)
         return len(self.sides) - 1
 
-    def _genNewPolyObject(self):
+    def _genNewPolyObject(self, speed: int):
         self._lastPolyObjectNum += 1
-        return PolObjectGZD(number=self._lastPolyObjectNum)
+        soundSeq = 0
+        if speed == 24:
+            soundSeq = 1
+        return PolObjectGZD(number=self._lastPolyObjectNum, soundSeq=soundSeq)
 
 
