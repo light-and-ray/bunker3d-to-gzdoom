@@ -3,7 +3,7 @@ class CrateCrate : Actor
     Default
     {
         Height 48;
-        Radius 0;
+        Radius 24;
         +SOLID;
         +SHOOTABLE;
         +DONTTHRUST;
