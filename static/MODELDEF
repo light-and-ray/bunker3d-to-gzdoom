@@ -1,0 +1,8 @@
+Model CrateCrate
+{
+    Model 0 "models/crate.obj"
+    Skin 0 ""
+    Scale 48.0 48.0 48.0
+    Offset -48 0 0
+    FrameIndex M000 A 0 0
+}
