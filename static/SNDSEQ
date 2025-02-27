@@ -1,11 +1,11 @@
 :bunkerDoor
     door 0
-    playrepeat bunker_door_open
+    play bunker_door_open
     stopsound bunker_door_stop
 end
 
 :bunkerDoorHeavy
     door 1
-    playrepeat bunker_door_heavy_open
+    play bunker_door_heavy_open
     stopsound bunker_door_heavy_stop
 end
