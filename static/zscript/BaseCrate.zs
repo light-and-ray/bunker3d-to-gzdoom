@@ -59,14 +59,17 @@ class BaseCrate : Actor
         if (isBroken) {
             return false;
         }
-        if (level.time % 5 != 0) {
-            return true;
+        else
+        {
+            if (isFrozen()) {
+                return true;
+            }
+            if (level.time % 5 != 0) {
+                return true;
+            }
+            doBrake();
+            return false;
         }
-        if (isFrozen()) {
-            return true;
-        }
-        doBrake();
-        return false;
     }
 
     override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
