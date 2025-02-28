@@ -1,4 +1,4 @@
-decompiled linguist-vendored
+decompiled/*/** linguist-vendored
 java/ResourcesLoader* linguist-vendored
 static/zscript/nashmove.zs linguist-vendored
 # *.zs linguist-language=ZScript
