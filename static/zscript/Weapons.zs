@@ -1,21 +1,21 @@
 class B3DClip : Ammo replaces Clip
 {
-	Default
-	{
-		Inventory.PickupMessage "$GOTCLIP";
-		Inventory.Amount 10;
-		Inventory.MaxAmount 1000;
-		Ammo.BackpackAmount 10;
-		Ammo.BackpackMaxAmount 2000;
-		Inventory.Icon "CLIPA0";
-		Tag "$AMMO_CLIP";
-	}
-	States
-	{
-	Spawn:
-		CLIP A -1;
-		Stop;
-	}
+    Default
+    {
+        Inventory.PickupMessage "$GOTCLIP";
+        Inventory.Amount 10;
+        Inventory.MaxAmount 1000;
+        Ammo.BackpackAmount 10;
+        Ammo.BackpackMaxAmount 2000;
+        Inventory.Icon "CLIPA0";
+        Tag "$AMMO_CLIP";
+    }
+    States
+    {
+    Spawn:
+        CLIP A -1;
+        Stop;
+    }
 }
 
 
