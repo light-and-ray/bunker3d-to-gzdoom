@@ -232,6 +232,7 @@ class MapGZD:
                     modelDef=generateCrateModeldef(spriteName, className, modelPath),
                 )
                 self.models.append(model)
+                self.sprites[spriteName+"A0"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+1] # model replacement for software renderer
                 self.sprites[spriteName+"B0"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+1]
                 self.sprites[spriteName+"C0"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+2]
                 self.sprites[spriteName+"D0"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+3] # None
