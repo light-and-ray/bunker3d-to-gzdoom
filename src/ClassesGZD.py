@@ -168,7 +168,7 @@ class MapGZD:
                 ednum = EdnumGZD(num=generateEdnum(), className=className)
                 patches_names = ["A_front", "B_front", "A_left", "B_left", "A_back", "B_back",
                                 "A_right", "B_right"]
-                sprite_names = ["C0", "D0", "F0", "G0", "H0", "I0", "J0", "K0"]
+                sprite_names = ["C0", "D0", "E0", "F0", "G0", "H0", "I0", "J0"]
                 for i, name in enumerate(patches_names):
                     patchName = spriteName + name
                     patch = mapInterim.foeSprites[foe.colorIdx][i]
@@ -176,7 +176,7 @@ class MapGZD:
                     self.texturesDefs.append(generateFoeTexturesDef(patchName, patch, mapIndex))
                 for i, name in enumerate(sprite_names):
                     self.sprites[spriteName + name] = mapInterim.foeSprites[foe.colorIdx][len(patches_names)+i]
-                zscript = generateFoeZScript(className, spriteName, self.sprites[spriteName+"C0"], self.sprites[spriteName+"H0"])
+                zscript = generateFoeZScript(className, spriteName, self.sprites[spriteName+"C0"], self.sprites[spriteName+"G0"])
                 self.actors.append(ActorGZD(ednum=ednum, zscript=zscript))
                 self._keysToLamp[key] = self.actors[-1]
             self.things.append(ThingGZD(
@@ -204,10 +204,10 @@ class MapGZD:
                 spriteD = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+3]
                 zscript = generateFriendlyZScript(className, spriteName, spriteA, spriteD)
                 ednum = EdnumGZD(num=generateEdnum(), className=className)
-                self.sprites[spriteName + "A0"] = spriteA
-                self.sprites[spriteName + "B0"] = spriteB
-                self.sprites[spriteName + "C0"] = spriteC
-                self.sprites[spriteName + "D0"] = spriteD
+                self.sprites[spriteName+"A0"] = spriteA
+                self.sprites[spriteName+"B0"] = spriteB
+                self.sprites[spriteName+"C0"] = spriteC
+                self.sprites[spriteName+"D0"] = spriteD
                 self.actors.append(ActorGZD(ednum=ednum, zscript=zscript))
                 self._keysToFriendly[key] = self.actors[-1]
             self.things.append(ThingGZD(
@@ -223,9 +223,6 @@ class MapGZD:
             if key not in self._keysToCrates:
                 spriteName = generateCrateSpriteName()
                 className = generateCrateClassName()
-                spriteB = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+1]
-                spriteC = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+2]
-                spriteD = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+3]
                 zscript = generateCrateZScript(className, spriteName)
                 ednum = EdnumGZD(num=generateEdnum(), className=className)
                 modelPath = f"models/{spriteName}A0.obj"
@@ -235,9 +232,12 @@ class MapGZD:
                     modelDef=generateCrateModeldef(spriteName, className, modelPath),
                 )
                 self.models.append(model)
-                self.sprites[spriteName+"B0"] = spriteB
-                self.sprites[spriteName+"C0"] = spriteC
-                self.sprites[spriteName+"D0"] = spriteD
+                self.sprites[spriteName+"B0"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+1]
+                self.sprites[spriteName+"C0"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+2]
+                self.sprites[spriteName+"D0"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+3] # None
+                self.sprites[spriteName+"E0"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+4] # Ammo
+                self.sprites[spriteName+"F0"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+5] # Health
+                self.sprites[spriteName+"G0"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+6] # Both
                 self.actors.append(ActorGZD(ednum=ednum, zscript=zscript))
                 self._keysToCrates[key] = self.actors[-1]
             self.things.append(ThingGZD(
