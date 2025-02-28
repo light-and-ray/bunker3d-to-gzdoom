@@ -102,6 +102,7 @@ class BaseCrate : Actor
         }
 
         isBroken = true;
+        bSHOOTABLE = false;
     }
 
 }
