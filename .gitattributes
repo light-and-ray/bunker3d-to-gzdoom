@@ -1,4 +1,5 @@
 decompiled/*/** linguist-vendored
 java/ResourcesLoader* linguist-vendored
 static/zscript/nashmove.zs linguist-vendored
+bin/_generatePalette/colormap.py linguist-vendored
 # *.zs linguist-language=ZScript
