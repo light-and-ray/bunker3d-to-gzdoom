@@ -1,118 +1,126 @@
 #!/usr/bin/env python3
+"""
+This script generates an optimal 256-color palette from a list of PNG images
+using k-means clustering. The clustering automatically averages similar colors,
+yielding a palette that better represents the overall distribution of colors,
+even when multiple images have similar gray, black, or white tones.
+"""
+
 import sys
+import random
 from PIL import Image
 
-def average_color(colors):
-    """Calculate the average RGB color from a list of colors.
-    
+try:
+    import numpy as np
+except ImportError:
+    sys.exit("Error: numpy is required to run this script. Please install it via pip (pip install numpy).")
+
+def kmeans_palette(colors, k, max_iter=20, sample_size=100000):
+    """
+    Perform k-means clustering on the list of colors to extract k representative colors.
+
     Args:
         colors (list of tuple): List of (r, g, b) tuples.
-        
-    Returns:
-        tuple: (avg_r, avg_g, avg_b) as integers.
-    """
-    if not colors:
-        return (0, 0, 0)
-    total_r = total_g = total_b = 0
-    for r, g, b in colors:
-        total_r += r
-        total_g += g
-        total_b += b
-    n = len(colors)
-    return (total_r // n, total_g // n, total_b // n)
+        k (int): Number of clusters (palette colors).
+        max_iter (int): Maximum number of iterations.
+        sample_size (int): Maximum number of pixels to use for clustering (random sample if needed).
 
-def median_cut(colors, depth):
-    """Apply the median cut algorithm recursively to generate a palette.
-    
-    Args:
-        colors (list of tuple): List of (r, g, b) tuples.
-        depth (int): Number of splits to perform.
-        
     Returns:
-        list: List of average colors for each box.
+        list: List of k colors as (r, g, b) tuples (averaged and converted to integers).
     """
-    if depth == 0 or len(colors) == 0:
-        return [average_color(colors)]
-    
-    # Determine the range of colors along each channel
-    reds   = [r for r, _, _ in colors]
-    greens = [g for _, g, _ in colors]
-    blues  = [b for _, _, b in colors]
+    # If the number of colors is huge, sample a subset for efficiency.
+    if len(colors) > sample_size:
+        colors = random.sample(colors, sample_size)
 
-    r_range = max(reds) - min(reds)
-    g_range = max(greens) - min(greens)
-    b_range = max(blues) - min(blues)
-    
-    # Choose the channel with the greatest range to split upon
-    if r_range >= g_range and r_range >= b_range:
-        key = lambda color: color[0]
-    elif g_range >= r_range and g_range >= b_range:
-        key = lambda color: color[1]
-    else:
-        key = lambda color: color[2]
-    
-    # Sort colors by the selected channel
-    colors.sort(key=key)
-    median_index = len(colors) // 2
-    
-    # Recursively process the two halves
-    left = median_cut(colors[:median_index], depth - 1)
-    right = median_cut(colors[median_index:], depth - 1)
-    
-    return left + right
+    # Convert list of colors to a numpy array of shape (N, 3)
+    data = np.array(colors, dtype=np.float32)
+    n_points = data.shape[0]
+
+    # Randomly initialize k centroids from the data.
+    indices = np.random.choice(n_points, k, replace=False)
+    centroids = data[indices]
+
+    for iteration in range(max_iter):
+        # Compute squared Euclidean distances between each point and centroid
+        # Using broadcasting trick: (data - centroid)**2 and summing up along axis 1.
+        # Resulting in a (n_points, k) matrix.
+        diff = data[:, np.newaxis, :] - centroids[np.newaxis, :, :]
+        distances = np.sum(diff**2, axis=2)
+
+        # Assign each point to the nearest centroid
+        labels = np.argmin(distances, axis=1)
+
+        new_centroids = np.zeros_like(centroids)
+        for i in range(k):
+            # If no point is assigned to a centroid, reinitialize it randomly.
+            if np.any(labels == i):
+                new_centroids[i] = data[labels == i].mean(axis=0)
+            else:
+                new_centroids[i] = data[np.random.choice(n_points)]
+
+        # Check for convergence: if centroids haven't changed significantly, then break.
+        if np.allclose(centroids, new_centroids, atol=1e-2):
+            break
+        centroids = new_centroids
+
+    # Convert centroids to integer RGB tuples.
+    palette = [tuple(map(lambda x: int(round(x)), centroid)) for centroid in centroids]
+    return palette
 
 def get_optimal_palette(*png_paths):
-    """Generate an optimal 256-color palette from a list of PNG images.
-    
-    The palette is generated using a median cut algorithm.
-    
+    """
+    Generate an optimal 256-color palette from a list of PNG images using k-means clustering.
+
+    The palette is generated such that similar colors (for instance similar gray, black, and white tones)
+    are averaged naturally by the clustering process.
+
     Args:
         *png_paths: Variable length argument list containing paths to PNG files.
-        
+
     Returns:
-        bytes: A binary string representing the final palette. The palette is 
-               256 (16x16) RGB pixels, written in a row (3 bytes per color).
+        bytes: A binary string representing the final palette. The palette is
+               256 RGB colors, with 3 bytes per color.
     """
     colors = []
     for path in png_paths:
         try:
             with Image.open(path) as im:
                 im = im.convert("RGB")
-                # Extend the colors list with all pixels from the image.
                 colors.extend(list(im.getdata()))
         except Exception as e:
             print(f"Error processing image {path}: {e}", file=sys.stderr)
-    
+
     if not colors:
         raise ValueError("No colors were found in any of the provided images.")
-    
-    # Use median cut algorithm with depth=8 to yield 2^8 = 256 colors.
-    palette = median_cut(colors, 8)
-    
-    # If the number of colors is fewer than 256 because of limited image data, pad with black.
+
+    # Run k-means clustering to get 256 optimal colors.
+    palette = kmeans_palette(colors, 256)
+
+    # In case fewer than 256 unique clusters were produced, pad with black.
     while len(palette) < 256:
         palette.append((0, 0, 0))
-    # If more than 256 colors are produced, truncate the extra ones.
+    # If more than 256 colors are produced (shouldn't happen), truncate.
     if len(palette) > 256:
         palette = palette[:256]
-    
-    # Create the binary palette: each color is 3 bytes (R, G, B)
+
+    # Creating a binary palette: each color is 3 bytes (R, G, B)
     palette_bytes = bytearray()
     for r, g, b in palette:
         palette_bytes.extend([r, g, b])
-        
+
     return bytes(palette_bytes)
 
 if __name__ == '__main__':
     if len(sys.argv) < 3:
         print("Usage: {} out_file image1.png image2.png ...".format(sys.argv[0]))
         sys.exit(1)
-    
+
     # Calculate the palette for the provided PNG files.
     result = get_optimal_palette(*sys.argv[2:])
-    
+
     # Write the resulting binary palette to a file.
     out_file = sys.argv[1]
     with open(out_file, "wb") as f:
         f.write(result)
     print(f"Palette generated and written to {out_file} (size: {len(result)} bytes)")
+
