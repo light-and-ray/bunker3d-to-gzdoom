@@ -6,6 +6,7 @@ from tools import WALL_HEIGHT
 class BrokenTextureData:
     nums: list[int]
     offset: float = None
+    stretch: float = 1.0
 
 
 BROKEN_LINES = [

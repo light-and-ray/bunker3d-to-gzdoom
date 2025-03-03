@@ -28,6 +28,7 @@ class SideGZD:
     sectorIdx: int
     mode: TextureMode
     offset: float
+    stretch: float
     textureTop: str = None
     textureBottom: str = None
     textureMiddle: str = None
@@ -336,12 +337,12 @@ class MapGZD:
             sideBackIdx = None
             if line.height == HeightType.FULL:
                 sector = forcedSector if forcedSector is not None else self.SECTOR_FULL_IDX
-                sideFrontIdx = self._addSide(sector, TextureMode.MIDDLE, line.texture.names[0], line.texture.offset)
+                sideFrontIdx = self._addSide(sector, TextureMode.MIDDLE, line.texture.names[0], line.texture.offset, line.texture.stretch)
             elif line.height == HeightType.BOTTOM:
-                sideFrontIdx = self._addSide(self.SECTOR_FULL_IDX, TextureMode.TOP_AND_BOTTOM, line.texture.names[0], line.texture.offset)
-                sideBackIdx = self._addSide(self.SECTOR_BOTTOM_IDX, TextureMode.NO_TEXTURES, None, None)
+                sideFrontIdx = self._addSide(self.SECTOR_FULL_IDX, TextureMode.TOP_AND_BOTTOM, line.texture.names[0], line.texture.offset, line.texture.stretch)
+                sideBackIdx = self._addSide(self.SECTOR_BOTTOM_IDX, TextureMode.NO_TEXTURES, None, None, 1.0)
             elif line.height == HeightType.TOP:
-                sideFrontIdx = self._addSide(self.SECTOR_BOTTOM_IDX, TextureMode.MIDDLE, line.texture.names[0], line.texture.offset)
+                sideFrontIdx = self._addSide(self.SECTOR_BOTTOM_IDX, TextureMode.MIDDLE, line.texture.names[0], line.texture.offset, line.texture.stretch)
             linesGZD.append(LineGZD(v1=v1Idx, v2=v2Idx,
                                       sideFrontIdx=sideFrontIdx, sideBackIdx=sideBackIdx))
         return linesGZD
@@ -354,10 +355,10 @@ class MapGZD:
         self.vertexes.append(newVertex)
         return len(self.vertexes) - 1
 
-    def _addSide(self, sectorIdx: int, mode: TextureMode, texture: str, offset: float):
+    def _addSide(self, sectorIdx: int, mode: TextureMode, texture: str, offset: float, stretch: float):
         if texture is None:
             texture = "NONE"
-        newSide = SideGZD(sectorIdx=sectorIdx, mode=mode, offset=offset)
+        newSide = SideGZD(sectorIdx=sectorIdx, mode=mode, offset=offset, stretch=stretch)
         if mode == TextureMode.MIDDLE:
             newSide.textureMiddle = texture
         elif mode == TextureMode.TOP_AND_BOTTOM:

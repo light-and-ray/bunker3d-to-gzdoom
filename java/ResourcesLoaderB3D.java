@@ -32,6 +32,7 @@ public class ResourcesLoaderB3D {
    public ArrayList<Short> FOE_SPRITES_H = new ArrayList<>();
    public ArrayList<int[]> FOE_SPRITES_DATA_COLOR_1 = new ArrayList<>();
    public ArrayList<int[]> FOE_SPRITES_DATA_COLOR_2 = new ArrayList<>();
+   public int LAST_BASE_GEOMETRY_LINE;
 
    public byte c;
    public boolean e;
@@ -611,6 +612,7 @@ public class ResourcesLoaderB3D {
       }
 
       this.eX = lineIdx;
+      this.LAST_BASE_GEOMETRY_LINE = lineIdx - 1;
       lineIdx = 0;
       lineSeqIdx = 0;
       this.cX = new byte[totalNumberOfLines];

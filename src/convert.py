@@ -8,7 +8,7 @@ from save import (saveMap, saveStaticData, saveTextures, saveAnimations, saveSpr
 )
 
 MAPS = range(1, 10)
-# MAPS = [1]
+# MAPS = [9]
 
 if __name__ == "__main__":
     saveStaticData()
@@ -24,7 +24,7 @@ if __name__ == "__main__":
         animations.extend(data.map.animations)
         mapInterim = MapInterim(data.map, brokenLines=data.brokenLines, doorsSpeed=data.doorsSpeed,
                 doorsStartLineIdx=data.doorsStartLineIdx, brokenTextures=data.brokenTextures, foeAngles=data.foeAngles,
-                foeWalkDistances=data.foeWalkDistances,)
+                foeWalkDistances=data.foeWalkDistances, lastBaseGeometryLine=data.lastBaseGeometryLine,)
         mapName = f'c1m{idx}'
         drawMap(data.map, name=mapName, show=False)
         mapGZD = MapGZD(mapInterim, spawnPos=data.spawnPos, spawnAngle=data.spawnAngle, mapIndex=idx)

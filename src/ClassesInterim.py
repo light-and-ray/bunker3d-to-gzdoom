@@ -9,7 +9,7 @@ from algebraFunctions import (resolveSegmentsOverlap, isInside, areOppositelyDir
 )
 from ClassesShared import Vertex, HeightType
 from drawMap import drawMap
-from tools import SCALE_FACTOR
+from tools import SCALE_FACTOR, WALL_HEIGHT
 from fixes import BrokenTextureData
 
 
@@ -17,9 +17,10 @@ from fixes import BrokenTextureData
 class TextureInterim:
     names : list[str]
     offset : float = 0.0
+    stretch : float = 1.0
     def trimOffset(self, textures: dict[str, Image.Image]):
-        while self.offset >= textures[self.names[0]].width:
-            self.offset -= textures[self.names[0]].width
+        while self.offset >= textures[self.names[0]].width*self.stretch:
+            self.offset -= textures[self.names[0]].width*self.stretch
             if len(self.names) > 1:
                 self.names = self.names[1:]
 
@@ -99,12 +100,25 @@ class CrateInterim:
 
 class MapInterim:
     def __init__(self, mapB3D: MapB3D, brokenLines: list[int], doorsSpeed: list[int], doorsStartLineIdx: list[int],
-            brokenTextures: dict[int, BrokenTextureData], foeAngles: list[int], foeWalkDistances: list[int]):
+            brokenTextures: dict[int, BrokenTextureData], foeAngles: list[int], foeWalkDistances: list[int],
+            lastBaseGeometryLine: int):
         self.textures = mapB3D.textures
         self.lines: list[LineInterim] = []
-        for line in mapB3D.lines:
+        for i, line in enumerate(mapB3D.lines):
             texture = TextureInterim(names=line.texturesNames)
-            self.lines.append(LineInterim(v1=copy.copy(line.v1), v2=copy.copy(line.v2), height=line.height, texture=texture))
+            line = LineInterim(v1=copy.copy(line.v1), v2=copy.copy(line.v2), height=line.height, texture=texture)
+            if i <= lastBaseGeometryLine:
+                length = round(segmentLength(*self.lineToTuple(line)) * SCALE_FACTOR)
+                rem = length % WALL_HEIGHT
+                tile = length//WALL_HEIGHT
+                # print(i, rem)
+                rem_to_stretch = [40, 23]
+                if rem in rem_to_stretch:
+                    texture.stretch = (WALL_HEIGHT+rem/tile)/WALL_HEIGHT
+                rem_to_squeeze = [80]
+                if rem in rem_to_squeeze:
+                    texture.stretch = WALL_HEIGHT/(WALL_HEIGHT+(WALL_HEIGHT-rem)/(tile+1))
+            self.lines.append(line)
         self._fixBrokenTextures(brokenTextures)
         self._fillCirclesOffsets(mapB3D.circles)
         self._initDoors(doorsStartLineIdx, doorsSpeed)
@@ -177,6 +191,7 @@ class MapInterim:
                         newNames.append(list(self.textures.keys())[newNum])
                     line.texture.names = newNames
                     line.texture.offset = data.offset
+                    line.texture.stretch = data.stretch
                 else:
                     print(f"warning: no fixing data for {lineNum} texture. Broken num = {brokenNum}")
 

@@ -26,11 +26,14 @@ def saveMap(map: MapGZD, mapIndex: int):
         if side.mode == TextureMode.MIDDLE:
             umap.sidedefs[-1].texturemiddle = side.textureMiddle
             umap.sidedefs[-1].offsetx_mid = side.offset
+            umap.sidedefs[-1].scalex_mid = 1/side.stretch
         elif side.mode == TextureMode.TOP_AND_BOTTOM:
             umap.sidedefs[-1].texturebottom = side.textureBottom
             umap.sidedefs[-1].texturetop = side.textureTop
             umap.sidedefs[-1].offsetx_bottom = side.offset
             umap.sidedefs[-1].offsetx_top = side.offset
+            umap.sidedefs[-1].scalex_bottom = 1/side.stretch
+            umap.sidedefs[-1].scalex_top = 1/side.stretch
 
     for line in map.lines:
         umap.linedefs.append(omg.ULinedef(v1=line.v1, v2=line.v2,
