@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 from PIL import Image
 from typing import Any
+import math
 from ClassesShared import Vertex, HeightType, Animation
-from tools import generateTextureLumpName, generateTextureMirroredLumpName
+from tools import generateTextureLumpName, generateTextureMirroredLumpName, WALL_HEIGHT
 from enum import Enum
 
 
@@ -85,6 +86,7 @@ class MapB3D:
                 spriteIdx=thingsSprites[48]-16,
             ))
 
+        self._repeatShortTextures()
         self._removeRepeatingTexturesTale()
         self.mirroredDict = {}
         self._applyAnimation(animatedFrames, animatedLines, textureMirroring)
@@ -171,3 +173,17 @@ class MapB3D:
 
             for animatedLineIdx in animatedLines:
                 self.lines[animatedLineIdx].texturesNames = [animation.name]
+
+
+    def _repeatShortTextures(self):
+        for line in self.lines:
+            newNames = []
+            for name in line.texturesNames:
+                if name in self.textures:
+                    textureW = self.textures[name].width
+                    number = math.floor(WALL_HEIGHT/textureW)
+                    newNames.extend([name]*number)
+                else:
+                    newNames.append(name)
+            line.texturesNames = newNames
+
