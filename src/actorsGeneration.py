@@ -260,3 +260,13 @@ def generateCrateModeldef(spriteName: str, className: str, modelPath: str):
     code += f"    FrameIndex {spriteName} A 0 0\n"
     code +=  "}\n"
     return code
+
+def generateCrateModelReplacementTextureDef(spriteName: str, textureName: str, texture: Image.Image, mapIndex: int):
+    textures = ""
+    textures += f"Sprite {spriteName}, {texture.width}, {texture.height}\n"
+    textures +=  "{\n"
+    textures += f"    Patch \"textures/c1m{mapIndex}/{textureName}.png\", 0, 0\n"
+    textures += f"    Offset {texture.width//2}, {texture.height}\n"
+    textures +=  "}\n"
+    return textures
+

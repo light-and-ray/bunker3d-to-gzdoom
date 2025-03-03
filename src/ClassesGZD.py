@@ -8,7 +8,7 @@ from actorsGeneration import ( generateDecorationSpriteName, generateDecorationC
     generateEdnum, generateLampSpriteName, generateLampClassName, generateLampZScript, generateFoeClassName,
     generateFoeSpriteName, generateFoeZScript, generateFoeTexturesDef, generateFriendlyClassName, generateFriendlyZScript,
     generateNpcSpriteName, generateCrateClassName, generateCrateSpriteName, generateCrateZScript, generateCrateModeldef,
-    generateCrateObj,
+    generateCrateObj, generateCrateModelReplacementTextureDef,
 )
 from tools import LEVEL_CEILING, LEVEL_FLOOR, SCALE_FACTOR
 from fixes import CRATE_TOP_TEXTURES
@@ -238,7 +238,8 @@ class MapGZD:
                     modelDef=generateCrateModeldef(spriteName, className, modelPath),
                 )
                 self.models.append(model)
-                self.sprites[spriteName+"A0"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+1] # model replacement for software renderer
+                self.texturesDefs[spriteName+"A0"] = generateCrateModelReplacementTextureDef(spriteName+"A0",
+                                    crate.textureName, mapInterim.textures[crate.textureName], mapIndex)
                 self.sprites[spriteName+"B0"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+1]
                 self.sprites[spriteName+"C0"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+2]
                 self.sprites[spriteName+"D0"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+3] # None
