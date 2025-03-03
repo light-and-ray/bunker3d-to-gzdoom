@@ -8,7 +8,7 @@ from save import (saveMap, saveStaticData, saveTextures, saveAnimations, saveSpr
 )
 
 MAPS = range(1, 10)
-# MAPS = [9]
+# MAPS = [5]
 
 if __name__ == "__main__":
     saveStaticData()
