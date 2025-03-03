@@ -15,7 +15,7 @@ if __name__ == "__main__":
     colorsCeiling = []
     colorsFloor = []
     animations: list[Animation] = []
-    texturesDefs: list[str] = []
+    texturesDefs: dict[str, dict[str, str]] = dict()
     zscripts: dict[str, list[str]] = dict()
     ednums: list[EdnumGZD] = []
     models: list[ModelGZD] = []
@@ -34,7 +34,7 @@ if __name__ == "__main__":
         savePatches(patches=mapGZD.patches, mapIndex=idx)
         zscripts[mapName] = [a.zscript for a in mapGZD.actors]
         ednums.extend([a.ednum for a in mapGZD.actors])
-        texturesDefs.extend(mapGZD.texturesDefs)
+        texturesDefs[mapName] = mapGZD.texturesDefs
         models.extend(mapGZD.models)
     saveAnimations(animations)
     saveZScripts(zscripts)

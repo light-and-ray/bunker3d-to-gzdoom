@@ -114,7 +114,7 @@ class MapGZD:
 
         self.sprites: dict[str, Image.Image] = {}
         self.patches: dict[str, Image.Image] = {}
-        self.texturesDefs: list[str] = []
+        self.texturesDefs: dict[str, str] = dict()
 
         self._keysToDecoration: dict[tuple[int], ActorGZD] = dict()
         for decoration in mapInterim.decorations:
@@ -173,7 +173,13 @@ class MapGZD:
                     patchName = spriteName + name
                     patch = mapInterim.foeSprites[foe.colorIdx][i]
                     self.patches[patchName] = patch
-                    self.texturesDefs.append(generateFoeTexturesDef(patchName, patch, mapIndex))
+                    if name.startswith('A'):
+                        texturesName = spriteName+'A'
+                    else:
+                        texturesName = spriteName+'B'
+                    if texturesName not in self.texturesDefs:
+                        self.texturesDefs[texturesName] = ""
+                    self.texturesDefs[texturesName] += '\n' + generateFoeTexturesDef(patchName, patch, mapIndex)
                 for i, name in enumerate(sprite_names):
                     self.sprites[spriteName + name] = mapInterim.foeSprites[foe.colorIdx][len(patches_names)+i]
                 zscript = generateFoeZScript(className, spriteName, self.sprites[spriteName+"C0"], self.sprites[spriteName+"G0"])

@@ -127,12 +127,16 @@ def saveAnimations(animations: list[Animation]):
         animdefs += "\n"
     saveToFile(RESULT_DIR + "/ANIMDEFS.generated", animdefs)
 
-def saveTexturesDef(texturesList: list[str]):
-    allTexturesDefs = ""
-    for texturesDef in texturesList:
-        allTexturesDefs += texturesDef
-        allTexturesDefs += "\n"
-    saveToFile(RESULT_DIR + "/TEXTURES.generated", allTexturesDefs)
+def saveTexturesDef(texturesDict: dict[str, dict[str, str]]):
+    includes = ""
+    for mapName, mapDict in texturesDict.items():
+        for fileName, code in mapDict.items():
+            path = f"textureDefs/{mapName}/{fileName}.txt"
+            codePath = RESULT_DIR + "/" + path
+            os.makedirs(os.path.dirname(codePath), exist_ok=True)
+            saveToFile(codePath, code)
+            includes += f'#include "{path}"\n'
+    saveToFile(RESULT_DIR + "/TEXTURES.generated", includes)
 
 
 def saveZScripts(zscriptsDict: dict[str, list[str]]):
