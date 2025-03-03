@@ -103,23 +103,17 @@ class MapInterim:
             brokenTextures: dict[int, BrokenTextureData], foeAngles: list[int], foeWalkDistances: list[int]):
         self.textures = mapB3D.textures
         self.lines: list[LineInterim] = []
-        for i, line in enumerate(mapB3D.lines):
+        allCircleLines = []
+        for circle in mapB3D.circles:
+            allCircleLines.extend(circle)
+
+        for index, line in enumerate(mapB3D.lines):
             texture = TextureInterim(names=line.texturesNames)
             line = LineInterim(v1=copy.copy(line.v1), v2=copy.copy(line.v2), height=line.height, texture=texture)
-            if texture.names[0] in self.textures:
-                textureW = self.textures[texture.names[0]].width
-                length = round(segmentLength(*self.lineToTuple(line)) * SCALE_FACTOR)
-                rem = length % textureW
-                tile = length//textureW
-                # print(i, rem, tile)
-                rem_to_stretch = [40, 23, 48, 7, 47]
-                if rem in rem_to_stretch:
-                    if tile > 0:
-                        texture.stretch = (textureW+rem/tile)/textureW
-                rem_to_squeeze = [80, 9]
-                if rem in rem_to_squeeze:
-                    texture.stretch = length/((tile+1)*textureW)
+            if texture.names[0] in self.textures and index not in allCircleLines:
+                self._fillStretch(texture, line, index)
             self.lines.append(line)
+
         self._fixBrokenTextures(brokenTextures)
         self._fillCirclesOffsets(mapB3D.circles)
         self._initDoors(doorsStartLineIdx, doorsSpeed)
@@ -486,4 +480,24 @@ class MapInterim:
         for door in self.doors:
             self._moveDoorOnNewPosition(door)
             door.boxLines = self._generateBoxAroundDoor(door.lines)
+
+
+    def _fillStretch(self, texture: TextureInterim, line: LineInterim, index: int):
+        textureW = self.textures[texture.names[0]].width
+        length = round(segmentLength(*self.lineToTuple(line)) * SCALE_FACTOR)
+        rem = length % textureW
+        tile = length//textureW
+        # print(index, rem, tile)
+        rems_to_stretch = [40, 23, 48, 7, 47]
+        rems_to_squeeze = [80, 9]
+        rems_to_ignore = [0, 45, 10, 32]
+        if rem in rems_to_stretch:
+            if tile > 0:
+                texture.stretch = (textureW+rem/tile)/textureW
+        elif rem in rems_to_squeeze:
+            texture.stretch = length/((tile+1)*textureW)
+        elif rem in rems_to_ignore:
+            pass
+        else:
+            print(f"Warning: unknown texture rem={rem} on line {index}")
 
