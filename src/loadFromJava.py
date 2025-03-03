@@ -62,7 +62,6 @@ class LoadedData:
     spawnAngle: int = None
     foeAngles: list[int] = None
     foeWalkDistances: list[int] = None
-    lastBaseGeometryLine: int = None
 
 
 def _loadTextures():
@@ -187,8 +186,6 @@ def load(mapIndex):
 
     data.foeAngles = read1DArray('FOE_ANGLES')
     data.foeWalkDistances = read1DArray('FOE_WALK_DISTANCE')
-
-    data.lastBaseGeometryLine = readSingleValue('LAST_BASE_GEOMETRY_LINE')
 
     return data
 

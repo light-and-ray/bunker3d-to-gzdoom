@@ -22,7 +22,7 @@ public class MainB3D {
         Json.export("CRATES_CONTENT", loader.CRATES_CONTENT); // 0 - nothing, 1 - ammo, 2 - health, 3 - health+ammo, 7 - health+ammo, 6 - unknown
         Json.export("CRATES_ANGLE", loader.CRATES_ANGLE);
         Json.export("CIRCLES_IDX", loader.CIRCLES_IDX);
-        Json.export("LAST_BASE_GEOMETRY_LINE", loader.LAST_BASE_GEOMETRY_LINE);
+        // Json.export("LAST_BASE_GEOMETRY_LINE", loader.LAST_BASE_GEOMETRY_LINE);
 
         Json.export("TEXTURES_DATA", loader.TEXTURES_DATA);
         Json.export("TEXTURES_W", loader.TEXTURES_W);

@@ -100,24 +100,25 @@ class CrateInterim:
 
 class MapInterim:
     def __init__(self, mapB3D: MapB3D, brokenLines: list[int], doorsSpeed: list[int], doorsStartLineIdx: list[int],
-            brokenTextures: dict[int, BrokenTextureData], foeAngles: list[int], foeWalkDistances: list[int],
-            lastBaseGeometryLine: int):
+            brokenTextures: dict[int, BrokenTextureData], foeAngles: list[int], foeWalkDistances: list[int]):
         self.textures = mapB3D.textures
         self.lines: list[LineInterim] = []
         for i, line in enumerate(mapB3D.lines):
             texture = TextureInterim(names=line.texturesNames)
             line = LineInterim(v1=copy.copy(line.v1), v2=copy.copy(line.v2), height=line.height, texture=texture)
-            if i <= lastBaseGeometryLine:
+            if texture.names[0] in self.textures:
+                textureW = self.textures[texture.names[0]].width
                 length = round(segmentLength(*self.lineToTuple(line)) * SCALE_FACTOR)
-                rem = length % WALL_HEIGHT
-                tile = length//WALL_HEIGHT
-                # print(i, rem)
-                rem_to_stretch = [40, 23]
+                rem = length % textureW
+                tile = length//textureW
+                # print(i, rem, tile)
+                rem_to_stretch = [40, 23, 48]
                 if rem in rem_to_stretch:
-                    texture.stretch = (WALL_HEIGHT+rem/tile)/WALL_HEIGHT
-                rem_to_squeeze = [80]
+                    if tile > 0:
+                        texture.stretch = (textureW+rem/tile)/textureW
+                rem_to_squeeze = [80, 9]
                 if rem in rem_to_squeeze:
-                    texture.stretch = WALL_HEIGHT/(WALL_HEIGHT+(WALL_HEIGHT-rem)/(tile+1))
+                    texture.stretch = length/((tile+1)*textureW)
             self.lines.append(line)
         self._fixBrokenTextures(brokenTextures)
         self._fillCirclesOffsets(mapB3D.circles)
