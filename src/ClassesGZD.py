@@ -179,7 +179,7 @@ class MapGZD:
                         texturesName = spriteName+'B'
                     if texturesName not in self.texturesDefs:
                         self.texturesDefs[texturesName] = ""
-                    self.texturesDefs[texturesName] += '\n' + generateFoeTexturesDef(patchName, patch, mapIndex)
+                    self.texturesDefs[texturesName] += generateFoeTexturesDef(patchName, patch, mapIndex) + '\n'
                 for i, name in enumerate(sprite_names):
                     self.sprites[spriteName + name] = mapInterim.foeSprites[foe.colorIdx][len(patches_names)+i]
                 zscript = generateFoeZScript(className, spriteName, self.sprites[spriteName+"C0"], self.sprites[spriteName+"G0"])
