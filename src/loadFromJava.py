@@ -2,7 +2,7 @@ from dataclasses import dataclass
 import json, os
 from ClassesB3D import MapB3D
 from PIL import Image
-from tools import makeBackgroundTransparent, fixFoeSprite, mirrorVertically
+from tools import makeBackgroundTransparent, fixFoeSprite
 from fixes import BROKEN_LINES, BROKEN_TEXTURES, BrokenTextureData
 
 def readSingleValue(jsonName: str) -> int:
@@ -84,7 +84,7 @@ def _loadSprites():
             sprite = load_image_from_1d_list(sprites_data[i], sprites_w[i], sprites_h[i])
             sprite = makeBackgroundTransparent(sprite)
             if sprite.width == 96: # bomb
-                sprite = mirrorVertically(sprite)
+                sprite = sprite.transpose(Image.FLIP_TOP_BOTTOM)
             sprites.append(sprite)
         all_sprites.append(sprites)
     return all_sprites
