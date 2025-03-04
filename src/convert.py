@@ -12,8 +12,6 @@ MAPS = range(1, 10)
 
 if __name__ == "__main__":
     saveStaticData()
-    colorsCeiling = []
-    colorsFloor = []
     animations: list[Animation] = []
     texturesDefs: dict[str, dict[str, str]] = dict()
     zscripts: dict[str, list[str]] = dict()
