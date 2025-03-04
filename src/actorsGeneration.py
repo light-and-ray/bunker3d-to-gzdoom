@@ -9,6 +9,15 @@ def generateEdnum():
     _lastEdnum += 1
     return result
 
+def generateGenericPatchTextureDef(patchName: str, spriteName: str, patch: Image.Image, mapIndex: int) -> str:
+    textures = ""
+    textures += f"Sprite {spriteName}, {patch.width}, {patch.height}\n"
+    textures +=  "{\n"
+    textures += f"    Patch \"patches/c1m{mapIndex}/{patchName}.png\", 0, 0\n"
+    textures += f"    Offset {patch.width//2}, {patch.height}\n"
+    textures +=  "}\n"
+    return textures
+
 
 _decorationSpriteNameIdx = 0
 def generateDecorationSpriteName():
@@ -113,15 +122,6 @@ def generateFoeZScript(className: str, spriteName: str, sprite0: Image.Image, sp
     code +=  "}\n"
     return code
 
-def _generateFoeTexturesInner(patchName: str, spriteName: str, patch: Image.Image, mapIndex: int) -> str:
-    textures = ""
-    textures += f"Sprite {spriteName}, {patch.width}, {patch.height}\n"
-    textures +=  "{\n"
-    textures += f"    Patch \"patches/c1m{mapIndex}/{patchName}.png\", 0, 0\n"
-    textures += f"    Offset {patch.width//2}, {patch.height}\n"
-    textures +=  "}\n"
-    return textures
-
 def generateFoeTexturesDef(patchName: str, patch: Image.Image, mapIndex: int) -> str:
     textures = ""
     patchSuffixes = ["_front", "_left", "_back", "_right"]
@@ -131,7 +131,7 @@ def generateFoeTexturesDef(patchName: str, patch: Image.Image, mapIndex: int) ->
             baseName = patchName.removesuffix(patchSuffix)
             for rotationSuffix in rotationSuffixes:
                 spriteName = baseName + rotationSuffix
-                textures += _generateFoeTexturesInner(patchName, spriteName, patch, mapIndex)
+                textures += generateGenericPatchTextureDef(patchName, spriteName, patch, mapIndex)
                 textures += "\n"
     return textures
 

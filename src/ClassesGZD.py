@@ -8,7 +8,7 @@ from actorsGeneration import ( generateDecorationSpriteName, generateDecorationC
     generateEdnum, generateLampSpriteName, generateLampClassName, generateLampZScript, generateFoeClassName,
     generateFoeSpriteName, generateFoeZScript, generateFoeTexturesDef, generateFriendlyClassName, generateFriendlyZScript,
     generateNpcSpriteName, generateCrateClassName, generateCrateSpriteName, generateCrateZScript, generateCrateModeldef,
-    generateCrateObj, generateCrateModelReplacementTextureDef,
+    generateCrateObj, generateCrateModelReplacementTextureDef, generateGenericPatchTextureDef,
 )
 from tools import LEVEL_CEILING, LEVEL_FLOOR, SCALE_FACTOR
 from fixes import CRATE_TOP_TEXTURES
@@ -224,6 +224,22 @@ class MapGZD:
                 angle = 0,
             ))
 
+
+        self._keysToCratesFrames: set[tuple[int]] = set()
+        def getPatchBaseName(spriteIdx, colorIdx):
+            return f"crate_sprite_{spriteIdx}_color_{colorIdx}"
+        for crate in mapInterim.crates:
+            key = (crate.spriteIdx, crate.colorIdx)
+            if key not in self._keysToCratesFrames:
+                patchNameBase = getPatchBaseName(crate.spriteIdx, crate.colorIdx)
+                self.patches[patchNameBase+"_frame_B"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+1]
+                self.patches[patchNameBase+"_frame_C"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+2]
+                self.patches[patchNameBase+"_frame_D"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+3] # None
+                self.patches[patchNameBase+"_frame_E"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+4] # Ammo
+                self.patches[patchNameBase+"_frame_F"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+5] # Health
+                self.patches[patchNameBase+"_frame_G"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+6] # Both
+                self._keysToCratesFrames.add(key)
+
         self._keysToCrates: dict[tuple[int], ActorGZD] = dict()
         for crate in mapInterim.crates:
             key = (crate.spriteIdx, crate.colorIdx, crate.textureName)
@@ -239,14 +255,16 @@ class MapGZD:
                     modelDef=generateCrateModeldef(spriteName, className, modelPath),
                 )
                 self.models.append(model)
-                self.texturesDefs[spriteName+"A0"] = generateCrateModelReplacementTextureDef(spriteName+"A0",
-                                    crate.textureName, mapInterim.textures[crate.textureName], mapIndex)
-                self.sprites[spriteName+"B0"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+1]
-                self.sprites[spriteName+"C0"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+2]
-                self.sprites[spriteName+"D0"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+3] # None
-                self.sprites[spriteName+"E0"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+4] # Ammo
-                self.sprites[spriteName+"F0"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+5] # Health
-                self.sprites[spriteName+"G0"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+6] # Both
+                textureDef = generateCrateModelReplacementTextureDef(spriteName+"A0",
+                                    crate.textureName, mapInterim.textures[crate.textureName], mapIndex) + "\n"
+                patchNameBase = getPatchBaseName(crate.spriteIdx, crate.colorIdx)
+                frameLetters = ['B', 'C', 'D', "E", "F", "G"]
+                for frameLetter in frameLetters:
+                    patchName = patchNameBase + "_frame_" + frameLetter
+                    spriteNameFull = spriteName + frameLetter + "0"
+                    patch = self.patches[patchName]
+                    textureDef += generateGenericPatchTextureDef(patchName, spriteNameFull, patch, mapIndex) + "\n"
+                self.texturesDefs[spriteName] = textureDef
                 self.actors.append(ActorGZD(ednum=ednum, zscript=zscript))
                 self._keysToCrates[key] = self.actors[-1]
             self.things.append(ThingGZD(
