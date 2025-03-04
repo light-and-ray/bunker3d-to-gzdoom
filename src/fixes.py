@@ -23,7 +23,7 @@ BROKEN_LINES = [
 ]
 
 BROKEN_TEXTURES = [ # Doors (inside) and 45 degree with middled texture inside
-    None,
+    {},
     { # 1
         18 : BrokenTextureData(nums=[0, 13, 0], offset=WALL_HEIGHT-18),
         20 : BrokenTextureData(nums=[0]),
@@ -59,7 +59,7 @@ BROKEN_TEXTURES = [ # Doors (inside) and 45 degree with middled texture inside
 ]
 
 CRATE_TOP_TEXTURES = [
-    None,
+    [],
     ["CRATE_03", "CRATE_00"], #1
     ["CRATE_01", None], #2
     [None, None], #3
