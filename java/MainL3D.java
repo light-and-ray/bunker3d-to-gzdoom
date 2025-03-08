@@ -37,23 +37,22 @@ public class MainL3D {
         Json.export("THINGS_SPRITE", loader.cq); // 0-15 (npc), 16-31 (lamp), 32-47 (decoration), 48+ (crate content)
         Json.export("THINGS_POS", loader.cb);
         Json.export("THINGS_VISIBLE", loader.cw);
-        // Json.export("THINGS_cd", loader.cd);
         Json.export("THINGS_COLOR", loader.cr);
 
-        // Json.export("SPRITES_DATA_COLOR_1", loader.SPRITES_DATA_COLOR_1);
-        // Json.export("SPRITES_DATA_COLOR_2", loader.SPRITES_DATA_COLOR_2);
-        // Json.export("SPRITES_W", loader.SPRITES_W);
-        // Json.export("SPRITES_H", loader.SPRITES_H);
+        Json.export("SPRITES_DATA_COLOR_1", loader.SPRITES_DATA_COLOR_1);
+        Json.export("SPRITES_DATA_COLOR_2", loader.SPRITES_DATA_COLOR_2);
+        Json.export("SPRITES_W", loader.SPRITES_W);
+        Json.export("SPRITES_H", loader.SPRITES_H);
 
         Json.export("SPAWN_POS", loader.gn);
         Json.export("SPAWN_ANGLE", loader.fz);
 
-        // Json.export("FOE_SPRITES_DATA_COLOR_1", loader.FOE_SPRITES_DATA_COLOR_1);
-        // Json.export("FOE_SPRITES_DATA_COLOR_2", loader.FOE_SPRITES_DATA_COLOR_2);
-        // Json.export("FOE_SPRITES_W", loader.FOE_SPRITES_W);
-        // Json.export("FOE_SPRITES_H", loader.FOE_SPRITES_H);
-        // Json.export("FOE_ANGLES", loader.bW);
-        // Json.export("FOE_WALK_DISTANCE", loader.bZ);
+        Json.export("FOE_SPRITES_DATA_COLOR_1", loader.FOE_SPRITES_DATA_COLOR_1);
+        Json.export("FOE_SPRITES_DATA_COLOR_2", loader.FOE_SPRITES_DATA_COLOR_2);
+        Json.export("FOE_SPRITES_W", loader.FOE_SPRITES_W);
+        Json.export("FOE_SPRITES_H", loader.FOE_SPRITES_H);
+        Json.export("FOE_ANGLES", loader.cg);
+        Json.export("FOE_WALK_DISTANCE", loader.cj);
     }
 
 }

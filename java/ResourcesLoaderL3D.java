@@ -1397,11 +1397,16 @@ public class ResourcesLoaderL3D {
       var2 = this.h.length;
 
       for(var10 = 0; var10 < var2; var10 += 7) {
+         this.FOE_SPRITES_W.add(this.h[var10 + 2]);
+         this.FOE_SPRITES_H.add(this.h[var10 + 3]);
          int[] var5 = new int[this.h[var10 + 2] * this.h[var10 + 3]];
          int[] var6 = new int[this.h[var10 + 2] * this.h[var10 + 3]];
          var7.getRGB(this.h[var10 + 0], this.h[var10 + 1], this.h[var10 + 2], this.h[var10 + 3], var5, 0, this.h[var10 + 2]);
          var8.getRGB(this.h[var10 + 0], this.h[var10 + 1], this.h[var10 + 2], this.h[var10 + 3], var6, 0, this.h[var10 + 2]);
-         this.combineLayers(var5, var6, this.bm, var22, bigLump2[0][0], bigLump2[0][1]);
+         int[] layer1CutColor2 = new int[var5.length];
+         this.combineLayers(var5, var6, this.bm, var22, bigLump2[0][0], bigLump2[0][1], layer1CutColor2);
+         this.FOE_SPRITES_DATA_COLOR_1.add(var5);
+         this.FOE_SPRITES_DATA_COLOR_2.add(layer1CutColor2);
          var22 = (short)(var22 + 50);
          // int var15 = this.bt[var13] / this.br[var13];
          // if (this.bq[var13] == 0) {
@@ -1461,61 +1466,97 @@ public class ResourcesLoaderL3D {
    }
 
 
-   public void combineLayers(int[] var1, int[] var2, int[][] var3, short var4, byte[] var5, byte[] var6) {
-      boolean var11 = false;
-      byte var12 = 1;
-      int var13 = var1.length;
-      byte[] var14 = new byte[256];
-      int[] var15 = new int[50];
-      short var17 = var4;
-      short var18 = 0;
+   // public void combineLayers(int[] var1, int[] var2, int[][] var3, short var4, byte[] var5, byte[] var6) {
+   //    boolean var11 = false;
+   //    byte var12 = 1;
+   //    int var13 = var1.length;
+   //    byte[] var14 = new byte[256];
+   //    int[] var15 = new int[50];
+   //    short var17 = var4;
+   //    short var18 = 0;
 
-      int var7;
-      int var10;
-      int var16;
-      byte var21;
-      for(var7 = 0; var7 < var13; ++var7) {
-         if ((var16 = var1[var7]) == this.N) {
-            var1[var7] = -1;
-         } else {
-            var10 = var16 & 255;
-            if ((var21 = var14[var10]) > 0) {
-               var1[var7] = var15[var21];
-            } else {
-               var14[var10] = var12;
-               var15[var12] = var18;
-               ++var12;
-               int var19 = this.loadTextures_subfunction4(var5[0], var5[1], var5[2], var5[3], var5[4], var10, false);
-               int var20 = this.loadTextures_subfunction4(var6[0], var6[1], var6[2], var6[3], var6[4], var10, false);
-               var3[0][var17] = (int)((long)var19 | 0L);
-               var3[1][var17] = (int)((long)var20 | 0L);
-               var1[var7] = var18++;
-               ++var17;
+   //    int var7;
+   //    int var10;
+   //    int var16;
+   //    byte var21;
+   //    for(var7 = 0; var7 < var13; ++var7) {
+   //       if ((var16 = var1[var7]) == this.N) {
+   //          var1[var7] = -1;
+   //       } else {
+   //          var10 = var16 & 255;
+   //          if ((var21 = var14[var10]) > 0) {
+   //             var1[var7] = var15[var21];
+   //          } else {
+   //             var14[var10] = var12;
+   //             var15[var12] = var18;
+   //             ++var12;
+   //             int var19 = this.loadTextures_subfunction4(var5[0], var5[1], var5[2], var5[3], var5[4], var10, false);
+   //             int var20 = this.loadTextures_subfunction4(var6[0], var6[1], var6[2], var6[3], var6[4], var10, false);
+   //             var3[0][var17] = (int)((long)var19 | 0L);
+   //             var3[1][var17] = (int)((long)var20 | 0L);
+   //             var1[var7] = var18++;
+   //             ++var17;
+   //          }
+   //       }
+   //    }
+
+   //    this.B = new byte[32][32][32];
+   //    var15 = new int[50];
+
+   //    for(var7 = 0; var7 < var13; ++var7) {
+   //       if ((var16 = var2[var7]) != this.N) {
+   //          int var8 = (var16 & 16711680) >> 19;
+   //          int var9 = (var16 & '\uff00') >> 11;
+   //          var10 = (var16 & 255) >> 3;
+   //          if ((var21 = this.B[var8][var9][var10]) > 0) {
+   //             var1[var7] = var15[var21];
+   //          } else {
+   //             this.B[var8][var9][var10] = var12;
+   //             var15[var12] = var18;
+   //             ++var12;
+   //             if (var2[var7] != this.N) {
+   //                var3[0][var17] = (int)((long)var16 | 0L);
+   //                var3[1][var17] = (int)((long)var16 | 0L);
+   //             }
+
+   //             var1[var7] = var18++;
+   //             ++var17;
+   //          }
+   //       }
+   //    }
+
+   // }
+
+   private void combineLayers(int[] layer1, int[] layer2, int[][] colorData, short startIndex, byte[] palette1, byte[] palette2, int[] layer1Color2) {
+      int layerLength = layer1.length;
+
+      int i;
+      int colorValue;
+      int pixel;
+
+      for(i = 0; i < layerLength; ++i) {
+         pixel = layer1[i];
+         if (pixel == this.N) {
+            layer1[i] = this.N;
+            if (layer1Color2 != null) {
+               layer1Color2[i] = this.N;
             }
+         } else {
+            colorValue = pixel & 255;
+               int color1 = this.loadTextures_subfunction4(palette1[0], palette1[1], palette1[2], palette1[3], palette1[4], colorValue, false);
+               int color2 = this.loadTextures_subfunction4(palette2[0], palette2[1], palette2[2], palette2[3], palette2[4], colorValue, false);
+               layer1[i] = color1;
+               if (layer1Color2 != null) {
+                  layer1Color2[i] = color2;
+               }
          }
       }
 
-      this.B = new byte[32][32][32];
-      var15 = new int[50];
-
-      for(var7 = 0; var7 < var13; ++var7) {
-         if ((var16 = var2[var7]) != this.N) {
-            int var8 = (var16 & 16711680) >> 19;
-            int var9 = (var16 & '\uff00') >> 11;
-            var10 = (var16 & 255) >> 3;
-            if ((var21 = this.B[var8][var9][var10]) > 0) {
-               var1[var7] = var15[var21];
-            } else {
-               this.B[var8][var9][var10] = var12;
-               var15[var12] = var18;
-               ++var12;
-               if (var2[var7] != this.N) {
-                  var3[0][var17] = (int)((long)var16 | 0L);
-                  var3[1][var17] = (int)((long)var16 | 0L);
-               }
-
-               var1[var7] = var18++;
-               ++var17;
+      for(i = 0; i < layerLength; ++i) {
+         if ((pixel = layer2[i]) != this.N) {
+            layer1[i] = pixel;
+            if (layer1Color2 != null) {
+               layer1Color2[i] = pixel;
             }
          }
       }
@@ -1523,11 +1564,14 @@ public class ResourcesLoaderL3D {
    }
 
 
+
    public void loadSpritesPart3(byte[][][] bigLump2) {
       int[][] var8 = new int[bigLump2[5].length][];
       int[][] var9 = new int[bigLump2[5].length][];
       boolean var2 = false;
       int var7 = bigLump2[5].length;
+      this.SPRITES_W = new short[var7];
+      this.SPRITES_H = new short[var7];
 
       int var4;
       for(int var5 = 0; var5 <= 1; ++var5) {
@@ -1550,6 +1594,8 @@ public class ResourcesLoaderL3D {
             int var3 = bigLump2[5][var4][0] * 7;
             var8[var4] = new int[this.i[var3 + 2] * this.i[var3 + 3]];
             var9[var4] = new int[this.i[var3 + 2] * this.i[var3 + 3]];
+            this.SPRITES_W[var4] = this.l[var3 + 2];
+            this.SPRITES_H[var4] = this.l[var3 + 3];
             var10.getRGB(this.i[var3 + 0], this.i[var3 + 1], this.i[var3 + 2], this.i[var3 + 3], var8[var4], 0, this.i[var3 + 2]);
             var11.getRGB(this.i[var3 + 0], this.i[var3 + 1], this.i[var3 + 2], this.i[var3 + 3], var9[var4], 0, this.i[var3 + 2]);
          }
@@ -1559,7 +1605,10 @@ public class ResourcesLoaderL3D {
       var7 = bigLump2[5].length;
 
       for(var4 = 0; var4 < var7; ++var4) {
-         this.combineLayers(var8[var4], var9[var4], this.bm, var13, bigLump2[6][var4], bigLump2[1][var4]);
+         int[] layer1Color2 = new int[var8[var4].length];
+         this.combineLayers(var8[var4], var9[var4], this.bm, var13, bigLump2[6][var4], bigLump2[1][var4], layer1Color2);
+         this.SPRITES_DATA_COLOR_1.add(var8[var4]);
+         this.SPRITES_DATA_COLOR_2.add(layer1Color2);
          var13 = (short)(var13 + 50);
       }
 
