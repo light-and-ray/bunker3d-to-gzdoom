@@ -67,6 +67,54 @@ public class ResourcesLoaderL3D {
    private int aS;
    private int aT;
 
+   private short[][] cN;
+   private short[][] cO;
+   private int fI;
+   private int fJ;
+   private int fK;
+   private int cL;
+   private byte cM;
+   private int fG;
+   private byte[] cq;
+   private byte[] cr;
+   private int[][] cb;
+   private boolean[] cw;
+   private byte[] cn;
+   private int fH;
+   private int[][] dH;
+   private int[][] dI;
+   private byte[] dJ;
+   private byte[] dK;
+   private byte[] dL;
+   private byte[] dM;
+   private int[] dN;
+   private int[] dO;
+   private int[] dP;
+   private int[] dQ;
+   private int[] dR;
+   private int[] dS;
+   private int[] dT;
+   private int dV;
+   private int dW;
+   private int dX;
+   private byte[] bx;
+   private short[] bp;
+   private byte[][] gx;
+   private byte[][] gy;
+   private short[] gu;
+   private short[][] gv;
+   private int[] gs;
+   private int gE;
+   private int fL;
+   private int[] be;
+   private byte[][] cs;
+   private int[] eg;
+   private long[] gn;
+   private int fU;
+   private int fz;
+   private int fA;
+   private byte[][] x = new byte[][]{{1, 1, -1, 1}, {-1, 1, -1, -1}, {-1, -1, 1, -1}, {1, -1, 1, 1}};
+
 
 
 
@@ -574,6 +622,497 @@ public class ResourcesLoaderL3D {
       }
 
    }
+
+
+
+   private void modifyBigLump1(byte[][][] bigLump1) {
+      this.cN = new short[7][];
+      this.cO = new short[7][];
+      this.fI = this.fF;
+      this.fJ = this.fI + 4 * bigLump1[12].length;
+      this.fK = this.fJ + 3 * bigLump1[20].length;
+
+      int var2;
+      int var3;
+      int var6;
+      int var10;
+      int var12;
+      int var13;
+      int var14;
+      int var10001;
+      int var10002;
+      for(var2 = 0; var2 < 7; ++var2) {
+         var12 = bigLump1[var2].length + bigLump1[var2 + 13].length + bigLump1[var2 + 21].length + bigLump1[var2 + 42].length + bigLump1[var2 + 52].length;
+         this.cN[var2] = new short[var12];
+         this.cO[var2] = new short[var12];
+         var10 = bigLump1[var2].length;
+
+         for(var3 = 0; var3 < var10; ++var3) {
+            this.cN[var2][var3] = (short)(bigLump1[var2][var3][0] + 128);
+            this.cO[var2][var3] = (short)(bigLump1[var2][var3][1] + 128);
+         }
+
+         var10 = bigLump1[var2 + 13].length + var3;
+
+         short[] var10000;
+         for(var6 = var3; var6 < var10; ++var6) {
+            var13 = bigLump1[var2 + 13][var6 - var3][0];
+            this.cN[var2][var6] = (short)(this.fI + var13 * 4);
+            this.cO[var2][var6] = (short)(this.cN[var2][var6] + 3);
+            if (abs(var14 = bigLump1[12][var13][3] % 90) <= 3) {
+               var10000 = this.cO[var2];
+               var10001 = var6;
+               var10002 = var10000[var6] - abs(var14);
+            } else {
+               if (abs(var14) > 6) {
+                  continue;
+               }
+
+               var10000 = this.cN[var2];
+               var10001 = var6;
+               var10002 = var10000[var6] + (abs(var14) - 3);
+            }
+
+            var10000[var10001] = (short)var10002;
+            bigLump1[12][var13][3] = (byte)(bigLump1[12][var13][3] - var14);
+         }
+
+         var10 = bigLump1[var2 + 21].length + var6;
+
+         int var7;
+         for(var7 = var6; var7 < var10; ++var7) {
+            this.cN[var2][var7] = (short)(this.fJ + abs(bigLump1[var2 + 21][var7 - var6][0]) % 60 * 3);
+            this.cO[var2][var7] = (short)(this.cN[var2][var7] + 2);
+            if (bigLump1[var2 + 21][var7 - var6][0] < 0) {
+               var10000 = this.cN[var2];
+               var10001 = var7;
+               var10002 = var10000[var7] + 2;
+            } else {
+               if (bigLump1[var2 + 21][var7 - var6][0] < 60) {
+                  continue;
+               }
+
+               var10000 = this.cO[var2];
+               var10001 = var7;
+               var10002 = var10000[var7] - 2;
+            }
+
+            var10000[var10001] = (short)var10002;
+         }
+
+         var10 = bigLump1[var2 + 42].length + var7;
+
+         int var8;
+         for(var8 = var7; var8 < var10; ++var8) {
+            var13 = bigLump1[var2 + 42][var8 - var7][0];
+            this.cN[var2][var8] = (short)(this.fK + var13 * 4);
+            this.cO[var2][var8] = (short)(this.cN[var2][var8] + 3);
+            if (abs(var14 = bigLump1[41][var13][2] % 90) <= 3) {
+               var10000 = this.cO[var2];
+               var10001 = var8;
+               var10002 = var10000[var8] - abs(var14);
+            } else {
+               if (abs(var14) > 6) {
+                  continue;
+               }
+
+               var10000 = this.cN[var2];
+               var10001 = var8;
+               var10002 = var10000[var8] + (abs(var14) - 3);
+            }
+
+            var10000[var10001] = (short)var10002;
+            bigLump1[41][var13][2] = (byte)(bigLump1[41][var13][2] - var14);
+         }
+
+         var10 = bigLump1[var2 + 52].length + var8;
+
+         for(int var9 = var8; var9 < var10; ++var9) {
+            this.cN[var2][var9] = (short)this.bf[bigLump1[var2 + 52][var9 - var8][0]];
+            this.cO[var2][var9] = (short)(this.bf[bigLump1[var2 + 52][var9 - var8][0] + 1] - 1);
+         }
+      }
+
+      ResourcesLoaderL3D var25;
+      byte var26;
+      long var28;
+      if (this.selectedMap != 11) {
+         var25 = this;
+         var26 = bigLump1[8][0][0];
+         var28 = (long)bigLump1[8][0][1] * 75000L;
+      } else {
+         var25 = this;
+         var26 = bigLump1[8][0][0];
+         var28 = (long)bigLump1[8][0][1] * 75000L + 32768L;
+      }
+
+      var25.initStartingPos(var26, var28, (long)bigLump1[8][0][2] * 75000L, bigLump1[8][0][3] * 2, bigLump1[8][0][7]);
+      this.cM = (byte)(13 + bigLump1[8][0][5]);
+      this.cL = bigLump1[8][0][6];
+      var12 = this.fF;
+      this.fG = bigLump1[12].length;
+      var13 = 106 + this.fG;
+      this.cq = new byte[var13];
+      this.cb = new int[var13][2];
+      this.cw = new boolean[var13];
+      this.cn = new byte[var13];
+      this.cr = new byte[var13];
+      var10 = bigLump1[12].length;
+
+      byte[] var27;
+      for(var3 = 0; var3 < var10; ++var3) {
+         var14 = 128 + bigLump1[12][var3][0] << 16 >> 2;
+         int var15 = 128 + bigLump1[12][var3][1] << 16 >> 2;
+         var6 = 106 + var3;
+         this.cb[var6][0] = var14;
+         this.cb[var6][1] = var15;
+         this.cq[var6] = (byte)(this.cM - 1);
+         this.cw[var6] = false;
+         this.cn[var6] = (byte)(this.cM + 2 + bigLump1[12][var3][4]);
+         if (bigLump1[12][var3][4] > 4) {
+            var27 = this.cn;
+            var27[var6] = (byte)(var27[var6] - 4);
+            this.cr[var6] = 1;
+         }
+
+         var12 = this.modifyBigLump1_subfunction1((long)var14, (long)var15, 16384L, 16384L, bigLump1[12][var3][3], var12, bigLump1[12][var3][2], bigLump1[12][var3][2], bigLump1[12][var3][2], bigLump1[12][var3][2], (byte)1, (byte)0);
+      }
+
+      this.fH = bigLump1[20].length;
+      this.dH = new int[this.fH][2];
+      this.dJ = new byte[this.fH];
+      this.dK = new byte[this.fH];
+      this.dN = new int[this.fH];
+      this.dO = new int[this.fH];
+      this.dL = new byte[this.fH];
+      this.dP = new int[this.fH];
+      this.dQ = new int[this.fH];
+      this.dR = new int[this.fH];
+      this.dS = new int[this.fH];
+      this.dI = new int[this.fH][2];
+      this.dT = new int[this.fH];
+      this.dM = new byte[this.fH];
+      var10 = bigLump1[20].length;
+
+      for(var3 = 0; var3 < var10; ++var3) {
+         this.dH[var3][0] = 128 + bigLump1[20][var3][0] << 16 >> 2;
+         this.dH[var3][1] = 128 + bigLump1[20][var3][1] << 16 >> 2;
+         byte var30;
+         if (bigLump1[20][var3][2] * bigLump1[20][var3][3] >= 0) {
+            this.dJ[var3] = 0;
+            var27 = this.dK;
+            var10001 = var3;
+            var30 = 1;
+         } else {
+            this.dJ[var3] = 1;
+            var27 = this.dK;
+            var10001 = var3;
+            var30 = 0;
+         }
+
+         var27[var10001] = var30;
+         this.dN[var3] = (bigLump1[20][var3][2] << 16) / 127;
+         this.dO[var3] = (bigLump1[20][var3][3] << 16) / 127;
+         this.dV = this.dO[var3];
+         this.dL[var3] = bigLump1[59][var3][3];
+         this.dR[var3] = 0;
+         this.dS[var3] = 6225920;
+         int[] var29;
+         if (this.dO[var3] > 0) {
+            var29 = this.dP;
+            var10001 = var3;
+            var10002 = 65536;
+         } else {
+            var29 = this.dP;
+            var10001 = var3;
+            var10002 = -65536;
+         }
+
+         var29[var10001] = var10002;
+         this.dW = this.dP[var3];
+         this.dQ[var3] = (this.dP[var3] - this.dO[var3]) / this.dL[var3];
+         this.dX = this.dQ[var3];
+         this.dI[var3][this.dJ[var3]] = this.dH[var3][this.dJ[var3]] + this.dP[var3];
+         this.dI[var3][this.dK[var3]] = this.dH[var3][this.dK[var3]];
+         this.dT[var3] = -1;
+         this.dM[var3] = bigLump1[28][var3][0];
+         this.modifyBigLump1_subfunction2(bigLump1[59][var3][0], bigLump1[59][var3][1], bigLump1[59][var3][2], var12);
+         this.modifyBigLump1_subfunction3(this.dH[var3], (long)this.dN[var3], (long)this.dP[var3], this.dJ[var3], this.dK[var3], var12, 0);
+         var12 = this.modifyBigLump1_subfunction3(this.dH[var3], (long)this.dN[var3], (long)this.dO[var3], this.dJ[var3], this.dK[var3], var12, 1);
+      }
+
+      this.fF = var12;
+      this.bx = new byte[bigLump1[30].length * 7];
+      this.bp = new short[32 + bigLump1[30].length];
+      int var5 = 0;
+      var10 = bigLump1[30].length;
+
+      int var11;
+      for(var3 = 0; var3 < var10; ++var3) {
+         this.bp[32 + var3] = 96;
+         var11 = bigLump1[30][var3].length;
+
+         for(int var4 = 0; var4 < var11; ++var4) {
+            this.bx[var5] = bigLump1[30][var3][var4];
+            ++var5;
+         }
+      }
+
+      var12 = this.fF;
+      var10 = bigLump1[41].length;
+
+      long var16;
+      long var24;
+      for(var3 = 0; var3 < var10; ++var3) {
+         var24 = (long)(128 + bigLump1[41][var3][0] << 16 >> 2);
+         var16 = (long)(128 + bigLump1[41][var3][1] << 16 >> 2);
+         long var18 = (long)((bigLump1[60][var3][0] << 16) / 42 >> 1);
+         long var20 = (long)((bigLump1[60][var3][1] << 16) / 42 >> 1);
+         var12 = this.modifyBigLump1_subfunction1(var24, var16, var18, var20, bigLump1[41][var3][2], var12, bigLump1[61][var3][0], bigLump1[61][var3][1], bigLump1[61][var3][2], bigLump1[61][var3][3], bigLump1[62][var3][0], bigLump1[62][var3][1]);
+      }
+
+      this.fF = var12;
+      this.gx = new byte[7][];
+      this.gy = new byte[7][];
+      this.gv = new short[7][];
+      this.gu = new short[15];
+      this.gs = new int[7];
+      this.modifyBigLump1_subfunction4(0, 49, (byte[][][])bigLump1);
+      this.modifyBigLump1_subfunction4(1, 70, (byte[][][])bigLump1);
+      this.modifyBigLump1_subfunction4(2, 72, (byte[][][])bigLump1);
+      this.modifyBigLump1_subfunction4(3, 74, (byte[][][])bigLump1);
+      this.modifyBigLump1_subfunction4(4, 76, (byte[][][])bigLump1);
+      this.modifyBigLump1_subfunction4(5, 78, (byte[][][])bigLump1);
+      this.modifyBigLump1_subfunction4(6, 80, (byte[][][])bigLump1);
+      this.gE = 0;
+      var12 = this.fF;
+      this.fL = var12;
+      var10 = bigLump1[51].length;
+      this.be = new int[var10];
+
+      for(var3 = 0; var3 < var10; ++var3) {
+         var24 = (long)(128 + bigLump1[51][var3][0] << 16 >> 2);
+         var16 = (long)(128 + bigLump1[51][var3][1] << 16 >> 2);
+         long var22 = (long)((bigLump1[51][var3][3] << 16) / 60);
+         this.be[var3] = bigLump1[51][var3][6];
+         var12 = this.modifyBigLump1_subfunction5(var24, var16, bigLump1[51][var3][2], var22, var12, bigLump1[51][var3][4], bigLump1[51][var3][5], bigLump1[51][var3][7], bigLump1[51][var3][8]);
+      }
+
+      this.fF = var12;
+      this.cs = new byte[7][];
+
+      for(var2 = 63; var2 < 70; ++var2) {
+         var10 = bigLump1[var2].length;
+         var11 = bigLump1[var2 - 50].length;
+         this.cs[var2 - 63] = new byte[var10 + var11];
+
+         for(var3 = 0; var3 < var10; ++var3) {
+            this.cs[var2 - 63][var3] = bigLump1[var2][var3][0];
+         }
+
+         var6 = var3;
+
+         for(var3 = 0; var3 < var11; ++var3) {
+            this.cs[var2 - 63][var6] = (byte)(106 + bigLump1[var2 - 50][var3][0]);
+            ++var6;
+         }
+      }
+
+   }
+
+   private void modifyBigLump1_subfunction4(int var1, int var2, byte[][][] var3) {
+      int var4 = var2;
+      if (var3[var2].length != 0) {
+         int var7 = var3[var2][0].length;
+         this.gx[var1] = new byte[var7];
+
+         for(int var6 = 0; var6 < var7; ++var6) {
+            this.gx[var1][var6] = var3[var4][0][var6];
+         }
+
+         int[] var10000;
+         int var10001;
+         byte var10002;
+         if (this.gx[var1][1] != this.gx[var1][2]) {
+            var10000 = this.gs;
+            var10001 = var1;
+            var10002 = 2;
+         } else {
+            var10000 = this.gs;
+            var10001 = var1;
+            var10002 = 1;
+         }
+
+         var10000[var10001] = var10002;
+         var4 = var2 + 1;
+         this.gv[var1] = new short[var3[var4].length];
+         this.gy[var1] = new byte[var3[var4].length];
+         var7 = var3[var4].length;
+
+         for(int var5 = 0; var5 < var7; ++var5) {
+            this.gv[var1][var5] = (short)(var3[var4][var5][0] + 128);
+            this.gy[var1][var5] = 0;
+         }
+
+      }
+   }
+
+
+   private void initCosTable() {
+      this.eg = new int[91];
+      this.eg[1] = 1146;
+      int var1 = 1146;
+
+      for(int var2 = 2; var2 <= 90; ++var2) {
+         var1 += this.a[var2 - 2];
+         this.eg[var2] = this.eg[var2 - 1] + var1;
+      }
+
+      this.a = null;
+   }
+
+   private long cos(int var1) {
+      if (var1 < 0) {
+         return -this.cos(-var1);
+      } else if (var1 >= 90 & var1 < 180) {
+         return (long)this.eg[180 - var1];
+      } else if (var1 >= 180 & var1 < 270) {
+         return (long)(-this.eg[var1 - 180]);
+      } else if (var1 >= 270 & var1 < 360) {
+         return (long)(-this.eg[90 - (var1 - 270)]);
+      } else {
+         return var1 >= 360 ? this.cos(var1 % 360) : (long)this.eg[var1];
+      }
+   }
+
+   private long sin(int var1) {
+      return this.cos(90 - var1);
+   }
+
+   private static int abs(int var0) {
+      return var0 > 0 ? var0 : -var0;
+   }
+
+
+   private void initStartingPos(int var1, long var2, long var4, int var6, int var7) {
+      this.gn = new long[2];
+      this.fU = var1;
+      this.gn[0] = var2;
+      this.gn[1] = var4;
+      this.fz = var6;
+      this.fA = var7;
+   }
+
+
+
+   private int modifyBigLump1_subfunction1(long var1, long var3, long var5, long var7, int var9, int var10, byte var11, byte var12, byte var13, byte var14, byte var15, byte var16) {
+      int var19 = 0;
+
+      int var18;
+      for(var18 = var10; var18 < var10 + 4; ++var18) {
+         this.bv[var18] = var15;
+         if (var16 != 6) {
+            this.bw[var18] = var16;
+         }
+
+         for(int var17 = 0; var17 < 4; var17 += 2) {
+            int[] var10000;
+            int var10001;
+            long var10002;
+            if (var9 == 0) {
+               this.dg[var17][var18] = (int)((long)this.x[var19][var17] * var7 + var1);
+               var10000 = this.dg[var17 + 1];
+               var10001 = var18;
+               var10002 = (long)this.x[var19][var17 + 1] * var5;
+            } else {
+               this.dg[var17][var18] = (int)(((long)this.x[var19][var17] * var7 * this.sin(var9) >> 16) - ((long)this.x[var19][var17 + 1] * var5 * this.cos(var9) >> 16) + var1);
+               var10000 = this.dg[var17 + 1];
+               var10001 = var18;
+               var10002 = ((long)this.x[var19][var17] * var7 * this.cos(var9) >> 16) + ((long)this.x[var19][var17 + 1] * var5 * this.sin(var9) >> 16);
+            }
+
+            var10000[var10001] = (int)(var10002 + var3);
+         }
+
+         ++var19;
+      }
+
+      this.dh[var10] = var11;
+      var18 = var10 + 1;
+      this.dh[var18] = var12;
+      ++var18;
+      this.dh[var18] = var13;
+      ++var18;
+      this.dh[var18] = var14;
+      if (var16 == 6) {
+         this.bw[var18] = 3;
+      }
+
+      return var18 + 1;
+   }
+
+
+
+   private int modifyBigLump1_subfunction5(long var1, long var3, int var5, long var6, int var8, int var9, byte var10, byte var11, int var12) {
+      int var15 = 360 / var5;
+      int var14 = var12 * 4;
+
+      int var13;
+      for(var13 = var8; var13 < var8 + var5; ++var13) {
+         this.dg[0][var13] = (int)((var6 * this.cos(var14) >> 16) + var1);
+         this.dg[1][var13] = (int)((var6 * this.sin(var14) >> 16) + var3);
+         var14 -= var15;
+         this.dg[2][var13] = (int)((var6 * this.cos(var14) >> 16) + var1);
+         this.dg[3][var13] = (int)((var6 * this.sin(var14) >> 16) + var3);
+         this.bv[var13] = var10;
+         this.dh[var13] = (byte)var9;
+         this.bw[var13] = var11;
+      }
+
+      return var13;
+   }
+
+   private void modifyBigLump1_subfunction2(byte var1, byte var2, byte var3, int var4) {
+      this.dh[var4] = var1;
+      int var5 = var4 + 1;
+      this.dh[var5] = var2;
+      ++var5;
+      this.dh[var5] = var3;
+      this.bw[var5] = 3;
+   }
+
+
+
+   private int modifyBigLump1_subfunction3(int[] var1, long var2, long var4, int var6, int var7, int var8, int var9) {
+      char var10 = 0;
+      if (this.selectedMap == 1 || this.selectedMap == 2) {
+         var10 = '耀';
+      }
+
+      if (var9 == 0) {
+         this.dg[var6][var8] = var1[var6] + var10;
+         this.dg[var7][var8] = (int)((long)var1[var7] - (var2 >> 1));
+         this.dg[var6 + 2][var8] = (int)((long)var1[var6] + var4 + (long)var10);
+         this.dg[var7 + 2][var8] = (int)((long)var1[var7] - (var2 >> 1));
+      }
+
+      int var11 = var8 + 1;
+      this.dg[var6][var11] = this.dg[var6 + 2][var11 - 1];
+      this.dg[var7][var11] = this.dg[var7 + 2][var11 - 1];
+      this.dg[var6 + 2][var11] = this.dg[var6][var11];
+      this.dg[var7 + 2][var11] = (int)((long)this.dg[var7][var11 - 1] + var2);
+      ++var11;
+      if (var9 == 0) {
+         this.dg[var6][var11] = this.dg[var6 + 2][var11 - 1];
+         this.dg[var7][var11] = this.dg[var7 + 2][var11 - 1];
+         this.dg[var6 + 2][var11] = (int)((long)this.dg[var6][var11] - var4);
+         this.dg[var7 + 2][var11] = this.dg[var7][var11];
+      }
+
+      return var11 + 1;
+   }
+
+
 
 
 
