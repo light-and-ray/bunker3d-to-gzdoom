@@ -1832,17 +1832,21 @@ public class ResourcesLoaderL3D {
             }
 
             loadTextures_subfunction18(var35, var10001, var10002, var10003, var10004, var36, var10006, var10007, var10008, var10009);
+            this.TEXTURES_W.add(var15);
+            this.TEXTURES_H.add(var16);
+            this.TEXTURES_DATA.add(this.E);
+
          }
       }
 
-      this.C = null;
-      this.D = null;
-      this.E = null;
-      this.J = (int[][])null;
-      this.K = null;
-      this.y = null;
-      this.z = null;
-      System.gc();
+      // this.C = null;
+      // this.D = null;
+      // this.E = null;
+      // this.J = (int[][])null;
+      // this.K = null;
+      // this.y = null;
+      // this.z = null;
+      // System.gc();
    }
 
    public static void loadTextures_subfunction18(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int[] var8, boolean var9) {
