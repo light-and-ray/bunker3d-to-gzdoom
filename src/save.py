@@ -3,7 +3,7 @@ import shutil, os, pathlib
 import omg
 from PIL import Image
 from ClassesGZD import MapGZD, TextureMode, EdnumGZD, ModelGZD
-from ClassesShared import Animation
+from ClassesShared import Animation, GameType
 from tools import getCeilingLumpName, getFloorLumpName, addOffsets, saveToFile
 
 STATIC_DIR = "static"
@@ -11,7 +11,7 @@ RESULT_DIR = "result.d"
 LIGHT_LEVEL = 220 # 250 is the closest to the original
 
 
-def saveMap(map: MapGZD, mapIndex: int):
+def saveMap(map: MapGZD, mapIndex: int, game: GameType):
     umap = omg.UMapEditor()
     umap.namespace = "zdoom"
 
@@ -77,7 +77,7 @@ def saveMap(map: MapGZD, mapIndex: int):
         umap.things[-1].arg0 = thing.arg0
         umap.things[-1].arg1 = thing.arg1
 
-    mapName = f'c1m{mapIndex}'
+    mapName = f'c{game.value+1}m{mapIndex}'
     wad = omg.WAD()
     wad.udmfmaps[mapName] = umap.to_lumps()
     wadPath = RESULT_DIR + "/maps/" + mapName + ".wad"
@@ -85,8 +85,8 @@ def saveMap(map: MapGZD, mapIndex: int):
     wad.to_file(wadPath)
 
 
-def saveTextures(textures: dict[str, Image.Image], mapIndex: int, colorFloor: tuple[int], colorCeiling: tuple[int]):
-    mapTexturesDir = RESULT_DIR + f"/textures/c1m{mapIndex}/"
+def saveTextures(textures: dict[str, Image.Image], mapIndex: int, colorFloor: tuple[int], colorCeiling: tuple[int], game: GameType):
+    mapTexturesDir = RESULT_DIR + f"/textures/c{game.value+1}m{mapIndex}/"
     if os.path.exists(mapTexturesDir):
         shutil.rmtree(mapTexturesDir)
     os.makedirs(mapTexturesDir)
@@ -100,8 +100,8 @@ def saveTextures(textures: dict[str, Image.Image], mapIndex: int, colorFloor: tu
         texture.save(path)
 
 
-def saveSprites(sprites: dict[str, Image.Image], mapIndex: int):
-    mapSpritesDir = RESULT_DIR + f"/sprites/c1m{mapIndex}/"
+def saveSprites(sprites: dict[str, Image.Image], mapIndex: int, game: GameType):
+    mapSpritesDir = RESULT_DIR + f"/sprites/c{game.value+1}m{mapIndex}/"
     if os.path.exists(mapSpritesDir):
         shutil.rmtree(mapSpritesDir)
     os.makedirs(mapSpritesDir)
@@ -112,8 +112,8 @@ def saveSprites(sprites: dict[str, Image.Image], mapIndex: int):
         buffer = addOffsets(buffer.getvalue(), sprite.width//2, sprite.height)
         saveToFile(mapSpritesDir + f"/{name}.png", buffer)
 
-def savePatches(patches: dict[str, Image.Image], mapIndex: int):
-    mapPatchesDir = RESULT_DIR + f"/patches/c1m{mapIndex}/"
+def savePatches(patches: dict[str, Image.Image], mapIndex: int, game: GameType):
+    mapPatchesDir = RESULT_DIR + f"/patches/c{game.value+1}m{mapIndex}/"
     if os.path.exists(mapPatchesDir):
         shutil.rmtree(mapPatchesDir)
     os.makedirs(mapPatchesDir)

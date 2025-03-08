@@ -133,12 +133,21 @@ class MapInterim:
         self.lamps: list[LampInterim] = []
         for thing in mapB3D.things:
             if thing.category != ThingCategory.LAMP: continue
-            self.lamps.append(LampInterim(pos=thing.pos, spriteIdx=thing.sprite, colorIdx=thing.color, special=LampSpecial(thing.special)))
+            try:
+                special = LampSpecial(thing.special)
+            except ValueError:
+                print(f"warning: unknown lamp special {thing.special}")
+                continue
+            self.lamps.append(LampInterim(pos=thing.pos, spriteIdx=thing.sprite, colorIdx=thing.color, special=special))
 
         self.foes: list[FoeInterim] = []
         for thing in mapB3D.things:
             if thing.category != ThingCategory.NPC: continue
-            special = NpcSpecial(thing.special)
+            try:
+                special = NpcSpecial(thing.special)
+            except ValueError:
+                print(f"warning: unknown foe special {thing.special}")
+                continue
             if special not in (NpcSpecial.FOE, NpcSpecial.BOSS): continue
             isBoss = (special == NpcSpecial.BOSS)
             angle = foeAngles[thing.index]
@@ -148,7 +157,11 @@ class MapInterim:
         self.friendlies: list[FriendlyInterim] = []
         for thing in mapB3D.things:
             if thing.category != ThingCategory.NPC: continue
-            special = NpcSpecial(thing.special)
+            try:
+                special = NpcSpecial(thing.special)
+            except ValueError:
+                print(f"warning: unknown friendly special {thing.special}")
+                continue
             if special not in (NpcSpecial.FRIENDLY1, NpcSpecial.FRIENDLY2): continue
             isSecond = (special == NpcSpecial.FRIENDLY2)
             self.friendlies.append(FriendlyInterim(pos=thing.pos, colorIdx=thing.color, isSecond=isSecond, spriteIdx=thing.sprite))

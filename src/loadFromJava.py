@@ -4,6 +4,7 @@ from ClassesB3D import MapB3D
 from PIL import Image
 from tools import makeBackgroundTransparent, fixFoeSprite
 from fixes import BROKEN_LINES, BROKEN_TEXTURES, BrokenTextureData
+from ClassesShared import GameType
 
 def readSingleValue(jsonName: str) -> int:
     filename = f'tmp/{jsonName}.json'
@@ -144,12 +145,15 @@ def _run(command: str):
 
 
 _isJavaCompiled = False
-def load(mapIndex):
+def load(mapIndex: int, game: GameType):
     global _isJavaCompiled
     if not _isJavaCompiled:
         _isJavaCompiled = True
         _run(f'./bin/runJavaCompile.sh')
-    _run(f'./bin/runJavaB3D.sh {mapIndex}')
+    if game == GameType.B3D:
+        _run(f'./bin/runJavaB3D.sh {mapIndex}')
+    elif game == GameType.L3D:
+        _run(f'./bin/runJavaL3D.sh {mapIndex}')
     data = LoadedData()
     textures = _loadTextures()
     linesTextures = _loadLinesTextures()

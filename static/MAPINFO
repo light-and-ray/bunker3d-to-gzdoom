@@ -68,11 +68,81 @@ map C1M9 lookup "C1M9"
     // music = "$MUSIC_E1M1"
 }
 
+
+map C2M1 lookup "C2M1"
+{
+    levelnum = 1
+    next = "C2M2"
+    // music = "$MUSIC_E1M1"
+}
+
+map C2M2 lookup "C2M2"
+{
+    levelnum = 2
+    next = "C2M3"
+    // music = "$MUSIC_E1M1"
+}
+
+map C2M3 lookup "C2M3"
+{
+    levelnum = 3
+    next = "C2M4"
+    // music = "$MUSIC_E1M1"
+}
+
+map C2M4 lookup "C2M4"
+{
+    levelnum = 4
+    next = "C2M5"
+    // music = "$MUSIC_E1M1"
+}
+
+map C2M5 lookup "C2M5"
+{
+    levelnum = 5
+    next = "C2M6"
+    // music = "$MUSIC_E1M1"
+}
+
+map C2M6 lookup "C2M6"
+{
+    levelnum = 6
+    next = "C2M7"
+    // music = "$MUSIC_E1M1"
+}
+
+map C2M7 lookup "C2M7"
+{
+    levelnum = 7
+    next = "C2M8"
+    // music = "$MUSIC_E1M1"
+}
+
+map C2M8 lookup "C2M8"
+{
+    levelnum = 8
+    next = "C2M9"
+    // music = "$MUSIC_E1M1"
+}
+
+map C2M9 lookup "C2M9"
+{
+    levelnum = 9
+    // next = "C1M6"
+    // music = "$MUSIC_E1M1"
+}
+
+
 clearepisodes
 
 episode C1M1
 {
    name = "Bunker 3D"
+}
+
+episode C2M1
+{
+   name = "Laboratory 3D"
 }
 
 

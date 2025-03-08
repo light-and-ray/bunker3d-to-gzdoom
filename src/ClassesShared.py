@@ -18,3 +18,8 @@ class Animation:
     name: str
     frames: list[str]
     duration: float
+
+class GameType(Enum):
+    B3D = 0
+    L3D = 1
+    C3D = 2

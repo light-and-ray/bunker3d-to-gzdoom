@@ -2,13 +2,15 @@ from loadFromJava import load
 from drawMap import drawMap
 from ClassesInterim import MapInterim
 from ClassesGZD import MapGZD, EdnumGZD, ModelGZD
-from ClassesShared import Animation
+from ClassesShared import Animation, GameType
 from save import (saveMap, saveStaticData, saveTextures, saveAnimations, saveSprites, saveZScripts, saveEdnums,
     savePatches, saveTexturesDef, saveModels,
 )
 
 MAPS = range(1, 10)
-# MAPS = [5]
+MAPS = [1, 2, 5, 6, 7, 9]
+GAMES = [GameType.B3D, GameType.L3D]
+GAMES = [GameType.L3D]
 
 if __name__ == "__main__":
     saveStaticData()
@@ -17,23 +19,24 @@ if __name__ == "__main__":
     zscripts: dict[str, list[str]] = dict()
     ednums: list[EdnumGZD] = []
     models: list[ModelGZD] = []
-    for idx in MAPS:
-        data = load(idx)
-        animations.extend(data.map.animations)
-        mapInterim = MapInterim(data.map, brokenLines=data.brokenLines, doorsSpeed=data.doorsSpeed,
-                doorsStartLineIdx=data.doorsStartLineIdx, brokenTextures=data.brokenTextures, foeAngles=data.foeAngles,
-                foeWalkDistances=data.foeWalkDistances,)
-        mapName = f'c1m{idx}'
-        drawMap(data.map, name=mapName, show=False)
-        mapGZD = MapGZD(mapInterim, spawnPos=data.spawnPos, spawnAngle=data.spawnAngle, mapIndex=idx)
-        saveMap(map=mapGZD, mapIndex=idx)
-        saveTextures(textures=data.map.textures, mapIndex=idx, colorCeiling=data.colorCeiling, colorFloor=data.colorFloor)
-        saveSprites(sprites=mapGZD.sprites, mapIndex=idx)
-        savePatches(patches=mapGZD.patches, mapIndex=idx)
-        zscripts[mapName] = [a.zscript for a in mapGZD.actors]
-        ednums.extend([a.ednum for a in mapGZD.actors])
-        texturesDefs[mapName] = mapGZD.texturesDefs
-        models.extend(mapGZD.models)
+    for game in GAMES:
+        for idx in MAPS:
+            data = load(idx, game)
+            animations.extend(data.map.animations)
+            mapInterim = MapInterim(data.map, brokenLines=data.brokenLines, doorsSpeed=data.doorsSpeed,
+                    doorsStartLineIdx=data.doorsStartLineIdx, brokenTextures=data.brokenTextures, foeAngles=data.foeAngles,
+                    foeWalkDistances=data.foeWalkDistances,)
+            mapName = f'c{game.value+1}m{idx}'
+            drawMap(data.map, name=mapName, show=False)
+            mapGZD = MapGZD(mapInterim, spawnPos=data.spawnPos, spawnAngle=data.spawnAngle, mapIndex=idx, gameType=game)
+            saveMap(map=mapGZD, mapIndex=idx, game=game)
+            saveTextures(textures=data.map.textures, mapIndex=idx, colorCeiling=data.colorCeiling, colorFloor=data.colorFloor, game=game)
+            saveSprites(sprites=mapGZD.sprites, mapIndex=idx, game=game)
+            savePatches(patches=mapGZD.patches, mapIndex=idx, game=game)
+            zscripts[mapName] = [a.zscript for a in mapGZD.actors]
+            ednums.extend([a.ednum for a in mapGZD.actors])
+            texturesDefs[mapName] = mapGZD.texturesDefs
+            models.extend(mapGZD.models)
     saveAnimations(animations)
     saveZScripts(zscripts)
     saveEdnums(ednums)

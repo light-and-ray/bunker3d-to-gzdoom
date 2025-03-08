@@ -1,5 +1,6 @@
 from PIL import Image
 from tools import isBottomRowTransparent
+from ClassesShared import GameType
 
 
 _lastEdnum = 0
@@ -9,11 +10,11 @@ def generateEdnum():
     _lastEdnum += 1
     return result
 
-def generateGenericPatchTextureDef(patchName: str, spriteName: str, patch: Image.Image, mapIndex: int) -> str:
+def generateGenericPatchTextureDef(patchName: str, spriteName: str, patch: Image.Image, mapIndex: int, game: GameType) -> str:
     textures = ""
     textures += f"Sprite {spriteName}, {patch.width}, {patch.height}\n"
     textures +=  "{\n"
-    textures += f"    Patch \"patches/c1m{mapIndex}/{patchName}.png\", 0, 0\n"
+    textures += f"    Patch \"patches/c{game.value+1}m{mapIndex}/{patchName}.png\", 0, 0\n"
     textures += f"    Offset {patch.width//2}, {patch.height}\n"
     textures +=  "}\n"
     return textures
@@ -122,7 +123,7 @@ def generateFoeZScript(className: str, spriteName: str, sprite0: Image.Image, sp
     code +=  "}\n"
     return code
 
-def generateFoeTexturesDef(patchName: str, patch: Image.Image, mapIndex: int) -> str:
+def generateFoeTexturesDef(patchName: str, patch: Image.Image, mapIndex: int, game: GameType) -> str:
     textures = ""
     patchSuffixes = ["_front", "_left", "_back", "_right"]
     rotationSuffixesList = [['9', '1', 'G'], ['B', '3', 'A', '2'], ['4', 'C', '5', 'D', '6'], ['E', '7', 'F', '8']]
@@ -131,7 +132,7 @@ def generateFoeTexturesDef(patchName: str, patch: Image.Image, mapIndex: int) ->
             baseName = patchName.removesuffix(patchSuffix)
             for rotationSuffix in rotationSuffixes:
                 spriteName = baseName + rotationSuffix
-                textures += generateGenericPatchTextureDef(patchName, spriteName, patch, mapIndex)
+                textures += generateGenericPatchTextureDef(patchName, spriteName, patch, mapIndex, game)
                 textures += "\n"
     return textures
 
@@ -262,11 +263,11 @@ def generateCrateModeldef(spriteName: str, className: str, modelPath: str):
     code +=  "}\n"
     return code
 
-def generateCrateModelReplacementTextureDef(spriteName: str, textureName: str, texture: Image.Image, mapIndex: int):
+def generateCrateModelReplacementTextureDef(spriteName: str, textureName: str, texture: Image.Image, mapIndex: int, game: GameType):
     textures = ""
     textures += f"Sprite {spriteName}, {texture.width}, {texture.height}\n"
     textures +=  "{\n"
-    textures += f"    Patch \"textures/c1m{mapIndex}/{textureName}.png\", 0, 0\n"
+    textures += f"    Patch \"textures/c{game.value+1}m{mapIndex}/{textureName}.png\", 0, 0\n"
     textures += f"    Offset {texture.width//2}, {texture.height}\n"
     textures +=  "}\n"
     return textures

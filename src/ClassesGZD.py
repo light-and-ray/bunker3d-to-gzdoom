@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any
 from PIL import Image
-from ClassesShared import HeightType
+from ClassesShared import HeightType, GameType
 from ClassesInterim import MapInterim, LineInterim, DoorInterim
 from actorsGeneration import ( generateDecorationSpriteName, generateDecorationClassName, generateDecorationZScript,
     generateEdnum, generateLampSpriteName, generateLampClassName, generateLampZScript, generateFoeClassName,
@@ -92,7 +92,7 @@ class MapGZD:
     SECTOR_FULL_IDX = 0
     SECTOR_BOTTOM_IDX = 1
 
-    def __init__(self, mapInterim: MapInterim, spawnPos: list[int], spawnAngle: int, mapIndex: int):
+    def __init__(self, mapInterim: MapInterim, spawnPos: list[int], spawnAngle: int, mapIndex: int, gameType: GameType):
         self.vertexes: list[VertexGZD] = []
         self.sectorFull: SectorGZD = None
         self.sectorBottom: SectorGZD = None
@@ -169,7 +169,10 @@ class MapGZD:
                 ednum = EdnumGZD(num=generateEdnum(), className=className)
                 patches_names = ["A_front", "B_front", "A_left", "B_left", "A_back", "B_back",
                                 "A_right", "B_right"]
-                sprite_names = ["C0", "D0", "E0", "F0", "G0", "H0", "I0", "J0"]
+                if gameType == GameType.B3D:
+                    sprite_names = ["C0", "D0", "E0", "F0", "G0", "H0", "I0", "J0"]
+                elif gameType == GameType.L3D:
+                    sprite_names = ["C0", "D0", "E0", "F0", "G0"]
                 for i, name in enumerate(patches_names):
                     patchName = spriteName + name
                     patch = mapInterim.foeSprites[foe.colorIdx][i]
@@ -180,7 +183,7 @@ class MapGZD:
                         texturesName = spriteName+'B'
                     if texturesName not in self.texturesDefs:
                         self.texturesDefs[texturesName] = ""
-                    self.texturesDefs[texturesName] += generateFoeTexturesDef(patchName, patch, mapIndex) + '\n'
+                    self.texturesDefs[texturesName] += generateFoeTexturesDef(patchName, patch, mapIndex, gameType) + '\n'
                 for i, name in enumerate(sprite_names):
                     self.sprites[spriteName + name] = mapInterim.foeSprites[foe.colorIdx][len(patches_names)+i]
                 zscript = generateFoeZScript(className, spriteName, self.sprites[spriteName+"C0"], self.sprites[spriteName+"G0"])
@@ -256,14 +259,14 @@ class MapGZD:
                 )
                 self.models.append(model)
                 textureDef = generateCrateModelReplacementTextureDef(spriteName+"A0",
-                                    crate.textureName, mapInterim.textures[crate.textureName], mapIndex) + "\n"
+                                    crate.textureName, mapInterim.textures[crate.textureName], mapIndex, gameType) + "\n"
                 patchNameBase = getPatchBaseName(crate.spriteIdx, crate.colorIdx)
                 frameLetters = ['B', 'C', 'D', "E", "F", "G"]
                 for frameLetter in frameLetters:
                     patchName = patchNameBase + "_frame_" + frameLetter
                     spriteNameFull = spriteName + frameLetter + "0"
                     patch = self.patches[patchName]
-                    textureDef += generateGenericPatchTextureDef(patchName, spriteNameFull, patch, mapIndex) + "\n"
+                    textureDef += generateGenericPatchTextureDef(patchName, spriteNameFull, patch, mapIndex, gameType) + "\n"
                 self.texturesDefs[spriteName] = textureDef
                 self.actors.append(ActorGZD(ednum=ednum, zscript=zscript))
                 self._keysToCrates[key] = self.actors[-1]
