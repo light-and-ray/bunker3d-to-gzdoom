@@ -1490,6 +1490,70 @@ public class ResourcesLoaderL3D {
    }
 
 
+   private void loadSpritesPart3(byte[][][] bigLump2) {
+      int[][] var8 = new int[bigLump2[5].length][];
+      int[][] var9 = new int[bigLump2[5].length][];
+      boolean var2 = false;
+      int var7 = bigLump2[5].length;
+
+      int var4;
+      for(int var5 = 0; var5 <= 1; ++var5) {
+         BufferedImage var10 = this.readImage(this.spriteFiles[var5] + this.dataExt);
+         BufferedImage var11 = this.readImage(this.spriteFiles[var5 + 2] + this.dataExt);
+
+         for(var4 = 0; var4 < var7; ++var4) {
+            if (var5 == 0) {
+               if (bigLump2[5][var4][0] < 0) {
+                  continue;
+               }
+            } else {
+               if (bigLump2[5][var4][0] >= 0) {
+                  continue;
+               }
+
+               bigLump2[5][var4][0] = (byte)(-bigLump2[5][var4][0]);
+            }
+
+            int var3 = bigLump2[5][var4][0] * 7;
+            var8[var4] = new int[this.i[var3 + 2] * this.i[var3 + 3]];
+            var9[var4] = new int[this.i[var3 + 2] * this.i[var3 + 3]];
+            var10.getRGB(this.i[var3 + 0], this.i[var3 + 1], this.i[var3 + 2], this.i[var3 + 3], var8[var4], 0, this.i[var3 + 2]);
+            var11.getRGB(this.i[var3 + 0], this.i[var3 + 1], this.i[var3 + 2], this.i[var3 + 3], var9[var4], 0, this.i[var3 + 2]);
+         }
+      }
+
+      short var13 = 650;
+      var7 = bigLump2[5].length;
+
+      for(var4 = 0; var4 < var7; ++var4) {
+         this.combineLayers(var8[var4], var9[var4], this.bm, var13, bigLump2[6][var4], bigLump2[1][var4]);
+         var13 = (short)(var13 + 50);
+      }
+
+      // var7 = 13 + bigLump2[5].length;
+
+      // for(int var12 = 13; var12 < var7; ++var12) {
+      //    int var6 = this.bt[var12] / this.br[var12];
+      //    if (this.bq[var12] == 0) {
+      //       this.b(var12, var6, var8[var12 - 13]);
+      //    } else if (this.bq[var12] == 1) {
+      //       this.a(var12, var6, var8[var12 - 13]);
+      //    } else if (this.bq[var12] == 2) {
+      //       this.c(var12, var6, var8[var12 - 13]);
+      //    } else if (this.bq[var12] == 3) {
+      //       this.d(var12, var6, var8[var12 - 13]);
+      //    } else if (this.bq[var12] == 4) {
+      //       this.e(var12, var6, var8[var12 - 13]);
+      //    } else if (this.bq[var12] == 6) {
+      //       this.f(var12, var6, var8[var12 - 13]);
+      //    }
+      // }
+
+      // this.B = (byte[][][])null;
+      // System.gc();
+   }
+
+
 
 
 
