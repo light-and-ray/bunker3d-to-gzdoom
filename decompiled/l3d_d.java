@@ -372,7 +372,7 @@ public final class l3d_d extends Canvas {
    private int fN;
    private int fO;
    private int fP;
-   private int fQ;
+   private int selectedMap;
    private short fR;
    private short fS;
    private short fT;
@@ -559,10 +559,10 @@ public final class l3d_d extends Canvas {
          d(var1);
          int var3 = this.hP[22];
          if (this.hD) {
-            this.fQ = 10;
+            this.selectedMap = 10;
          }
 
-         int var4 = this.hO[22] + this.fQ - 1;
+         int var4 = this.hO[22] + this.selectedMap - 1;
 
          for(var2 = this.hO[22]; var2 < var4; ++var2) {
             var3 += this.q[var2];
@@ -622,10 +622,10 @@ public final class l3d_d extends Canvas {
       l3d_d var10000;
       if (this.eO == 6) {
          label345: {
-            ++this.fQ;
+            ++this.selectedMap;
             byte var21;
-            if (this.fQ != 4 && this.fQ != 9) {
-               if (this.fQ != 1) {
+            if (this.selectedMap != 4 && this.selectedMap != 9) {
+               if (this.selectedMap != 1) {
                   break label345;
                }
 
@@ -640,15 +640,15 @@ public final class l3d_d extends Canvas {
          }
 
          this.gE = 0;
-         if (this.fQ != 12) {
-            if (this.ih < this.fQ) {
-               this.ih = this.fQ;
+         if (this.selectedMap != 12) {
+            if (this.ih < this.selectedMap) {
+               this.ih = this.selectedMap;
             }
 
-            this.id[this.fQ - 1] = this.eE;
-            this.ie[this.fQ - 1] = this.fo;
-            this.if[this.fQ - 1] = this.fp;
-            this.ig[this.fQ - 1] = this.fq;
+            this.id[this.selectedMap - 1] = this.eE;
+            this.ie[this.selectedMap - 1] = this.fo;
+            this.if[this.selectedMap - 1] = this.fp;
+            this.ig[this.selectedMap - 1] = this.fq;
 
             try {
                if (this.hV != null) {
@@ -741,7 +741,7 @@ public final class l3d_d extends Canvas {
             this.gC = -10000;
             this.I();
             this.K();
-            if (this.fQ == 20) {
+            if (this.selectedMap == 20) {
                this.eP = false;
                var10000 = this;
                var10001 = 1;
@@ -751,7 +751,7 @@ public final class l3d_d extends Canvas {
             }
 
             var10000.eG = var10001;
-            this.C(this.fQ);
+            this.C(this.selectedMap);
             if (this.hD) {
                return;
             }
@@ -1012,7 +1012,7 @@ public final class l3d_d extends Canvas {
                byte var17;
                byte var19;
                byte var20;
-               if (this.fQ != 7 && this.fQ != 8) {
+               if (this.selectedMap != 7 && this.selectedMap != 8) {
                   var12 = var1;
                   var13 = this.gp;
                   var14 = 0;
@@ -1300,7 +1300,7 @@ public final class l3d_d extends Canvas {
 
    private void loadMap() {
       boolean var3 = false;
-      int var5 = this.fQ == 0 ? 1 : this.fQ;
+      int var5 = this.selectedMap == 0 ? 1 : this.selectedMap;
       l3d_d var10000;
       StringBuffer var10001;
       String var10002;
@@ -1720,7 +1720,7 @@ public final class l3d_d extends Canvas {
       l3d_d var25;
       byte var26;
       long var28;
-      if (this.fQ != 11) {
+      if (this.selectedMap != 11) {
          var25 = this;
          var26 = bigLump1[8][0][0];
          var28 = (long)bigLump1[8][0][1] * 75000L;
@@ -1992,7 +1992,7 @@ public final class l3d_d extends Canvas {
          this.cr[var3] = bigLump2[4][var3][6];
          this.cp[var3] = bigLump2[4][var3][7];
          this.cu[var3] = false;
-         if (this.ck[var3] > 0 && (this.ck[var3] != 41 || this.fQ != 5 && this.fQ != 8)) {
+         if (this.ck[var3] > 0 && (this.ck[var3] != 41 || this.selectedMap != 5 && this.selectedMap != 8)) {
             var10000 = this.co;
             var10001 = var3;
             var10002 = 0;
@@ -2100,7 +2100,7 @@ public final class l3d_d extends Canvas {
       l3d_d var10000;
       StringBuffer var10001;
       String var10002;
-      if (this.fQ != 7) {
+      if (this.selectedMap != 7) {
          var10000 = this;
          var10001 = new StringBuffer();
          var10002 = "/ee";
@@ -3677,7 +3677,7 @@ public final class l3d_d extends Canvas {
 
       int var28 = var44;
       if (this.an == -1) {
-         if (this.fQ != 6 && this.ar >= this.fL && this.ar < this.fL + 72) {
+         if (this.selectedMap != 6 && this.ar >= this.fL && this.ar < this.fL + 72) {
             this.bE = (long)this.dg[0][this.ar];
             this.bF = (long)this.dg[1][this.ar];
          } else {
@@ -5507,7 +5507,7 @@ public final class l3d_d extends Canvas {
                if (this.ee >= this.fI && this.ee < this.fJ) {
                   this.ao = this.ee;
                   this.eT = false;
-                  if (this.fQ != 1 && this.fQ != 2) {
+                  if (this.selectedMap != 1 && this.selectedMap != 2) {
                      break label53;
                   }
 
@@ -5649,11 +5649,11 @@ public final class l3d_d extends Canvas {
       for(int var8 = 0; var8 < var7; ++var8) {
          byte var6 = this.cs[this.fU][var8];
          if (a(var2 - ((long)this.cb[var6][0] * 75000L >> 16)) < 30000L && a(var4 - ((long)this.cb[var6][1] * 75000L >> 16)) < 30000L && this.ci[this.cq[var6]] == 1) {
-            if (this.fQ == 1 && (this.cq[var6] == this.cL || this.cq[var6] == 26 || this.cq[var6] == 33) && var6 >= 64) {
+            if (this.selectedMap == 1 && (this.cq[var6] == this.cL || this.cq[var6] == 26 || this.cq[var6] == 33) && var6 >= 64) {
                return false;
             }
 
-            if (this.fQ == 7 && (this.cq[var6] == 47 || this.cq[var6] == 48 || this.cq[var6] == 49)) {
+            if (this.selectedMap == 7 && (this.cq[var6] == 47 || this.cq[var6] == 48 || this.cq[var6] == 49)) {
                --this.fo;
                if (this.fo <= 100) {
                   this.fv = 100;
@@ -5724,7 +5724,7 @@ public final class l3d_d extends Canvas {
                   this.ge = true;
                   this.fi = this.ff;
                } else if (this.cn[var6] == this.cM + 4) {
-                  if (this.fo == this.fv && this.fQ != 7 && this.fQ != 8 || this.fo == 200) {
+                  if (this.fo == this.fv && this.selectedMap != 7 && this.selectedMap != 8 || this.fo == 200) {
                      return false;
                   }
 
@@ -5735,7 +5735,7 @@ public final class l3d_d extends Canvas {
                      this.fj = this.ff;
                   }
 
-                  if ((this.fQ == 7 || this.fQ == 8) && this.fo != 200) {
+                  if ((this.selectedMap == 7 || this.selectedMap == 8) && this.fo != 200) {
                      this.fo = 200;
                      this.fv = 200;
                      this.gf = true;
@@ -5754,7 +5754,7 @@ public final class l3d_d extends Canvas {
                      this.fk = this.ff;
                   }
                } else {
-                  if (this.fp == 777 && (this.fo == this.fv && this.fQ != 7 && this.fQ != 8 || this.fo == 200)) {
+                  if (this.fp == 777 && (this.fo == this.fv && this.selectedMap != 7 && this.selectedMap != 8 || this.fo == 200)) {
                      return false;
                   }
 
@@ -5768,7 +5768,7 @@ public final class l3d_d extends Canvas {
                         this.fj = this.ff;
                      }
 
-                     if ((this.fQ == 7 || this.fQ == 8) && this.fo != 200) {
+                     if ((this.selectedMap == 7 || this.selectedMap == 8) && this.fo != 200) {
                         this.fo = 200;
                         this.fv = 200;
                         this.gf = true;
@@ -5782,7 +5782,7 @@ public final class l3d_d extends Canvas {
                      return false;
                   }
 
-                  if (this.fp != 777 && (this.fo == this.fv && this.fQ != 7 && this.fQ != 8 || this.fo == 200)) {
+                  if (this.fp != 777 && (this.fo == this.fv && this.selectedMap != 7 && this.selectedMap != 8 || this.fo == 200)) {
                      this.cn[var6] = (byte)(this.cM + 4);
                      this.cq[var6] = this.cn[var6];
                      var9 = abs(this.E() % 21);
@@ -5818,7 +5818,7 @@ public final class l3d_d extends Canvas {
                      this.gf = false;
                   }
 
-                  if ((this.fQ == 7 || this.fQ == 8) && this.fo != 200) {
+                  if ((this.selectedMap == 7 || this.selectedMap == 8) && this.fo != 200) {
                      this.fo = 200;
                      this.fv = 200;
                   }
@@ -6085,7 +6085,7 @@ public final class l3d_d extends Canvas {
 
    private int modifyBigLump1_subfunction3(int[] var1, long var2, long var4, int var6, int var7, int var8, int var9) {
       char var10 = 0;
-      if (this.fQ == 1 || this.fQ == 2) {
+      if (this.selectedMap == 1 || this.selectedMap == 2) {
          var10 = '耀';
       }
 
@@ -6271,11 +6271,11 @@ public final class l3d_d extends Canvas {
          if (a(this.gn[0] - ((long)this.dI[var2][0] * 75000L >> 16)) < 75000L && a(this.gn[1] - ((long)this.dI[var2][1] * 75000L >> 16)) < 75000L) {
             if (var2 == this.fA) {
                label105: {
-                  ++this.fQ;
+                  ++this.selectedMap;
                   l3d_d var10000;
                   byte var10001;
-                  if (this.fQ != 4 && this.fQ != 9) {
-                     if (this.fQ != 1) {
+                  if (this.selectedMap != 4 && this.selectedMap != 9) {
+                     if (this.selectedMap != 1) {
                         break label105;
                      }
 
@@ -6290,15 +6290,15 @@ public final class l3d_d extends Canvas {
                }
 
                this.gE = 0;
-               if (this.fQ != 10) {
-                  if (this.ih < this.fQ) {
-                     this.ih = this.fQ;
+               if (this.selectedMap != 10) {
+                  if (this.ih < this.selectedMap) {
+                     this.ih = this.selectedMap;
                   }
 
-                  this.id[this.fQ - 1] = this.eE;
-                  this.ie[this.fQ - 1] = this.fo;
-                  this.if[this.fQ - 1] = this.fp;
-                  this.ig[this.fQ - 1] = this.fq;
+                  this.id[this.selectedMap - 1] = this.eE;
+                  this.ie[this.selectedMap - 1] = this.fo;
+                  this.if[this.selectedMap - 1] = this.fp;
+                  this.ig[this.selectedMap - 1] = this.fq;
 
                   try {
                      if (this.hV != null) {
@@ -6310,7 +6310,7 @@ public final class l3d_d extends Canvas {
                   this.aa();
                }
 
-               if (this.fQ < 10) {
+               if (this.selectedMap < 10) {
                   this.gk = true;
                   this.gc = true;
                   this.fw = this.eE;
@@ -6800,7 +6800,7 @@ public final class l3d_d extends Canvas {
 
                var10000.f(var10001, var10002);
                int[] var9;
-               if ((this.fQ == 5 || this.fQ == 8) && this.ck[var4] == 41) {
+               if ((this.selectedMap == 5 || this.selectedMap == 8) && this.ck[var4] == 41) {
                   if (this.cq[var4] < 41) {
                      this.cq[var4] = 41;
                   }
@@ -6834,7 +6834,7 @@ public final class l3d_d extends Canvas {
                   var5 = this.cq;
                   var10001 = var4;
                   var6 = 41;
-               } else if ((this.fQ == 7 || this.fQ == 8) && this.ck[var4] == 37) {
+               } else if ((this.selectedMap == 7 || this.selectedMap == 8) && this.ck[var4] == 37) {
                   if (this.cq[var4] == 37) {
                      var5 = this.cq;
                      var10001 = var4;
@@ -7274,11 +7274,11 @@ public final class l3d_d extends Canvas {
 
             if (this.eE == 3 && this.eT && !this.eV && this.ao == -1) {
                this.e(var2);
-               if (this.an >= this.fL && this.an <= this.fL + 72 && this.fQ != 6) {
+               if (this.an >= this.fL && this.an <= this.fL + 72 && this.selectedMap != 6) {
                   this.w();
                }
 
-               if (this.fQ == 4 && this.eE == 3 && (this.an == 19 || this.an == 20 || this.an == 21 || this.an == 25 || this.an == 26 || this.an == 27 || this.an == 33 || this.an == 34 || this.an == 35 || this.an == 45 || this.an == 53 || this.an == 71 || this.an == 75 || this.an == 83 || this.an == 91)) {
+               if (this.selectedMap == 4 && this.eE == 3 && (this.an == 19 || this.an == 20 || this.an == 21 || this.an == 25 || this.an == 26 || this.an == 27 || this.an == 33 || this.an == 34 || this.an == 35 || this.an == 45 || this.an == 53 || this.an == 71 || this.an == 75 || this.an == 83 || this.an == 91)) {
                   this.dh[this.an] = 3;
                   this.gu[this.fR] = (short)this.an;
                   ++this.fR;
@@ -7317,7 +7317,7 @@ public final class l3d_d extends Canvas {
          int var1;
          int var2;
          int var3;
-         if (this.an >= this.fL && this.an <= this.fL + 72 && this.fQ != 6) {
+         if (this.an >= this.fL && this.an <= this.fL + 72 && this.selectedMap != 6) {
             for(var2 = var1 = this.an - (this.an - this.fL) % 12; var2 < var1 + 12; ++var2) {
                this.bw[var2] = 1;
             }
@@ -7351,19 +7351,19 @@ public final class l3d_d extends Canvas {
                }
             }
 
-            if (this.fQ == 4 && this.an >= this.fL && this.an <= this.fL + 11) {
+            if (this.selectedMap == 4 && this.an >= this.fL && this.an <= this.fL + 11) {
                this.dh[21] = 3;
                this.gu[this.fR] = 21;
                ++this.fR;
             }
 
-            if (this.fQ == 4 && this.an >= this.fL + 48 && this.an <= this.fL + 59) {
+            if (this.selectedMap == 4 && this.an >= this.fL + 48 && this.an <= this.fL + 59) {
                this.dh[45] = 3;
                this.gu[this.fR] = 45;
                ++this.fR;
             }
 
-            if (this.fQ == 4 && this.an >= this.fL + 12 && this.an <= this.fL + 23) {
+            if (this.selectedMap == 4 && this.an >= this.fL + 12 && this.an <= this.fL + 23) {
                this.gh = true;
                ++this.fT;
                this.fV = this.fL + 24;
@@ -7399,7 +7399,7 @@ public final class l3d_d extends Canvas {
                }
             }
 
-            if (this.fQ == 4 && this.an >= this.fL + 24 && this.an <= this.fL + 35) {
+            if (this.selectedMap == 4 && this.an >= this.fL + 24 && this.an <= this.fL + 35) {
                this.gh = true;
                ++this.fT;
                this.fV = this.fL + 36;
@@ -7435,7 +7435,7 @@ public final class l3d_d extends Canvas {
                }
             }
 
-            if (this.fQ == 4 && this.an >= this.fL + 36 && this.an <= this.fL + 47) {
+            if (this.selectedMap == 4 && this.an >= this.fL + 36 && this.an <= this.fL + 47) {
                this.gh = true;
                ++this.fT;
                this.fV = this.fL + 12;
@@ -7471,7 +7471,7 @@ public final class l3d_d extends Canvas {
                }
             }
 
-            if (this.fQ == 9 && this.an >= this.fL && this.an <= this.fL + 11) {
+            if (this.selectedMap == 9 && this.an >= this.fL && this.an <= this.fL + 11) {
                this.gh = true;
                ++this.fT;
                this.fV = this.fL + 12;
@@ -7507,7 +7507,7 @@ public final class l3d_d extends Canvas {
                }
             }
 
-            if (this.fQ == 9 && this.an >= this.fL + 12 && this.an <= this.fL + 23) {
+            if (this.selectedMap == 9 && this.an >= this.fL + 12 && this.an <= this.fL + 23) {
                this.gh = true;
                ++this.fT;
                this.fV = this.fL + 24;
@@ -7543,7 +7543,7 @@ public final class l3d_d extends Canvas {
                }
             }
 
-            if (this.fQ == 9 && this.an >= this.fL + 24 && this.an <= this.fL + 35) {
+            if (this.selectedMap == 9 && this.an >= this.fL + 24 && this.an <= this.fL + 35) {
                this.gh = true;
                ++this.fT;
                this.fV = this.fL;
@@ -7579,7 +7579,7 @@ public final class l3d_d extends Canvas {
                }
             }
 
-            if (this.fQ == 1 && this.an >= this.fL + 12 && this.an <= this.fL + 23) {
+            if (this.selectedMap == 1 && this.an >= this.fL + 12 && this.an <= this.fL + 23) {
                this.gh = true;
                ++this.fT;
                this.fV = this.fL + 60;
@@ -7615,7 +7615,7 @@ public final class l3d_d extends Canvas {
                }
             }
 
-            if (this.fQ == 1 && this.an >= this.fL + 60 && this.an <= this.fL + 71) {
+            if (this.selectedMap == 1 && this.an >= this.fL + 60 && this.an <= this.fL + 71) {
                this.gh = true;
                ++this.fT;
                this.fV = this.fL + 12;
@@ -7651,7 +7651,7 @@ public final class l3d_d extends Canvas {
                }
             }
 
-            if (this.fQ == 1 && this.an >= this.fL + 24 && this.an <= this.fL + 35) {
+            if (this.selectedMap == 1 && this.an >= this.fL + 24 && this.an <= this.fL + 35) {
                this.gh = true;
                ++this.fT;
                this.fV = this.fL + 36;
@@ -7687,7 +7687,7 @@ public final class l3d_d extends Canvas {
                }
             }
 
-            if (this.fQ == 1 && this.an >= this.fL + 36 && this.an <= this.fL + 47) {
+            if (this.selectedMap == 1 && this.an >= this.fL + 36 && this.an <= this.fL + 47) {
                this.gh = true;
                ++this.fT;
                this.fV = this.fL + 24;
@@ -7731,7 +7731,7 @@ public final class l3d_d extends Canvas {
             var3 = 106 + var2;
             this.cv[var3] = true;
             this.cw[var3] = true;
-            if ((this.fQ == 1 || this.fQ == 2) && !this.eT) {
+            if ((this.selectedMap == 1 || this.selectedMap == 2) && !this.eT) {
                ++this.cq[var3];
             }
          }
@@ -7767,7 +7767,7 @@ public final class l3d_d extends Canvas {
             byte[] var10000;
             int var10001;
             byte var10002;
-            if (this.ck[this.ce[var2]] >= 0 && (this.ck[this.ce[var2]] != 41 || this.fQ != 5 && this.fQ != 8)) {
+            if (this.ck[this.ce[var2]] >= 0 && (this.ck[this.ce[var2]] != 41 || this.selectedMap != 5 && this.selectedMap != 8)) {
                var10000 = this.cq;
                var10001 = this.ce[var2];
                var10002 = 27;
@@ -7837,13 +7837,13 @@ public final class l3d_d extends Canvas {
 
             if (this.co[var13] <= 0) {
                this.co[var13] = 0;
-               if ((this.fQ == 2 && (this.cq[5] == 40 || this.cq[5] == 27) || this.fQ == 4 && (this.cq[11] == 40 || this.cq[11] == 27) || this.fQ == 7 && (this.cq[15] == 27 || this.cq[15] == 44) && (this.cq[16] == 27 || this.cq[16] == 44) && (this.cq[17] == 27 || this.cq[17] == 44)) && this.eO == 0) {
+               if ((this.selectedMap == 2 && (this.cq[5] == 40 || this.cq[5] == 27) || this.selectedMap == 4 && (this.cq[11] == 40 || this.cq[11] == 27) || this.selectedMap == 7 && (this.cq[15] == 27 || this.cq[15] == 44) && (this.cq[16] == 27 || this.cq[16] == 44) && (this.cq[17] == 27 || this.cq[17] == 44)) && this.eO == 0) {
                   this.eO = 1;
                }
 
                if (this.cq[var13] >= var1 && this.cq[var13] <= var12 && this.cq[var13] != var6 && this.cq[var13] != var7 && this.cq[var13] != var8 && this.cq[var13] != var9 && this.cq[var13] != var10 && this.cq[var13] != var11) {
                   this.cq[var13] = (byte)var2;
-                  if (this.ck[var13] == 41 && (this.fQ == 5 || this.fQ == 8)) {
+                  if (this.ck[var13] == 41 && (this.selectedMap == 5 || this.selectedMap == 8)) {
                      this.cb[64][0] = this.cb[var13][0];
                      this.cb[64][1] = this.cb[var13][1];
                      this.cq[64] = 28;
@@ -8289,7 +8289,7 @@ public final class l3d_d extends Canvas {
          byte var10002;
          if (this.cv[var2]) {
             this.cq[var2] = this.fY;
-            if (this.fQ != 6) {
+            if (this.selectedMap != 6) {
                continue;
             }
 
@@ -8346,7 +8346,7 @@ public final class l3d_d extends Canvas {
 
             if (this.cq[var2] == this.fW) {
                this.cq[var2] = this.fX;
-               if (this.fQ != 6) {
+               if (this.selectedMap != 6) {
                   continue;
                }
 
@@ -8376,7 +8376,7 @@ public final class l3d_d extends Canvas {
                var10002 = 5;
             } else {
                this.cq[var2] = this.fW;
-               if (this.fQ != 6) {
+               if (this.selectedMap != 6) {
                   continue;
                }
 
@@ -8463,7 +8463,7 @@ public final class l3d_d extends Canvas {
          if (this.gv[var2] != null) {
             for(int var1 = 0; var1 < this.gv[var2].length; ++var1) {
                boolean var3 = true;
-               if (this.fQ == 4) {
+               if (this.selectedMap == 4) {
                   for(int var4 = 0; var4 < this.fR; ++var4) {
                      if (this.gu[var4] == this.gv[var2][var1]) {
                         var3 = false;
@@ -8636,7 +8636,7 @@ public final class l3d_d extends Canvas {
 
          label62: {
             var10000.a(var1, var10002, var10003, var10004, var10005, var10006, var10007, -1, -1, -1, -1, 9);
-            if (this.fQ == 1) {
+            if (this.selectedMap == 1) {
                if (this.eE != 3) {
                   var10000 = this;
                   var1 = 37;
@@ -8673,7 +8673,7 @@ public final class l3d_d extends Canvas {
          }
 
          var10000.a(var1, var10002, var10003, var10004, var10005, var10006, -1, -1, -1, -1, -1, 38);
-         if (this.fQ != 1) {
+         if (this.selectedMap != 1) {
             byte var2;
             byte var3;
             byte var10008;
@@ -8681,7 +8681,7 @@ public final class l3d_d extends Canvas {
             byte var10010;
             byte var10011;
             byte var10012;
-            if (this.fQ != 5 && this.fQ != 8) {
+            if (this.selectedMap != 5 && this.selectedMap != 8) {
                if (this.eE != 3) {
                   var10000 = this;
                   var1 = 41;
@@ -8923,8 +8923,8 @@ public final class l3d_d extends Canvas {
                   this.hD = false;
                   this.hI = (int[][])null;
                   this.b(false);
-                  if (this.fQ == 0) {
-                     this.fQ = 1;
+                  if (this.selectedMap == 0) {
+                     this.selectedMap = 1;
                      this.fS = 2;
                      this.gE = 0;
                   }
@@ -8980,7 +8980,7 @@ public final class l3d_d extends Canvas {
             ++var9;
          }
 
-         if (this.gk && this.fQ != 10) {
+         if (this.gk && this.selectedMap != 10) {
             var6.drawRGB(this.hI[48], 0, 15, var4 + 15 * var8, 22 * (var7 - var2 + var5) + this.hk - 5, 15, 16, false);
          }
       }
@@ -9370,15 +9370,15 @@ public final class l3d_d extends Canvas {
 
                         if ((this.hp != 7 || this.hA != 5) && !this.hD) {
                            label387: {
-                              this.fQ = this.hp + this.hA + 1;
+                              this.selectedMap = this.hp + this.hA + 1;
                               this.eD = 0;
                               this.eS = false;
                               this.eJ = 0;
                               this.eC = 40;
                               this.eH = 0;
                               this.gG = 0;
-                              if (this.fQ != 4 && this.fQ != 9) {
-                                 if (this.fQ != 1) {
+                              if (this.selectedMap != 4 && this.selectedMap != 9) {
+                                 if (this.selectedMap != 1) {
                                     break label387;
                                  }
 
@@ -9393,14 +9393,14 @@ public final class l3d_d extends Canvas {
                            }
 
                            this.gE = 0;
-                           this.eE = this.id[this.fQ - 1];
-                           this.fo = this.ie[this.fQ - 1];
+                           this.eE = this.id[this.selectedMap - 1];
+                           this.fo = this.ie[this.selectedMap - 1];
                            if (this.fo > 100) {
                               this.fv = 200;
                            }
 
-                           this.fp = this.if[this.fQ - 1];
-                           this.fq = this.ig[this.fQ - 1];
+                           this.fp = this.if[this.selectedMap - 1];
+                           this.fq = this.ig[this.selectedMap - 1];
                            if (this.eE == 3) {
                               var7 = this;
                               var10001 = this.fq;
@@ -9415,7 +9415,7 @@ public final class l3d_d extends Canvas {
                            this.fu = this.fq;
                            this.u();
                         } else {
-                           this.fQ = 0;
+                           this.selectedMap = 0;
                            this.gE = 0;
                         }
 
@@ -9532,9 +9532,9 @@ public final class l3d_d extends Canvas {
 
                            if (this.hZ == 0) {
                               this.hZ += 10;
-                              if (this.fQ != -1) {
+                              if (this.selectedMap != -1) {
                                  var7 = this;
-                                 var10001 = this.fQ;
+                                 var10001 = this.selectedMap;
                               } else {
                                  var7 = this;
                                  var10001 = 0;
@@ -9746,7 +9746,7 @@ public final class l3d_d extends Canvas {
                this.hB = true;
                this.hk = 0;
                this.C(0);
-               this.fQ = -1;
+               this.selectedMap = -1;
                this.hj = System.currentTimeMillis();
             } else if (this.hG) {
                var1.drawRGB(this.hN, 0, this.hy, 240 - this.hy >> 1, (320 - this.hz >> 1) + this.hk, this.hy, this.hz, false);
@@ -10302,7 +10302,7 @@ public final class l3d_d extends Canvas {
    }
 
    static int Y(l3d_d var0) {
-      return var0.fQ;
+      return var0.selectedMap;
    }
 
    static long Z(l3d_d var0) {
