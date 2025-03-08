@@ -502,10 +502,10 @@ public class ResourcesLoaderB3D {
       this.modifyBigLump1(this.E[1]);
       if (!this.gB) {
          this.loadMapPart((byte[])this.loadedMap[4], (byte[])this.loadedMap[5], (byte[])this.n, 2);
-         this.readFoePart1(this.E[2]);
+         this.loadSpritesPart1(this.E[2]);
          // E[2][0] - palettes ?
-         this.readFoePart2(this.E[2]);
-         this.loadSprites(this.E[2]);
+         this.loadSpritesPart2(this.E[2]);
+         this.loadSpritesPart3(this.E[2]);
       }
 
       // this.loadedMap = (byte[][])null;
@@ -1185,7 +1185,7 @@ public class ResourcesLoaderB3D {
 
 
 
-   public void readFoePart1(byte[][][] bigLump2) {
+   public void loadSpritesPart1(byte[][][] bigLump2) {
       int length = bigLump2[4].length;
       this.bZ = new byte[length];
       this.bW = new short[length];
@@ -1296,7 +1296,7 @@ public class ResourcesLoaderB3D {
 
 
 
-   public void readFoePart2(byte[][][] var1) {
+   public void loadSpritesPart2(byte[][][] var1) {
       BufferedImage layer1 = null;
       BufferedImage layer2 = null;
       layer1 = this.readImage("/e" + this.dataExt);
@@ -1331,7 +1331,7 @@ public class ResourcesLoaderB3D {
       length = this.FOE_METADATA.length;
 
       for(offset = 0; offset < length; offset += 7) {
-         this.readFoeSubfunction1(this.FOE_METADATA, segNum, offset);
+         this.loadSprites_subfunction1(this.FOE_METADATA, segNum, offset);
          this.bY[segNum] = this.FOE_METADATA[offset + 6];
          ++segNum;
       }
@@ -1351,7 +1351,7 @@ public class ResourcesLoaderB3D {
             var10000[offset + 3] = (short)(var10000[offset + 3] << 1);
          }
 
-         this.readFoeSubfunction1(this.l, segNum, offset);
+         this.loadSprites_subfunction1(this.l, segNum, offset);
          this.bY[segNum] = this.l[offset + 6];
          ++segNum;
       }
@@ -1361,7 +1361,7 @@ public class ResourcesLoaderB3D {
       int var18 = this.bq[2][this.M[2]] + 10;
       int var19 = this.bq[3][this.M[3]] + 10;
       int var20 = this.bq[4][this.M[4]] + 10;
-      this.readFoeSubfunction2(var16, var17, var1[1].length, var18, var19, var20);
+      this.loadSprites_subfunction2(var16, var17, var1[1].length, var18, var19, var20);
       segNum = 0;
       short var21 = 0;
       length = this.FOE_METADATA.length;
@@ -1393,7 +1393,7 @@ public class ResourcesLoaderB3D {
 
    }
 
-   public void readFoeSubfunction1(short[] foeMData, int segNum, int offset) {
+   public void loadSprites_subfunction1(short[] foeMData, int segNum, int offset) {
       this.foeW[segNum] = foeMData[offset + 2];
       this.foeH[segNum] = foeMData[offset + 3];
       int var4 = this.foeH[segNum] / foeMData[offset + 5];
@@ -1408,7 +1408,7 @@ public class ResourcesLoaderB3D {
    }
 
 
-   public void readFoeSubfunction2(int var1, int var2, int var3, int var4, int var5, int var6) {
+   public void loadSprites_subfunction2(int var1, int var2, int var3, int var4, int var5, int var6) {
       this.bp = new int[2][(16 + var3) * 50];
       this.bm = new int[50];
       this.cY = new byte[var1];
@@ -2261,7 +2261,7 @@ public class ResourcesLoaderB3D {
 
 
 
-   public void loadSprites(byte[][][] var1) {
+   public void loadSpritesPart3(byte[][][] var1) {
       int[][] var8 = new int[var1[5].length][];
       int[][] var9 = new int[var1[5].length][];
       boolean var2 = false;

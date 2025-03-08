@@ -2173,7 +2173,7 @@ public final class l3d_d extends Canvas {
          int[] var6 = new int[this.h[var10 + 2] * this.h[var10 + 3]];
          var7.getRGB(var5, 0, this.h[var10 + 2], this.h[var10 + 0], this.h[var10 + 1], this.h[var10 + 2], this.h[var10 + 3]);
          var8.getRGB(var6, 0, this.h[var10 + 2], this.h[var10 + 0], this.h[var10 + 1], this.h[var10 + 2], this.h[var10 + 3]);
-         this.loadSprites_subfunction3(var5, var6, this.bm, var22, bigLump2[0][0], bigLump2[0][1]);
+         this.combineLayers(var5, var6, this.bm, var22, bigLump2[0][0], bigLump2[0][1]);
          var22 = (short)(var22 + 50);
          int var15 = this.bt[var13] / this.br[var13];
          if (this.bq[var13] == 0) {
@@ -2223,7 +2223,7 @@ public final class l3d_d extends Canvas {
       var7 = bigLump2[5].length;
 
       for(var4 = 0; var4 < var7; ++var4) {
-         this.loadSprites_subfunction3(var8[var4], var9[var4], this.bm, var13, bigLump2[6][var4], bigLump2[1][var4]);
+         this.combineLayers(var8[var4], var9[var4], this.bm, var13, bigLump2[6][var4], bigLump2[1][var4]);
          var13 = (short)(var13 + 50);
       }
 
@@ -2756,7 +2756,7 @@ public final class l3d_d extends Canvas {
       }
    }
 
-   private void loadSprites_subfunction3(int[] var1, int[] var2, int[][] var3, short var4, byte[] var5, byte[] var6) {
+   private void combineLayers(int[] var1, int[] var2, int[][] var3, short var4, byte[] var5, byte[] var6) {
       boolean var11 = false;
       byte var12 = 1;
       int var13 = var1.length;
