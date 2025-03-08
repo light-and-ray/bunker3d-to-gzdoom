@@ -107,33 +107,33 @@ def _loadLinesTextures():
     base = read1DArray("LINES_TEXTURES")
     help1 = read1DArray("LINES_TEXTURES_HELP_1")
     help2 = read1DArray("LINES_TEXTURES_HELP_2")
-    help3 = read1DArray("LINES_TEXTURES_HELP_4")
-    help4 = read1DArray("LINES_TEXTURES_HELP_3")
+    help3 = read1DArray("LINES_TEXTURES_HELP_3")
+    help4 = read1DArray("LINES_TEXTURES_HELP_4")
 
     linesTextures = []
 
     for i in range(len(base)):
-        av = base[i]
-        at = help1[av]
+        help5 = base[i]
+        help6 = help1[help5]
 
-        var6 = 1 if av < 32 else 7
-        brvar3list = []
+        var6 = 1 if help5 < 32 else 7
+        help3List = []
         var12s = []
         var3s = []
         for var7 in range(var6):
             if var6 == 1:
-                var12 = av
+                var12 = help5
             else:
-                var12 = help3[(av - 32) * var6 + var7]
+                var12 = help4[(help5 - 32) * var6 + var7]
 
             var3 = help2[var12]
             var12s.append(var12)
             var3s.append(var3)
-            brvar3list.append(help4[var3])
+            help3List.append(help3[var3])
         # 18 = 0, 19 = 6, 21 = 6
         # 0 = 0, 1 = 6, 3 = 6
         linesTextures.append(var12s)
-        # print(f"{i}: {av=} {at=} {var12s=} {var3s=} {brvar3list=}")
+        # print(f"{i}: {help5=} {help6=} {var12s=} {var3s=} {help3List=}")
     return linesTextures
 
 
