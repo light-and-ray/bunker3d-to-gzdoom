@@ -6,13 +6,12 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
-
 import java.awt.image.BufferedImage;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-
 import javax.imageio.ImageIO;
-import javax.microedition.lcdui.Image;
+
+
 
 public class ResourcesLoaderL3D {
    public String ROOT_JAR = "../jars/l3d.d";
@@ -176,6 +175,33 @@ public class ResourcesLoaderL3D {
    private byte[] dE;
    private byte[] dF;
    private byte[][][] B;
+
+   private int[][] J;
+   private int[] K;
+   private int[] go;
+   private int[] gp;
+   private int[] gq;
+   private int[] bh;
+   private int[] bi;
+   private short[] bo;
+   private int L;
+   private int M;
+   private byte F;
+   private int G;
+   private int H;
+   private int[] E;
+   private int[] C;
+   private int[] cS;
+   private int[] cT;
+   private int[] cU;
+   private int[] cV;
+   private int[] cW;
+   private int[] cX;
+   private int[] cY;
+   private int[] cZ;
+   private int[] D;
+   private BufferedImage y;
+   private BufferedImage z;
 
 
 
@@ -1552,6 +1578,817 @@ public class ResourcesLoaderL3D {
       // this.B = (byte[][][])null;
       // System.gc();
    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   private void loadTextures(byte[][][] bigLump0, byte[][][] bigLump1, short[] footer) {
+      int var20 = 0;
+      this.J = new int[bigLump1[9].length][];
+      this.K = new int[bigLump1[9].length];
+      int var19 = bigLump1.length;
+
+      int var4;
+      for(var4 = 0; var4 < var19; ++var4) {
+         if (var4 != 9 && var4 != 32) {
+            bigLump1[var4] = (byte[][])null;
+         }
+      }
+
+      bigLump0[0] = (byte[][])null;
+      System.gc();
+      var19 = bigLump0[4].length;
+
+      int var24;
+      for(var4 = 0; var4 < var19; ++var4) {
+         var24 = bigLump1[9][var4][0];
+         if (bigLump0[4][var4][2] == 0) {
+            bigLump0[4][var4][2] = (byte)(this.n[6 * var24 + 3] + 128);
+         }
+
+         if (bigLump0[4][var4][3] == 0) {
+            bigLump0[4][var4][3] = (byte)(this.n[6 * var24 + 4] + 128);
+         }
+      }
+
+      var19 = bigLump1[9].length;
+
+      int var5;
+      int[] var10001;
+      int var10002;
+      int var10003;
+      int var10004;
+      byte var10006;
+      int var10007;
+      for(var4 = 0; var4 <= 2; ++var4) {
+         BufferedImage var32 = this.readImage("/" + String.valueOf(var4) + this.dataExt);
+
+         for(var5 = 0; var5 < var19; ++var5) {
+            byte var26 = bigLump1[9][var5][0];
+            int var21 = this.n[6 * var26] + 128;
+            int var22 = bigLump0[4][var5][2] * 2;
+            int var23 = bigLump0[4][var5][3] * 2;
+            if (var21 == var4) {
+               label154: {
+                  this.J[var20] = new int[var22 * var23];
+                  this.K[var5] = var20;
+                  int var27 = var26 != 125 ? (this.n[6 * var26 + 1] + 128 + bigLump0[4][var5][0]) * 2 : 548;
+                  int var28 = (this.n[6 * var26 + 2] + 128 + bigLump0[4][var5][1]) * 2;
+                  var32.getRGB(var27, var28, var22, var23, this.J[var20], 0, var22);
+                  BufferedImage var10000;
+                  int var10005;
+                  if (bigLump1[9][var5][0] == 79) {
+                     this.go = new int[784];
+                     var10000 = var32;
+                     var10001 = this.go;
+                     var10002 = 0;
+                     var10003 = 28;
+                     var10004 = var27 + 4;
+                     var10005 = var28 + 2;
+                     var10006 = 28;
+                     var10007 = 28;
+                  } else if (bigLump1[9][var5][0] == 78) {
+                     this.gp = new int[676];
+                     var10000 = var32;
+                     var10001 = this.gp;
+                     var10002 = 0;
+                     var10003 = 26;
+                     var10004 = var27 + 4;
+                     var10005 = var28 + 4;
+                     var10006 = 26;
+                     var10007 = 26;
+                  } else if (bigLump1[9][var5][0] == 80) {
+                     this.gq = new int[784];
+                     var10000 = var32;
+                     var10001 = this.gq;
+                     var10002 = 0;
+                     var10003 = 28;
+                     var10004 = var27 + 4;
+                     var10005 = var28 + 2;
+                     var10006 = 28;
+                     var10007 = 28;
+                  } else {
+                     if (bigLump1[9][var5][0] != 55) {
+                        break label154;
+                     }
+
+                     this.gp = new int[1152];
+                     var10000 = var32;
+                     var10001 = this.gp;
+                     var10002 = 0;
+                     var10003 = 48;
+                     var10004 = var27;
+                     var10005 = var28;
+                     var10006 = 48;
+                     var10007 = 24;
+                  }
+
+                  var10000.getRGB(var10004, var10005, var10006, var10007, var10001, var10002, var10003);
+               }
+
+               this.loadTextures_subfunction1(this.J[var20], bigLump0, bigLump1, var5);
+               ++var20;
+            }
+         }
+      }
+
+      this.bi = new int[bigLump0[3].length + 1];
+      int var17 = 0;
+      this.bi[0] = 0;
+      this.bh = new int[bigLump0[3].length + 1];
+      this.bo = new short[bigLump0[3].length * 9];
+      int var10 = footer[6] * 2 * 2;
+      int var11 = footer[7] * 2 * 2;
+      this.loadTextures_subfunction2(var10, var11);
+      int var14 = 0;
+      this.L = -1;
+      byte var7 = -1;
+      boolean var9 = false;
+      var19 = bigLump0[3].length;
+
+      for(var4 = 0; var4 < var19; ++var4) {
+         byte var8 = var7;
+         byte var6 = bigLump1[32][var4][0];
+         this.M = bigLump1[9][var6][0];
+         byte var31 = var4 != var19 - 1 ? bigLump1[32][var4 + 1][0] : -1;
+         var7 = bigLump1[9][var6][0];
+         this.G = bigLump0[4][var6][2] * 2;
+         this.H = bigLump0[4][var6][3] * 2;
+         this.F = bigLump0[2][var6][5];
+         if (this.F >= 1 && this.F <= 5) {
+            this.G *= 2;
+         }
+
+         if (this.F >= 4 && this.F <= 9) {
+            this.H *= 2;
+         }
+
+         int var15 = this.G;
+         int var16 = this.H;
+         this.E = new int[var15 * var16];
+         ResourcesLoaderL3D var34;
+         if (bigLump0[3][var4][3] != 1 && bigLump0[3][var4][3] != 2) {
+            if (this.n[6 * var7] + 128 > 2) {
+               this.loadTextures_subfunction6((byte[][][])bigLump0, (byte[][][])bigLump1, var6, 0, var8, var7, var31);
+               var34 = this;
+               var10001 = this.E;
+            } else {
+               var34 = this;
+               var10001 = this.J[this.K[var6]];
+            }
+
+            var34.loadTextures_subfunction8(var10001, var15, bigLump0[4][var6][2] * 2, bigLump0[4][var6][3] * 2, bigLump0[2][var6][5], 0, 0);
+         }
+
+         int var12 = bigLump0[3][var4][1] * 2;
+         int var13 = bigLump0[3][var4][2] == 0 ? this.G : bigLump0[3][var4][2] * 2;
+         boolean var33 = false;
+         var24 = bigLump0[3][var4][0] == bigLump0[3][var4][1] ? var13 : (bigLump0[3][var4][3] != 2 ? this.G : 96);
+         byte var25 = bigLump0[3][var4][0];
+         if (bigLump0[3][var4][3] == 1) {
+            var14 = this.loadTextures_subfunction16(bigLump1[32][var4][0], bigLump1[32][var4][1], (byte)var4, (byte)var12, (byte)var13, (short)140, var14, (short)26, (byte)(var12 + 23));
+         } else if (bigLump0[3][var4][3] == 2) {
+            var14 = this.loadTextures_subfunction16(bigLump1[32][var4][0], bigLump1[32][var4][1], (byte)var4, (byte)var12, (byte)var13, (short)((byte)var24), var14, (short)0, (byte)var12);
+         } else {
+            var14 = this.loadTextures_subfunction16((byte)var25, (byte)var4, (byte)var4, (byte)var12, (byte)var13, (short)((byte)var24), var14, (short)0, (byte)var12);
+
+            for(var5 = 1; var5 <= 3 && bigLump1[32][var4][var5] != var6; ++var5) {
+               var6 = bigLump1[32][var4][var5];
+               this.G = bigLump0[4][var6][2] * 2;
+               this.H = bigLump0[4][var6][3] * 2;
+               this.F = bigLump0[2][var6][5];
+               if (this.F >= 1 && this.F <= 5) {
+                  this.G *= 2;
+               }
+
+               if (this.F >= 4 && this.F <= 9) {
+                  this.H *= 2;
+               }
+
+               if (this.n[6 * bigLump1[9][var6][0]] + 128 > 2) {
+                  this.loadTextures_subfunction6((byte[][][])bigLump0, (byte[][][])bigLump1, var6, var5, -1, -2, -1);
+                  var34 = this;
+                  var10001 = this.C;
+               } else {
+                  var34 = this;
+                  var10001 = this.J[this.K[var6]];
+               }
+
+               var34.loadTextures_subfunction8(var10001, var15, bigLump0[4][var6][2] * 2, bigLump0[4][var6][3] * 2, bigLump0[2][var6][5], bigLump0[2][var6][6] * 2, bigLump0[2][var6][7] * 2);
+            }
+
+            this.bi[var4] = this.bi[var17];
+            this.bi[var17 + 1] = this.bi[var17] + var13 * 12;
+            ++var17;
+            int[] var10008;
+            boolean var10009;
+            int[] var35;
+            byte var36;
+            if (bigLump0[3][var4][3] != 0) {
+               loadTextures_subfunction18(this.cS, this.cT, this.bi[var4], var12, var13, 12, 0, var15, this.E, true);
+               var35 = this.cU;
+               var10001 = this.cV;
+               var10002 = this.bi[var4];
+               var10003 = var12;
+               var10004 = var13;
+               var36 = 12;
+               var10006 = 2;
+               var10007 = var15;
+               var10008 = this.E;
+               var10009 = true;
+            } else {
+               loadTextures_subfunction18(this.cS, this.cT, this.bi[var4], var12, var13, 12, 0, var15, this.E, true);
+               loadTextures_subfunction18(this.cU, this.cV, this.bi[var4], var12, var13, 12, 2, var15, this.E, true);
+               loadTextures_subfunction18(this.cW, this.cX, this.bi[var4], var12, var13, 12, 6, var15, this.E, false);
+               var35 = this.cY;
+               var10001 = this.cZ;
+               var10002 = this.bi[var4];
+               var10003 = var12;
+               var10004 = var13;
+               var36 = 12;
+               var10006 = 4;
+               var10007 = var15;
+               var10008 = this.E;
+               var10009 = false;
+            }
+
+            loadTextures_subfunction18(var35, var10001, var10002, var10003, var10004, var36, var10006, var10007, var10008, var10009);
+         }
+      }
+
+      this.C = null;
+      this.D = null;
+      this.E = null;
+      this.J = (int[][])null;
+      this.K = null;
+      this.y = null;
+      this.z = null;
+      System.gc();
+   }
+
+   private static void loadTextures_subfunction18(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int[] var8, boolean var9) {
+      int var17 = var3 + var4;
+      int var10;
+      int var11;
+      int var12;
+      int var13;
+      int var14;
+      int var15;
+      int var16;
+      if (var9) {
+         int var18 = (var13 = var6 * var5) + var5;
+         var15 = var3 + var13 * var7;
+         var16 = var7 * var5;
+         var12 = 0;
+
+         for(var10 = var3; var10 < var17; ++var10) {
+            var14 = var15;
+
+            for(var11 = var13; var11 < var18; ++var11) {
+               var0[var2 + var12] = (int)((long)var8[var14] | 0L);
+               var1[var2 + var12] = (int)((long)var8[var14 + var16] | 0L);
+               ++var12;
+               var14 += var7;
+            }
+
+            ++var15;
+         }
+      } else {
+         var13 = (var6 + 2) * var5 - 1;
+         boolean var19 = false;
+         var15 = var3 + var13 * var7;
+         var16 = var7 * var5;
+         var12 = 0;
+
+         for(var10 = var3; var10 < var3 + var4; ++var10) {
+            var14 = var15;
+
+            for(var11 = var13; var11 > var13 - var5; --var11) {
+               var0[var2 + var12] = (int)((long)var8[var14] | 0L);
+               var1[var2 + var12] = (int)((long)var8[var14 - var16] | 0L);
+               ++var12;
+               var14 -= var7;
+            }
+
+            ++var15;
+         }
+      }
+
+   }
+
+
+
+   private void loadTextures_subfunction1(int[] var1, byte[][][] var2, byte[][][] var3, int var4) {
+      byte var5 = var2[2][var4][0];
+      byte var6 = var2[2][var4][1];
+      byte var7 = var2[2][var4][2];
+      byte var8 = var2[2][var4][3];
+      byte var9 = var2[2][var4][4];
+      boolean var10 = var3[9][var4][0] == 1 || var3[9][var4][0] == 11 || var3[9][var4][0] == 15;
+      if (var5 != 0 || var6 != 0 || var7 != 0 || var8 != 0 || var9 != 0) {
+         this.loadTextures_subfunction3(var1, var5, var6, var7, var8, var9, var10);
+      }
+
+   }
+
+
+   private void loadTextures_subfunction2(int var1, int var2) {
+      this.cS = new int[var1];
+      this.cT = new int[var1];
+      this.cU = new int[var1];
+      this.cV = new int[var1];
+      this.cW = new int[var2];
+      this.cX = new int[var2];
+      this.cY = new int[var2];
+      this.cZ = new int[var2];
+   }
+
+
+   private void loadTextures_subfunction6(byte[][][] var1, byte[][][] var2, int var3, int var4, int var5, int var6, int var7) {
+      byte var8 = var2[9][var3][0];
+      byte var9 = var1[2][var3][5];
+      int var10 = this.n[6 * var8] + 128;
+      if (this.L != var3 && var5 != var6) {
+         if (var4 == 0) {
+            if (var9 != 12) {
+               this.y = this.readImage("/" + String.valueOf(var10) + this.dataExt);
+            } else {
+               BufferedImage var11 = this.readImage("/" + String.valueOf(var10) + this.dataExt);
+               int width = var11.getWidth();
+               int height = var11.getHeight();
+               BufferedImage transformedImage = new BufferedImage(height, width, BufferedImage.TYPE_INT_RGB);
+               Graphics2D g2d = transformedImage.createGraphics();
+               g2d.translate(height / 2, width / 2); // move to the center of the new image
+               g2d.rotate(Math.PI / 2); // rotate 90 degrees clockwise
+               g2d.scale(-1, 1); // reflect about vertical center
+               g2d.translate(-width / 2, -height / 2); // adjust translation
+               g2d.drawImage(var11, 0, 0, null);
+               g2d.dispose();
+               this.y = transformedImage;  // assign the transformed image to y
+            }
+         } else {
+            this.z = this.readImage("/" + String.valueOf(var10) + this.dataExt);
+         }
+      }
+
+      if (this.L != var3) {
+         BufferedImage var10000;
+         int[] var10001;
+         if (var4 == 0) {
+            var10000 = this.y;
+            var10001 = this.E;
+         } else {
+            this.C = new int[this.G * this.H];
+            var10000 = this.z;
+            var10001 = this.C;
+         }
+
+         var10000.getRGB(var1[4][var3][0], var1[4][var3][1], this.G, this.H, var10001, 0, this.G);
+         ResourcesLoaderL3D var14;
+         if (var4 != 0) {
+            var14 = this;
+            var10001 = this.C;
+         } else {
+            var14 = this;
+            var10001 = this.E;
+         }
+
+         var14.loadTextures_subfunction1(var10001, var1, var2, var3);
+         if (var4 == 0 && var7 == var3) {
+            this.L = var3;
+            this.D = new int[this.G * this.H];
+            this.loadTextures_subfunction7(this.D, this.E, 0, 0, this.G, this.G, this.H);
+         }
+
+      } else {
+         int var13 = this.D.length;
+
+         for(int var12 = 0; var12 < var13; ++var12) {
+            this.E[var12] = this.D[var12];
+         }
+
+      }
+   }
+
+
+
+   private void loadTextures_subfunction8(int[] var1, int var2, int var3, int var4, byte var5, int var6, int var7) {
+      if (var5 == 0) {
+         if (this.M != 26 && this.M != 27 && this.M != 28 && this.M != 1 && this.M != 91 && this.M != 114 && this.M != 15 && this.M != 99 && this.M != 100 && this.M != 11 && this.M != 10 && this.M != 22 && this.M != 23 && this.M != 39 && this.M != 38 && this.M != 40 && this.M != 41 && this.M != 42 && this.M != 43 && this.M != 44 && this.M != 46 && this.M != 39 && this.M != 37 && this.M != 12) {
+            this.loadTextures_subfunction7(this.E, var1, var6, var7, var2, var3, var4);
+         } else {
+            this.loadTextures_subfunction7(this.E, var1, var6, var7, var2, var3, var4);
+            this.loadTextures_subfunction9((int[])this.E, (int[])this.E, 0, 0, var2, var3, var4);
+         }
+      } else if (var5 == 1) {
+         if (this.M == 103 || this.M == 104) {
+            this.loadTextures_subfunction9((int[])var1, (int[])var1, 0, 0, var3, var3, var4);
+         }
+
+         this.loadTextures_subfunction10(this.E, var1, var6, var7, var2, var3, var4);
+      } else if (var5 == 2) {
+         this.loadTextures_subfunction11(this.E, var1, var6, var7, var2, var3, var4);
+      } else if (var5 == 3) {
+         this.loadTextures_subfunction12(this.E, var1, var6, var7, var2, var3, var4);
+      } else {
+         if (var5 != 5) {
+            if (var5 == 6) {
+               this.loadTextures_subfunction13(this.E, var1, var6, var7, var2, var3, var4);
+               return;
+            }
+
+            if (var5 == 10) {
+               this.loadTextures_subfunction14(this.E, var1, var6, var7, var2, var3, var4);
+               return;
+            }
+
+            if (var5 != 11) {
+               return;
+            }
+         }
+
+         this.loadTextures_subfunction15(this.E, var1, var6, var7, var2, var3, var4, var5);
+      }
+   }
+
+
+   private int loadTextures_subfunction16(byte var1, byte var2, byte var3, byte var4, byte var5, short var6, int var7, short var8, byte var9) {
+      this.bh[var3] = var7;
+      int var10 = this.loadTextures_subfunction17((byte)0, var1, (short)var8, var7);
+      var10 = this.loadTextures_subfunction17(var9, var2, (short)0, var10);
+      var10 = this.loadTextures_subfunction17((byte)(var9 + var5), var1, (short)((byte)(var4 + var5)), var10);
+      this.bh[var3 + 1] = var10;
+      this.bp[var3] = var6;
+      return var10;
+   }
+
+   private int loadTextures_subfunction17(byte var1, byte var2, short var3, int var4) {
+      this.bo[var4] = (short)var1;
+      int var5 = var4 + 1;
+      this.bo[var5] = (short)var2;
+      ++var5;
+      this.bo[var5] = var3;
+      ++var5;
+      return var5;
+   }
+
+
+   private void loadTextures_subfunction3(int[] var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
+      int var10 = 1;
+      boolean var11 = false;
+      int var12 = var1.length;
+      int[] var13 = new int[257];
+      int[] var14 = new int[257];
+
+      for(int var8 = 0; var8 < var12; ++var8) {
+         int var16;
+         if ((var16 = var1[var8]) != this.N) {
+            int var9 = var16 & 255;
+            int var20;
+            if ((var20 = var13[var9]) > 0) {
+               var1[var8] = var14[var20];
+            } else {
+               var13[var9] = var10;
+               var1[var8] = this.loadTextures_subfunction4(var2, var3, var4, var5, var6, var9, var7);
+               var14[var10] = var1[var8];
+               ++var10;
+            }
+         }
+      }
+
+   }
+
+   private int loadTextures_subfunction4(int var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
+      int[] var9 = new int[3];
+      byte var11;
+      byte var12;
+      byte var13;
+      short var14;
+      short var16;
+      int var10000;
+      if (var7) {
+         var16 = 255;
+         var9[0] = var6 + (var1 << 4);
+         var9[1] = var6 + (var2 << 4);
+         var9[2] = var6 + (var3 << 4);
+         var11 = 16;
+         var12 = 8;
+         var13 = 0;
+         var14 = 128;
+         var10000 = var5 << 4;
+      } else {
+         var16 = 15;
+         var9[0] = (var6 >> 4) + var1;
+         var9[1] = (var6 >> 4) + var2;
+         var9[2] = (var6 >> 4) + var3;
+         var11 = 20;
+         var12 = 12;
+         var13 = 4;
+         var14 = 7;
+         var10000 = var5;
+      }
+
+      int var15 = var10000;
+      int var10 = (var9[0] + var9[1] + var9[2]) / 3;
+
+      for(int var8 = 0; var8 <= 2; ++var8) {
+         var9[var8] = loadTextures_subfunction5((int)(var9[var8] + var15), var16);
+         var9[var8] = loadTextures_subfunction5((int)(var10 + (var9[var8] - var10) * (var4 + var14) / var14), var16);
+      }
+
+      return var9[0] << var11 | var9[1] << var12 | var9[2] << var13;
+   }
+
+   private static int loadTextures_subfunction5(int var0, int var1) {
+      if (var0 > var1) {
+         return var1;
+      } else {
+         return var0 < 0 ? 0 : var0;
+      }
+   }
+
+
+   private void loadTextures_subfunction7(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+      int var11 = var4 * var5 + var3;
+      int var10 = 0;
+      int var14 = var4 + var7;
+
+      for(int var9 = var4; var9 < var14; ++var9) {
+         int var12 = var11 + var6;
+
+         for(int var8 = var11; var8 < var12; ++var8) {
+            int var13;
+            if ((var13 = var2[var10]) != this.N) {
+               var1[var8] = var13;
+            }
+
+            ++var10;
+         }
+
+         var11 += var5;
+      }
+
+   }
+
+
+   private void loadTextures_subfunction9(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+      int var11 = var4 * var5 + var3;
+      int var10 = 0;
+      int var14 = var4 + var7;
+
+      for(int var9 = var4; var9 < var14; ++var9) {
+         int var12 = var11 + var6;
+
+         for(int var8 = var11; var8 < var12; ++var8) {
+            int[] var10000;
+            int var10001;
+            int var10002;
+            label25: {
+               int var13;
+               if ((var13 = var2[var10]) != this.N) {
+                  if (var13 != this.O) {
+                     var10000 = var1;
+                     var10001 = var8;
+                     var10002 = var13;
+                     break label25;
+                  }
+
+                  var10000 = var1;
+                  var10001 = var8;
+                  var10002 = this.aS;
+               } else {
+                  var10000 = var1;
+                  var10001 = var8;
+                  var10002 = this.aT;
+               }
+
+               var10002 &= 16777215;
+            }
+
+            var10000[var10001] = var10002;
+            ++var10;
+         }
+
+         var11 += var5;
+      }
+
+   }
+
+
+   private void loadTextures_subfunction10(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+      int var12 = var4 * var5 + var3;
+      int var13 = 2 * var6 - 1;
+      int var11 = 0;
+      int var16 = var4 + var7;
+
+      for(int var10 = var4; var10 < var16; ++var10) {
+         int var14 = var12 + var6;
+         int var9 = var12 + var13;
+
+         for(int var8 = var12; var8 < var14; ++var8) {
+            int var15;
+            if ((var15 = var2[var11]) != this.N) {
+               var1[var8] = var15;
+               var1[var9] = var15;
+            }
+
+            ++var11;
+            --var9;
+         }
+
+         var12 += var5;
+      }
+
+   }
+
+   private void loadTextures_subfunction11(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+      int var12 = (var4 + var7 - 1) * var5 + var3;
+      int var13 = 2 * var6 - 1;
+      int var11 = 0;
+
+      for(int var10 = var4 + var7 - 1; var10 >= var4; --var10) {
+         int var14 = var12 + var6;
+         int var9 = var12 + var13;
+
+         for(int var8 = var12; var8 < var14; ++var8) {
+            int var15;
+            if ((var15 = var2[var11]) != this.N) {
+               var1[var8] = var15;
+               var1[var9] = var15;
+            }
+
+            ++var11;
+            --var9;
+         }
+
+         var12 -= var5;
+      }
+
+   }
+
+   private void loadTextures_subfunction12(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+      int var11 = var4 * var5 + var3;
+      int var10 = 0;
+      int var14 = var4 + var7;
+
+      for(int var9 = var4; var9 < var14; ++var9) {
+         int var12 = var11 + var6;
+
+         for(int var8 = var11; var8 < var12; ++var8) {
+            int var13;
+            if ((var13 = var2[var10]) != this.N) {
+               var1[var8] = var13;
+               var1[var8 + var6] = var13;
+            }
+
+            ++var10;
+         }
+
+         var11 += var5;
+      }
+
+   }
+
+   private void loadTextures_subfunction15(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+      int var15;
+      int var16;
+      int var17;
+      int var18;
+      label34: {
+         var16 = 0;
+         var17 = 0;
+         var18 = 0;
+         var15 = var4 * var5 + var3;
+         int var10000;
+         int var10001;
+         if (var8 == 5) {
+            var17 = (var16 = var15 + (2 * var6 - 1)) + (2 * var7 - 1) * var5;
+            var10000 = var15;
+            var10001 = 2 * var7;
+         } else {
+            if (var8 != 11) {
+               break label34;
+            }
+
+            var17 = (var16 = var15 + (var7 - 1)) + (var7 - 1) * var5;
+            var10000 = var15;
+            var10001 = var7;
+         }
+
+         var18 = var10000 + (var10001 - 1) * var5;
+      }
+
+      int var14 = 0;
+      int var21 = var4 + var7;
+
+      for(int var13 = var4; var13 < var21; ++var13) {
+         int var19 = var15 + var6;
+         int var10 = var16;
+         int var11 = var17;
+         int var12 = var18;
+
+         for(int var9 = var15; var9 < var19; ++var9) {
+            int var20;
+            if ((var20 = var2[var14]) != this.N) {
+               var1[var9] = var20;
+               var1[var10] = var20;
+               var1[var11] = var20;
+               var1[var12] = var20;
+            }
+
+            ++var14;
+            var10 += var5;
+            --var11;
+            var12 -= var5;
+         }
+
+         var15 += var5;
+         --var16;
+         var17 -= var5;
+         ++var18;
+      }
+
+   }
+
+   private void loadTextures_subfunction13(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+      int var12 = var4 * var5 + var3;
+      int var9 = var5 * var7;
+      int var11 = 0;
+      int var15 = var4 + var7;
+
+      for(int var10 = var4; var10 < var15; ++var10) {
+         int var13 = var12 + var6;
+
+         for(int var8 = var12; var8 < var13; ++var8) {
+            int var14;
+            if ((var14 = var2[var11]) != this.N) {
+               var1[var8] = var14;
+               var1[var8 + var9] = var14;
+            }
+
+            ++var11;
+         }
+
+         var12 += var5;
+      }
+
+   }
+
+   private void loadTextures_subfunction14(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+      int var11 = var4 * var5 + (var3 + var5 - 1);
+      int var10 = 0;
+      int var14 = var4 + var7;
+
+      int var8;
+      int var9;
+      int var12;
+      int var13;
+      for(var9 = var4; var9 < var14; ++var9) {
+         var12 = var11 - var6;
+
+         for(var8 = var11; var8 > var12; --var8) {
+            if ((var13 = var2[var10]) != this.N) {
+               var1[var8] = var13;
+            }
+
+            ++var10;
+         }
+
+         var11 += var5;
+      }
+
+      var11 = var4 * var5 + var3;
+      var10 = 0;
+
+      for(var9 = var4; var9 < var14; ++var9) {
+         var12 = var11 + var6;
+
+         for(var8 = var11; var8 < var12; ++var8) {
+            if ((var13 = var2[var10]) != this.N) {
+               var1[var8] = var13;
+            }
+
+            ++var10;
+         }
+
+         var11 += var5;
+      }
+
+   }
+
+
 
 
 
