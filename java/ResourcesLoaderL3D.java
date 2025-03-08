@@ -115,93 +115,93 @@ public class ResourcesLoaderL3D {
    public int fA;
    public byte[][] x = new byte[][]{{1, 1, -1, 1}, {-1, 1, -1, -1}, {-1, -1, 1, -1}, {1, -1, 1, 1}};
 
-   private byte[] cj;
-   private byte[] ck;
-   private byte[] cl;
-   private byte[] cm;
-   private byte[] co;
-   private byte[] cp;
-   private boolean[] ct;
-   private boolean[] cu;
-   private short[] cg;
-   private int[] eX;
-   private short[] ch;
-   private boolean[] cv;
-   private int[] ce;
-   private int fx;
-   private byte fW;
-   private byte fX;
-   private byte fY;
-   private byte fZ;
-   private byte ga;
-   private int fy;
-   private int[][] cc;
-   private int bV;
-   private long[] gY;
+   public byte[] cj;
+   public byte[] ck;
+   public byte[] cl;
+   public byte[] cm;
+   public byte[] co;
+   public byte[] cp;
+   public boolean[] ct;
+   public boolean[] cu;
+   public short[] cg;
+   public int[] eX;
+   public short[] ch;
+   public boolean[] cv;
+   public int[] ce;
+   public int fx;
+   public byte fW;
+   public byte fX;
+   public byte fY;
+   public byte fZ;
+   public byte ga;
+   public int fy;
+   public int[][] cc;
+   public int bV;
+   public long[] gY;
 
-   private int N;
-   private int O;
-   private short[][] bn;
-   private short[] ci;
-   private short[] bq;
-   private short[] br;
-   private int[] bg;
-   private short[] bs;
-   private short[] bt;
-   private int[][] bm;
-   private int[] bj;
-   private byte[] di;
-   private byte[] dj;
-   private byte[] dk;
-   private byte[] dl;
-   private byte[] dm;
-   private byte[] dn;
-   private byte[] do_;
-   private byte[] dp;
-   private byte[] dq;
-   private byte[] dr;
-   private byte[] ds;
-   private byte[] dt;
-   private byte[] du;
-   private byte[] dv;
-   private byte[] dw;
-   private byte[] dx;
-   private byte[] dy;
-   private byte[] dz;
-   private byte[] dA;
-   private byte[] dB;
-   private byte[] dC;
-   private byte[] dD;
-   private byte[] dE;
-   private byte[] dF;
-   private byte[][][] B;
+   public int N;
+   public int O;
+   public short[][] bn;
+   public short[] ci;
+   public short[] bq;
+   public short[] br;
+   public int[] bg;
+   public short[] bs;
+   public short[] bt;
+   public int[][] bm;
+   public int[] bj;
+   public byte[] di;
+   public byte[] dj;
+   public byte[] dk;
+   public byte[] dl;
+   public byte[] dm;
+   public byte[] dn;
+   public byte[] do_;
+   public byte[] dp;
+   public byte[] dq;
+   public byte[] dr;
+   public byte[] ds;
+   public byte[] dt;
+   public byte[] du;
+   public byte[] dv;
+   public byte[] dw;
+   public byte[] dx;
+   public byte[] dy;
+   public byte[] dz;
+   public byte[] dA;
+   public byte[] dB;
+   public byte[] dC;
+   public byte[] dD;
+   public byte[] dE;
+   public byte[] dF;
+   public byte[][][] B;
 
-   private int[][] J;
-   private int[] K;
-   private int[] go;
-   private int[] gp;
-   private int[] gq;
-   private int[] bh;
-   private int[] bi;
-   private short[] bo;
-   private int L;
-   private int M;
-   private byte F;
-   private int G;
-   private int H;
-   private int[] E;
-   private int[] C;
-   private int[] cS;
-   private int[] cT;
-   private int[] cU;
-   private int[] cV;
-   private int[] cW;
-   private int[] cX;
-   private int[] cY;
-   private int[] cZ;
-   private int[] D;
-   private BufferedImage y;
-   private BufferedImage z;
+   public int[][] J;
+   public int[] K;
+   public int[] go;
+   public int[] gp;
+   public int[] gq;
+   public int[] bh;
+   public int[] bi;
+   public short[] bo;
+   public int L;
+   public int M;
+   public byte F;
+   public int G;
+   public int H;
+   public int[] E;
+   public int[] C;
+   public int[] cS;
+   public int[] cT;
+   public int[] cU;
+   public int[] cV;
+   public int[] cW;
+   public int[] cX;
+   public int[] cY;
+   public int[] cZ;
+   public int[] D;
+   public BufferedImage y;
+   public BufferedImage z;
 
 
 
@@ -1204,7 +1204,7 @@ public class ResourcesLoaderL3D {
 
 
 
-   private void loadSpritesPart1(byte[][][] bigLump2) {
+   public void loadSpritesPart1(byte[][][] bigLump2) {
       int var6 = bigLump2[4].length;
       this.cj = new byte[var6];
       this.cg = new short[var6];
@@ -1314,7 +1314,7 @@ public class ResourcesLoaderL3D {
 
 
 
-   private void loadSpritesPart2(byte[][][] bigLump2) {
+   public void loadSpritesPart2(byte[][][] bigLump2) {
       BufferedImage var7 = null;
       BufferedImage var8 = null;
       var7 = this.readImage("/e" + this.dataExt);
@@ -1409,7 +1409,7 @@ public class ResourcesLoaderL3D {
    }
 
 
-   private void loadSprites_subfunction1(short[] var1, int var2, int var3) {
+   public void loadSprites_subfunction1(short[] var1, int var2, int var3) {
       this.bs[var2] = var1[var3 + 2];
       this.bt[var2] = var1[var3 + 3];
       int var4 = this.bt[var2] / var1[var3 + 5];
@@ -1424,7 +1424,7 @@ public class ResourcesLoaderL3D {
    }
 
 
-   private void loadSprites_subfunction2(int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+   public void loadSprites_subfunction2(int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       this.bm = new int[2][(13 + var3) * 50];
       this.bj = new int[50];
       this.di = new byte[var1];
@@ -1454,7 +1454,7 @@ public class ResourcesLoaderL3D {
    }
 
 
-   private void combineLayers(int[] var1, int[] var2, int[][] var3, short var4, byte[] var5, byte[] var6) {
+   public void combineLayers(int[] var1, int[] var2, int[][] var3, short var4, byte[] var5, byte[] var6) {
       boolean var11 = false;
       byte var12 = 1;
       int var13 = var1.length;
@@ -1516,7 +1516,7 @@ public class ResourcesLoaderL3D {
    }
 
 
-   private void loadSpritesPart3(byte[][][] bigLump2) {
+   public void loadSpritesPart3(byte[][][] bigLump2) {
       int[][] var8 = new int[bigLump2[5].length][];
       int[][] var9 = new int[bigLump2[5].length][];
       boolean var2 = false;
@@ -1594,7 +1594,7 @@ public class ResourcesLoaderL3D {
 
 
 
-   private void loadTextures(byte[][][] bigLump0, byte[][][] bigLump1, short[] footer) {
+   public void loadTextures(byte[][][] bigLump0, byte[][][] bigLump1, short[] footer) {
       int var20 = 0;
       this.J = new int[bigLump1[9].length][];
       this.K = new int[bigLump1[9].length];
@@ -1838,7 +1838,7 @@ public class ResourcesLoaderL3D {
       System.gc();
    }
 
-   private static void loadTextures_subfunction18(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int[] var8, boolean var9) {
+   public static void loadTextures_subfunction18(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int[] var8, boolean var9) {
       int var17 = var3 + var4;
       int var10;
       int var11;
@@ -1890,7 +1890,7 @@ public class ResourcesLoaderL3D {
 
 
 
-   private void loadTextures_subfunction1(int[] var1, byte[][][] var2, byte[][][] var3, int var4) {
+   public void loadTextures_subfunction1(int[] var1, byte[][][] var2, byte[][][] var3, int var4) {
       byte var5 = var2[2][var4][0];
       byte var6 = var2[2][var4][1];
       byte var7 = var2[2][var4][2];
@@ -1904,7 +1904,7 @@ public class ResourcesLoaderL3D {
    }
 
 
-   private void loadTextures_subfunction2(int var1, int var2) {
+   public void loadTextures_subfunction2(int var1, int var2) {
       this.cS = new int[var1];
       this.cT = new int[var1];
       this.cU = new int[var1];
@@ -1916,7 +1916,7 @@ public class ResourcesLoaderL3D {
    }
 
 
-   private void loadTextures_subfunction6(byte[][][] var1, byte[][][] var2, int var3, int var4, int var5, int var6, int var7) {
+   public void loadTextures_subfunction6(byte[][][] var1, byte[][][] var2, int var3, int var4, int var5, int var6, int var7) {
       byte var8 = var2[9][var3][0];
       byte var9 = var1[2][var3][5];
       int var10 = this.n[6 * var8] + 128;
@@ -1984,7 +1984,7 @@ public class ResourcesLoaderL3D {
 
 
 
-   private void loadTextures_subfunction8(int[] var1, int var2, int var3, int var4, byte var5, int var6, int var7) {
+   public void loadTextures_subfunction8(int[] var1, int var2, int var3, int var4, byte var5, int var6, int var7) {
       if (var5 == 0) {
          if (this.M != 26 && this.M != 27 && this.M != 28 && this.M != 1 && this.M != 91 && this.M != 114 && this.M != 15 && this.M != 99 && this.M != 100 && this.M != 11 && this.M != 10 && this.M != 22 && this.M != 23 && this.M != 39 && this.M != 38 && this.M != 40 && this.M != 41 && this.M != 42 && this.M != 43 && this.M != 44 && this.M != 46 && this.M != 39 && this.M != 37 && this.M != 12) {
             this.loadTextures_subfunction7(this.E, var1, var6, var7, var2, var3, var4);
@@ -2024,7 +2024,7 @@ public class ResourcesLoaderL3D {
    }
 
 
-   private int loadTextures_subfunction16(byte var1, byte var2, byte var3, byte var4, byte var5, short var6, int var7, short var8, byte var9) {
+   public int loadTextures_subfunction16(byte var1, byte var2, byte var3, byte var4, byte var5, short var6, int var7, short var8, byte var9) {
       this.bh[var3] = var7;
       int var10 = this.loadTextures_subfunction17((byte)0, var1, (short)var8, var7);
       var10 = this.loadTextures_subfunction17(var9, var2, (short)0, var10);
@@ -2034,7 +2034,7 @@ public class ResourcesLoaderL3D {
       return var10;
    }
 
-   private int loadTextures_subfunction17(byte var1, byte var2, short var3, int var4) {
+   public int loadTextures_subfunction17(byte var1, byte var2, short var3, int var4) {
       this.bo[var4] = (short)var1;
       int var5 = var4 + 1;
       this.bo[var5] = (short)var2;
@@ -2045,7 +2045,7 @@ public class ResourcesLoaderL3D {
    }
 
 
-   private void loadTextures_subfunction3(int[] var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
+   public void loadTextures_subfunction3(int[] var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
       int var10 = 1;
       boolean var11 = false;
       int var12 = var1.length;
@@ -2070,7 +2070,7 @@ public class ResourcesLoaderL3D {
 
    }
 
-   private int loadTextures_subfunction4(int var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
+   public int loadTextures_subfunction4(int var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
       int[] var9 = new int[3];
       byte var11;
       byte var12;
@@ -2111,7 +2111,7 @@ public class ResourcesLoaderL3D {
       return var9[0] << var11 | var9[1] << var12 | var9[2] << var13;
    }
 
-   private static int loadTextures_subfunction5(int var0, int var1) {
+   public static int loadTextures_subfunction5(int var0, int var1) {
       if (var0 > var1) {
          return var1;
       } else {
@@ -2120,7 +2120,7 @@ public class ResourcesLoaderL3D {
    }
 
 
-   private void loadTextures_subfunction7(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+   public void loadTextures_subfunction7(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
       int var11 = var4 * var5 + var3;
       int var10 = 0;
       int var14 = var4 + var7;
@@ -2143,7 +2143,7 @@ public class ResourcesLoaderL3D {
    }
 
 
-   private void loadTextures_subfunction9(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+   public void loadTextures_subfunction9(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
       int var11 = var4 * var5 + var3;
       int var10 = 0;
       int var14 = var4 + var7;
@@ -2187,7 +2187,7 @@ public class ResourcesLoaderL3D {
    }
 
 
-   private void loadTextures_subfunction10(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+   public void loadTextures_subfunction10(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
       int var12 = var4 * var5 + var3;
       int var13 = 2 * var6 - 1;
       int var11 = 0;
@@ -2213,7 +2213,7 @@ public class ResourcesLoaderL3D {
 
    }
 
-   private void loadTextures_subfunction11(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+   public void loadTextures_subfunction11(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
       int var12 = (var4 + var7 - 1) * var5 + var3;
       int var13 = 2 * var6 - 1;
       int var11 = 0;
@@ -2238,7 +2238,7 @@ public class ResourcesLoaderL3D {
 
    }
 
-   private void loadTextures_subfunction12(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+   public void loadTextures_subfunction12(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
       int var11 = var4 * var5 + var3;
       int var10 = 0;
       int var14 = var4 + var7;
@@ -2261,7 +2261,7 @@ public class ResourcesLoaderL3D {
 
    }
 
-   private void loadTextures_subfunction15(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+   public void loadTextures_subfunction15(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       int var15;
       int var16;
       int var17;
@@ -2322,7 +2322,7 @@ public class ResourcesLoaderL3D {
 
    }
 
-   private void loadTextures_subfunction13(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+   public void loadTextures_subfunction13(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
       int var12 = var4 * var5 + var3;
       int var9 = var5 * var7;
       int var11 = 0;
@@ -2346,7 +2346,7 @@ public class ResourcesLoaderL3D {
 
    }
 
-   private void loadTextures_subfunction14(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+   public void loadTextures_subfunction14(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
       int var11 = var4 * var5 + (var3 + var5 - 1);
       int var10 = 0;
       int var14 = var4 + var7;
