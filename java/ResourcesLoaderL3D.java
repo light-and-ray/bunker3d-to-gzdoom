@@ -35,85 +35,85 @@ public class ResourcesLoaderL3D {
 
 
 
-   private byte[][] loadedMap;
-   private byte[] lumpsSizes = new byte[]{5, 82, 10, 8};
-   private String dataExt = ".b3d";
-   private String[] mapFiles = new String[]{"/b", "/t", "/s", "/h", "/c", "/m", "/x", "/y", "/z"};
-   private String[] spriteFiles = new String[]{"/p", "/r", "/pp", "/rr"};
-   private short[] h;
-   private short[] i;
-   private short[] j;
-   private byte[] k;
-   private byte[] l;
-   private byte[] m;
-   private byte[] n;
-   private byte[] o;
-   private byte[] p;
-   private byte[] q;
-   private byte[] r;
+   public byte[][] loadedMap;
+   public byte[] lumpsSizes = new byte[]{5, 82, 10, 8};
+   public String dataExt = ".b3d";
+   public String[] mapFiles = new String[]{"/b", "/t", "/s", "/h", "/c", "/m", "/x", "/y", "/z"};
+   public String[] spriteFiles = new String[]{"/p", "/r", "/pp", "/rr"};
+   public short[] h;
+   public short[] i;
+   public short[] j;
+   public byte[] k;
+   public byte[] l;
+   public byte[] m;
+   public byte[] n;
+   public byte[] o;
+   public byte[] p;
+   public byte[] q;
+   public byte[] r;
    byte[] a;
-   private int selectedMap;
-   private boolean hD;
-   private short[] g;
-   private byte[][][][] A;
-   private int[] I;
+   public int selectedMap;
+   public boolean hD;
+   public short[] g;
+   public byte[][][][] A;
+   public int[] I;
 
-   private int[] bf;
-   private int[][] dg;
-   private byte[] bv;
-   private byte[] bw;
-   private int fF;
-   private byte[] dh;
-   private int aS;
-   private int aT;
+   public int[] bf;
+   public int[][] dg;
+   public byte[] bv;
+   public byte[] bw;
+   public int fF;
+   public byte[] dh;
+   public int aS;
+   public int aT;
 
-   private short[][] cN;
-   private short[][] cO;
-   private int fI;
-   private int fJ;
-   private int fK;
-   private int cL;
-   private byte cM;
-   private int fG;
-   private byte[] cq;
-   private byte[] cr;
-   private int[][] cb;
-   private boolean[] cw;
-   private byte[] cn;
-   private int fH;
-   private int[][] dH;
-   private int[][] dI;
-   private byte[] dJ;
-   private byte[] dK;
-   private byte[] dL;
-   private byte[] dM;
-   private int[] dN;
-   private int[] dO;
-   private int[] dP;
-   private int[] dQ;
-   private int[] dR;
-   private int[] dS;
-   private int[] dT;
-   private int dV;
-   private int dW;
-   private int dX;
-   private byte[] bx;
-   private short[] bp;
-   private byte[][] gx;
-   private byte[][] gy;
-   private short[] gu;
-   private short[][] gv;
-   private int[] gs;
-   private int gE;
-   private int fL;
-   private int[] be;
-   private byte[][] cs;
-   private int[] eg;
-   private long[] gn;
-   private int fU;
-   private int fz;
-   private int fA;
-   private byte[][] x = new byte[][]{{1, 1, -1, 1}, {-1, 1, -1, -1}, {-1, -1, 1, -1}, {1, -1, 1, 1}};
+   public short[][] cN;
+   public short[][] cO;
+   public int fI;
+   public int fJ;
+   public int fK;
+   public int cL;
+   public byte cM;
+   public int fG;
+   public byte[] cq;
+   public byte[] cr;
+   public int[][] cb;
+   public boolean[] cw;
+   public byte[] cn;
+   public int fH;
+   public int[][] dH;
+   public int[][] dI;
+   public byte[] dJ;
+   public byte[] dK;
+   public byte[] dL;
+   public byte[] dM;
+   public int[] dN;
+   public int[] dO;
+   public int[] dP;
+   public int[] dQ;
+   public int[] dR;
+   public int[] dS;
+   public int[] dT;
+   public int dV;
+   public int dW;
+   public int dX;
+   public byte[] bx;
+   public short[] bp;
+   public byte[][] gx;
+   public byte[][] gy;
+   public short[] gu;
+   public short[][] gv;
+   public int[] gs;
+   public int gE;
+   public int fL;
+   public int[] be;
+   public byte[][] cs;
+   public int[] eg;
+   public long[] gn;
+   public int fU;
+   public int fz;
+   public int fA;
+   public byte[][] x = new byte[][]{{1, 1, -1, 1}, {-1, 1, -1, -1}, {-1, -1, 1, -1}, {1, -1, 1, 1}};
 
 
 
@@ -165,7 +165,7 @@ public class ResourcesLoaderL3D {
 
 
 
-   private void readMetadata() {
+   public void readMetadata() {
       int var2 = 0;
       byte[] var4 = this.readBinary("/a" + this.dataExt);
       short[] var5 = new short[12];
@@ -287,7 +287,7 @@ public class ResourcesLoaderL3D {
 
    }
 
-   private void loadMap() {
+   public void loadMap() {
       boolean var3 = false;
       int var5 = this.selectedMap == 0 ? 1 : this.selectedMap;
       ResourcesLoaderL3D var10000;
@@ -389,7 +389,7 @@ public class ResourcesLoaderL3D {
       // System.gc();
    }
 
-   private void loadMapInner(short[] footer) {
+   public void loadMapInner(short[] footer) {
       this.A = new byte[3][][][];
       this.loadMapPart((byte[])this.loadedMap[0], (byte[])this.loadedMap[1], (byte[])this.l, 0);
       this.loadMapPart((byte[])this.loadedMap[2], (byte[])this.loadedMap[3], (byte[])this.m, 1);
@@ -409,7 +409,7 @@ public class ResourcesLoaderL3D {
       // this.L();
    }
 
-   private void loadMapPart(byte[] lumpA, byte[] lumpB, byte[] mapMetadata, int A_idx) {
+   public void loadMapPart(byte[] lumpA, byte[] lumpB, byte[] mapMetadata, int A_idx) {
       int var8 = 0;
       int var10 = lumpB.length;
       this.A[A_idx] = new byte[var10][][];
@@ -431,7 +431,7 @@ public class ResourcesLoaderL3D {
    }
 
 
-   private void initFloorCeilingColor(short[] footer) {
+   public void initFloorCeilingColor(short[] footer) {
       ResourcesLoaderL3D var10000;
       int var10001;
       if (!this.hD) {
@@ -449,13 +449,13 @@ public class ResourcesLoaderL3D {
       this.aT = (int)((long)this.aT | 0L);
    }
 
-   private void initMapArrays(int var1) {
+   public void initMapArrays(int var1) {
       this.dg = new int[4][var1];
       this.bv = new byte[var1];
    }
 
 
-   private void modifyBigLumps01(byte[][][] bigLump0, byte[][][] bigLump1) {
+   public void modifyBigLumps01(byte[][][] bigLump0, byte[][][] bigLump1) {
       boolean var3 = false;
       int var11 = 0;
       int var12 = 0;
@@ -625,7 +625,7 @@ public class ResourcesLoaderL3D {
 
 
 
-   private void modifyBigLump1(byte[][][] bigLump1) {
+   public void modifyBigLump1(byte[][][] bigLump1) {
       this.cN = new short[7][];
       this.cO = new short[7][];
       this.fI = this.fF;
@@ -920,7 +920,7 @@ public class ResourcesLoaderL3D {
 
    }
 
-   private void modifyBigLump1_subfunction4(int var1, int var2, byte[][][] var3) {
+   public void modifyBigLump1_subfunction4(int var1, int var2, byte[][][] var3) {
       int var4 = var2;
       if (var3[var2].length != 0) {
          int var7 = var3[var2][0].length;
@@ -958,7 +958,7 @@ public class ResourcesLoaderL3D {
    }
 
 
-   private void initCosTable() {
+   public void initCosTable() {
       this.eg = new int[91];
       this.eg[1] = 1146;
       int var1 = 1146;
@@ -971,7 +971,7 @@ public class ResourcesLoaderL3D {
       this.a = null;
    }
 
-   private long cos(int var1) {
+   public long cos(int var1) {
       if (var1 < 0) {
          return -this.cos(-var1);
       } else if (var1 >= 90 & var1 < 180) {
@@ -985,16 +985,16 @@ public class ResourcesLoaderL3D {
       }
    }
 
-   private long sin(int var1) {
+   public long sin(int var1) {
       return this.cos(90 - var1);
    }
 
-   private static int abs(int var0) {
+   public static int abs(int var0) {
       return var0 > 0 ? var0 : -var0;
    }
 
 
-   private void initStartingPos(int var1, long var2, long var4, int var6, int var7) {
+   public void initStartingPos(int var1, long var2, long var4, int var6, int var7) {
       this.gn = new long[2];
       this.fU = var1;
       this.gn[0] = var2;
@@ -1005,7 +1005,7 @@ public class ResourcesLoaderL3D {
 
 
 
-   private int modifyBigLump1_subfunction1(long var1, long var3, long var5, long var7, int var9, int var10, byte var11, byte var12, byte var13, byte var14, byte var15, byte var16) {
+   public int modifyBigLump1_subfunction1(long var1, long var3, long var5, long var7, int var9, int var10, byte var11, byte var12, byte var13, byte var14, byte var15, byte var16) {
       int var19 = 0;
 
       int var18;
@@ -1053,7 +1053,7 @@ public class ResourcesLoaderL3D {
 
 
 
-   private int modifyBigLump1_subfunction5(long var1, long var3, int var5, long var6, int var8, int var9, byte var10, byte var11, int var12) {
+   public int modifyBigLump1_subfunction5(long var1, long var3, int var5, long var6, int var8, int var9, byte var10, byte var11, int var12) {
       int var15 = 360 / var5;
       int var14 = var12 * 4;
 
@@ -1072,7 +1072,7 @@ public class ResourcesLoaderL3D {
       return var13;
    }
 
-   private void modifyBigLump1_subfunction2(byte var1, byte var2, byte var3, int var4) {
+   public void modifyBigLump1_subfunction2(byte var1, byte var2, byte var3, int var4) {
       this.dh[var4] = var1;
       int var5 = var4 + 1;
       this.dh[var5] = var2;
@@ -1083,7 +1083,7 @@ public class ResourcesLoaderL3D {
 
 
 
-   private int modifyBigLump1_subfunction3(int[] var1, long var2, long var4, int var6, int var7, int var8, int var9) {
+   public int modifyBigLump1_subfunction3(int[] var1, long var2, long var4, int var6, int var7, int var8, int var9) {
       char var10 = 0;
       if (this.selectedMap == 1 || this.selectedMap == 2) {
          var10 = '耀';
