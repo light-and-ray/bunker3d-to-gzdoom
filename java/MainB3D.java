@@ -10,10 +10,10 @@ public class MainB3D {
         Json.export("LINES_VERTEXES", loader.cW);
         Json.export("LINES_TEXTURES", loader.cX);
         Json.export("LINES_MIRRORING", loader.bz);
-        Json.export("LINES_bs", loader.bs);
-        Json.export("LINES_bk", loader.bk);
-        Json.export("LINES_br", loader.br);
-        Json.export("LINES_bA", loader.bA);
+        Json.export("LINES_TEXTURES_HELP_1", loader.bs);
+        Json.export("LINES_TEXTURES_HELP_2", loader.bk);
+        Json.export("LINES_TEXTURES_HELP_3", loader.br);
+        Json.export("LINES_TEXTURES_HELP_4", loader.bA);
         Json.export("LINES_ANIMATED", loader.fE);
         Json.export("LINES_HEIGHT", loader.by); // 0 - full, 1 - bottom half, 2 - top half
         Json.export("DOORS_START_LINE_IDX", loader.DOORS_START_LINE_IDX);

@@ -104,17 +104,17 @@ def _loadFoeSprites():
     return all_sprites
 
 def _loadLinesTextures():
-    cX = read1DArray("LINES_TEXTURES")
-    bs = read1DArray("LINES_bs")
-    bk = read1DArray("LINES_bk")
-    bA = read1DArray("LINES_bA")
-    br = read1DArray("LINES_br")
+    base = read1DArray("LINES_TEXTURES")
+    help1 = read1DArray("LINES_TEXTURES_HELP_1")
+    help2 = read1DArray("LINES_TEXTURES_HELP_2")
+    help3 = read1DArray("LINES_TEXTURES_HELP_4")
+    help4 = read1DArray("LINES_TEXTURES_HELP_3")
 
     linesTextures = []
 
-    for i in range(len(cX)):
-        av = cX[i]
-        at = bs[av]
+    for i in range(len(base)):
+        av = base[i]
+        at = help1[av]
 
         var6 = 1 if av < 32 else 7
         brvar3list = []
@@ -124,12 +124,12 @@ def _loadLinesTextures():
             if var6 == 1:
                 var12 = av
             else:
-                var12 = bA[(av - 32) * var6 + var7]
+                var12 = help3[(av - 32) * var6 + var7]
 
-            var3 = bk[var12]
+            var3 = help2[var12]
             var12s.append(var12)
             var3s.append(var3)
-            brvar3list.append(br[var3])
+            brvar3list.append(help4[var3])
         # 18 = 0, 19 = 6, 21 = 6
         # 0 = 0, 1 = 6, 3 = 6
         linesTextures.append(var12s)
