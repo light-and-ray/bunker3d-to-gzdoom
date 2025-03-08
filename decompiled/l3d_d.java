@@ -2250,7 +2250,7 @@ public final class l3d_d extends Canvas {
       System.gc();
    }
 
-   private void a(byte[][][] var1, byte[][][] var2, int var3, int var4, int var5, int var6, int var7) {
+   private void loadTextures_subfunction6(byte[][][] var1, byte[][][] var2, int var3, int var4, int var5, int var6, int var7) {
       byte var8 = var2[9][var3][0];
       byte var9 = var1[2][var3][5];
       int var10 = this.n[6 * var8] + 128;
@@ -2289,11 +2289,11 @@ public final class l3d_d extends Canvas {
             var10001 = this.E;
          }
 
-         var14.a(var10001, var1, var2, var3);
+         var14.loadTextures_subfunction1(var10001, var1, var2, var3);
          if (var4 == 0 && var7 == var3) {
             this.L = var3;
             this.D = new int[this.G * this.H];
-            this.b(this.D, this.E, 0, 0, this.G, this.G, this.H);
+            this.loadTextures_subfunction7(this.D, this.E, 0, 0, this.G, this.G, this.H);
          }
 
       } else {
@@ -2306,7 +2306,7 @@ public final class l3d_d extends Canvas {
       }
    }
 
-   private void a(int[] var1, byte[][][] var2, byte[][][] var3, int var4) {
+   private void loadTextures_subfunction1(int[] var1, byte[][][] var2, byte[][][] var3, int var4) {
       byte var5 = var2[2][var4][0];
       byte var6 = var2[2][var4][1];
       byte var7 = var2[2][var4][2];
@@ -2314,7 +2314,7 @@ public final class l3d_d extends Canvas {
       byte var9 = var2[2][var4][4];
       boolean var10 = var3[9][var4][0] == 1 || var3[9][var4][0] == 11 || var3[9][var4][0] == 15;
       if (var5 != 0 || var6 != 0 || var7 != 0 || var8 != 0 || var9 != 0) {
-         this.a(var1, var5, var6, var7, var8, var9, var10);
+         this.loadTextures_subfunction3(var1, var5, var6, var7, var8, var9, var10);
       }
 
    }
@@ -2423,7 +2423,7 @@ public final class l3d_d extends Canvas {
                   var10000.getRGB(var10001, var10002, var10003, var10004, var10005, var10006, var10007);
                }
 
-               this.a(this.J[var20], bigLump0, bigLump1, var5);
+               this.loadTextures_subfunction1(this.J[var20], bigLump0, bigLump1, var5);
                ++var20;
             }
          }
@@ -2436,7 +2436,7 @@ public final class l3d_d extends Canvas {
       this.bo = new short[bigLump0[3].length * 9];
       int var10 = footer[6] * 2 * 2;
       int var11 = footer[7] * 2 * 2;
-      this.d(var10, var11);
+      this.loadTextures_subfunction2(var10, var11);
       int var14 = 0;
       this.L = -1;
       byte var7 = -1;
@@ -2466,7 +2466,7 @@ public final class l3d_d extends Canvas {
          l3d_d var34;
          if (bigLump0[3][var4][3] != 1 && bigLump0[3][var4][3] != 2) {
             if (this.n[6 * var7] + 128 > 2) {
-               this.a((byte[][][])bigLump0, (byte[][][])bigLump1, var6, 0, var8, var7, var31);
+               this.loadTextures_subfunction6((byte[][][])bigLump0, (byte[][][])bigLump1, var6, 0, var8, var7, var31);
                var34 = this;
                var10001 = this.E;
             } else {
@@ -2474,7 +2474,7 @@ public final class l3d_d extends Canvas {
                var10001 = this.J[this.K[var6]];
             }
 
-            var34.a(var10001, var15, bigLump0[4][var6][2] * 2, bigLump0[4][var6][3] * 2, bigLump0[2][var6][5], 0, 0);
+            var34.loadTextures_subfunction8(var10001, var15, bigLump0[4][var6][2] * 2, bigLump0[4][var6][3] * 2, bigLump0[2][var6][5], 0, 0);
          }
 
          int var12 = bigLump0[3][var4][1] * 2;
@@ -2483,11 +2483,11 @@ public final class l3d_d extends Canvas {
          var24 = bigLump0[3][var4][0] == bigLump0[3][var4][1] ? var13 : (bigLump0[3][var4][3] != 2 ? this.G : 96);
          byte var25 = bigLump0[3][var4][0];
          if (bigLump0[3][var4][3] == 1) {
-            var14 = this.a(bigLump1[32][var4][0], bigLump1[32][var4][1], (byte)var4, (byte)var12, (byte)var13, (short)140, var14, (short)26, (byte)(var12 + 23));
+            var14 = this.loadTextures_subfunction16(bigLump1[32][var4][0], bigLump1[32][var4][1], (byte)var4, (byte)var12, (byte)var13, (short)140, var14, (short)26, (byte)(var12 + 23));
          } else if (bigLump0[3][var4][3] == 2) {
-            var14 = this.a(bigLump1[32][var4][0], bigLump1[32][var4][1], (byte)var4, (byte)var12, (byte)var13, (short)((byte)var24), var14, (short)0, (byte)var12);
+            var14 = this.loadTextures_subfunction16(bigLump1[32][var4][0], bigLump1[32][var4][1], (byte)var4, (byte)var12, (byte)var13, (short)((byte)var24), var14, (short)0, (byte)var12);
          } else {
-            var14 = this.a((byte)var25, (byte)var4, (byte)var4, (byte)var12, (byte)var13, (short)((byte)var24), var14, (short)0, (byte)var12);
+            var14 = this.loadTextures_subfunction16((byte)var25, (byte)var4, (byte)var4, (byte)var12, (byte)var13, (short)((byte)var24), var14, (short)0, (byte)var12);
 
             for(var5 = 1; var5 <= 3 && bigLump1[32][var4][var5] != var6; ++var5) {
                var6 = bigLump1[32][var4][var5];
@@ -2503,7 +2503,7 @@ public final class l3d_d extends Canvas {
                }
 
                if (this.n[6 * bigLump1[9][var6][0]] + 128 > 2) {
-                  this.a((byte[][][])bigLump0, (byte[][][])bigLump1, var6, var5, -1, -2, -1);
+                  this.loadTextures_subfunction6((byte[][][])bigLump0, (byte[][][])bigLump1, var6, var5, -1, -2, -1);
                   var34 = this;
                   var10001 = this.C;
                } else {
@@ -2511,7 +2511,7 @@ public final class l3d_d extends Canvas {
                   var10001 = this.J[this.K[var6]];
                }
 
-               var34.a(var10001, var15, bigLump0[4][var6][2] * 2, bigLump0[4][var6][3] * 2, bigLump0[2][var6][5], bigLump0[2][var6][6] * 2, bigLump0[2][var6][7] * 2);
+               var34.loadTextures_subfunction8(var10001, var15, bigLump0[4][var6][2] * 2, bigLump0[4][var6][3] * 2, bigLump0[2][var6][5], bigLump0[2][var6][6] * 2, bigLump0[2][var6][7] * 2);
             }
 
             this.bi[var4] = this.bi[var17];
@@ -2522,7 +2522,7 @@ public final class l3d_d extends Canvas {
             int[] var35;
             byte var36;
             if (bigLump0[3][var4][3] != 0) {
-               a(this.cS, this.cT, this.bi[var4], var12, var13, 12, 0, var15, this.E, true);
+               loadTextures_subfunction18(this.cS, this.cT, this.bi[var4], var12, var13, 12, 0, var15, this.E, true);
                var35 = this.cU;
                var10001 = this.cV;
                var10002 = this.bi[var4];
@@ -2534,9 +2534,9 @@ public final class l3d_d extends Canvas {
                var10008 = this.E;
                var10009 = true;
             } else {
-               a(this.cS, this.cT, this.bi[var4], var12, var13, 12, 0, var15, this.E, true);
-               a(this.cU, this.cV, this.bi[var4], var12, var13, 12, 2, var15, this.E, true);
-               a(this.cW, this.cX, this.bi[var4], var12, var13, 12, 6, var15, this.E, false);
+               loadTextures_subfunction18(this.cS, this.cT, this.bi[var4], var12, var13, 12, 0, var15, this.E, true);
+               loadTextures_subfunction18(this.cU, this.cV, this.bi[var4], var12, var13, 12, 2, var15, this.E, true);
+               loadTextures_subfunction18(this.cW, this.cX, this.bi[var4], var12, var13, 12, 6, var15, this.E, false);
                var35 = this.cY;
                var10001 = this.cZ;
                var10002 = this.bi[var4];
@@ -2549,7 +2549,7 @@ public final class l3d_d extends Canvas {
                var10009 = false;
             }
 
-            a(var35, var10001, var10002, var10003, var10004, var36, var10006, var10007, var10008, var10009);
+            loadTextures_subfunction18(var35, var10001, var10002, var10003, var10004, var36, var10006, var10007, var10008, var10009);
          }
       }
 
@@ -2563,7 +2563,7 @@ public final class l3d_d extends Canvas {
       System.gc();
    }
 
-   private static void a(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int[] var8, boolean var9) {
+   private static void loadTextures_subfunction18(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int[] var8, boolean var9) {
       int var17 = var3 + var4;
       int var10;
       int var11;
@@ -2662,17 +2662,17 @@ public final class l3d_d extends Canvas {
 
    }
 
-   private int a(byte var1, byte var2, byte var3, byte var4, byte var5, short var6, int var7, short var8, byte var9) {
+   private int loadTextures_subfunction16(byte var1, byte var2, byte var3, byte var4, byte var5, short var6, int var7, short var8, byte var9) {
       this.bh[var3] = var7;
-      int var10 = this.a((byte)0, var1, (short)var8, var7);
-      var10 = this.a(var9, var2, (short)0, var10);
-      var10 = this.a((byte)(var9 + var5), var1, (short)((byte)(var4 + var5)), var10);
+      int var10 = this.loadTextures_subfunction17((byte)0, var1, (short)var8, var7);
+      var10 = this.loadTextures_subfunction17(var9, var2, (short)0, var10);
+      var10 = this.loadTextures_subfunction17((byte)(var9 + var5), var1, (short)((byte)(var4 + var5)), var10);
       this.bh[var3 + 1] = var10;
       this.bp[var3] = var6;
       return var10;
    }
 
-   private int a(byte var1, byte var2, short var3, int var4) {
+   private int loadTextures_subfunction17(byte var1, byte var2, short var3, int var4) {
       this.bo[var4] = (short)var1;
       int var5 = var4 + 1;
       this.bo[var5] = (short)var2;
@@ -2682,7 +2682,7 @@ public final class l3d_d extends Canvas {
       return var5;
    }
 
-   private void a(int[] var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
+   private void loadTextures_subfunction3(int[] var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
       int var10 = 1;
       boolean var11 = false;
       int var12 = var1.length;
@@ -2698,7 +2698,7 @@ public final class l3d_d extends Canvas {
                var1[var8] = var14[var20];
             } else {
                var13[var9] = var10;
-               var1[var8] = this.a(var2, var3, var4, var5, var6, var9, var7);
+               var1[var8] = this.loadTextures_subfunction4(var2, var3, var4, var5, var6, var9, var7);
                var14[var10] = var1[var8];
                ++var10;
             }
@@ -2707,7 +2707,7 @@ public final class l3d_d extends Canvas {
 
    }
 
-   private int a(int var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
+   private int loadTextures_subfunction4(int var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
       int[] var9 = new int[3];
       byte var11;
       byte var12;
@@ -2741,14 +2741,14 @@ public final class l3d_d extends Canvas {
       int var10 = (var9[0] + var9[1] + var9[2]) / 3;
 
       for(int var8 = 0; var8 <= 2; ++var8) {
-         var9[var8] = a((int)(var9[var8] + var15), var16);
-         var9[var8] = a((int)(var10 + (var9[var8] - var10) * (var4 + var14) / var14), var16);
+         var9[var8] = loadTextures_subfunction5((int)(var9[var8] + var15), var16);
+         var9[var8] = loadTextures_subfunction5((int)(var10 + (var9[var8] - var10) * (var4 + var14) / var14), var16);
       }
 
       return var9[0] << var11 | var9[1] << var12 | var9[2] << var13;
    }
 
-   private static int a(int var0, int var1) {
+   private static int loadTextures_subfunction5(int var0, int var1) {
       if (var0 > var1) {
          return var1;
       } else {
@@ -2780,8 +2780,8 @@ public final class l3d_d extends Canvas {
                var14[var10] = var12;
                var15[var12] = var18;
                ++var12;
-               int var19 = this.a(var5[0], var5[1], var5[2], var5[3], var5[4], var10, false);
-               int var20 = this.a(var6[0], var6[1], var6[2], var6[3], var6[4], var10, false);
+               int var19 = this.loadTextures_subfunction4(var5[0], var5[1], var5[2], var5[3], var5[4], var10, false);
+               int var20 = this.loadTextures_subfunction4(var6[0], var6[1], var6[2], var6[3], var6[4], var10, false);
                var3[0][var17] = (int)((long)var19 | 0L);
                var3[1][var17] = (int)((long)var20 | 0L);
                var1[var7] = var18++;
@@ -2817,33 +2817,33 @@ public final class l3d_d extends Canvas {
 
    }
 
-   private void a(int[] var1, int var2, int var3, int var4, byte var5, int var6, int var7) {
+   private void loadTextures_subfunction8(int[] var1, int var2, int var3, int var4, byte var5, int var6, int var7) {
       if (var5 == 0) {
          if (this.M != 26 && this.M != 27 && this.M != 28 && this.M != 1 && this.M != 91 && this.M != 114 && this.M != 15 && this.M != 99 && this.M != 100 && this.M != 11 && this.M != 10 && this.M != 22 && this.M != 23 && this.M != 39 && this.M != 38 && this.M != 40 && this.M != 41 && this.M != 42 && this.M != 43 && this.M != 44 && this.M != 46 && this.M != 39 && this.M != 37 && this.M != 12) {
-            this.b(this.E, var1, var6, var7, var2, var3, var4);
+            this.loadTextures_subfunction7(this.E, var1, var6, var7, var2, var3, var4);
          } else {
-            this.b(this.E, var1, var6, var7, var2, var3, var4);
-            this.a((int[])this.E, (int[])this.E, 0, 0, var2, var3, var4);
+            this.loadTextures_subfunction7(this.E, var1, var6, var7, var2, var3, var4);
+            this.loadTextures_subfunction9((int[])this.E, (int[])this.E, 0, 0, var2, var3, var4);
          }
       } else if (var5 == 1) {
          if (this.M == 103 || this.M == 104) {
-            this.a((int[])var1, (int[])var1, 0, 0, var3, var3, var4);
+            this.loadTextures_subfunction9((int[])var1, (int[])var1, 0, 0, var3, var3, var4);
          }
 
-         this.c(this.E, var1, var6, var7, var2, var3, var4);
+         this.loadTextures_subfunction10(this.E, var1, var6, var7, var2, var3, var4);
       } else if (var5 == 2) {
-         this.d(this.E, var1, var6, var7, var2, var3, var4);
+         this.loadTextures_subfunction11(this.E, var1, var6, var7, var2, var3, var4);
       } else if (var5 == 3) {
-         this.e(this.E, var1, var6, var7, var2, var3, var4);
+         this.loadTextures_subfunction12(this.E, var1, var6, var7, var2, var3, var4);
       } else {
          if (var5 != 5) {
             if (var5 == 6) {
-               this.f(this.E, var1, var6, var7, var2, var3, var4);
+               this.loadTextures_subfunction13(this.E, var1, var6, var7, var2, var3, var4);
                return;
             }
 
             if (var5 == 10) {
-               this.g(this.E, var1, var6, var7, var2, var3, var4);
+               this.loadTextures_subfunction14(this.E, var1, var6, var7, var2, var3, var4);
                return;
             }
 
@@ -2852,11 +2852,11 @@ public final class l3d_d extends Canvas {
             }
          }
 
-         this.a(this.E, var1, var6, var7, var2, var3, var4, var5);
+         this.loadTextures_subfunction15(this.E, var1, var6, var7, var2, var3, var4, var5);
       }
    }
 
-   private void a(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+   private void loadTextures_subfunction9(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
       int var11 = var4 * var5 + var3;
       int var10 = 0;
       int var14 = var4 + var7;
@@ -2899,7 +2899,7 @@ public final class l3d_d extends Canvas {
 
    }
 
-   private void b(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+   private void loadTextures_subfunction7(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
       int var11 = var4 * var5 + var3;
       int var10 = 0;
       int var14 = var4 + var7;
@@ -2921,7 +2921,7 @@ public final class l3d_d extends Canvas {
 
    }
 
-   private void c(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+   private void loadTextures_subfunction10(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
       int var12 = var4 * var5 + var3;
       int var13 = 2 * var6 - 1;
       int var11 = 0;
@@ -2947,7 +2947,7 @@ public final class l3d_d extends Canvas {
 
    }
 
-   private void d(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+   private void loadTextures_subfunction11(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
       int var12 = (var4 + var7 - 1) * var5 + var3;
       int var13 = 2 * var6 - 1;
       int var11 = 0;
@@ -2972,7 +2972,7 @@ public final class l3d_d extends Canvas {
 
    }
 
-   private void e(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+   private void loadTextures_subfunction12(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
       int var11 = var4 * var5 + var3;
       int var10 = 0;
       int var14 = var4 + var7;
@@ -2995,7 +2995,7 @@ public final class l3d_d extends Canvas {
 
    }
 
-   private void a(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+   private void loadTextures_subfunction15(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       int var15;
       int var16;
       int var17;
@@ -3056,7 +3056,7 @@ public final class l3d_d extends Canvas {
 
    }
 
-   private void f(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+   private void loadTextures_subfunction13(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
       int var12 = var4 * var5 + var3;
       int var9 = var5 * var7;
       int var11 = 0;
@@ -3080,7 +3080,7 @@ public final class l3d_d extends Canvas {
 
    }
 
-   private void g(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
+   private void loadTextures_subfunction14(int[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7) {
       int var11 = var4 * var5 + (var3 + var5 - 1);
       int var10 = 0;
       int var14 = var4 + var7;
@@ -5906,7 +5906,7 @@ public final class l3d_d extends Canvas {
       this.bv = new byte[var1];
    }
 
-   private void d(int var1, int var2) {
+   private void loadTextures_subfunction2(int var1, int var2) {
       this.cS = new int[var1];
       this.cT = new int[var1];
       this.cU = new int[var1];
