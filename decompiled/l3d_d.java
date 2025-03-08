@@ -1456,7 +1456,7 @@ public final class l3d_d extends Canvas {
       }
 
       var17 = this.bf[var4 - 1];
-      this.s(var17);
+      this.initMapArrays(var17);
       this.bw = new byte[var17];
       var7 = bigLump1[31].length;
 
@@ -5901,7 +5901,7 @@ public final class l3d_d extends Canvas {
       return false;
    }
 
-   private void s(int var1) {
+   private void initMapArrays(int var1) {
       this.dg = new int[4][var1];
       this.bv = new byte[var1];
    }

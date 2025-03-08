@@ -58,6 +58,15 @@ public class ResourcesLoaderL3D {
    private byte[][][][] A;
    private int[] I;
 
+   private int[] bf;
+   private int[][] dg;
+   private byte[] bv;
+   private byte[] bw;
+   private int fF;
+   private byte[] dh;
+   private int aS;
+   private int aT;
+
 
 
 
@@ -373,6 +382,198 @@ public class ResourcesLoaderL3D {
 
    }
 
+
+   private void initFloorCeilingColor(short[] footer) {
+      ResourcesLoaderL3D var10000;
+      int var10001;
+      if (!this.hD) {
+         this.aS = footer[0] << 16 | footer[1] << 8 | footer[2];
+         var10000 = this;
+         var10001 = footer[3] << 16 | footer[4] << 8 | footer[5];
+      } else {
+         this.aS = 1644825;
+         var10000 = this;
+         var10001 = 2960685;
+      }
+
+      var10000.aT = var10001;
+      this.aS = (int)((long)this.aS | 0L);
+      this.aT = (int)((long)this.aT | 0L);
+   }
+
+   private void initMapArrays(int var1) {
+      this.dg = new int[4][var1];
+      this.bv = new byte[var1];
+   }
+
+
+   private void modifyBigLumps01(byte[][][] bigLump0, byte[][][] bigLump1) {
+      boolean var3 = false;
+      int var11 = 0;
+      int var12 = 0;
+      int var17 = bigLump0[0].length + bigLump1[7].length + bigLump1[12].length * 4 + bigLump1[20].length * 3 + bigLump1[33].length * 4 + bigLump1[41].length * 4;
+      int var7 = bigLump1[51].length + 1;
+      this.bf = new int[var7];
+      this.bf[0] = var17;
+
+      int var4;
+      for(var4 = 1; var4 < var7; ++var4) {
+         this.bf[var4] = this.bf[var4 - 1] + bigLump1[51][var4 - 1][2];
+      }
+
+      var17 = this.bf[var4 - 1];
+      this.initMapArrays(var17);
+      this.bw = new byte[var17];
+      var7 = bigLump1[31].length;
+
+      for(var4 = 0; var4 < var7; ++var4) {
+         this.bw[bigLump1[31][var4][0] + 128] = bigLump1[31][var4][1];
+      }
+
+      var7 = bigLump0[0].length;
+      int var8 = bigLump1[7].length;
+
+      for(var4 = 0; var4 < var7; ++var4) {
+         if (var11 < var8 && var12 == bigLump1[7][var11][0] + 128) {
+            if (var11 != 0) {
+               this.dg[2][var12 - 1] = bigLump1[7][var11 - 1][1];
+               this.dg[3][var12 - 1] = bigLump1[7][var11 - 1][2];
+            }
+
+            this.dg[0][var12] = bigLump1[7][var11][1];
+            this.dg[1][var12] = bigLump1[7][var11][2];
+            ++var11;
+            ++var12;
+         }
+
+         long var13 = (long)(bigLump0[0][var4][0] - 7);
+         long var15 = (long)(bigLump0[0][var4][1] - 7);
+         this.dg[0][var12] = (int)(var13 + (long)this.dg[0][var12 - 1]);
+         this.dg[1][var12] = (int)(var15 + (long)this.dg[1][var12 - 1]);
+         this.dg[2][var12 - 1] = this.dg[0][var12];
+         this.dg[3][var12 - 1] = this.dg[1][var12];
+         ++var12;
+      }
+
+      this.dg[2][var12 - 1] = bigLump1[7][var11 - 1][1];
+      this.dg[3][var12 - 1] = bigLump1[7][var11 - 1][2];
+
+      for(int var18 = 0; var18 < var12; ++var18) {
+         for(var4 = 0; var4 < 4; ++var4) {
+            int[] var10000 = this.dg[var4];
+            var10000[var18] <<= 16;
+         }
+      }
+
+      this.fF = var12;
+      var12 = 0;
+      var11 = 0;
+      this.dh = new byte[var17];
+      var7 = bigLump0[1].length;
+      int var9 = bigLump1[7].length;
+      int var10 = bigLump1[10].length;
+
+      int var5;
+      int var6;
+      for(var4 = 0; var4 < var7; ++var4) {
+         var8 = bigLump0[1][var4].length;
+
+         label159:
+         for(var5 = 0; var5 < var8; ++var5) {
+            if (var11 < var9 && var12 == bigLump1[7][var11][0] + 128) {
+               if (var11 != 0) {
+                  this.dh[var12 - 1] = bigLump1[7][var11 - 1][4];
+               }
+
+               this.dh[var12] = bigLump1[7][var11][3];
+               ++var11;
+               ++var12;
+            }
+
+            int var10001;
+            byte[] var10002;
+            byte[] var19;
+            int var10003;
+            if (bigLump0[1][var4][var5] == 15) {
+               var6 = 0;
+
+               while(true) {
+                  if (var6 >= var10) {
+                     continue label159;
+                  }
+
+                  if (bigLump1[10][var6][0] + 128 == var12) {
+                     var19 = this.dh;
+                     var10001 = var12;
+                     var10002 = bigLump1[10][var6];
+                     var10003 = 1;
+                     break;
+                  }
+
+                  ++var6;
+               }
+            } else {
+               var19 = this.dh;
+               var10001 = var12;
+               var10002 = bigLump0[1][var4];
+               var10003 = var5;
+            }
+
+            var19[var10001] = var10002[var10003];
+            ++var12;
+         }
+      }
+
+      this.dh[var12 - 1 - bigLump1[8][0][4]] = bigLump1[7][var11 - 1][4];
+      var7 = bigLump0[2].length;
+      var8 = bigLump1[29].length;
+
+      for(var4 = 0; var4 < var7; ++var4) {
+         for(var5 = 0; var5 < 5; ++var5) {
+            if (bigLump0[2][var4][var5] != 15) {
+               if (bigLump0[2][var4][var5] == 7) {
+                  bigLump0[2][var4][var5] = -7;
+               } else if (bigLump0[2][var4][var5] != 0) {
+                  bigLump0[2][var4][var5] = (byte)(bigLump0[2][var4][var5] - 7);
+               }
+            } else {
+               for(var6 = 0; var6 < var8; ++var6) {
+                  if (bigLump1[29][var6][0] == var4 && bigLump1[29][var6][1] == var5) {
+                     bigLump0[2][var4][var5] = bigLump1[29][var6][2];
+                     break;
+                  }
+               }
+            }
+         }
+      }
+
+      for(var4 = 0; var4 < var7; ++var4) {
+         var8 = bigLump0[2][var4].length;
+
+         for(var5 = 6; var5 < var8; ++var5) {
+            bigLump0[2][var4][var5] = (byte)(bigLump0[2][var4][var5] * 3);
+         }
+      }
+
+      var7 = bigLump0[3].length;
+
+      for(var4 = 0; var4 < var7; ++var4) {
+         for(var5 = 1; var5 <= 2; ++var5) {
+            bigLump0[3][var4][var5] = (byte)(bigLump0[3][var4][var5] * 3);
+         }
+      }
+
+      var7 = bigLump0[4].length;
+
+      for(var4 = 0; var4 < var7; ++var4) {
+         var8 = bigLump0[4][var4].length;
+
+         for(var5 = 0; var5 < var8; ++var5) {
+            bigLump0[4][var4][var5] = (byte)(bigLump0[4][var4][var5] * 3);
+         }
+      }
+
+   }
 
 
 
