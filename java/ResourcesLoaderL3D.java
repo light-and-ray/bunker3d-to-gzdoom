@@ -12,6 +12,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import javax.imageio.ImageIO;
+import javax.microedition.lcdui.Image;
 
 public class ResourcesLoaderL3D {
    public String ROOT_JAR = "../jars/l3d.d";
@@ -139,6 +140,43 @@ public class ResourcesLoaderL3D {
    private int bV;
    private long[] gY;
 
+   private int N;
+   private int O;
+   private short[][] bn;
+   private short[] ci;
+   private short[] bq;
+   private short[] br;
+   private int[] bg;
+   private short[] bs;
+   private short[] bt;
+   private int[][] bm;
+   private int[] bj;
+   private byte[] di;
+   private byte[] dj;
+   private byte[] dk;
+   private byte[] dl;
+   private byte[] dm;
+   private byte[] dn;
+   private byte[] do_;
+   private byte[] dp;
+   private byte[] dq;
+   private byte[] dr;
+   private byte[] ds;
+   private byte[] dt;
+   private byte[] du;
+   private byte[] dv;
+   private byte[] dw;
+   private byte[] dx;
+   private byte[] dy;
+   private byte[] dz;
+   private byte[] dA;
+   private byte[] dB;
+   private byte[] dC;
+   private byte[] dD;
+   private byte[] dE;
+   private byte[] dF;
+   private byte[][][] B;
+
 
 
 
@@ -166,7 +204,8 @@ public class ResourcesLoaderL3D {
       } catch (IOException e) {
           return null;
       }
-  }
+   }
+
 
    public byte[] readBinary(String fileName) {
       try (FileInputStream fileStream = new FileInputStream(new File(ROOT_JAR + fileName))) {
@@ -1247,6 +1286,208 @@ public class ResourcesLoaderL3D {
 
    }
 
+
+
+   private void loadSpritesPart2(byte[][][] bigLump2) {
+      BufferedImage var7 = null;
+      BufferedImage var8 = null;
+      var7 = this.readImage("/e" + this.dataExt);
+      ResourcesLoaderL3D var10000;
+      StringBuffer var10001;
+      String var10002;
+      if (this.selectedMap != 7) {
+         var10000 = this;
+         var10001 = new StringBuffer();
+         var10002 = "/ee";
+      } else {
+         var10000 = this;
+         var10001 = new StringBuffer();
+         var10002 = "/eeeee";
+      }
+
+      var8 = var10000.readImage(var10001.append(var10002).append(this.dataExt).toString());
+      int[] var9 = new int[2];
+      var7.getRGB(0, 0, 2, 1, var9, 0, 2);
+      this.N = var9[0];
+      this.O = var9[1];
+      this.bn = new short[7][];
+      this.I = new int[this.bn.length];
+      int var2 = this.bn.length;
+      int var3 = (13 + bigLump2[5].length + 2) * 2;
+
+      int var10;
+      for(var10 = 0; var10 < var2; ++var10) {
+         this.bn[var10] = new short[var3];
+         this.I[var10] = 13 + bigLump2[5].length + 2;
+         int var4 = this.bn[var10].length;
+
+         for(int var11 = 0; var11 < var4; ++var11) {
+            this.bn[var10][var11] = 0;
+         }
+      }
+
+      int var14 = 13 + bigLump2[5].length;
+      this.ci = new short[var14];
+      this.bq = new short[var14];
+      this.br = new short[var14];
+      this.bg = new int[var14];
+      this.bs = new short[var14];
+      this.bt = new short[var14];
+      int var13 = 0;
+      var2 = this.h.length;
+
+      for(var10 = 0; var10 < var2; var10 += 7) {
+         this.loadSprites_subfunction1(this.h, var13, var10);
+         this.ci[var13] = this.h[var10 + 6];
+         ++var13;
+      }
+
+      var13 = 13;
+      var2 = bigLump2[5].length;
+
+      for(int var12 = 0; var12 < var2; ++var12) {
+         var10 = (bigLump2[5][var12][0] < 0 ? -bigLump2[5][var12][0] : bigLump2[5][var12][0]) * 7;
+         this.loadSprites_subfunction1(this.i, var13, var10);
+         this.ci[var13] = this.i[var10 + 6];
+         ++var13;
+      }
+
+      int var16 = this.bn[0][this.I[0]] + 10;
+      int var17 = this.bn[1][this.I[1]] + 10;
+      int var18 = this.bn[2][this.I[2]] + 10;
+      int var19 = this.bn[3][this.I[3]] + 10;
+      int var20 = this.bn[4][this.I[4]] + 10;
+      int var21 = this.bn[6][this.I[6]] + 10;
+      this.loadSprites_subfunction2(var16, var17, bigLump2[1].length, var18, var19, var20, var21);
+      var13 = 0;
+      short var22 = 0;
+      var2 = this.h.length;
+
+      for(var10 = 0; var10 < var2; var10 += 7) {
+         int[] var5 = new int[this.h[var10 + 2] * this.h[var10 + 3]];
+         int[] var6 = new int[this.h[var10 + 2] * this.h[var10 + 3]];
+         var7.getRGB(this.h[var10 + 0], this.h[var10 + 1], this.h[var10 + 2], this.h[var10 + 3], var5, 0, this.h[var10 + 2]);
+         var8.getRGB(this.h[var10 + 0], this.h[var10 + 1], this.h[var10 + 2], this.h[var10 + 3], var6, 0, this.h[var10 + 2]);
+         this.combineLayers(var5, var6, this.bm, var22, bigLump2[0][0], bigLump2[0][1]);
+         var22 = (short)(var22 + 50);
+         // int var15 = this.bt[var13] / this.br[var13];
+         // if (this.bq[var13] == 0) {
+         //    this.b(var13, var15, var5);
+         // } else if (this.bq[var13] == 1) {
+         //    this.a(var13, var15, var5);
+         // }
+
+         ++var13;
+      }
+
+   }
+
+
+   private void loadSprites_subfunction1(short[] var1, int var2, int var3) {
+      this.bs[var2] = var1[var3 + 2];
+      this.bt[var2] = var1[var3 + 3];
+      int var4 = this.bt[var2] / var1[var3 + 5];
+      this.bn[var1[var3 + 4]][var2] = this.bn[var1[var3 + 4]][this.I[var1[var3 + 4]]];
+      this.bn[var1[var3 + 4]][this.I[var1[var3 + 4]] + 1] = (short)(this.bn[var1[var3 + 4]][this.I[var1[var3 + 4]]] + this.bs[var2] * var4);
+      int var10002 = this.I[var1[var3 + 4]]++;
+      this.bq[var2] = var1[var3 + 4];
+      this.br[var2] = var1[var3 + 5];
+      this.bg[var2] = (var1[var3 + 5] << 16 >> 3) * this.bs[var2] / this.bt[var2];
+      int[] var10000 = this.bg;
+      var10000[var2] >>= 1;
+   }
+
+
+   private void loadSprites_subfunction2(int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+      this.bm = new int[2][(13 + var3) * 50];
+      this.bj = new int[50];
+      this.di = new byte[var1];
+      this.dj = new byte[var1];
+      this.dk = new byte[var1];
+      this.dl = new byte[var1];
+      this.dm = new byte[var1];
+      this.dn = new byte[var1];
+      this.do_ = new byte[var2];
+      this.dp = new byte[var2];
+      this.dq = new byte[var4];
+      this.dr = new byte[var4];
+      this.ds = new byte[var5];
+      this.dt = new byte[var5];
+      this.du = new byte[var5];
+      this.dv = new byte[var5];
+      this.dw = new byte[var6];
+      this.dx = new byte[var6];
+      this.dy = new byte[var7];
+      this.dz = new byte[var7];
+      this.dA = new byte[var7];
+      this.dB = new byte[var7];
+      this.dC = new byte[var7];
+      this.dD = new byte[var7];
+      this.dE = new byte[var7];
+      this.dF = new byte[var7];
+   }
+
+
+   private void combineLayers(int[] var1, int[] var2, int[][] var3, short var4, byte[] var5, byte[] var6) {
+      boolean var11 = false;
+      byte var12 = 1;
+      int var13 = var1.length;
+      byte[] var14 = new byte[256];
+      int[] var15 = new int[50];
+      short var17 = var4;
+      short var18 = 0;
+
+      int var7;
+      int var10;
+      int var16;
+      byte var21;
+      for(var7 = 0; var7 < var13; ++var7) {
+         if ((var16 = var1[var7]) == this.N) {
+            var1[var7] = -1;
+         } else {
+            var10 = var16 & 255;
+            if ((var21 = var14[var10]) > 0) {
+               var1[var7] = var15[var21];
+            } else {
+               var14[var10] = var12;
+               var15[var12] = var18;
+               ++var12;
+               int var19 = this.loadTextures_subfunction4(var5[0], var5[1], var5[2], var5[3], var5[4], var10, false);
+               int var20 = this.loadTextures_subfunction4(var6[0], var6[1], var6[2], var6[3], var6[4], var10, false);
+               var3[0][var17] = (int)((long)var19 | 0L);
+               var3[1][var17] = (int)((long)var20 | 0L);
+               var1[var7] = var18++;
+               ++var17;
+            }
+         }
+      }
+
+      this.B = new byte[32][32][32];
+      var15 = new int[50];
+
+      for(var7 = 0; var7 < var13; ++var7) {
+         if ((var16 = var2[var7]) != this.N) {
+            int var8 = (var16 & 16711680) >> 19;
+            int var9 = (var16 & '\uff00') >> 11;
+            var10 = (var16 & 255) >> 3;
+            if ((var21 = this.B[var8][var9][var10]) > 0) {
+               var1[var7] = var15[var21];
+            } else {
+               this.B[var8][var9][var10] = var12;
+               var15[var12] = var18;
+               ++var12;
+               if (var2[var7] != this.N) {
+                  var3[0][var17] = (int)((long)var16 | 0L);
+                  var3[1][var17] = (int)((long)var16 | 0L);
+               }
+
+               var1[var7] = var18++;
+               ++var17;
+            }
+         }
+      }
+
+   }
 
 
 
