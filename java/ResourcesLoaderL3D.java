@@ -1594,8 +1594,8 @@ public class ResourcesLoaderL3D {
             int var3 = bigLump2[5][var4][0] * 7;
             var8[var4] = new int[this.i[var3 + 2] * this.i[var3 + 3]];
             var9[var4] = new int[this.i[var3 + 2] * this.i[var3 + 3]];
-            this.SPRITES_W[var4] = this.l[var3 + 2];
-            this.SPRITES_H[var4] = this.l[var3 + 3];
+            this.SPRITES_W[var4] = this.i[var3 + 2];
+            this.SPRITES_H[var4] = this.i[var3 + 3];
             var10.getRGB(this.i[var3 + 0], this.i[var3 + 1], this.i[var3 + 2], this.i[var3 + 3], var8[var4], 0, this.i[var3 + 2]);
             var11.getRGB(this.i[var3 + 0], this.i[var3 + 1], this.i[var3 + 2], this.i[var3 + 3], var9[var4], 0, this.i[var3 + 2]);
          }
