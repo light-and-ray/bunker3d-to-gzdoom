@@ -115,6 +115,30 @@ public class ResourcesLoaderL3D {
    public int fA;
    public byte[][] x = new byte[][]{{1, 1, -1, 1}, {-1, 1, -1, -1}, {-1, -1, 1, -1}, {1, -1, 1, 1}};
 
+   private byte[] cj;
+   private byte[] ck;
+   private byte[] cl;
+   private byte[] cm;
+   private byte[] co;
+   private byte[] cp;
+   private boolean[] ct;
+   private boolean[] cu;
+   private short[] cg;
+   private int[] eX;
+   private short[] ch;
+   private boolean[] cv;
+   private int[] ce;
+   private int fx;
+   private byte fW;
+   private byte fX;
+   private byte fY;
+   private byte fZ;
+   private byte ga;
+   private int fy;
+   private int[][] cc;
+   private int bV;
+   private long[] gY;
+
 
 
 
@@ -1111,6 +1135,118 @@ public class ResourcesLoaderL3D {
 
       return var11 + 1;
    }
+
+
+
+
+   private void loadSpritesPart1(byte[][][] bigLump2) {
+      int var6 = bigLump2[4].length;
+      this.cj = new byte[var6];
+      this.cg = new short[var6];
+      this.ck = new byte[64];
+      this.eX = new int[32];
+      this.ch = new short[var6];
+      this.cl = new byte[var6];
+      this.ct = new boolean[var6];
+      this.cm = new byte[var6];
+      this.cv = new boolean[106 + this.fG];
+      this.ce = new int[64 + this.fG];
+      this.co = new byte[var6];
+      this.cu = new boolean[var6];
+      this.cp = new byte[var6];
+
+      int var3;
+      for(var3 = 0; var3 < var6; ++var3) {
+         byte[] var10000;
+         int var10001;
+         byte var10002;
+         if (bigLump2[4][var3][2] == -1) {
+            var10000 = this.cq;
+            var10001 = var3;
+            var10002 = 10;
+         } else {
+            var10000 = this.cq;
+            var10001 = var3;
+            var10002 = 0;
+         }
+
+         var10000[var10001] = var10002;
+         this.cb[var3][0] = 128 + bigLump2[4][var3][0] << 16 >> 2;
+         this.cb[var3][1] = 128 + bigLump2[4][var3][1] << 16 >> 2;
+         this.cj[var3] = bigLump2[4][var3][2];
+         this.cg[var3] = (short)(bigLump2[4][var3][3] * 2);
+         this.ck[var3] = bigLump2[4][var3][4];
+         if (this.ck[var3] > 0) {
+            this.cq[var3] = this.ck[var3];
+         }
+
+         this.eX[var3] = -1;
+         this.ch[var3] = (short)(bigLump2[4][var3][5] + 128);
+         this.ct[var3] = true;
+         this.cm[var3] = 1;
+         this.cl[var3] = 1;
+         this.cv[var3] = false;
+         this.cw[var3] = true;
+         this.cr[var3] = bigLump2[4][var3][6];
+         this.cp[var3] = bigLump2[4][var3][7];
+         this.cu[var3] = false;
+         if (this.ck[var3] > 0 && (this.ck[var3] != 41 || this.selectedMap != 5 && this.selectedMap != 8)) {
+            var10000 = this.co;
+            var10001 = var3;
+            var10002 = 0;
+         } else {
+            var10000 = this.co;
+            var10001 = var3;
+            var10002 = 100;
+         }
+
+         var10000[var10001] = var10002;
+      }
+
+      this.fx = bigLump2[4].length;
+      this.fW = bigLump2[8][0][0];
+      this.fX = bigLump2[8][0][1];
+      this.fY = bigLump2[8][0][2];
+      this.ga = bigLump2[8][0][3];
+      this.fZ = bigLump2[8][0][4];
+      this.fy = bigLump2[7].length;
+      int var4 = 32;
+      int var5 = bigLump2[7].length;
+
+      for(var3 = 0; var3 < var5; ++var3) {
+         this.cq[var4] = this.fW;
+         this.cb[var4][0] = 128 + bigLump2[7][var3][0] << 16 >> 2;
+         this.cb[var4][1] = 128 + bigLump2[7][var3][1] << 16 >> 2;
+         this.ck[var4] = bigLump2[7][var3][2];
+         this.cw[var4] = true;
+         this.cr[var4] = bigLump2[7][var3][3];
+         ++var4;
+      }
+
+      var4 = 64;
+      var5 = bigLump2[9].length;
+      this.cc = new int[var5][4];
+      this.bV = var5;
+      this.gY = new long[var5];
+
+      for(int var2 = 0; var2 < var5; ++var2) {
+         this.gY[var2] = 0L;
+      }
+
+      for(var3 = 0; var3 < var5; ++var3) {
+         this.cq[var4] = bigLump2[9][var3][0];
+         this.cb[var4][0] = 128 + bigLump2[9][var3][1] << 16 >> 2;
+         this.cb[var4][1] = 128 + bigLump2[9][var3][2] << 16 >> 2;
+         this.cc[var3][0] = var4;
+         this.cc[var3][1] = 1;
+         this.cc[var3][2] = bigLump2[9][var3][3];
+         this.cc[var3][3] = bigLump2[9][var3][4] * 25;
+         this.cw[var4] = true;
+         ++var4;
+      }
+
+   }
+
 
 
 
