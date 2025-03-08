@@ -239,7 +239,7 @@ public final class l3d_d extends Canvas {
    private byte[] dl;
    private byte[] dm;
    private byte[] dn;
-   private byte[] do;
+   private byte[] do_;
    private byte[] dp;
    private byte[] dq;
    private byte[] dr;
@@ -2049,7 +2049,7 @@ public final class l3d_d extends Canvas {
 
    }
 
-   private void a(short[] var1, int var2, int var3) {
+   private void loadSprites_subfunction1(short[] var1, int var2, int var3) {
       this.bs[var2] = var1[var3 + 2];
       this.bt[var2] = var1[var3 + 3];
       int var4 = this.bt[var2] / var1[var3 + 5];
@@ -2064,7 +2064,7 @@ public final class l3d_d extends Canvas {
    }
 
    private void a(int var1, int var2, int[] var3) {
-      a(this.do, this.dp, this.bn[1][var1], this.bs[var1], var2, 0, var3, false);
+      a(this.do_, this.dp, this.bn[1][var1], this.bs[var1], var2, 0, var3, false);
    }
 
    private void b(int var1, int var2, int[] var3) {
@@ -2142,7 +2142,7 @@ public final class l3d_d extends Canvas {
       var2 = this.h.length;
 
       for(var10 = 0; var10 < var2; var10 += 7) {
-         this.a(this.h, var13, var10);
+         this.loadSprites_subfunction1(this.h, var13, var10);
          this.ci[var13] = this.h[var10 + 6];
          ++var13;
       }
@@ -2152,7 +2152,7 @@ public final class l3d_d extends Canvas {
 
       for(int var12 = 0; var12 < var2; ++var12) {
          var10 = (bigLump2[5][var12][0] < 0 ? -bigLump2[5][var12][0] : bigLump2[5][var12][0]) * 7;
-         this.a(this.i, var13, var10);
+         this.loadSprites_subfunction1(this.i, var13, var10);
          this.ci[var13] = this.i[var10 + 6];
          ++var13;
       }
@@ -2163,7 +2163,7 @@ public final class l3d_d extends Canvas {
       int var19 = this.bn[3][this.I[3]] + 10;
       int var20 = this.bn[4][this.I[4]] + 10;
       int var21 = this.bn[6][this.I[6]] + 10;
-      this.a(var16, var17, bigLump2[1].length, var18, var19, var20, var21);
+      this.loadSprites_subfunction2(var16, var17, bigLump2[1].length, var18, var19, var20, var21);
       var13 = 0;
       short var22 = 0;
       var2 = this.h.length;
@@ -2173,7 +2173,7 @@ public final class l3d_d extends Canvas {
          int[] var6 = new int[this.h[var10 + 2] * this.h[var10 + 3]];
          var7.getRGB(var5, 0, this.h[var10 + 2], this.h[var10 + 0], this.h[var10 + 1], this.h[var10 + 2], this.h[var10 + 3]);
          var8.getRGB(var6, 0, this.h[var10 + 2], this.h[var10 + 0], this.h[var10 + 1], this.h[var10 + 2], this.h[var10 + 3]);
-         this.a(var5, var6, this.bm, var22, bigLump2[0][0], bigLump2[0][1]);
+         this.loadSprites_subfunction3(var5, var6, this.bm, var22, bigLump2[0][0], bigLump2[0][1]);
          var22 = (short)(var22 + 50);
          int var15 = this.bt[var13] / this.br[var13];
          if (this.bq[var13] == 0) {
@@ -2223,7 +2223,7 @@ public final class l3d_d extends Canvas {
       var7 = bigLump2[5].length;
 
       for(var4 = 0; var4 < var7; ++var4) {
-         this.a(var8[var4], var9[var4], this.bm, var13, bigLump2[6][var4], bigLump2[1][var4]);
+         this.loadSprites_subfunction3(var8[var4], var9[var4], this.bm, var13, bigLump2[6][var4], bigLump2[1][var4]);
          var13 = (short)(var13 + 50);
       }
 
@@ -2756,7 +2756,7 @@ public final class l3d_d extends Canvas {
       }
    }
 
-   private void a(int[] var1, int[] var2, int[][] var3, short var4, byte[] var5, byte[] var6) {
+   private void loadSprites_subfunction3(int[] var1, int[] var2, int[][] var3, short var4, byte[] var5, byte[] var6) {
       boolean var11 = false;
       byte var12 = 1;
       int var13 = var1.length;
@@ -4908,7 +4908,7 @@ public final class l3d_d extends Canvas {
          this.aV = 1;
          this.a(var1, this.di, this.dj, this.di, this.dj, true, var2);
       } else if (this.bM == 1) {
-         this.b(var1, this.do, this.dp, false, var2);
+         this.b(var1, this.do_, this.dp, false, var2);
       } else if (this.bM == 2) {
          this.a(var1, this.dq, this.dr, true, var2);
       } else {
@@ -5917,7 +5917,7 @@ public final class l3d_d extends Canvas {
       this.cZ = new int[var2];
    }
 
-   private void a(int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+   private void loadSprites_subfunction2(int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       this.bm = new int[2][(13 + var3) * 50];
       this.bj = new int[50];
       this.di = new byte[var1];
@@ -5926,7 +5926,7 @@ public final class l3d_d extends Canvas {
       this.dl = new byte[var1];
       this.dm = new byte[var1];
       this.dn = new byte[var1];
-      this.do = new byte[var2];
+      this.do_ = new byte[var2];
       this.dp = new byte[var2];
       this.dq = new byte[var4];
       this.dr = new byte[var4];
@@ -5999,7 +5999,7 @@ public final class l3d_d extends Canvas {
       this.dl = null;
       this.dm = null;
       this.dn = null;
-      this.do = null;
+      this.do_ = null;
       this.dp = null;
       this.dq = null;
       this.dr = null;
