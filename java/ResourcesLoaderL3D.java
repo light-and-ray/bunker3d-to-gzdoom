@@ -479,6 +479,7 @@ public class ResourcesLoaderL3D {
    }
 
    public void loadMapInner(short[] footer) {
+      this.FOOTER = footer;
       this.A = new byte[3][][][];
       this.loadMapPart((byte[])this.loadedMap[0], (byte[])this.loadedMap[1], (byte[])this.l, 0);
       this.loadMapPart((byte[])this.loadedMap[2], (byte[])this.loadedMap[3], (byte[])this.m, 1);
@@ -863,7 +864,9 @@ public class ResourcesLoaderL3D {
             var27[var6] = (byte)(var27[var6] - 4);
             this.cr[var6] = 1;
          }
-
+         CRATES_START_LINE_IDX.add(var12);
+         CRATES_CONTENT.add(bigLump1[12][var3][4]);
+         CRATES_ANGLE.add(bigLump1[12][var3][3]);
          var12 = this.modifyBigLump1_subfunction1((long)var14, (long)var15, 16384L, 16384L, bigLump1[12][var3][3], var12, bigLump1[12][var3][2], bigLump1[12][var3][2], bigLump1[12][var3][2], bigLump1[12][var3][2], (byte)1, (byte)0);
       }
 
@@ -925,6 +928,7 @@ public class ResourcesLoaderL3D {
          this.dI[var3][this.dK[var3]] = this.dH[var3][this.dK[var3]];
          this.dT[var3] = -1;
          this.dM[var3] = bigLump1[28][var3][0];
+         DOORS_START_LINE_IDX.add(var12);
          this.modifyBigLump1_subfunction2(bigLump1[59][var3][0], bigLump1[59][var3][1], bigLump1[59][var3][2], var12);
          this.modifyBigLump1_subfunction3(this.dH[var3], (long)this.dN[var3], (long)this.dP[var3], this.dJ[var3], this.dK[var3], var12, 0);
          var12 = this.modifyBigLump1_subfunction3(this.dH[var3], (long)this.dN[var3], (long)this.dO[var3], this.dJ[var3], this.dK[var3], var12, 1);
@@ -1145,9 +1149,11 @@ public class ResourcesLoaderL3D {
    public int modifyBigLump1_subfunction5(long var1, long var3, int var5, long var6, int var8, int var9, byte var10, byte var11, int var12) {
       int var15 = 360 / var5;
       int var14 = var12 * 4;
+      ArrayList<Integer> indexes = new ArrayList<>();
 
       int var13;
       for(var13 = var8; var13 < var8 + var5; ++var13) {
+         indexes.add(var13);
          this.dg[0][var13] = (int)((var6 * this.cos(var14) >> 16) + var1);
          this.dg[1][var13] = (int)((var6 * this.sin(var14) >> 16) + var3);
          var14 -= var15;
@@ -1157,6 +1163,7 @@ public class ResourcesLoaderL3D {
          this.dh[var13] = (byte)var9;
          this.bw[var13] = var11;
       }
+      this.CIRCLES_IDX.add(indexes);
 
       return var13;
    }

@@ -9,25 +9,25 @@ public class MainL3D {
         Json.export("LINES_VERTEXES", loader.dg);
         Json.export("LINES_TEXTURES", loader.dh);
         Json.export("LINES_MIRRORING", loader.bw);
-        // Json.export("LINES_TEXTURES_HELP_1", loader.bs);
-        // Json.export("LINES_TEXTURES_HELP_2", loader.bk);
-        // Json.export("LINES_TEXTURES_HELP_3", loader.br);
-        // Json.export("LINES_TEXTURES_HELP_4", loader.bA);
+        Json.export("LINES_TEXTURES_HELP_1", loader.bp);
+        Json.export("LINES_TEXTURES_HELP_2", loader.bh);
+        Json.export("LINES_TEXTURES_HELP_3", loader.bo);
+        Json.export("LINES_TEXTURES_HELP_4", loader.bx);
         Json.export("LINES_ANIMATED", loader.gv);
         Json.export("LINES_HEIGHT", loader.bv); // 0 - full, 1 - bottom half, 2 - top half
-        // Json.export("DOORS_START_LINE_IDX", loader.DOORS_START_LINE_IDX);
-        // Json.export("DOORS_SPEED", loader.dt); // -1 - closed, 8 - fast, 24 - slow
-        // Json.export("CRATES_START_LINE_IDX", loader.CRATES_START_LINE_IDX);
-        // Json.export("CRATES_CONTENT", loader.CRATES_CONTENT); // 0 - nothing, 1 - ammo, 2 - health, 3 - health+ammo, 7 - health+ammo, 6 - unknown
-        // Json.export("CRATES_ANGLE", loader.CRATES_ANGLE);
-        // Json.export("CIRCLES_IDX", loader.CIRCLES_IDX);
-        // // Json.export("LAST_BASE_GEOMETRY_LINE", loader.LAST_BASE_GEOMETRY_LINE);
+        Json.export("DOORS_START_LINE_IDX", loader.DOORS_START_LINE_IDX);
+        Json.export("DOORS_SPEED", loader.dL); // -1 - closed, 8 - fast, 24 - slow
+        Json.export("CRATES_START_LINE_IDX", loader.CRATES_START_LINE_IDX);
+        Json.export("CRATES_CONTENT", loader.CRATES_CONTENT); // 0 - nothing, 1 - ammo, 2 - health, 3 - health+ammo, 7 - health+ammo, 6 - unknown
+        Json.export("CRATES_ANGLE", loader.CRATES_ANGLE);
+        Json.export("CIRCLES_IDX", loader.CIRCLES_IDX);
+        // Json.export("LAST_BASE_GEOMETRY_LINE", loader.LAST_BASE_GEOMETRY_LINE);
 
         // Json.export("TEXTURES_DATA", loader.TEXTURES_DATA);
         // Json.export("TEXTURES_W", loader.TEXTURES_W);
         // Json.export("TEXTURES_H", loader.TEXTURES_H);
         Json.export("ANIMATED_FRAMES", loader.gx);
-        // Json.export("FOOTER", loader.FOOTER);
+        Json.export("FOOTER", loader.FOOTER);
 
         // // THINGS SPECIALS
         // // lamp: 127 (on), -2 (off), -1 (flick);
