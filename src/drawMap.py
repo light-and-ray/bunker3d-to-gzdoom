@@ -36,7 +36,7 @@ def drawMap(map: 'MapInterim|MapB3D', show=False, name=None, resolution=1280, fr
         color = None
         if line.height == HeightType.FULL:
             color = svgwrite.rgb(255, 255, 0)  # Yellow
-        elif line.height == HeightType.BOTTOM:
+        elif line.height in (HeightType.ONLY_BOTTOM, HeightType.BOTTOM):
             color = svgwrite.rgb(250, 56, 35)  # Reddish
         else:
             color = svgwrite.rgb(10, 99, 207)  # Blueish

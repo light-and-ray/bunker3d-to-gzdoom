@@ -90,7 +90,8 @@ class ModelGZD:
 
 class MapGZD:
     SECTOR_FULL_IDX = 0
-    SECTOR_BOTTOM_IDX = 1
+    SECTOR_ONLY_BOTTOM_IDX = 1
+    SECTOR_ONLY_TOP_IDX = 2
 
     def __init__(self, mapInterim: MapInterim, spawnPos: list[int], spawnAngle: int, mapIndex: int, gameType: GameType):
         self.vertexes: list[VertexGZD] = []
@@ -105,8 +106,9 @@ class MapGZD:
         self._lastPolyObjectNum = 0
 
         self.sectorFull = SectorGZD(heightFloor=LEVEL_FLOOR, heightCeiling=LEVEL_CEILING)
-        self.sectorBottom = SectorGZD(heightFloor=(LEVEL_CEILING+LEVEL_FLOOR)//2, heightCeiling=LEVEL_CEILING)
-        self.sectors.extend([self.sectorFull, self.sectorBottom])
+        self.sectorOnlyBottom = SectorGZD(heightFloor=(LEVEL_CEILING+LEVEL_FLOOR)//2, heightCeiling=LEVEL_CEILING)
+        self.sectorOnlyTop = SectorGZD(heightFloor=0, heightCeiling=(LEVEL_CEILING+LEVEL_FLOOR)//2)
+        self.sectors.extend([self.sectorFull, self.sectorOnlyBottom, self.sectorOnlyTop])
 
         self.lines.extend(self._convertLines(mapInterim.lines))
         self._convertDoors(mapInterim.doors)
@@ -362,11 +364,16 @@ class MapGZD:
             if line.height == HeightType.FULL:
                 sector = forcedSector if forcedSector is not None else self.SECTOR_FULL_IDX
                 sideFrontIdx = self._addSide(sector, TextureMode.MIDDLE, line.texture.names[0], line.texture.offset, line.texture.stretch)
-            elif line.height == HeightType.BOTTOM:
+            elif line.height == HeightType.ONLY_BOTTOM:
                 sideFrontIdx = self._addSide(self.SECTOR_FULL_IDX, TextureMode.TOP_AND_BOTTOM, line.texture.names[0], line.texture.offset, line.texture.stretch)
-                sideBackIdx = self._addSide(self.SECTOR_BOTTOM_IDX, TextureMode.NO_TEXTURES, None, None, 1.0)
+                sideBackIdx = self._addSide(self.SECTOR_ONLY_BOTTOM_IDX, TextureMode.NO_TEXTURES, None, None, 1.0)
+            elif line.height == HeightType.ONLY_TOP:
+                sideFrontIdx = self._addSide(self.SECTOR_FULL_IDX, TextureMode.TOP_AND_BOTTOM, line.texture.names[0], line.texture.offset, line.texture.stretch)
+                sideBackIdx = self._addSide(self.SECTOR_ONLY_TOP_IDX, TextureMode.NO_TEXTURES, None, None, 1.0)
+            elif line.height == HeightType.BOTTOM:
+                sideFrontIdx = self._addSide(self.SECTOR_ONLY_TOP_IDX, TextureMode.MIDDLE, line.texture.names[0], line.texture.offset, line.texture.stretch)
             elif line.height == HeightType.TOP:
-                sideFrontIdx = self._addSide(self.SECTOR_BOTTOM_IDX, TextureMode.MIDDLE, line.texture.names[0], line.texture.offset, line.texture.stretch)
+                sideFrontIdx = self._addSide(self.SECTOR_ONLY_BOTTOM_IDX, TextureMode.MIDDLE, line.texture.names[0], line.texture.offset, line.texture.stretch)
             linesGZD.append(LineGZD(v1=v1Idx, v2=v2Idx,
                                       sideFrontIdx=sideFrontIdx, sideBackIdx=sideBackIdx))
         return linesGZD

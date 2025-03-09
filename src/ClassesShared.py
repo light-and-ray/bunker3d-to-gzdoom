@@ -3,8 +3,10 @@ from enum import Enum
 
 class HeightType(Enum):
     FULL = 0
-    BOTTOM = 1
-    TOP = 2
+    ONLY_BOTTOM = 1
+    ONLY_TOP = 2
+    BOTTOM = 3
+    TOP = 4
 
 @dataclass
 class Vertex:

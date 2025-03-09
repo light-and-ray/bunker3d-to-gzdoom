@@ -275,13 +275,19 @@ class MapInterim:
             height : HeightType = None
             changed = False
             if isInside(*tup, *MapInterim.lineToTuple(oldLine1)) and isInside(*tup, *MapInterim.lineToTuple(oldLine2)):
-                if oldLine1.height == oldLine2.height:
+                heights = set([oldLine1.height, oldLine2.height])
+                if HeightType.ONLY_TOP in heights:
+                    heights.add(HeightType.TOP)
+                    heights.remove(HeightType.ONLY_TOP)
+                if HeightType.ONLY_BOTTOM in heights:
+                    heights.add(HeightType.BOTTOM)
+                    heights.remove(HeightType.ONLY_BOTTOM)
+                if len(heights) == 1:
                     if areOppositelyDirected(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
                         height = None
                     else:
                         height = oldLine1.height
                 else:
-                    heights = set([oldLine1.height, oldLine2.height])
                     if heights == set([HeightType.TOP, HeightType.BOTTOM]):
                         if areOppositelyDirected(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
                             raise Exception("Oppositely directed TOP and BOTTOM")
