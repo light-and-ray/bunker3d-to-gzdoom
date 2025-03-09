@@ -42,7 +42,7 @@ class MapB3D:
             cratesStartLineIdx: list[int], cratesContent: list[int], cratesAngles: list[int],
             textures: list[Image.Image], linesTextures: list[list[int]],
             circles: list[list[int]], textureMirroring: list[int],
-            animatedFrames: list[list[int]], animatedLines: list[list[int]], sprites: list[list[Image.Image]],
+            animatedFrames: list[list[list[int]]], animatedLines: list[list[int]], sprites: list[list[Image.Image]],
             foeSprites: list[list[Image.Image]],
             thingsPos: list[list[int]], thingsSprites: list[int], thingsColors: list[int],
             thingsVisible: list[int], thingsSpecials: list[int],
@@ -146,36 +146,49 @@ class MapB3D:
             line.texturesNames = line.texturesNames[:i+1]
 
 
-    def _applyAnimation(self, animatedFramesList: list[list[int]], animatedLinesList: list[list[int]],
+    def _applyAnimation(self, animatedFramesList: list[list[list[int]]], animatedLinesList: list[list[int]],
                         textureMirroring: list[int]):
         self.animations: list[Animation] = []
-        for animatedFrames, animatedLines in zip(animatedFramesList, animatedLinesList):
-            if not animatedFrames: continue
-            frames: list[str] = []
-            if animatedFrames[-1] == animatedFrames[-2]:
-                animatedFrames = animatedFrames[:-1]
-                duration = 4
-            else:
-                duration = 2
-            for frameIdx in animatedFrames:
-                if frameIdx >= len(list(self.textures.keys())):
-                    print(f"!!! {frameIdx=}, {list(self.textures.keys())=}")
-                    frameIdx = 0
-                frames.append(list(self.textures.keys())[frameIdx])
-            animation = Animation(name=frames[0], frames=frames, duration=duration)
-            self.animations.append(animation)
-            if any([textureMirroring[x] == 5 for x in animatedLines]):
-                mirroredFrames = []
-                for frame in frames:
-                    mirroredName = generateTextureMirroredLumpName()
-                    self.mirroredDict[frame] = mirroredName
-                    self.textures[mirroredName] = self.textures[frame].transpose(Image.FLIP_LEFT_RIGHT)
-                    self.textures[mirroredName].nonMirroredName = frame
-                    mirroredFrames.append(mirroredName)
-                self.animations.append(Animation(name=mirroredFrames[0], frames=mirroredFrames, duration=duration))
+        for animatedFramesWall, animatedLines in zip(animatedFramesList, animatedLinesList):
+            if not animatedFramesWall: continue
+            for textureIndex, animatedFrames in enumerate(animatedFramesWall):
+                print(animatedFrames)
+                if len(set(animatedFrames)) >= 2:
+                    frames: list[str] = []
+                    if animatedFrames[-1] == animatedFrames[-2]:
+                        animatedFrames = animatedFrames[:-1]
+                        duration = 4
+                    else:
+                        duration = 2
+                    for frameIdx in animatedFrames:
+                        if frameIdx >= len(list(self.textures.keys())):
+                            frameIdx = 0
+                        frames.append(list(self.textures.keys())[frameIdx])
+                    animation = Animation(name=frames[0], frames=frames, duration=duration)
+                    self.animations.append(animation)
+                    if any([textureMirroring[x] == 5 for x in animatedLines]):
+                        mirroredFrames = []
+                        for frame in frames:
+                            mirroredName = generateTextureMirroredLumpName()
+                            self.mirroredDict[frame] = mirroredName
+                            self.textures[mirroredName] = self.textures[frame].transpose(Image.FLIP_LEFT_RIGHT)
+                            self.textures[mirroredName].nonMirroredName = frame
+                            mirroredFrames.append(mirroredName)
+                        self.animations.append(Animation(name=mirroredFrames[0], frames=mirroredFrames, duration=duration))
 
-            for animatedLineIdx in animatedLines:
-                self.lines[animatedLineIdx].texturesNames = [animation.name]
+                    for animatedLineIdx in animatedLines:
+                        if len(self.lines[animatedLineIdx].texturesNames) == textureIndex:
+                            self.lines[animatedLineIdx].texturesNames.append(None)
+                        self.lines[animatedLineIdx].texturesNames[textureIndex] = animation.name
+                elif len(set(animatedFrames)) == 1:
+                    for animatedLineIdx in animatedLines:
+                        if len(self.lines[animatedLineIdx].texturesNames) == textureIndex:
+                            self.lines[animatedLineIdx].texturesNames.append(None)
+                        self.lines[animatedLineIdx].texturesNames[textureIndex] = list(self.textures.keys())[animatedFrames[0]]
+                else:
+                    raise Exception("Empty animated frames")
+
+
 
 
     def _repeatShortTextures(self):

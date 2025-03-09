@@ -135,6 +135,26 @@ def _loadLinesTextures():
         linesTextures.append(_resolveTextureList(texture))
     return linesTextures
 
+def _loadAnimatedFramesInner(list_):
+    result = {}
+    for subList in list_:
+        for index, value in enumerate(subList):
+            result.setdefault(index, []).append(value)
+    return [result[i] for i in sorted(result)]
+
+
+def _loadAnimatedFrames():
+    framesList = read2DArray("ANIMATED_FRAMES")
+    resultList = []
+    for frames in framesList:
+        if not frames:
+            resultList.append(None)
+            continue
+        for i in range(len(frames)):
+            frames[i] = _resolveTextureList(frames[i])
+        resultList.append(_loadAnimatedFramesInner(frames))
+
+    return resultList
 
 def _run(command: str):
     returnCode = os.system(command)
@@ -155,6 +175,7 @@ def load(mapIndex: int, game: GameType):
     data = LoadedData()
     textures = _loadTextures()
     linesTextures = _loadLinesTextures()
+    animatedFrames = _loadAnimatedFrames()
     sprites = _loadSprites()
     foeSprites = _loadFoeSprites()
     os.makedirs(f"tmp/sprites/map{mapIndex}", exist_ok=True)
@@ -169,7 +190,7 @@ def load(mapIndex: int, game: GameType):
         cratesStartLineIdx=read1DArray('CRATES_START_LINE_IDX'), cratesContent=read1DArray('CRATES_CONTENT'),
         cratesAngles=read1DArray('CRATES_ANGLE'),
         textures=textures, linesTextures=linesTextures, circles=read2DArray("CIRCLES_IDX"),
-        textureMirroring=read1DArray("LINES_MIRRORING"), animatedFrames=read2DArray("ANIMATED_FRAMES"),
+        textureMirroring=read1DArray("LINES_MIRRORING"), animatedFrames=animatedFrames,
         animatedLines=read2DArray("LINES_ANIMATED"), sprites=sprites, foeSprites=foeSprites,
         thingsPos=read2DArray('THINGS_POS'), thingsSprites=read1DArray("THINGS_SPRITE"), thingsColors=read1DArray("THINGS_COLOR"),
         thingsVisible=read1DArray("THINGS_VISIBLE"), thingsSpecials = read1DArray('THINGS_SPECIAL'),
