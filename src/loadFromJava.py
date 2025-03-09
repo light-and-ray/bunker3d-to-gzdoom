@@ -104,37 +104,35 @@ def _loadFoeSprites():
         all_sprites.append(sprites)
     return all_sprites
 
-def _loadLinesTextures():
-    base = read1DArray("LINES_TEXTURES")
+def _resolveTextureList(textureIdx: int) -> list[int]:
     help1 = read1DArray("LINES_TEXTURES_HELP_1")
     help2 = read1DArray("LINES_TEXTURES_HELP_2")
     help3 = read1DArray("LINES_TEXTURES_HELP_3")
     help4 = read1DArray("LINES_TEXTURES_HELP_4")
+    help6 = help1[textureIdx]
 
+    var6 = 1 if textureIdx < 32 else 7
+    help3List = []
+    var12s = []
+    var3s = []
+    for var7 in range(var6):
+        if var6 == 1:
+            var12 = textureIdx
+        else:
+            var12 = help4[(textureIdx - 32) * var6 + var7]
+        var3 = help2[var12]
+        var12s.append(var12)
+        var3s.append(var3)
+        help3List.append(help3[var3])
+    # print(f"{i}: {help5=} {help6=} {var12s=} {var3s=} {help3List=}")
+    return var12s
+
+
+def _loadLinesTextures():
+    textures = read1DArray("LINES_TEXTURES")
     linesTextures = []
-
-    for i in range(len(base)):
-        help5 = base[i]
-        help6 = help1[help5]
-
-        var6 = 1 if help5 < 32 else 7
-        help3List = []
-        var12s = []
-        var3s = []
-        for var7 in range(var6):
-            if var6 == 1:
-                var12 = help5
-            else:
-                var12 = help4[(help5 - 32) * var6 + var7]
-
-            var3 = help2[var12]
-            var12s.append(var12)
-            var3s.append(var3)
-            help3List.append(help3[var3])
-        # 18 = 0, 19 = 6, 21 = 6
-        # 0 = 0, 1 = 6, 3 = 6
-        linesTextures.append(var12s)
-        # print(f"{i}: {help5=} {help6=} {var12s=} {var3s=} {help3List=}")
+    for texture in textures:
+        linesTextures.append(_resolveTextureList(texture))
     return linesTextures
 
 
