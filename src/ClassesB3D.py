@@ -158,6 +158,9 @@ class MapB3D:
             else:
                 duration = 2
             for frameIdx in animatedFrames:
+                if frameIdx >= len(list(self.textures.keys())):
+                    print(f"!!! {frameIdx=}, {list(self.textures.keys())=}")
+                    frameIdx = 0
                 frames.append(list(self.textures.keys())[frameIdx])
             animation = Animation(name=frames[0], frames=frames, duration=duration)
             self.animations.append(animation)

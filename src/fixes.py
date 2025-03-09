@@ -33,7 +33,8 @@ BROKEN_LINES_L3D = [
     [], #6
     [], #7
     [], #8
-    [] #9
+    [], #9
+    [], #10
 ]
 
 BROKEN_LINES = dict()
@@ -106,6 +107,9 @@ BROKEN_TEXTURES_L3D = [ # Doors (inside) and 45 degree with middled texture insi
     { # 9
 
     },
+    { #10
+
+    },
 ]
 
 BROKEN_TEXTURES = dict()
@@ -137,6 +141,7 @@ CRATE_TOP_TEXTURES_L3D = [
     ["CRATE_03", None], #7
     ["CRATE_03", "CRATE_00"], #8
     ["CRATE_05", None], #9
+    [None, None], #10
 ]
 
 CRATE_TOP_TEXTURES = dict()

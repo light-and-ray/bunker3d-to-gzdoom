@@ -3,6 +3,9 @@ public class MainL3D {
         int selectedMap = Integer.parseInt(args[0]);
         ResourcesLoaderL3D loader = new ResourcesLoaderL3D();
         loader.selectedMap = selectedMap;
+        if (selectedMap == 10) {
+            loader.hD = true;
+        }
         loader.readMetadata();
         loader.initCosTable();
         loader.loadMap();
