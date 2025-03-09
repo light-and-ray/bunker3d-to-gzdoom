@@ -149,34 +149,40 @@ class MapB3D:
     def _applyAnimation(self, animatedFramesList: list[list[list[int]]], animatedLinesList: list[list[int]],
                         textureMirroring: list[int]):
         self.animations: list[Animation] = []
+        self.keyToAnimation: dict[tuple, Animation] = dict()
         for animatedFramesWall, animatedLines in zip(animatedFramesList, animatedLinesList):
             if not animatedFramesWall: continue
             for textureIndex, animatedFrames in enumerate(animatedFramesWall):
                 if len(set(animatedFrames)) >= 2:
-                    frames: list[str] = []
-                    if animatedFrames[-1] == animatedFrames[-2]:
-                        animatedFrames = animatedFrames[:-1]
-                        duration = 4
+                    key = (tuple(animatedFrames))
+                    if key not in self.keyToAnimation:
+                        frames: list[str] = []
+                        if animatedFrames[-1] == animatedFrames[-2]:
+                            animatedFrames = animatedFrames[:-1]
+                            duration = 4
+                        else:
+                            duration = 2
+                        for frameIdx in animatedFrames:
+                            if frameIdx >= len(list(self.textures.keys())):
+                                frameIdx = 0
+                            frameOldName = list(self.textures.keys())[frameIdx]
+                            frameNewName = generateTextureModifiedLumpName()
+                            self.textures[frameNewName] = self.textures[frameOldName]
+                            frames.append(frameNewName)
+                        animation = Animation(name=frames[0], frames=frames, duration=duration)
+                        self.animations.append(animation)
+                        self.keyToAnimation[key] = animation
+                        if any([textureMirroring[x] == 5 for x in animatedLines]):
+                            mirroredFrames = []
+                            for frame in frames:
+                                mirroredName = generateTextureModifiedLumpName()
+                                self.mirroredDict[frame] = mirroredName
+                                self.textures[mirroredName] = self.textures[frame].transpose(Image.FLIP_LEFT_RIGHT)
+                                self.textures[mirroredName].nonMirroredName = frame
+                                mirroredFrames.append(mirroredName)
+                            self.animations.append(Animation(name=mirroredFrames[0], frames=mirroredFrames, duration=duration))
                     else:
-                        duration = 2
-                    for frameIdx in animatedFrames:
-                        if frameIdx >= len(list(self.textures.keys())):
-                            frameIdx = 0
-                        frameOldName = list(self.textures.keys())[frameIdx]
-                        frameNewName = generateTextureModifiedLumpName()
-                        self.textures[frameNewName] = self.textures[frameOldName]
-                        frames.append(frameNewName)
-                    animation = Animation(name=frames[0], frames=frames, duration=duration)
-                    self.animations.append(animation)
-                    if any([textureMirroring[x] == 5 for x in animatedLines]):
-                        mirroredFrames = []
-                        for frame in frames:
-                            mirroredName = generateTextureModifiedLumpName()
-                            self.mirroredDict[frame] = mirroredName
-                            self.textures[mirroredName] = self.textures[frame].transpose(Image.FLIP_LEFT_RIGHT)
-                            self.textures[mirroredName].nonMirroredName = frame
-                            mirroredFrames.append(mirroredName)
-                        self.animations.append(Animation(name=mirroredFrames[0], frames=mirroredFrames, duration=duration))
+                        animation = self.keyToAnimation[key]
 
                     for animatedLineIdx in animatedLines:
                         if len(self.lines[animatedLineIdx].texturesNames) == textureIndex:
