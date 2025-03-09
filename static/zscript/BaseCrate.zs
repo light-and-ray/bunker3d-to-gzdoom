@@ -3,7 +3,8 @@ enum CrateContent
     CRATE_NONE = 0,
     CRATE_HEALTH = 1,
     CRATE_AMMO = 2,
-    CRATE_BOTH = 3
+    CRATE_BOTH = 3,
+    CRATE_ALT_AMMO = 4
 }
 
 class BaseCrate : Actor
@@ -38,6 +39,10 @@ class BaseCrate : Actor
         BrokenBoth:
             #### BC 6;
             #### G -1;
+            loop;
+        BrokenAltAmmo:
+            #### BC 6;
+            #### H -1;
             loop;
     }
 
@@ -95,6 +100,9 @@ class BaseCrate : Actor
                 break;
             case CRATE_BOTH:
                 SetState(ResolveState("BrokenBoth"));
+                break;
+            case CRATE_ALT_AMMO:
+                SetState(ResolveState("BrokenAltAmmo"));
                 break;
             default:
                 SetState(ResolveState("BrokenNone"));

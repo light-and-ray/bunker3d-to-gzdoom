@@ -7,7 +7,7 @@ from ClassesB3D import MapB3D, CrateB3D, ThingCategory
 from algebraFunctions import (resolveSegmentsOverlap, isInside, areOppositelyDirected, fixVertex, segmentAngle,
     calculateOffset, vertexWithOffset, segmentLength, findFourthVertex, vertexWithOffset_checkInside,
 )
-from ClassesShared import Vertex, HeightType
+from ClassesShared import Vertex, HeightType, GameType
 from drawMap import drawMap
 from tools import SCALE_FACTOR
 from fixes import BrokenTextureData
@@ -87,6 +87,7 @@ class CrateContent(Enum):
     HEALTH = 1
     AMMO = 2
     BOTH = 3
+    ALT_AMMO = 4
 
 @dataclass
 class CrateInterim:
@@ -100,7 +101,7 @@ class CrateInterim:
 
 class MapInterim:
     def __init__(self, mapB3D: MapB3D, brokenLines: list[int], doorsSpeed: list[int], doorsStartLineIdx: list[int],
-            brokenTextures: dict[int, BrokenTextureData], foeAngles: list[int], foeWalkDistances: list[int]):
+            brokenTextures: dict[int, BrokenTextureData], foeAngles: list[int], foeWalkDistances: list[int], gameType: GameType):
         self.textures = mapB3D.textures
         self.lines: list[LineInterim] = []
         allCircleLines = []
@@ -165,13 +166,20 @@ class MapInterim:
             content: CrateContent = None
             isAmmo = (crate.content & 0b001) != 0
             isHealth = (crate.content & 0b010) != 0
-            isSecondColor = (crate.content & 0b100) != 0
+            if gameType == GameType.B3D:
+                isSecondColor = (crate.content & 0b100) != 0
+                isAltAmmo = False
+            else:
+                isSecondColor = False
+                isAltAmmo = (crate.content & 0b100) != 0
             if isAmmo and isHealth:
                 content = CrateContent.BOTH
             elif isAmmo:
                 content = CrateContent.AMMO
             elif isHealth:
                 content = CrateContent.HEALTH
+            elif isAltAmmo:
+                content = CrateContent.ALT_AMMO
             else:
                 content = CrateContent.NONE
             v1 = mapB3D.lines[crate.startLineIdx].v1
@@ -179,7 +187,7 @@ class MapInterim:
             angle = segmentAngle(*self.lineToTuple(mapB3D.lines[crate.startLineIdx]))
             pos = Vertex(x=(v1.x+v2.x)/2, y=(v1.y+v2.y)/2)
             self.crates.append(CrateInterim(pos=pos, colorIdx=int(isSecondColor), content=content,
-                                    spriteIdx=crate.spriteIdx, textureName=crate.textureName, angle=int(angle)))
+                                    spriteIdx=3, textureName=crate.textureName, angle=int(angle)))
 
 
     def _fixBrokenTextures(self, brokenTextures: dict[int, BrokenTextureData]):

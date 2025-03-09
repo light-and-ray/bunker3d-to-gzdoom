@@ -229,18 +229,20 @@ class MapGZD:
 
 
         self._keysToCratesFrames: set[tuple[int]] = set()
-        def getPatchBaseName(spriteIdx, colorIdx):
-            return f"crate_sprite_{spriteIdx}_color_{colorIdx}"
+        def getPatchBaseName(colorIdx):
+            return f"crate_color_{colorIdx}"
         for crate in mapInterim.crates:
             key = (crate.spriteIdx, crate.colorIdx)
             if key not in self._keysToCratesFrames:
-                patchNameBase = getPatchBaseName(crate.spriteIdx, crate.colorIdx)
+                patchNameBase = getPatchBaseName(crate.colorIdx)
                 self.patches[patchNameBase+"_frame_B"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+1]
                 self.patches[patchNameBase+"_frame_C"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+2]
                 self.patches[patchNameBase+"_frame_D"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+3] # None
                 self.patches[patchNameBase+"_frame_E"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+4] # Ammo
                 self.patches[patchNameBase+"_frame_F"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+5] # Health
                 self.patches[patchNameBase+"_frame_G"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+6] # Both
+                if gameType != GameType.B3D:
+                    self.patches[patchNameBase+"_frame_H"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+7] # Alt Ammo
                 self._keysToCratesFrames.add(key)
 
         self._keysToCrates: dict[tuple[int], ActorGZD] = dict()
@@ -260,8 +262,9 @@ class MapGZD:
                 self.models.append(model)
                 textureDef = generateCrateModelReplacementTextureDef(spriteName+"A0",
                                     crate.textureName, mapInterim.textures[crate.textureName], mapIndex, gameType) + "\n"
-                patchNameBase = getPatchBaseName(crate.spriteIdx, crate.colorIdx)
+                patchNameBase = getPatchBaseName(crate.colorIdx)
                 frameLetters = ['B', 'C', 'D', "E", "F", "G"]
+                if gameType != GameType.B3D: frameLetters.append('H')
                 for frameLetter in frameLetters:
                     patchName = patchNameBase + "_frame_" + frameLetter
                     spriteNameFull = spriteName + frameLetter + "0"

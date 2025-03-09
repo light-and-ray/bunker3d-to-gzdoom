@@ -27,7 +27,7 @@ if __name__ == "__main__":
             animations.extend(data.map.animations)
             mapInterim = MapInterim(data.map, brokenLines=data.brokenLines, doorsSpeed=data.doorsSpeed,
                     doorsStartLineIdx=data.doorsStartLineIdx, brokenTextures=data.brokenTextures, foeAngles=data.foeAngles,
-                    foeWalkDistances=data.foeWalkDistances,)
+                    foeWalkDistances=data.foeWalkDistances, gameType=game,)
             mapName = f'c{game.value+1}m{idx}'
             drawMap(data.map, name=mapName, show=False)
             mapGZD = MapGZD(mapInterim, spawnPos=data.spawnPos, spawnAngle=data.spawnAngle, mapIndex=idx, gameType=game)
