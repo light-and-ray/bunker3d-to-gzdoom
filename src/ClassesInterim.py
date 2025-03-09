@@ -141,30 +141,24 @@ class MapInterim:
             self.lamps.append(LampInterim(pos=thing.pos, spriteIdx=thing.sprite, colorIdx=thing.color, special=special))
 
         self.foes: list[FoeInterim] = []
-        for thing in mapB3D.things:
-            if thing.category != ThingCategory.NPC: continue
-            try:
-                special = NpcSpecial(thing.special)
-            except ValueError:
-                print(f"warning: unknown foe special {thing.special}")
-                continue
-            if special not in (NpcSpecial.FOE, NpcSpecial.BOSS): continue
-            isBoss = (special == NpcSpecial.BOSS)
-            angle = foeAngles[thing.index]
-            walkDistance = foeWalkDistances[thing.index]
-            self.foes.append(FoeInterim(pos=thing.pos, colorIdx=thing.color, isBoss=isBoss, angle=angle, walkDistance=walkDistance))
-
         self.friendlies: list[FriendlyInterim] = []
         for thing in mapB3D.things:
             if thing.category != ThingCategory.NPC: continue
             try:
                 special = NpcSpecial(thing.special)
             except ValueError:
-                print(f"warning: unknown friendly special {thing.special}")
+                print(f"warning: unknown npc special {thing.special}")
                 continue
-            if special not in (NpcSpecial.FRIENDLY1, NpcSpecial.FRIENDLY2): continue
-            isSecond = (special == NpcSpecial.FRIENDLY2)
-            self.friendlies.append(FriendlyInterim(pos=thing.pos, colorIdx=thing.color, isSecond=isSecond, spriteIdx=thing.sprite))
+            if special in (NpcSpecial.FOE, NpcSpecial.BOSS):
+                isBoss = (special == NpcSpecial.BOSS)
+                angle = foeAngles[thing.index]
+                walkDistance = foeWalkDistances[thing.index]
+                self.foes.append(FoeInterim(pos=thing.pos, colorIdx=thing.color, isBoss=isBoss, angle=angle, walkDistance=walkDistance))
+            elif special in (NpcSpecial.FRIENDLY1, NpcSpecial.FRIENDLY2):
+                isSecond = (special == NpcSpecial.FRIENDLY2)
+                self.friendlies.append(FriendlyInterim(pos=thing.pos, colorIdx=thing.color, isSecond=isSecond, spriteIdx=thing.sprite))
+            else:
+                print(f'warning: not handled npc special {special.name}')
 
         self.crates: list[CrateInterim] = []
         for crate in mapB3D.crates:

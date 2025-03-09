@@ -18,7 +18,7 @@ def saveMap(map: MapGZD, mapIndex: int, game: GameType):
     umap.vertexes = [omg.UVertex(v.x, v.y) for v in map.vertexes]
 
     for sector in map.sectors:
-        umap.sectors.append(omg.USector(textureceiling=getCeilingLumpName(mapIndex), texturefloor=getFloorLumpName(mapIndex),
+        umap.sectors.append(omg.USector(textureceiling=getCeilingLumpName(mapIndex, game), texturefloor=getFloorLumpName(mapIndex, game),
             heightfloor=int(sector.heightFloor), heightceiling=int(sector.heightCeiling), lightlevel=LIGHT_LEVEL))
 
     for side in map.sides:
@@ -90,9 +90,9 @@ def saveTextures(textures: dict[str, Image.Image], mapIndex: int, colorFloor: tu
     if os.path.exists(mapTexturesDir):
         shutil.rmtree(mapTexturesDir)
     os.makedirs(mapTexturesDir)
-    path = f"{mapTexturesDir}/{getFloorLumpName(mapIndex)}.png"
+    path = f"{mapTexturesDir}/{getFloorLumpName(mapIndex, game)}.png"
     Image.new("RGB", (64, 64), color=colorFloor).save(path)
-    path = f"{mapTexturesDir}/{getCeilingLumpName(mapIndex)}.png"
+    path = f"{mapTexturesDir}/{getCeilingLumpName(mapIndex, game)}.png"
     Image.new("RGB", (64, 64), color=colorCeiling).save(path)
 
     for name, texture in textures.items():

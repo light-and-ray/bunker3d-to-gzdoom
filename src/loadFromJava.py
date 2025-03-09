@@ -177,8 +177,8 @@ def load(mapIndex: int, game: GameType):
         thingsVisible=read1DArray("THINGS_VISIBLE"), thingsSpecials = read1DArray('THINGS_SPECIAL'),
     )
 
-    data.brokenLines = BROKEN_LINES[mapIndex]
-    data.brokenTextures = BROKEN_TEXTURES[mapIndex]
+    data.brokenLines = BROKEN_LINES[game][mapIndex]
+    data.brokenTextures = BROKEN_TEXTURES[game][mapIndex]
     footer = read1DArray("FOOTER")
     data.colorCeiling = (footer[0], footer[1], footer[2])
     data.colorFloor = (footer[3], footer[4], footer[5])

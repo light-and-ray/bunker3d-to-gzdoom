@@ -7,10 +7,9 @@ from save import (saveMap, saveStaticData, saveTextures, saveAnimations, saveSpr
     savePatches, saveTexturesDef, saveModels,
 )
 
-MAPS = range(1, 10)
-MAPS = [1, 2, 5, 6, 7, 9]
+MAPS = [range(1, 10), [1, 2, 5, 6, 7, 9]]
 GAMES = [GameType.B3D, GameType.L3D]
-GAMES = [GameType.L3D]
+# GAMES = [None, GameType.L3D]
 
 if __name__ == "__main__":
     saveStaticData()
@@ -19,8 +18,9 @@ if __name__ == "__main__":
     zscripts: dict[str, list[str]] = dict()
     ednums: list[EdnumGZD] = []
     models: list[ModelGZD] = []
-    for game in GAMES:
-        for idx in MAPS:
+    for game, maps in zip(GAMES, MAPS):
+        if not maps or not game: continue
+        for idx in maps:
             data = load(idx, game)
             animations.extend(data.map.animations)
             mapInterim = MapInterim(data.map, brokenLines=data.brokenLines, doorsSpeed=data.doorsSpeed,

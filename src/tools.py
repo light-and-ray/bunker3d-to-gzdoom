@@ -1,5 +1,6 @@
 import math, zlib, struct
 from PIL import Image
+from ClassesShared import GameType
 
 LEVEL_FLOOR = 0
 WALL_HEIGHT = 96
@@ -36,22 +37,22 @@ def create1DList(a, default=0):
 _textureLumpIdx = 0
 def generateTextureLumpName():
     global _textureLumpIdx
-    result = f'B3D_T{_textureLumpIdx:03}'
+    result = f'TEXT_{_textureLumpIdx:03}'
     _textureLumpIdx += 1
     return result
 
 _textureMirroredLumpIdx = 0
 def generateTextureMirroredLumpName():
     global _textureMirroredLumpIdx
-    result = f'B3D_TM{_textureMirroredLumpIdx:02}'
+    result = f'MODT_{_textureMirroredLumpIdx:02}'
     _textureMirroredLumpIdx += 1
     return result
 
-def getCeilingLumpName(mapIndex):
-    return f"B3D_C{mapIndex:03}"
+def getCeilingLumpName(mapIndex, game: GameType):
+    return f"{game.name}_C{mapIndex:03}"
 
-def getFloorLumpName(mapIndex):
-    return f"B3D_F{mapIndex:03}"
+def getFloorLumpName(mapIndex: int, game: GameType):
+    return f"{game.name}_F{mapIndex:03}"
 
 
 def makeBackgroundTransparent(inputImage):
