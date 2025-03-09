@@ -137,7 +137,7 @@ class MapInterim:
             try:
                 special = LampSpecial(thing.special)
             except ValueError:
-                print(f"warning: unknown lamp special {thing.special}")
+                print(f"warning: unknown lamp special {thing.special} index {thing.index}")
                 continue
             self.lamps.append(LampInterim(pos=thing.pos, spriteIdx=thing.sprite, colorIdx=thing.color, special=special))
 
@@ -148,7 +148,7 @@ class MapInterim:
             try:
                 special = NpcSpecial(thing.special)
             except ValueError:
-                print(f"warning: unknown npc special {thing.special}")
+                print(f"warning: unknown npc special {thing.special} index {thing.index}")
                 continue
             if special in (NpcSpecial.FOE, NpcSpecial.BOSS):
                 isBoss = (special == NpcSpecial.BOSS)
@@ -159,7 +159,7 @@ class MapInterim:
                 isSecond = (special == NpcSpecial.FRIENDLY2)
                 self.friendlies.append(FriendlyInterim(pos=thing.pos, colorIdx=thing.color, isSecond=isSecond, spriteIdx=thing.sprite))
             else:
-                print(f'warning: not handled npc special {special.name}')
+                print(f'warning: not handled npc special {special.name} index {thing.index}')
 
         self.crates: list[CrateInterim] = []
         for crate in mapB3D.crates:
