@@ -42,9 +42,9 @@ def generateTextureLumpName():
     return result
 
 _textureMirroredLumpIdx = 0
-def generateTextureMirroredLumpName():
+def generateTextureModifiedLumpName():
     global _textureMirroredLumpIdx
-    result = f'MODT_{_textureMirroredLumpIdx:02}'
+    result = f'MDFC_{_textureMirroredLumpIdx:02}'
     _textureMirroredLumpIdx += 1
     return result
 

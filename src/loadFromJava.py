@@ -135,13 +135,16 @@ def _loadLinesTextures():
         linesTextures.append(_resolveTextureList(texture))
     return linesTextures
 
-def _loadAnimatedFramesInner(list_):
-    result = {}
-    for subList in list_:
-        for index, value in enumerate(subList):
-            result.setdefault(index, []).append(value)
-    return [result[i] for i in sorted(result)]
+def _loadAnimatedFramesInner(lst):
+    if not lst:
+        return []
+    max_len = max(len(sub) for sub in lst)
 
+    result = []
+    for i in range(max_len):
+        current = [sub[i % len(sub)] for sub in lst]
+        result.append(current)
+    return result
 
 def _loadAnimatedFrames():
     framesList = read2DArray("ANIMATED_FRAMES")
@@ -152,6 +155,7 @@ def _loadAnimatedFrames():
             continue
         for i in range(len(frames)):
             frames[i] = _resolveTextureList(frames[i])
+        # print(frames, '->', _loadAnimatedFramesInner(frames))
         resultList.append(_loadAnimatedFramesInner(frames))
 
     return resultList

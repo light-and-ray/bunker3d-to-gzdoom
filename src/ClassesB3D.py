@@ -3,7 +3,7 @@ from PIL import Image
 from typing import Any
 import math
 from ClassesShared import Vertex, HeightType, Animation
-from tools import generateTextureLumpName, generateTextureMirroredLumpName, WALL_HEIGHT
+from tools import generateTextureLumpName, generateTextureModifiedLumpName, WALL_HEIGHT
 from enum import Enum
 
 
@@ -132,7 +132,7 @@ class MapB3D:
                         line.texturesNames.append(line.texturesNames[0])
                 textureName = line.texturesNames[needMirrorIdx]
                 if textureName not in self.mirroredDict.keys():
-                    mirroredName = generateTextureMirroredLumpName()
+                    mirroredName = generateTextureModifiedLumpName()
                     self.mirroredDict[textureName] = mirroredName
                     self.textures[mirroredName] = self.textures[textureName].transpose(Image.FLIP_LEFT_RIGHT)
                     self.textures[mirroredName].nonMirroredName = textureName
@@ -152,7 +152,6 @@ class MapB3D:
         for animatedFramesWall, animatedLines in zip(animatedFramesList, animatedLinesList):
             if not animatedFramesWall: continue
             for textureIndex, animatedFrames in enumerate(animatedFramesWall):
-                print(animatedFrames)
                 if len(set(animatedFrames)) >= 2:
                     frames: list[str] = []
                     if animatedFrames[-1] == animatedFrames[-2]:
@@ -163,13 +162,16 @@ class MapB3D:
                     for frameIdx in animatedFrames:
                         if frameIdx >= len(list(self.textures.keys())):
                             frameIdx = 0
-                        frames.append(list(self.textures.keys())[frameIdx])
+                        frameOldName = list(self.textures.keys())[frameIdx]
+                        frameNewName = generateTextureModifiedLumpName()
+                        self.textures[frameNewName] = self.textures[frameOldName]
+                        frames.append(frameNewName)
                     animation = Animation(name=frames[0], frames=frames, duration=duration)
                     self.animations.append(animation)
                     if any([textureMirroring[x] == 5 for x in animatedLines]):
                         mirroredFrames = []
                         for frame in frames:
-                            mirroredName = generateTextureMirroredLumpName()
+                            mirroredName = generateTextureModifiedLumpName()
                             self.mirroredDict[frame] = mirroredName
                             self.textures[mirroredName] = self.textures[frame].transpose(Image.FLIP_LEFT_RIGHT)
                             self.textures[mirroredName].nonMirroredName = frame
