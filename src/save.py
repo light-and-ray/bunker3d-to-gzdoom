@@ -40,7 +40,6 @@ def saveMap(map: MapGZD, mapIndex: int, game: GameType):
                                           sidefront=line.sideFrontIdx, sideback=line.sideBackIdx))
         if line.sideBackIdx is not None:
             umap.linedefs[-1].twosided = True
-
         if line.polyObjectDef:
             umap.linedefs[-1].special = 1
             umap.linedefs[-1].arg0 = line.polyObjectDef.number
@@ -59,6 +58,8 @@ def saveMap(map: MapGZD, mapIndex: int, game: GameType):
             umap.linedefs[-1].user_b3d_door_back_side = int(line.b3dDoorBackSide)
         if line.b3dDoorPOMirrorNum is not None:
             umap.linedefs[-1].user_b3d_door_po_mirror_num = int(line.b3dDoorPOMirrorNum)
+        umap.linedefs[-1].dontpegtop = line.doNotPeg
+        umap.linedefs[-1].dontpegbottom = line.doNotPeg
 
     for thing in map.things:
         umap.things.append(omg.UThing(x=thing.x, y=thing.y, ednum=thing.type))

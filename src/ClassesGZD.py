@@ -49,6 +49,7 @@ class LineGZD:
     v2: int
     sideFrontIdx: int
     sideBackIdx: int|None = None
+    doNotPeg: bool = False
     polyObjectDef: PolObjectGZD|None = None
     b3dDoorSpeed: float = None
     b3dDoorBroken: bool = None
@@ -361,6 +362,7 @@ class MapGZD:
             v2Idx = self._addVertex(*line.v2.pair())
             sideFrontIdx = None
             sideBackIdx = None
+            doNotPeg = False
             if line.height == HeightType.FULL:
                 sector = forcedSector if forcedSector is not None else self.SECTOR_FULL_IDX
                 sideFrontIdx = self._addSide(sector, TextureMode.MIDDLE, line.texture.names[0], line.texture.offset, line.texture.stretch)
@@ -370,11 +372,13 @@ class MapGZD:
             elif line.height == HeightType.ONLY_TOP:
                 sideFrontIdx = self._addSide(self.SECTOR_FULL_IDX, TextureMode.TOP_AND_BOTTOM, line.texture.names[0], line.texture.offset, line.texture.stretch)
                 sideBackIdx = self._addSide(self.SECTOR_ONLY_TOP_IDX, TextureMode.NO_TEXTURES, None, None, 1.0)
+                doNotPeg = True
             elif line.height == HeightType.BOTTOM:
                 sideFrontIdx = self._addSide(self.SECTOR_ONLY_TOP_IDX, TextureMode.MIDDLE, line.texture.names[0], line.texture.offset, line.texture.stretch)
+                doNotPeg = True
             elif line.height == HeightType.TOP:
                 sideFrontIdx = self._addSide(self.SECTOR_ONLY_BOTTOM_IDX, TextureMode.MIDDLE, line.texture.names[0], line.texture.offset, line.texture.stretch)
-            linesGZD.append(LineGZD(v1=v1Idx, v2=v2Idx,
+            linesGZD.append(LineGZD(v1=v1Idx, v2=v2Idx, doNotPeg=doNotPeg,
                                       sideFrontIdx=sideFrontIdx, sideBackIdx=sideBackIdx))
         return linesGZD
 
