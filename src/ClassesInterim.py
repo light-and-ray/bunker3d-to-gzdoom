@@ -513,9 +513,10 @@ class MapInterim:
         rem = length % textureW
         tile = length//textureW
         # print(index, rem, tile)
-        rems_to_stretch = [40, 23, 48, 7, 47]
-        rems_to_squeeze = [80, 9]
-        rems_to_ignore = [0, 45, 10, 32]
+        rems_to_stretch = [40, 23, 48, 7, 47, 45, 16]
+        rems_to_squeeze = [80, 9, 72]
+        rems_to_ignore = [0, 10, 32, 58]
+        # rems_to_ignore = [0]
         if rem in rems_to_stretch:
             if tile > 0:
                 texture.stretch = (textureW+rem/tile)/textureW
