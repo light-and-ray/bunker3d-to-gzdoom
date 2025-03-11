@@ -18,9 +18,13 @@ class TextureInterim:
     names : list[str]
     offset : float = 0.0
     stretch : float = 1.0
+
+    def width(self, index: int, textures: dict[str, Image.Image]):
+        return textures[self.names[index]].width*self.stretch
+
     def trimOffset(self, textures: dict[str, Image.Image]):
-        while self.offset >= textures[self.names[0]].width*self.stretch:
-            self.offset -= textures[self.names[0]].width*self.stretch
+        while self.offset >= self.width(0, textures):
+            self.offset -= self.width(0, textures)
             if len(self.names) > 1:
                 self.names = self.names[1:]
 
@@ -399,7 +403,7 @@ class MapInterim:
         i = 0
         while i < len(self.lines):
             if len(self.lines[i].texture.names) > 1:
-                offset = self.textures[self.lines[i].texture.names[0]].width - self.lines[i].texture.offset
+                offset = self.lines[i].texture.width(0, self.textures) - self.lines[i].texture.offset
                 newV = vertexWithOffset_checkInside(*self.lineToTuple(self.lines[i]), offset / SCALE_FACTOR)
                 if newV:
                     newLine1 = self.lines[i]
