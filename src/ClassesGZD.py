@@ -206,18 +206,30 @@ class MapGZD:
 
         self._keysToFriendly: dict[tuple[int], ActorGZD] = dict()
         for friendly in mapInterim.friendlies:
-            key = (friendly.spriteIdx, friendly.colorIdx)
+            key = (friendly.spriteIdx, friendly.colorIdx, friendly.isSecond)
             if key not in self._keysToFriendly:
                 spriteName = generateNpcSpriteName()
                 className = generateFriendlyClassName()
-                if not friendly.isSecond:
-                    spriteA = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx]
-                    spriteB = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+1]
-                else:
-                    spriteA = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+4]
-                    spriteB = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+5]
-                spriteC = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+2]
-                spriteD = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+3]
+                if gameType == GameType.B3D:
+                    if not friendly.isSecond:
+                        spriteA = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx]
+                        spriteB = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+1]
+                    else:
+                        spriteA = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+4]
+                        spriteB = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+5]
+                    spriteC = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+2]
+                    spriteD = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+3]
+                elif gameType == GameType.L3D:
+                    if not friendly.isSecond:
+                        spriteA = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx]
+                        spriteB = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+1]
+                        spriteC = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+2]
+                        spriteD = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+3]
+                    else:
+                        spriteA = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+4]
+                        spriteB = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+5]
+                        spriteC = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+6]
+                        spriteD = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+7]
                 zscript = generateFriendlyZScript(className, spriteName, spriteA, spriteD)
                 ednum = EdnumGZD(num=generateEdnum(), className=className)
                 self.sprites[spriteName+"A0"] = spriteA
