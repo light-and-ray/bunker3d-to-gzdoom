@@ -189,6 +189,9 @@ def load(mapIndex: int, game: GameType):
     for i in range(len(foeSprites[0])):
         for color in (0, 1):
             foeSprites[color][i].save(f"tmp/sprites/c{game.value+1}m{mapIndex}/foe_{color}_{i}.png")
+    os.makedirs(f"tmp/textures/c{game.value+1}m{mapIndex}", exist_ok=True)
+    for i in range(len(textures)):
+        textures[i].save(f"tmp/textures/c{game.value+1}m{mapIndex}/texture_{i}.png")
 
     data.map = MapB3D(rawLines=read2DArray('LINES_VERTEXES'), rawHeight=read1DArray('LINES_HEIGHT'),
         cratesStartLineIdx=read1DArray('CRATES_START_LINE_IDX'), cratesContent=read1DArray('CRATES_CONTENT'),

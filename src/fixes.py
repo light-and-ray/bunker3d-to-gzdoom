@@ -81,34 +81,38 @@ BROKEN_TEXTURES_B3D = [ # Doors (inside) and 45 degree with middled texture insi
 BROKEN_TEXTURES_L3D = [ # Doors (inside) and 45 degree with middled texture inside
     {},
     { # 1
-
+        20 : BrokenTextureData(nums=[13]),
     },
     { # 2
-
+        22 : BrokenTextureData(nums=[13]),
     },
     { # 3
-
+        17 : BrokenTextureData(nums=[6]),
     },
     { # 4
-
+        20 : BrokenTextureData(nums=[10]),
     },
     { #5
-
+        15 : BrokenTextureData(nums=[6]),
     },
     { # 6
-
+        22 : BrokenTextureData(nums=[10]),
+        23 : BrokenTextureData(nums=[0]),
     },
     { # 7
-
+        23 : BrokenTextureData(nums=[8]),
+        24 : BrokenTextureData(nums=[8]),
     },
     { # 8
-
+        20 : BrokenTextureData(nums=[3]),
+        21 : BrokenTextureData(nums=[3]),
     },
     { # 9
-
+        20 : BrokenTextureData(nums=[7]),
+        21 : BrokenTextureData(nums=[7]),
     },
     { #10
-
+        21 : BrokenTextureData(nums=[6]),
     },
 ]
 
