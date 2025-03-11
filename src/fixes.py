@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from tools import WALL_HEIGHT
 from ClassesShared import GameType
+from PIL import Image
 
 
 @dataclass
@@ -151,3 +152,16 @@ CRATE_TOP_TEXTURES_L3D = [
 CRATE_TOP_TEXTURES = dict()
 CRATE_TOP_TEXTURES[GameType.B3D] = CRATE_TOP_TEXTURES_B3D
 CRATE_TOP_TEXTURES[GameType.L3D] = CRATE_TOP_TEXTURES_L3D
+
+
+def fixFoeSprite(image: Image.Image, index: int) -> Image.Image:
+    if image.mode != 'RGBA':
+        raise Exception("is not rgba")
+    pixels = image.load()
+    pixels[1, 0] = (0, 0, 0, 0)
+    if index == 3 and image.width == 38:
+        image = image.crop((0, 0, 33, image.height))
+    return image
+
+
+

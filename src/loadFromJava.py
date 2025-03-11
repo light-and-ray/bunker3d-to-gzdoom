@@ -2,8 +2,8 @@ from dataclasses import dataclass
 import json, os
 from ClassesB3D import MapB3D
 from PIL import Image
-from tools import makeBackgroundTransparent, fixFoeSprite
-from fixes import BROKEN_LINES, BROKEN_TEXTURES, BrokenTextureData
+from tools import makeBackgroundTransparent
+from fixes import BROKEN_LINES, BROKEN_TEXTURES, BrokenTextureData, fixFoeSprite
 from ClassesShared import GameType
 
 def readSingleValue(jsonName: str) -> int:
@@ -99,7 +99,7 @@ def _loadFoeSprites():
         for i in range(len(sprites_data)):
             sprite = load_image_from_1d_list(sprites_data[i], sprites_w[i], sprites_h[i])
             sprite = makeBackgroundTransparent(sprite)
-            sprite = fixFoeSprite(sprite)
+            sprite = fixFoeSprite(sprite, i)
             sprites.append(sprite)
         all_sprites.append(sprites)
     return all_sprites

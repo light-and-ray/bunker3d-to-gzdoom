@@ -120,10 +120,3 @@ def saveToFile(filepath, data):
     with open(filepath, mode) as f:
         f.write(data)
 
-def fixFoeSprite(image: Image.Image) -> Image.Image:
-    if image.mode != 'RGBA':
-        raise Exception("is not rgba")
-    pixels = image.load()
-    pixels[1, 0] = (0, 0, 0, 0)
-    return image
-
