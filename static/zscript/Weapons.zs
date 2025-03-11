@@ -21,27 +21,6 @@ class B3DClip : Ammo replaces Clip
 
 class B3DBulletPuff : Actor
 {
-	Default
-	{
-		+NOBLOCKMAP;
-		+NOGRAVITY;
-		+RANDOMIZE;
-        +FORCEXYBILLBOARD;
-	}
-	States
-	{
-	Spawn:
-        TNT1 A 4;
-        Stop;
-	Melee:
-		TNT1 A 4;
-		Stop;
-	}
-}
-
-
-class L3DBulletPuff : Actor
-{
     GlobalVars_t globalVars;
 
     override void PostBeginPlay()
@@ -50,17 +29,34 @@ class L3DBulletPuff : Actor
         super.PostBeginPlay();
     }
 
-	Default
-	{
-		+NOBLOCKMAP;
-		+NOGRAVITY;
-		+RANDOMIZE;
+    Default
+    {
+        +NOBLOCKMAP;
+        +NOGRAVITY;
+        +RANDOMIZE;
         +FORCEXYBILLBOARD;
         Scale 1.3;
-	}
-	States
-	{
-	Spawn:
+    }
+
+    States
+    {
+    Spawn:
+        TNT1 A 4;
+        Stop;
+    Melee:
+        TNT1 A 4;
+        Stop;
+    }
+}
+
+
+class L3DBulletPuff : B3DBulletPuff
+{
+    Default
+    {    }
+    States
+    {
+    Spawn:
         TNT1 A 0 NoDelay A_JumpIf(globalVars.lastPuffFrame == 2, "FrameA");
         TNT1 A 0 A_JumpIf(globalVars.lastPuffFrame == 0, "FrameB");
         TNT1 A 0 A_JumpIf(globalVars.lastPuffFrame == 1, "FrameC");
@@ -76,10 +72,10 @@ class L3DBulletPuff : Actor
         TNT1 A 0 {globalVars.lastPuffFrame = 2;}
         PUFL C 6;
         Stop;
-	Melee:
-		TNT1 A 4;
-		Stop;
-	}
+    Melee:
+        TNT1 A 4;
+        Stop;
+    }
 }
 
 
@@ -128,7 +124,7 @@ class MachineGun : DoomWeapon
             MP40 A 0 A_ReFire;
             Goto Ready;
         Flash:
-            TNT1 A 2 A_Light1;
+            TNT1 A 0;
             Goto LightDone;
         Spawn:
             MP40 A -1;
