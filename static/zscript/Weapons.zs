@@ -26,6 +26,7 @@ class B3DBulletPuff : Actor
 		+NOBLOCKMAP;
 		+NOGRAVITY;
 		+RANDOMIZE;
+        +FORCEXYBILLBOARD;
 	}
 	States
 	{
@@ -54,6 +55,7 @@ class L3DBulletPuff : Actor
 		+NOBLOCKMAP;
 		+NOGRAVITY;
 		+RANDOMIZE;
+        +FORCEXYBILLBOARD;
         Scale 1.3;
 	}
 	States
