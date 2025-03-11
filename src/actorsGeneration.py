@@ -1,5 +1,5 @@
 from PIL import Image
-from tools import isBottomRowTransparent
+from tools import isBottomRowTransparent, isTopRowTransparent
 from ClassesShared import GameType
 
 
@@ -36,7 +36,7 @@ def generateDecorationClassName():
 
 def generateDecorationZScript(className: str, spriteName: str, sprite: Image.Image):
     code = ""
-    isPinnedToCeiling = isBottomRowTransparent(sprite)
+    isPinnedToCeiling = isBottomRowTransparent(sprite) and not isTopRowTransparent(sprite)
     baseClassName = "BaseCeilingDecoration" if isPinnedToCeiling else "BaseFloorDecoration"
     code += f"class {className} : {baseClassName}\n"
     code +=  "{\n"

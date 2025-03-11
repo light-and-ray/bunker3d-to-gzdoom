@@ -195,7 +195,7 @@ def load(mapIndex: int, game: GameType):
 
     data.map = MapB3D(rawLines=read2DArray('LINES_VERTEXES'), rawHeight=read1DArray('LINES_HEIGHT'),
         cratesStartLineIdx=read1DArray('CRATES_START_LINE_IDX'), cratesContent=read1DArray('CRATES_CONTENT'),
-        cratesAngles=read1DArray('CRATES_ANGLE'),
+        cratesAngles=read1DArray('CRATES_ANGLE'), gameType=game,
         textures=textures, linesTextures=linesTextures, circles=read2DArray("CIRCLES_IDX"),
         textureMirroring=read1DArray("LINES_MIRRORING"), animatedFrames=animatedFrames,
         animatedLines=read2DArray("LINES_ANIMATED"), sprites=sprites, foeSprites=foeSprites,

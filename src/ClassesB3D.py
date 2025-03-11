@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from PIL import Image
 from typing import Any
 import math
-from ClassesShared import Vertex, HeightType, Animation
+from ClassesShared import Vertex, HeightType, Animation, GameType
 from tools import generateTextureLumpName, generateTextureModifiedLumpName, WALL_HEIGHT
 from enum import Enum
 
@@ -43,7 +43,7 @@ class MapB3D:
             textures: list[Image.Image], linesTextures: list[list[int]],
             circles: list[list[int]], textureMirroring: list[int],
             animatedFrames: list[list[list[int]]], animatedLines: list[list[int]], sprites: list[list[Image.Image]],
-            foeSprites: list[list[Image.Image]],
+            foeSprites: list[list[Image.Image]], gameType: GameType,
             thingsPos: list[list[int]], thingsSprites: list[int], thingsColors: list[int],
             thingsVisible: list[int], thingsSpecials: list[int],
     ):
@@ -92,20 +92,31 @@ class MapB3D:
         self._applyAnimation(animatedFrames, animatedLines, textureMirroring)
         self._applyMirroring(textureMirroring)
 
+        if gameType == GameType.B3D:
+            NPC_LAST_IDX = 16
+            LAMP_LAST_IDX = 32
+            DECORATION_LAST_IDX = 48
+        elif gameType == GameType.L3D:
+            NPC_LAST_IDX = 32
+            LAMP_LAST_IDX = 64
+            DECORATION_LAST_IDX = 106
+
         self.things: list[ThingB3D] = []
-        for i in range(48):
+        # for i in range(len(thingsSprites)):
+        #     print(i, ":", thingsSprites[i])
+        for i in range(DECORATION_LAST_IDX):
             if not thingsVisible[i]:
                 continue
-            if i >= 0 and i < 16:
+            if i >= 0 and i < NPC_LAST_IDX:
                 category = ThingCategory.NPC
-            elif i >= 16 and i < 32:
+            elif i >= NPC_LAST_IDX and i < LAMP_LAST_IDX:
                 category = ThingCategory.LAMP
-            elif i >= 32 and i < 48:
+            elif i >= LAMP_LAST_IDX and i < DECORATION_LAST_IDX:
                 category = ThingCategory.DECORATION
             else:
                 raise Exception("Can't be here")
 
-            if category == ThingCategory.DECORATION:
+            if i >= len(thingsSpecials):
                 special = None
             else:
                 special = thingsSpecials[i]
@@ -113,7 +124,10 @@ class MapB3D:
             if category == ThingCategory.NPC:
                 sprite = thingsSprites[i]
             else:
-                sprite = thingsSprites[i] - 16
+                if gameType == GameType.B3D:
+                    sprite = thingsSprites[i] - 16
+                elif gameType == GameType.L3D:
+                    sprite = thingsSprites[i] - 13
 
             self.things.append(ThingB3D(pos=Vertex(*thingsPos[i]), category=category,
                     color=thingsColors[i], special=special, sprite=sprite, index=i))

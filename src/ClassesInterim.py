@@ -133,6 +133,7 @@ class MapInterim:
         self.decorations: list[DecorationInterim] = []
         for thing in mapB3D.things:
             if thing.category != ThingCategory.DECORATION: continue
+            # print('!!!', thing.index, thing.special, thing.sprite)
             self.decorations.append(DecorationInterim(pos=thing.pos, spriteIdx=thing.sprite, colorIdx=thing.color))
 
         self.lamps: list[LampInterim] = []
@@ -143,7 +144,7 @@ class MapInterim:
             except ValueError:
                 print(f"warning: unknown lamp special {thing.special} index {thing.index}")
                 continue
-            self.lamps.append(LampInterim(pos=thing.pos, spriteIdx=thing.sprite, colorIdx=thing.color, special=special))
+            self.lamps.append(LampInterim(pos=thing.pos, spriteIdx=0, colorIdx=thing.color, special=special))
 
         self.foes: list[FoeInterim] = []
         self.friendlies: list[FriendlyInterim] = []

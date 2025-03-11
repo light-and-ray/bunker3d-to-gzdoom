@@ -126,7 +126,10 @@ class MapGZD:
             if key not in self._keysToDecoration:
                 spriteName = generateDecorationSpriteName()
                 className = generateDecorationClassName()
-                sprite = mapInterim.sprites[decoration.colorIdx][decoration.spriteIdx]
+                if decoration.spriteIdx >= 0:
+                    sprite = mapInterim.sprites[decoration.colorIdx][decoration.spriteIdx]
+                else:
+                    sprite = mapInterim.foeSprites[decoration.colorIdx][decoration.spriteIdx]
                 zscript = generateDecorationZScript(className, spriteName, sprite)
                 ednum = EdnumGZD(num=generateEdnum(), className=className)
                 self.sprites[spriteName + "A0"] = sprite

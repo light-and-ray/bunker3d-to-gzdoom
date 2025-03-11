@@ -115,6 +115,19 @@ def isBottomRowTransparent(image: Image.Image):
     return True
 
 
+def isTopRowTransparent(image: Image.Image):
+    if image.mode!= 'RGBA':
+        raise Exception("is not rgba")
+
+    width, height = image.size
+    top_row = image.crop((0, 0, width, 1))
+
+    for pixel in top_row.getdata():
+        if pixel[3]!= 0:
+            return False
+    return True
+
+
 def saveToFile(filepath, data):
     mode = 'w' if isinstance(data, str) else 'wb'
     with open(filepath, mode) as f:
