@@ -19,6 +19,68 @@ class B3DClip : Ammo replaces Clip
 }
 
 
+class B3DBulletPuff : Actor
+{
+	Default
+	{
+		+NOBLOCKMAP;
+		+NOGRAVITY;
+		+RANDOMIZE;
+	}
+	States
+	{
+	Spawn:
+        TNT1 A 4;
+        Stop;
+	Melee:
+		TNT1 A 4;
+		Stop;
+	}
+}
+
+
+class L3DBulletPuff : Actor
+{
+    GlobalVars_t globalVars;
+
+    override void PostBeginPlay()
+    {
+        globalVars = GlobalVars_t(EventHandler.Find("GlobalVars_t"));
+        super.PostBeginPlay();
+    }
+
+	Default
+	{
+		+NOBLOCKMAP;
+		+NOGRAVITY;
+		+RANDOMIZE;
+        Scale 1.3;
+	}
+	States
+	{
+	Spawn:
+        TNT1 A 0 NoDelay A_JumpIf(globalVars.lastPuffFrame == 2, "FrameA");
+        TNT1 A 0 A_JumpIf(globalVars.lastPuffFrame == 0, "FrameB");
+        TNT1 A 0 A_JumpIf(globalVars.lastPuffFrame == 1, "FrameC");
+    FrameA:
+        TNT1 A 0 {globalVars.lastPuffFrame = 0;}
+        PUFL A 6;
+        Stop;
+    FrameB:
+        TNT1 A 0 {globalVars.lastPuffFrame = 1;}
+        PUFL B 6;
+        Stop;
+    FrameC:
+        TNT1 A 0 {globalVars.lastPuffFrame = 2;}
+        PUFL C 6;
+        Stop;
+	Melee:
+		TNT1 A 4;
+		Stop;
+	}
+}
+
+
 class MachineGun : DoomWeapon
 {
     Default
@@ -35,6 +97,15 @@ class MachineGun : DoomWeapon
         Weapon.WeaponScaleY 1.2;
         +WEAPON.NOAUTOAIM;
     }
+
+    GlobalVars_t globalVars;
+
+    override void PostBeginPlay()
+    {
+        globalVars = GlobalVars_t(EventHandler.Find("GlobalVars_t"));
+        super.PostBeginPlay();
+    }
+
     States
     {
         Ready:
@@ -49,7 +120,7 @@ class MachineGun : DoomWeapon
         Fire:
             MP40 A 2;
             MP40 B 0 A_StartSound("MP40_fire");
-            MP40 B 0 Bright A_FireBullets(2, 1, 1, random (3, 5), "BulletPuff");
+            MP40 B 0 A_FireBullets(2, 1, 1, random(3, 5), invoker.globalVars.puffClass);
             MP40 B 2 A_GunFlash;
             MP40 B 2;
             MP40 A 0 A_ReFire;
@@ -62,3 +133,4 @@ class MachineGun : DoomWeapon
             Stop;
     }
 }
+

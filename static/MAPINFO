@@ -6,6 +6,11 @@ adddefaultmap
     evenLighting
 }
 
+adddefaultmap
+{
+    EventHandlers = "FillB3DDefaults"
+}
+
 map C1M1 lookup "C1M1"
 {
     levelnum = 1
@@ -67,6 +72,12 @@ map C1M9 lookup "C1M9"
     levelnum = 9
     // next = "C1M6"
     // music = "$MUSIC_E1M1"
+}
+
+
+adddefaultmap
+{
+    EventHandlers = "FillL3DDefaults"
 }
 
 
@@ -157,5 +168,5 @@ episode C2M1
 GameInfo
 {
     PlayerClasses = "B3DPlayer"
-    AddEventHandlers = "DoorsOpenerHandler"
+    AddEventHandlers = "DoorsOpenerHandler", "GlobalVars_t"
 }
