@@ -8,10 +8,10 @@ from save import (saveMap, saveStaticData, saveTextures, saveAnimations, saveSpr
 )
 
 MAPS = [range(1, 10), range(1, 11)]
-# MAPS = [[], [10]]
+# MAPS = [[], [1, 2]]
 # MAPS = [[1], []]
 GAMES = [GameType.B3D, GameType.L3D]
-# GAMES = [None, GameType.L3D]
+GAMES = [None, GameType.L3D]
 
 if __name__ == "__main__":
     saveStaticData()

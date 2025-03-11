@@ -175,10 +175,7 @@ class MapGZD:
                 ednum = EdnumGZD(num=generateEdnum(), className=className)
                 patches_names = ["A_front", "B_front", "A_left", "B_left", "A_back", "B_back",
                                 "A_right", "B_right"]
-                if gameType == GameType.B3D:
-                    sprite_names = ["C0", "D0", "E0", "F0", "G0", "H0", "I0", "J0"]
-                elif gameType == GameType.L3D:
-                    sprite_names = ["C0", "D0", "E0", "F0", "G0"]
+                sprite_names = ["C0", "D0", "E0", "F0", "G0", "H0", "I0", "J0"]
                 for i, name in enumerate(patches_names):
                     patchName = spriteName + name
                     patch = mapInterim.foeSprites[foe.colorIdx][i]
@@ -191,7 +188,10 @@ class MapGZD:
                         self.texturesDefs[texturesName] = ""
                     self.texturesDefs[texturesName] += generateFoeTexturesDef(patchName, patch, mapIndex, gameType) + '\n'
                 for i, name in enumerate(sprite_names):
-                    self.sprites[spriteName + name] = mapInterim.foeSprites[foe.colorIdx][len(patches_names)+i]
+                    if gameType == GameType.L3D and i >= 5:
+                        self.sprites[spriteName+name] = mapInterim.sprites[foe.colorIdx][11+i-5]
+                    else:
+                        self.sprites[spriteName+name] = mapInterim.foeSprites[foe.colorIdx][len(patches_names)+i]
                 zscript = generateFoeZScript(className, spriteName, self.sprites[spriteName+"C0"], self.sprites[spriteName+"G0"])
                 self.actors.append(ActorGZD(ednum=ednum, zscript=zscript))
                 self._keysToLamp[key] = self.actors[-1]
@@ -201,7 +201,7 @@ class MapGZD:
                 type = self._keysToLamp[key].ednum.num,
                 angle = (foe.angle+90)%360,
                 arg0 = foe.walkDistance,
-                arg1 = int(foe.isBoss),
+                arg1 = foe.health,
             ))
 
         self._keysToFriendly: dict[tuple[int], ActorGZD] = dict()
