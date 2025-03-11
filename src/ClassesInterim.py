@@ -69,6 +69,8 @@ class NpcSpecial(Enum):
     FRIENDLY2_B3D = 30
     FRIENDLY1_L3D = 37
     FRIENDLY2_L3D = 41
+    FRIENDLY3_L3D = 46
+    FRIENDLY4_L3D = 50
     FINALBOSS = 32
 
 @dataclass
@@ -159,9 +161,10 @@ class MapInterim:
                 if special in (NpcSpecial.FRIENDLY1_B3D, NpcSpecial.FRIENDLY2_B3D):
                     isSecond = (special == NpcSpecial.FRIENDLY2_B3D)
                     self.friendlies.append(FriendlyInterim(pos=thing.pos, colorIdx=thing.color, isSecond=isSecond, spriteIdx=thing.sprite))
-                elif special in (NpcSpecial.FRIENDLY1_L3D, NpcSpecial.FRIENDLY2_L3D):
-                    isSecond = (special == NpcSpecial.FRIENDLY2_L3D)
-                    self.friendlies.append(FriendlyInterim(pos=thing.pos, colorIdx=thing.color, isSecond=isSecond, spriteIdx=24))
+                elif special in (NpcSpecial.FRIENDLY1_L3D, NpcSpecial.FRIENDLY2_L3D, NpcSpecial.FRIENDLY3_L3D, NpcSpecial.FRIENDLY4_L3D):
+                    isSecond = False
+                    sprite = special.value - 37 + 24
+                    self.friendlies.append(FriendlyInterim(pos=thing.pos, colorIdx=thing.color, isSecond=isSecond, spriteIdx=sprite))
                 else:
                     print(f'warning: not handled npc special {special.name} index {thing.index}')
             else:
