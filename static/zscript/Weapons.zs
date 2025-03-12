@@ -98,10 +98,10 @@ class MachineGun : DoomWeapon
 
     GlobalVars_t globalVars;
 
-    override void PostBeginPlay()
+    action GlobalVars_t getGlobalVars()
     {
-        globalVars = GlobalVars_t(EventHandler.Find("GlobalVars_t"));
-        super.PostBeginPlay();
+        if(!invoker.globalVars) invoker.globalVars = GlobalVars_t(EventHandler.Find("GlobalVars_t"));
+        return invoker.globalVars;
     }
 
     States
@@ -118,7 +118,7 @@ class MachineGun : DoomWeapon
         Fire:
             MP40 A 2;
             MP40 B 0 A_StartSound("MP40_fire");
-            MP40 B 0 A_FireBullets(2, 1, 1, random(3, 5), invoker.globalVars.puffClass);
+            MP40 B 0 A_FireBullets(2, 1, 1, random(3, 5), getGlobalVars().puffClass);
             MP40 B 2 A_GunFlash;
             MP40 B 2;
             MP40 A 0 A_ReFire;
