@@ -3,6 +3,7 @@ class BaseFriendly : Actor
     Default
     {
         Scale 1.3;
+        +BILLBOARDFACECAMERA;
     }
     States
     {

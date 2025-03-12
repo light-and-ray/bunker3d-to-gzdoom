@@ -3,6 +3,7 @@ class BaseFoe : Actor
     Default
     {
         Scale 1.2;
+        +BILLBOARDFACECAMERA;
     }
     States
     {

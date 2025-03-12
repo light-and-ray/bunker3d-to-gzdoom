@@ -4,6 +4,7 @@
         "allowdecals",
         "animdefs",
         "AUTOACTIVATE",
+        "BILLBOARDFACECAMERA",
         "clearepisodes",
         "colormap",
         "cursector",
