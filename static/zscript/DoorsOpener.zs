@@ -41,15 +41,15 @@ class DoorsOpener : Thinker
     DoorsOpenerHelper helper;
     Actor freezeChecker;
 
-    void initCopy(DoorsOpener other)
+    void initShallowCopy(DoorsOpener other)
     {
-        doorSides = other.doorSides;
-        doors = other.doors;
-        doorsMap = other.doorsMap;
+        doorSides.copy(other.doorSides);
+        doors.copy(other.doors);
+        doorsMap.copy(other.doorsMap);
         freezeChecker = other.freezeChecker;
     }
 
-    void initDoors()
+    void init()
     {
         Vector3 freezeCheckerPos;
         freezeChecker = Actor.Spawn("FreezeChecker", freezeCheckerPos);
@@ -187,10 +187,10 @@ class DoorsOpenerHandler : EventHandler
         DoorsOpener opener = new("DoorsOpener");;
         opener.player = player.mo;
         if (!firstInitialized) {
-            opener.initDoors();
+            opener.init();
             firstInitialized = true;
         } else {
-            opener.initCopy(openers[0]);
+            opener.initShallowCopy(openers[0]);
         }
         openers.push(opener);
     }
