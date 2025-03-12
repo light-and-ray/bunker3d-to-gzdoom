@@ -43,9 +43,9 @@ class DoorsOpener : Thinker
 
     void initShallowCopy(DoorsOpener other)
     {
-        doorSides.copy(other.doorSides);
-        doors.copy(other.doors);
-        doorsMap.copy(other.doorsMap);
+        doorSides = other.doorSides;
+        doors = other.doors;
+        doorsMap = other.doorsMap;
         freezeChecker = other.freezeChecker;
     }
 
