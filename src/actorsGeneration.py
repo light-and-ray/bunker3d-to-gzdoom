@@ -21,8 +21,8 @@ def generateGenericPatchTextureDef(patchName: str, spriteName: str, patch: Image
     textures +=  "{\n"
     textures += f"    Patch \"patches/c{game.value+1}m{mapIndex}/{patchName}.png\", 0, 0\n"
     if scale2x:
-        textures += "    XScale 2"
-        textures += "    YScale 2"
+        textures += "    XScale 2\n"
+        textures += "    YScale 2\n"
     textures += f"    Offset {width//2}, {height}\n"
     textures +=  "}\n"
     return textures
