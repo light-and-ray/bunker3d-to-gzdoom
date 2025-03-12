@@ -4,7 +4,7 @@ from ClassesInterim import MapInterim
 from ClassesGZD import MapGZD, EdnumGZD, ModelGZD
 from ClassesShared import Animation, GameType
 from save import (saveMap, saveStaticData, saveTextures, saveAnimations, saveSprites, saveZScripts, saveEdnums,
-    savePatches, saveTexturesDef, saveModels,
+    savePatches, saveTexturesDef, saveModels, saveTexturesDef2x,
 )
 
 MAPS = [range(1, 10), range(1, 11)]
@@ -17,6 +17,7 @@ if __name__ == "__main__":
     saveStaticData()
     animations: list[Animation] = []
     texturesDefs: dict[str, dict[str, str]] = dict()
+    texturesDefs2x: dict[str, dict[str, str]] = dict()
     zscripts: dict[str, list[str]] = dict()
     ednums: list[EdnumGZD] = []
     models: list[ModelGZD] = []
@@ -38,10 +39,12 @@ if __name__ == "__main__":
             zscripts[mapName] = [a.zscript for a in mapGZD.actors]
             ednums.extend([a.ednum for a in mapGZD.actors])
             texturesDefs[mapName] = mapGZD.texturesDefs
+            texturesDefs2x[mapName] = mapGZD.texturesDefs2x
             models.extend(mapGZD.models)
     saveAnimations(animations)
     saveZScripts(zscripts)
     saveEdnums(ednums)
     saveTexturesDef(texturesDefs)
+    saveTexturesDef2x(texturesDefs2x)
     saveModels(models)
 

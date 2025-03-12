@@ -10,12 +10,20 @@ def generateEdnum():
     _lastEdnum += 1
     return result
 
-def generateGenericPatchTextureDef(patchName: str, spriteName: str, patch: Image.Image, mapIndex: int, game: GameType) -> str:
+def generateGenericPatchTextureDef(patchName: str, spriteName: str, patch: Image.Image, mapIndex: int, game: GameType, scale2x: bool) -> str:
     textures = ""
-    textures += f"Sprite {spriteName}, {patch.width}, {patch.height}\n"
+    width = patch.width
+    height = patch.height
+    if scale2x:
+        width *= 2
+        height *= 2
+    textures += f"Sprite {spriteName}, {width}, {height}\n"
     textures +=  "{\n"
     textures += f"    Patch \"patches/c{game.value+1}m{mapIndex}/{patchName}.png\", 0, 0\n"
-    textures += f"    Offset {patch.width//2}, {patch.height}\n"
+    if scale2x:
+        textures += "    XScale 2"
+        textures += "    YScale 2"
+    textures += f"    Offset {width//2}, {height}\n"
     textures +=  "}\n"
     return textures
 
@@ -123,7 +131,7 @@ def generateFoeZScript(className: str, spriteName: str, sprite0: Image.Image, sp
     code +=  "}\n"
     return code
 
-def generateFoeTexturesDef(patchName: str, patch: Image.Image, mapIndex: int, game: GameType) -> str:
+def generateFoeTexturesDef(patchName: str, patch: Image.Image, mapIndex: int, game: GameType, scale2x: bool) -> str:
     textures = ""
     patchSuffixes = ["_front", "_left", "_back", "_right"]
     rotationSuffixesList = [['9', '1', 'G'], ['B', '3', 'A', '2'], ['4', 'C', '5', 'D', '6'], ['E', '7', 'F', '8']]
@@ -132,7 +140,7 @@ def generateFoeTexturesDef(patchName: str, patch: Image.Image, mapIndex: int, ga
             baseName = patchName.removesuffix(patchSuffix)
             for rotationSuffix in rotationSuffixes:
                 spriteName = baseName + rotationSuffix
-                textures += generateGenericPatchTextureDef(patchName, spriteName, patch, mapIndex, game)
+                textures += generateGenericPatchTextureDef(patchName, spriteName, patch, mapIndex, game, scale2x)
                 textures += "\n"
     return textures
 

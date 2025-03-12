@@ -119,6 +119,7 @@ class MapGZD:
         self.sprites: dict[str, Image.Image] = {}
         self.patches: dict[str, Image.Image] = {}
         self.texturesDefs: dict[str, str] = dict()
+        self.texturesDefs2x: dict[str, str] = dict()
 
         self._keysToDecoration: dict[tuple[int], ActorGZD] = dict()
         for decoration in mapInterim.decorations:
@@ -186,7 +187,9 @@ class MapGZD:
                         texturesName = spriteName+'B'
                     if texturesName not in self.texturesDefs:
                         self.texturesDefs[texturesName] = ""
-                    self.texturesDefs[texturesName] += generateFoeTexturesDef(patchName, patch, mapIndex, gameType) + '\n'
+                        self.texturesDefs2x[texturesName] = ""
+                    self.texturesDefs[texturesName] += generateFoeTexturesDef(patchName, patch, mapIndex, gameType, False) + '\n'
+                    self.texturesDefs2x[texturesName] += generateFoeTexturesDef(patchName, patch, mapIndex, gameType, True) + '\n'
                 for i, name in enumerate(sprite_names):
                     if gameType == GameType.L3D and i >= 5:
                         self.sprites[spriteName+name] = mapInterim.sprites[foe.colorIdx][11+i-5]
@@ -266,8 +269,9 @@ class MapGZD:
                     modelDef=generateCrateModeldef(spriteName, className, modelPath),
                 )
                 self.models.append(model)
-                textureDef = generateCrateModelReplacementTextureDef(spriteName+"A0",
-                                    crate.textureName, mapInterim.textures[crate.textureName], mapIndex, gameType) + "\n"
+                textureDef = generateCrateModelReplacementTextureDef(spriteName+"A0", crate.textureName,
+                        mapInterim.textures[crate.textureName], mapIndex, gameType) + "\n"
+                textureDef2x = ""
                 patchNameBase = getPatchBaseName(crate.colorIdx)
                 frameLetters = ['B', 'C', 'D', "E", "F", "G"]
                 if gameType != GameType.B3D: frameLetters.append('H')
@@ -275,8 +279,10 @@ class MapGZD:
                     patchName = patchNameBase + "_frame_" + frameLetter
                     spriteNameFull = spriteName + frameLetter + "0"
                     patch = self.patches[patchName]
-                    textureDef += generateGenericPatchTextureDef(patchName, spriteNameFull, patch, mapIndex, gameType) + "\n"
+                    textureDef += generateGenericPatchTextureDef(patchName, spriteNameFull, patch, mapIndex, gameType, False) + "\n"
+                    textureDef2x += generateGenericPatchTextureDef(patchName, spriteNameFull, patch, mapIndex, gameType, True) + "\n"
                 self.texturesDefs[spriteName] = textureDef
+                self.texturesDefs2x[spriteName] = textureDef2x
                 self.actors.append(ActorGZD(ednum=ednum, zscript=zscript))
                 self._keysToCrates[key] = self.actors[-1]
             self.things.append(ThingGZD(

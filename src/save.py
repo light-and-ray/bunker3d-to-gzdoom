@@ -5,9 +5,11 @@ from PIL import Image
 from ClassesGZD import MapGZD, TextureMode, EdnumGZD, ModelGZD
 from ClassesShared import Animation, GameType
 from tools import getCeilingLumpName, getFloorLumpName, addOffsets, saveToFile
+from scale2x import scale2x
 
 STATIC_DIR = "static"
-RESULT_DIR = "result.d"
+RESULT_DIR = "result.d/game"
+SPRITES_2X_ADDON_DIR = "result.d/addons/sprites2x"
 LIGHT_LEVEL = 220 # 250 is the closest to the original
 
 
@@ -107,19 +109,32 @@ def saveSprites(sprites: dict[str, Image.Image], mapIndex: int, game: GameType):
         shutil.rmtree(mapSpritesDir)
     os.makedirs(mapSpritesDir)
 
+    mapSpritesDir2x = SPRITES_2X_ADDON_DIR + f"/hires/sprites/c{game.value+1}m{mapIndex}/"
+    if os.path.exists(mapSpritesDir2x):
+        shutil.rmtree(mapSpritesDir2x)
+    os.makedirs(mapSpritesDir2x)
+
     for name, sprite in sprites.items():
         buffer = BytesIO()
         sprite.save(buffer, format="PNG")
         buffer = addOffsets(buffer.getvalue(), sprite.width//2, sprite.height)
         saveToFile(mapSpritesDir + f"/{name}.png", buffer)
+        scale2x(sprite).save(mapSpritesDir2x+f"/{name}.png")
 
 def savePatches(patches: dict[str, Image.Image], mapIndex: int, game: GameType):
     mapPatchesDir = RESULT_DIR + f"/patches/c{game.value+1}m{mapIndex}/"
     if os.path.exists(mapPatchesDir):
         shutil.rmtree(mapPatchesDir)
     os.makedirs(mapPatchesDir)
+
+    mapPatchesDir2x = SPRITES_2X_ADDON_DIR + f"/patches/c{game.value+1}m{mapIndex}/"
+    if os.path.exists(mapPatchesDir2x):
+        shutil.rmtree(mapPatchesDir2x)
+    os.makedirs(mapPatchesDir2x)
+
     for name, patch in patches.items():
         patch.save(mapPatchesDir + f"/{name}.png")
+        scale2x(patch).save(mapPatchesDir2x + f"/{name}.png")
 
 def saveAnimations(animations: list[Animation]):
     animdefs = ""
@@ -142,6 +157,16 @@ def saveTexturesDef(texturesDict: dict[str, dict[str, str]]):
             includes += f'#include "{path}"\n'
     saveToFile(RESULT_DIR + "/TEXTURES.generated", includes)
 
+def saveTexturesDef2x(texturesDict2x: dict[str, dict[str, str]]):
+    includes = ""
+    for mapName, mapDict in texturesDict2x.items():
+        for fileName, code in mapDict.items():
+            path = f"textureDefs/{mapName}/{fileName}.txt"
+            codePath = SPRITES_2X_ADDON_DIR + "/" + path
+            os.makedirs(os.path.dirname(codePath), exist_ok=True)
+            saveToFile(codePath, code)
+            includes += f'#include "{path}"\n'
+    saveToFile(SPRITES_2X_ADDON_DIR + "/TEXTURES.generated", includes)
 
 def saveZScripts(zscriptsDict: dict[str, list[str]]):
     directory = RESULT_DIR + "/zscript/generated"
