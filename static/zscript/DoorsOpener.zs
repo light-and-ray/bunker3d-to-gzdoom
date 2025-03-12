@@ -37,10 +37,17 @@ class DoorsOpener : Thinker
     Array<DoorSide_t> doorSides;
     Array<Door_t> doors;
     Map<Int, Door_t> doorsMap;
-    int doorSidesLastIdx;
     PlayerPawn player;
     DoorsOpenerHelper helper;
     Actor freezeChecker;
+
+    void initCopy(DoorsOpener other)
+    {
+        doorSides = other.doorSides;
+        doors = other.doors;
+        doorsMap = other.doorsMap;
+        freezeChecker = other.freezeChecker;
+    }
 
     void initDoors()
     {
@@ -172,13 +179,19 @@ class DoorsOpener : Thinker
 class DoorsOpenerHandler : EventHandler
 {
     Array<DoorsOpener> openers;
+    bool firstInitialized;
     override void PlayerEntered(PlayerEvent e)
     {
         PlayerInfo player = players[e.PlayerNumber];
         if (!player) return;
         DoorsOpener opener = new("DoorsOpener");;
         opener.player = player.mo;
-        opener.initDoors();
+        if (!firstInitialized) {
+            opener.initDoors();
+            firstInitialized = true;
+        } else {
+            opener.initCopy(openers[0]);
+        }
         openers.push(opener);
     }
 }
