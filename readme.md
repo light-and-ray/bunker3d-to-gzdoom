@@ -1,4 +1,4 @@
-Need to do list [0/18]:
+Need to do list [0/19]:
 - [ ] filter things using clusters
 - [ ] ends of levels
 - [ ] sprite scale mechanism
@@ -13,6 +13,7 @@ Need to do list [0/18]:
 - [ ] sync current discharge sprite and wall 
 - [ ] friendly NPC AI
 - [ ] foe AI
+- [ ] crates logic
 - [ ] explosive barrels
 - [ ] fix broken lines in l3d levels
 - [ ] smart cutter for TOP lines
