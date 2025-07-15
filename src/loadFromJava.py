@@ -212,6 +212,8 @@ def load(mapIndex: int, game: GameType):
     data.doorsStartLineIdx=read1DArray('DOORS_START_LINE_IDX')
 
     data.spawnPos = read1DArray('SPAWN_POS')
+    data.spawnPos[0] = data.spawnPos[0] * 2**16 // 75000
+    data.spawnPos[1] = data.spawnPos[1] * 2**16 // 75000
     data.spawnAngle = readSingleValue('SPAWN_ANGLE')
 
     data.foeAngles = read1DArray('FOE_ANGLES')

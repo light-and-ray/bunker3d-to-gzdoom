@@ -1090,8 +1090,8 @@ public class ResourcesLoaderL3D {
    public void initStartingPos(int var1, long var2, long var4, int var6, int var7) {
       this.gn = new long[2];
       this.fU = var1;
-      this.gn[0] = (var2 << 16) / 75000L;
-      this.gn[1] = (var4 << 16) / 75000L;
+      this.gn[0] = var2;
+      this.gn[1] = var4;
       this.fz = var6;
       this.fA = var7;
    }
