@@ -44,6 +44,7 @@ public class MainB3D {
         Json.export("SPRITES_DATA_COLOR_2", loader.SPRITES_DATA_COLOR_2);
         Json.export("SPRITES_W", loader.SPRITES_W);
         Json.export("SPRITES_H", loader.SPRITES_H);
+        Json.export("SPRITES_SCALE", loader.bj);
 
         Json.export("SPAWN_POS", loader.fz);
         Json.export("SPAWN_ANGLE", loader.eR);
@@ -55,12 +56,19 @@ public class MainB3D {
         Json.export("FOE_ANGLES", loader.bW);
         Json.export("FOE_WALK_DISTANCE", loader.bZ);
 
+        Json.export("VISIBLE_THING_SETS", loader.ci);
+        Json.export("VISIBLE_THING_SET_START", loader.fk);
+        Json.export("CLUSTERS", loader.dq); // rect (-75000, -75000, 75000, 75000)
+        Json.export("CLUSTER_END_OF_LEVEL", loader.eS);
+        Json.export("CLUSTER_VISIBLE_THING_SET", loader.du);
+
         // Json.export("UNKNOWN_cD", loader.cD);
         // Json.export("UNKNOWN_cE", loader.cE);
         // Json.export("UNKNOWN_bX", loader.bX);
         // Json.export("UNKNOWN_cb", loader.cb);
         // Json.export("UNKNOWN_cj", loader.cj);
         // Json.export("UNKNOWN_cc", loader.cc);
+        // Json.export("UNKNOWN_cC", loader.cC);
         // Json.export("UNKNOWN_cl", loader.cl);
         // Json.export("UNKNOWN_ce", loader.ce);
         // Json.export("UNKNOWN_ck", loader.ck);
