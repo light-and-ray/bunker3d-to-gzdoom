@@ -1,9 +1,29 @@
+Need to do list [0/18]:
+- [ ] filter things using clusters
+- [ ] ends of levels
+- [ ] sprite scale mechanism
+- [ ] add lamp flicker handler
+- [ ] add lamp light on walls
+- [ ] add lamp light on floor
+- [ ] add RPG
+- [ ] add pistols
+- [ ] add chaingun
+- [ ] animated decorations
+- [ ] breakable glass
+- [ ] sync current discharge sprite and wall 
+- [ ] friendly NPC AI
+- [ ] foe AI
+- [ ] explosive barrels
+- [ ] fix broken lines in l3d levels
+- [ ] smart cutter for TOP lines
+- [ ] lightnings
 
 ## Bunker3D to GZDoom
 
 The goal of this project is to port all the maps and resources from an old 2006-2008 j2me mobile FPS game trilogy: Bunker3D, Laboratory3D and Castle3D by Netsoftware on [GZDoom](https://github.com/ZDoom/gzdoom) engine. The project is planned to serve as a base for a further enhanced port
 
 ![](readmeImages/screenshot1.png)
+
 
 What does this project do?
 1. Runs the java code extracted from the games, modified only to load and export data
