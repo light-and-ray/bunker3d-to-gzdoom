@@ -1,16 +1,13 @@
-class BaseLamp : Actor
+class BaseFloorLamp : Actor
 {
     Default
     {
         Health 1;
         GibHealth 11;
-        +NOGRAVITY;
-        +DONTFALL;
         +SHOOTABLE;
         +DONTTHRUST;
         +NOBLOOD;
         +NOBLOODDECALS;
-        +SPAWNCEILING;
     }
     States
     {
@@ -40,12 +37,12 @@ class BaseLamp : Actor
     }
 }
 
-class BaseFloorLamp : BaseLamp
+class BaseCeilingLamp : BaseFloorLamp
 {
     Default
     {
-        -NOGRAVITY;
-        -DONTFALL;
-        -SPAWNCEILING;
+        +NOGRAVITY;
+        +DONTFALL;
+        +SPAWNCEILING;
     }
 }

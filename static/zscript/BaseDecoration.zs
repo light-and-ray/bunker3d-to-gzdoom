@@ -11,17 +11,11 @@ class BaseFloorDecoration : Actor
 }
 
 
-class BaseCeilingDecoration : Actor
+class BaseCeilingDecoration : BaseFloorDecoration
 {
     Default
     {
         +NOGRAVITY;
         +SPAWNCEILING;
-    }
-    States
-    {
-        SpawnBase:
-            #### A 25;
-            loop;
     }
 }

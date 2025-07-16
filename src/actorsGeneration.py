@@ -88,7 +88,7 @@ def generateLampZScript(className: str, spriteName: str, spriteA: Image.Image, s
         scaleFactor = scaleOverride
     else:
         scaleFactor = 1.0
-    baseClassName = "BaseLamp" if not isFloor else "BaseFloorLamp"
+    baseClassName = "BaseCeilingLamp" if not isFloor else "BaseFloorLamp"
     code = ""
     code += f"class {className} : {baseClassName}\n"
     code +=  "{\n"
