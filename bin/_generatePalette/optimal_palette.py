@@ -21,7 +21,7 @@ def kmeans_palette(colors, k, max_iter=20, sample_size=100000):
 
     Args:
         colors (list of tuple): List of (r, g, b) tuples.
-        k (int): Number of clusters (palette colors).
+        k (int): Number of triggers (palette colors).
         max_iter (int): Maximum number of iterations.
         sample_size (int): Maximum number of pixels to use for clustering (random sample if needed).
 
@@ -96,7 +96,7 @@ def get_optimal_palette(*png_paths):
     # Run k-means clustering to get 256 optimal colors.
     palette = kmeans_palette(colors, 256)
 
-    # In case fewer than 256 unique clusters were produced, pad with black.
+    # In case fewer than 256 unique triggers were produced, pad with black.
     while len(palette) < 256:
         palette.append((0, 0, 0))
     # If more than 256 colors are produced (shouldn't happen), truncate.

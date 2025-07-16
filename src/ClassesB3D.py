@@ -46,7 +46,14 @@ class MapB3D:
             foeSprites: list[list[Image.Image]], gameType: GameType,
             thingsPos: list[list[int]], thingsSprites: list[int], thingsColors: list[int],
             thingsVisible: list[int], thingsSpecials: list[int],
+            visibleThingSets: list[list[int]], triggers: list[list[int]], triggerVisibleThingSet : list[int]
+
     ):
+        self.triggers: list[Vertex] = []
+        for cluster in triggers:
+            self.triggers.append(Vertex(cluster[0], cluster[1]))
+        for i in range(len(triggerVisibleThingSet)):
+            print(f"{i}: [{visibleThingSets[triggerVisibleThingSet[i]]}]")
         self.circles = circles
 
         self.textures: dict[str, Image.Image] = {}

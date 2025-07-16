@@ -58,9 +58,9 @@ public class MainB3D {
 
         Json.export("VISIBLE_THING_SETS", loader.ci);
         Json.export("VISIBLE_THING_SET_START", loader.fk);
-        Json.export("CLUSTERS", loader.dq); // rect (C_x - 75000, C_y - 75000, C_x + 75000, C_y + 75000) where C = point // 2**16 * 7500
-        Json.export("CLUSTER_END_OF_LEVEL", loader.eS);
-        Json.export("CLUSTER_VISIBLE_THING_SET", loader.du);
+        Json.export("TRIGGERS", loader.dq); // rect (C_x - 75000, C_y - 75000, C_x + 75000, C_y + 75000)
+        Json.export("TRIGGER_END_OF_LEVEL", loader.eS);
+        Json.export("TRIGGER_VISIBLE_THING_SET", loader.du);
 
         // Json.export("UNKNOWN_cD", loader.cD);
         // Json.export("UNKNOWN_cE", loader.cE);

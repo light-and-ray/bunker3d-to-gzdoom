@@ -77,6 +77,25 @@ def drawMap(map: 'MapInterim|MapB3D', show=False, name=None, resolution=1280, fr
             dwg.add(dwg.text(str(thing.index), insert=(x, y),
                          fill='black', font_size=12, font_family='sans-serif'))
 
+    if hasattr(map, 'triggers'):
+        for i, trigger in enumerate(map.triggers):
+            x1, y1 = rescale(trigger.x - 75000, trigger.y - 75000)
+            x2, y2 = rescale(trigger.x - 75000, trigger.y + 75000)
+            x3, y3 = rescale(trigger.x + 75000, trigger.y + 75000)
+            x4, y4 = rescale(trigger.x + 75000, trigger.y - 75000)
+            color = svgwrite.rgb(69, 69, 69)
+            dwg.add(dwg.line((x1, y1), (x2, y2),
+                    stroke=color, stroke_width=0.5, fill='none'))
+            dwg.add(dwg.line((x2, y2), (x3, y3),
+                    stroke=color, stroke_width=0.5, fill='none'))
+            dwg.add(dwg.line((x3, y3), (x4, y4),
+                    stroke=color, stroke_width=0.5, fill='none'))
+            dwg.add(dwg.line((x4, y4), (x1, y1),
+                    stroke=color, stroke_width=0.5, fill='none'))
+            x, y = rescale(trigger.x, trigger.y)
+            # dwg.add(dwg.text("trig " + str(i), insert=(x, y),
+            #  fill='black', font_size=12, font_family='sans-serif'))
+
 
     dwg.save()
     if show:
