@@ -1,4 +1,4 @@
-Need to do list [4/24]:
+Need to do list [4/25]:
 - [x] filter things using triggers
 - [x] sprite scale mechanism
 - [x] remove broken things
@@ -16,6 +16,7 @@ Need to do list [4/24]:
 - [ ] fix animated big fan texture
 - [ ] sync current discharge sprite and wall
 - [ ] friendly NPC AI
+- [ ] flamethrower guy AI
 - [ ] foe AI
 - [ ] crates logic
 - [ ] explosive barrels
