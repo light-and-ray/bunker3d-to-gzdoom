@@ -1,4 +1,4 @@
-Need to do list [0/19]:
+Need to do list [1/19]:
 - [x] filter things using triggers
 - [ ] ends of levels
 - [ ] sprite scale mechanism
