@@ -1,7 +1,6 @@
 240x320 version 2.0
 
 jars/l3d.d/
-.
 ├── 0.b3d
 ├── 0.mid
 ├── 10.b3d
