@@ -117,7 +117,7 @@ class MapB3D:
             if not thingsVisibleFlag[i]:
                 continue
             if i not in visibleThingsByTrigger:
-                print("removed by trigger:", i)
+                # print("removed by trigger:", i)
                 continue
             if i >= 0 and i < NPC_LAST_IDX:
                 category = ThingCategory.NPC

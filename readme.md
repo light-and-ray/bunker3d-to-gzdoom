@@ -1,5 +1,5 @@
 Need to do list [0/19]:
-- [ ] filter things using triggers
+- [+] filter things using triggers
 - [ ] ends of levels
 - [ ] sprite scale mechanism
 - [ ] add lamp flicker handler

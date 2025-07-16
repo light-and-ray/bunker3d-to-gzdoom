@@ -56,6 +56,13 @@ public class MainL3D {
         Json.export("FOE_SPRITES_H", loader.FOE_SPRITES_H);
         Json.export("FOE_ANGLES", loader.cg);
         Json.export("FOE_WALK_DISTANCE", loader.cj);
+
+        Json.export("VISIBLE_THING_SETS", loader.cs);
+        Json.export("VISIBLE_THING_SET_START", loader.fU);
+        Json.export("TRIGGERS", loader.dI); // rect (C_x - 75000, C_y - 75000, C_x + 75000, C_y + 75000)
+        Json.export("TRIGGER_END_OF_LEVEL", loader.fA);
+        Json.export("TRIGGER_VISIBLE_THING_SET", loader.dM);
+
     }
 
 }
