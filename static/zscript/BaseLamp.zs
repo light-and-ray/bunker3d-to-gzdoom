@@ -39,3 +39,13 @@ class BaseLamp : Actor
             goto Death;
     }
 }
+
+class BaseFloorLamp : BaseLamp
+{
+    Default
+    {
+        -NOGRAVITY;
+        -DONTFALL;
+        -SPAWNCEILING;
+    }
+}

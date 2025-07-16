@@ -83,13 +83,14 @@ def generateLampClassName():
     _lampClassNameIdx += 1
     return result
 
-def generateLampZScript(className: str, spriteName: str, spriteA: Image.Image, scaleOverride: float|None):
+def generateLampZScript(className: str, spriteName: str, spriteA: Image.Image, scaleOverride: float|None, isFloor):
     if scaleOverride is not None:
         scaleFactor = scaleOverride
     else:
         scaleFactor = 1.0
+    baseClassName = "BaseLamp" if not isFloor else "BaseFloorLamp"
     code = ""
-    code += f"class {className} : BaseLamp\n"
+    code += f"class {className} : {baseClassName}\n"
     code +=  "{\n"
     code +=  "    Default\n"
     code +=  "    {\n"

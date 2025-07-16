@@ -155,7 +155,10 @@ class MapGZD:
                 spriteB = mapInterim.sprites[lamp.colorIdx][lamp.spriteIdx+1]
                 spriteC = mapInterim.sprites[lamp.colorIdx][lamp.spriteIdx+2]
                 scaleOverrideFix = SPRITE_SCALE_OVERRIDE.get((gameType, mapIndex, lamp.spriteIdx))
-                zscript = generateLampZScript(className, spriteName, spriteA, scaleOverrideFix)
+                isFloor = False
+                if gameType == GameType.L3D and mapIndex == 9:
+                    isFloor = True
+                zscript = generateLampZScript(className, spriteName, spriteA, scaleOverrideFix, isFloor)
                 ednum = EdnumGZD(num=generateEdnum(), className=className)
                 self.sprites[spriteName + "A0"] = spriteA
                 self.sprites[spriteName + "B0"] = spriteB

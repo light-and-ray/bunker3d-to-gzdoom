@@ -2,7 +2,7 @@ Need to do list [2/24]:
 - [x] filter things using triggers
 - [x] sprite scale mechanism
 - [x] remove broken things
-- [ ] floor lamps
+- [x] floor lamps
 - [ ] ends of levels
 - [ ] broken door logic
 - [ ] add lamp flicker handler
