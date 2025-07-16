@@ -1,6 +1,7 @@
-Need to do list [1/19]:
+Need to do list [1/20]:
 - [x] filter things using triggers
 - [ ] ends of levels
+- [ ] broken door logic
 - [ ] sprite scale mechanism
 - [ ] add lamp flicker handler
 - [ ] add lamp light on walls
