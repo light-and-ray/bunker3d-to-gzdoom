@@ -1,4 +1,4 @@
-Need to do list [2/24]:
+Need to do list [4/24]:
 - [x] filter things using triggers
 - [x] sprite scale mechanism
 - [x] remove broken things
