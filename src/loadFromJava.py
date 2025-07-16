@@ -200,7 +200,7 @@ def load(mapIndex: int, game: GameType):
         textureMirroring=read1DArray("LINES_MIRRORING"), animatedFrames=animatedFrames,
         animatedLines=read2DArray("LINES_ANIMATED"), sprites=sprites, foeSprites=foeSprites,
         thingsPos=read2DArray('THINGS_POS'), thingsSprites=read1DArray("THINGS_SPRITE"), thingsColors=read1DArray("THINGS_COLOR"),
-        thingsVisible=read1DArray("THINGS_VISIBLE"), thingsSpecials = read1DArray('THINGS_SPECIAL'),
+        thingsVisibleFlag=read1DArray("THINGS_VISIBLE"), thingsSpecials = read1DArray('THINGS_SPECIAL'),
         visibleThingSets=read2DArray("VISIBLE_THING_SETS"), triggers=read2DArray("TRIGGERS"),
         triggerVisibleThingSet=read1DArray("TRIGGER_VISIBLE_THING_SET")
     )

@@ -8,10 +8,18 @@ if TYPE_CHECKING:
 
 
 def drawMap(map: 'MapInterim|MapB3D', show=False, name=None, resolution=1280, frame=30, wait=False):
-    min_x = min(min(line.v1.x, line.v2.x) for line in map.lines)
-    max_x = max(max(line.v1.x, line.v2.x) for line in map.lines)
-    min_y = min(min(line.v1.y, line.v2.y) for line in map.lines)
-    max_y = max(max(line.v1.y, line.v2.y) for line in map.lines)
+    setX = set([line.v1.x for line in map.lines] + [line.v2.x for line in map.lines])
+    setY = set([line.v1.y for line in map.lines] + [line.v2.y for line in map.lines])
+    if hasattr(map, 'things'):
+        setX.update([thing.pos.x for thing in map.things])
+        setY.update([thing.pos.y for thing in map.things])
+    if hasattr(map, 'triggers'):
+        setX.update([trigger.x for trigger in map.triggers])
+        setY.update([trigger.y for trigger in map.triggers])
+    min_x = min(setX)
+    max_x = max(setX)
+    min_y = min(setY)
+    max_y = max(setY)
     ratio = (max_y - min_y) / (max_x - min_x)
     height = int((resolution**2 * ratio)**0.5)
     width = int(resolution**2/height)
@@ -66,8 +74,8 @@ def drawMap(map: 'MapInterim|MapB3D', show=False, name=None, resolution=1280, fr
                              stroke=color, stroke_width=1, fill='none'))
 
         # Draw text (line index)
-        dwg.add(dwg.text(str(i), insert=(midpoint_x-8, midpoint_y+4),
-                         fill='black', font_size=12, font_family='sans-serif'))
+        # dwg.add(dwg.text(str(i), insert=(midpoint_x-8, midpoint_y+4),
+        #                  fill='black', font_size=12, font_family='sans-serif'))
 
     if hasattr(map, 'things'):
         for i, thing in enumerate(map.things):

@@ -45,15 +45,17 @@ class MapB3D:
             animatedFrames: list[list[list[int]]], animatedLines: list[list[int]], sprites: list[list[Image.Image]],
             foeSprites: list[list[Image.Image]], gameType: GameType,
             thingsPos: list[list[int]], thingsSprites: list[int], thingsColors: list[int],
-            thingsVisible: list[int], thingsSpecials: list[int],
+            thingsVisibleFlag: list[int], thingsSpecials: list[int],
             visibleThingSets: list[list[int]], triggers: list[list[int]], triggerVisibleThingSet : list[int]
 
     ):
         self.triggers: list[Vertex] = []
         for cluster in triggers:
             self.triggers.append(Vertex(cluster[0], cluster[1]))
+        visibleThingsByTrigger = set()
         for i in range(len(triggerVisibleThingSet)):
-            print(f"{i}: [{visibleThingSets[triggerVisibleThingSet[i]]}]")
+            visibleThingsByTrigger.update(visibleThingSets[triggerVisibleThingSet[i]])
+            # print(f"{i}: [{visibleThingSets[triggerVisibleThingSet[i]]}]")
         self.circles = circles
 
         self.textures: dict[str, Image.Image] = {}
@@ -112,7 +114,10 @@ class MapB3D:
         # for i in range(len(thingsSprites)):
         #     print(i, ":", thingsSprites[i])
         for i in range(DECORATION_LAST_IDX):
-            if not thingsVisible[i]:
+            if not thingsVisibleFlag[i]:
+                continue
+            if i not in visibleThingsByTrigger:
+                print("removed by trigger:", i)
                 continue
             if i >= 0 and i < NPC_LAST_IDX:
                 category = ThingCategory.NPC
