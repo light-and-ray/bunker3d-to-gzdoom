@@ -44,7 +44,7 @@ public class MainB3D {
         Json.export("SPRITES_DATA_COLOR_2", loader.SPRITES_DATA_COLOR_2);
         Json.export("SPRITES_W", loader.SPRITES_W);
         Json.export("SPRITES_H", loader.SPRITES_H);
-        Json.export("SPRITES_SCALE", loader.bj);
+        // Json.export("SPRITES_bj", loader.bj); // scale ?
 
         Json.export("SPAWN_POS", loader.fz);
         Json.export("SPAWN_ANGLE", loader.eR);

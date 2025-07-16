@@ -11,7 +11,7 @@ from actorsGeneration import ( generateDecorationSpriteName, generateDecorationC
     generateCrateObj, generateCrateModelReplacementTextureDef, generateGenericPatchTextureDef,
 )
 from tools import LEVEL_CEILING, LEVEL_FLOOR, SCALE_FACTOR
-from fixes import CRATE_TOP_TEXTURES
+from fixes import CRATE_TOP_TEXTURES, SPRITE_SCALE_OVERRIDE
 
 @dataclass
 class SectorGZD:
@@ -129,9 +129,11 @@ class MapGZD:
                 className = generateDecorationClassName()
                 if decoration.spriteIdx >= 0:
                     sprite = mapInterim.sprites[decoration.colorIdx][decoration.spriteIdx]
+                    scaleOverrideFix = SPRITE_SCALE_OVERRIDE.get((gameType, mapIndex, decoration.spriteIdx))
                 else:
                     sprite = mapInterim.foeSprites[decoration.colorIdx][decoration.spriteIdx]
-                zscript = generateDecorationZScript(className, spriteName, sprite)
+                    scaleOverrideFix = 1.3
+                zscript = generateDecorationZScript(className, spriteName, sprite, scaleOverrideFix)
                 ednum = EdnumGZD(num=generateEdnum(), className=className)
                 self.sprites[spriteName + "A0"] = sprite
                 self.actors.append(ActorGZD(ednum=ednum, zscript=zscript))
@@ -152,7 +154,8 @@ class MapGZD:
                 spriteA = mapInterim.sprites[lamp.colorIdx][lamp.spriteIdx]
                 spriteB = mapInterim.sprites[lamp.colorIdx][lamp.spriteIdx+1]
                 spriteC = mapInterim.sprites[lamp.colorIdx][lamp.spriteIdx+2]
-                zscript = generateLampZScript(className, spriteName, spriteA)
+                scaleOverrideFix = SPRITE_SCALE_OVERRIDE.get((gameType, mapIndex, lamp.spriteIdx))
+                zscript = generateLampZScript(className, spriteName, spriteA, scaleOverrideFix)
                 ednum = EdnumGZD(num=generateEdnum(), className=className)
                 self.sprites[spriteName + "A0"] = spriteA
                 self.sprites[spriteName + "B0"] = spriteB
@@ -221,7 +224,8 @@ class MapGZD:
                     spriteB = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+5]
                 spriteC = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+2]
                 spriteD = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+3]
-                zscript = generateFriendlyZScript(className, spriteName, spriteA, spriteD)
+                scaleOverrideFix = SPRITE_SCALE_OVERRIDE.get((gameType, mapIndex, friendly.spriteIdx))
+                zscript = generateFriendlyZScript(className, spriteName, spriteA, spriteD, scaleOverrideFix)
                 ednum = EdnumGZD(num=generateEdnum(), className=className)
                 self.sprites[spriteName+"A0"] = spriteA
                 self.sprites[spriteName+"B0"] = spriteB

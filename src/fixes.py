@@ -164,4 +164,20 @@ def fixFoeSprite(image: Image.Image, index: int) -> Image.Image:
     return image
 
 
+SPRITE_SCALE_OVERRIDE: dict[tuple[GameType, int, int], float] = dict()
+SPRITE_SCALE_OVERRIDE[(GameType.L3D, 1, 13)] = 1.3 # corp
+SPRITE_SCALE_OVERRIDE[(GameType.L3D, 1, 24)] = 1.0 # meat
+SPRITE_SCALE_OVERRIDE[(GameType.L3D, 4, 28)] = 93/72 # water drop
+SPRITE_SCALE_OVERRIDE[(GameType.L3D, 5, 41)] = 48/32 # skulls
+SPRITE_SCALE_OVERRIDE[(GameType.L3D, 6, 32)] = 48/32 # coal
+SPRITE_SCALE_OVERRIDE[(GameType.L3D, 6, 34)] = 0.8 # blood mess
+SPRITE_SCALE_OVERRIDE[(GameType.L3D, 7, 37)] = 0.8 # vial
+SPRITE_SCALE_OVERRIDE[(GameType.L3D, 7, 38)] = 0.5 # vial
+SPRITE_SCALE_OVERRIDE[(GameType.L3D, 7, 39)] = 0.5 # vial
+SPRITE_SCALE_OVERRIDE[(GameType.L3D, 7, 40)] = 0.5 # vial
+SPRITE_SCALE_OVERRIDE[(GameType.L3D, 7, 41)] = 0.8 # blood mess
+SPRITE_SCALE_OVERRIDE[(GameType.L3D, 9, 0)] = 1.5 # lamp
+SPRITE_SCALE_OVERRIDE[(GameType.L3D, 9, 3)] = 1.5 # lamp
+SPRITE_SCALE_OVERRIDE[(GameType.L3D, 9, 32)] = 1.3 # shovels
+SPRITE_SCALE_OVERRIDE[(GameType.L3D, 9, 37)] = 1.5 # coal
 

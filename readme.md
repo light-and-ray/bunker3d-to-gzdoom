@@ -1,8 +1,10 @@
-Need to do list [1/20]:
+Need to do list [2/22]:
 - [x] filter things using triggers
+- [x] sprite scale mechanism
+- [ ] remove broken things
+- [ ] floor lamps
 - [ ] ends of levels
 - [ ] broken door logic
-- [ ] sprite scale mechanism
 - [ ] add lamp flicker handler
 - [ ] add lamp light on walls
 - [ ] add lamp light on floor
@@ -11,12 +13,14 @@ Need to do list [1/20]:
 - [ ] add chaingun
 - [ ] animated decorations
 - [ ] breakable glass
-- [ ] sync current discharge sprite and wall 
+- [ ] fix animated big fan texture
+- [ ] sync current discharge sprite and wall
 - [ ] friendly NPC AI
 - [ ] foe AI
 - [ ] crates logic
 - [ ] explosive barrels
 - [ ] fix broken lines in l3d levels
+- [ ] fix broken texture offset in constructions
 - [ ] smart cutter for TOP lines
 - [ ] lightnings
 

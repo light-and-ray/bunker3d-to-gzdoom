@@ -42,7 +42,11 @@ def generateDecorationClassName():
     _decorationClassNameIdx += 1
     return result
 
-def generateDecorationZScript(className: str, spriteName: str, sprite: Image.Image):
+def generateDecorationZScript(className: str, spriteName: str, sprite: Image.Image, scaleOverride: float|None):
+    if scaleOverride is not None:
+        scaleFactor = scaleOverride
+    else:
+        scaleFactor = 1.0
     code = ""
     isPinnedToCeiling = isBottomRowTransparent(sprite) and not isTopRowTransparent(sprite)
     baseClassName = "BaseCeilingDecoration" if isPinnedToCeiling else "BaseFloorDecoration"
@@ -50,8 +54,10 @@ def generateDecorationZScript(className: str, spriteName: str, sprite: Image.Ima
     code +=  "{\n"
     code +=  "    Default\n"
     code +=  "    {\n"
-    code += f"        Height {sprite.height};\n"
-    code += f"        Radius {sprite.width/2};\n"
+    code += f"        Height {sprite.height*scaleFactor};\n"
+    code += f"        Radius {sprite.width/2*scaleFactor};\n"
+    if scaleOverride is not None:
+        code += f"        Scale {scaleOverride};\n"
     code +=  "    }\n"
     code +=  "    States\n"
     code +=  "    {\n"
@@ -77,15 +83,21 @@ def generateLampClassName():
     _lampClassNameIdx += 1
     return result
 
-def generateLampZScript(className: str, spriteName: str, spriteA: Image.Image):
+def generateLampZScript(className: str, spriteName: str, spriteA: Image.Image, scaleOverride: float|None):
+    if scaleOverride is not None:
+        scaleFactor = scaleOverride
+    else:
+        scaleFactor = 1.0
     code = ""
     code += f"class {className} : BaseLamp\n"
     code +=  "{\n"
     code +=  "    Default\n"
     code +=  "    {\n"
-    code += f"        Height {spriteA.height};\n"
-    code += f"        DeathHeight {spriteA.height};\n"
-    code += f"        Radius {spriteA.width/2};\n"
+    code += f"        Height {spriteA.height*scaleFactor};\n"
+    code += f"        DeathHeight {spriteA.height*scaleFactor};\n"
+    code += f"        Radius {spriteA.width/2*scaleFactor};\n"
+    if scaleOverride is not None:
+        code += f"        Scale {scaleOverride};\n"
     code +=  "    }\n"
     code +=  "    States\n"
     code +=  "    {\n"
@@ -160,16 +172,21 @@ def generateFriendlyClassName():
     _friendlyClassNameIdx += 1
     return result
 
-def generateFriendlyZScript(className: str, spriteName: str, spriteA: Image.Image, spriteCorpse: Image.Image):
+def generateFriendlyZScript(className: str, spriteName: str, spriteA: Image.Image, spriteCorpse: Image.Image, scaleOverride: float|None):
     code = ""
-    friendlyScale = 1.3
+    if scaleOverride is not None:
+        scaleFactor = scaleOverride
+    else:
+        scaleFactor = 1.3
     code += f"class {className} : BaseFriendly\n"
     code +=  "{\n"
     code +=  "    Default\n"
     code +=  "    {\n"
-    code += f"        Height {spriteA.height*friendlyScale};\n"
-    code += f"        DeathHeight {spriteCorpse.height*friendlyScale};\n"
-    code += f"        Radius {spriteA.width/2*friendlyScale};\n"
+    code += f"        Height {spriteA.height*scaleFactor};\n"
+    code += f"        DeathHeight {spriteCorpse.height*scaleFactor};\n"
+    code += f"        Radius {spriteA.width/2*scaleFactor};\n"
+    if scaleOverride is not None:
+        code += f"        Scale {scaleOverride};\n"
     code +=  "    }\n"
     code +=  "    States\n"
     code +=  "    {\n"
