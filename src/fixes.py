@@ -181,3 +181,8 @@ SPRITE_SCALE_OVERRIDE[(GameType.L3D, 9, 3)] = 1.5 # lamp
 SPRITE_SCALE_OVERRIDE[(GameType.L3D, 9, 32)] = 1.3 # shovels
 SPRITE_SCALE_OVERRIDE[(GameType.L3D, 9, 37)] = 1.5 # coal
 
+
+BROKEN_THINGS: dict[tuple[GameType, int], list[int]] = dict()
+BROKEN_THINGS[(GameType.B3D, 1)] = [24]
+BROKEN_THINGS[(GameType.L3D, 7)] = [40]
+

@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 from PIL import Image
-from typing import Any
 import math
 from ClassesShared import Vertex, HeightType, Animation, GameType
 from tools import generateTextureLumpName, generateTextureModifiedLumpName, WALL_HEIGHT
 from enum import Enum
+from fixes import BROKEN_THINGS
 
 
 @dataclass
@@ -43,7 +43,7 @@ class MapB3D:
             textures: list[Image.Image], linesTextures: list[list[int]],
             circles: list[list[int]], textureMirroring: list[int],
             animatedFrames: list[list[list[int]]], animatedLines: list[list[int]], sprites: list[list[Image.Image]],
-            foeSprites: list[list[Image.Image]], gameType: GameType,
+            foeSprites: list[list[Image.Image]], gameType: GameType, mapIndex: int,
             thingsPos: list[list[int]], thingsSprites: list[int], thingsColors: list[int],
             thingsVisibleFlag: list[int], thingsSpecials: list[int],
             visibleThingSets: list[list[int]], triggers: list[list[int]], triggerVisibleThingSet : list[int]
@@ -117,7 +117,9 @@ class MapB3D:
             if not thingsVisibleFlag[i]:
                 continue
             if i not in visibleThingsByTrigger:
-                # print("removed by trigger:", i)
+                # print("removed thing by trigger:", i)
+                continue
+            if i in (BROKEN_THINGS.get((gameType, mapIndex)) or []):
                 continue
             if i >= 0 and i < NPC_LAST_IDX:
                 category = ThingCategory.NPC

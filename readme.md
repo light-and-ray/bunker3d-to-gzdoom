@@ -1,7 +1,7 @@
-Need to do list [2/22]:
+Need to do list [2/24]:
 - [x] filter things using triggers
 - [x] sprite scale mechanism
-- [ ] remove broken things
+- [x] remove broken things
 - [ ] floor lamps
 - [ ] ends of levels
 - [ ] broken door logic
