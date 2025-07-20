@@ -165,7 +165,7 @@ def fixFoeSprite(image: Image.Image, index: int) -> Image.Image:
 
 
 SPRITE_SCALE_OVERRIDE: dict[tuple[GameType, int, int], float] = dict()
-SPRITE_SCALE_OVERRIDE[(GameType.L3D, 1, 13)] = 1.3 # corp
+SPRITE_SCALE_OVERRIDE[(GameType.L3D, 1, 13)] = 1.3 # corpse
 SPRITE_SCALE_OVERRIDE[(GameType.L3D, 1, 24)] = 1.0 # meat
 SPRITE_SCALE_OVERRIDE[(GameType.L3D, 4, 28)] = 96/72 # water drop
 SPRITE_SCALE_OVERRIDE[(GameType.L3D, 5, 41)] = 1.5 # skulls
@@ -180,6 +180,9 @@ SPRITE_SCALE_OVERRIDE[(GameType.L3D, 9, 0)] = 1.5 # lamp
 SPRITE_SCALE_OVERRIDE[(GameType.L3D, 9, 3)] = 1.5 # lamp
 SPRITE_SCALE_OVERRIDE[(GameType.L3D, 9, 32)] = 1.3 # shovels
 SPRITE_SCALE_OVERRIDE[(GameType.L3D, 9, 37)] = 1.5 # coal
+SPRITE_SCALE_OVERRIDE[(GameType.L3D, 10, 13)] = 1.3 # corpse
+SPRITE_SCALE_OVERRIDE[(GameType.L3D, 10, 24)] = 1.2 # martyr
+
 
 
 BROKEN_THINGS: dict[tuple[GameType, int], list[int]] = dict()
