@@ -121,6 +121,8 @@ class MapB3D:
                 continue
             if i in (BROKEN_THINGS.get((gameType, mapIndex)) or []):
                 continue
+            if gameType == GameType.L3D and i in (64, 65): # explosion sprites for RPG
+                continue
             if i >= 0 and i < NPC_LAST_IDX:
                 category = ThingCategory.NPC
             elif i >= NPC_LAST_IDX and i < LAMP_LAST_IDX:
