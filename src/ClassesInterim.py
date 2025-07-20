@@ -10,7 +10,7 @@ from algebraFunctions import (resolveSegmentsOverlap, isInside, areOppositelyDir
 from ClassesShared import Vertex, HeightType, GameType
 from drawMap import drawMap
 from tools import SCALE_FACTOR
-from fixes import BrokenTextureData
+from fixes import BrokenTextureData, BROKEN_LINES
 
 
 @dataclass
@@ -106,8 +106,11 @@ class CrateInterim:
 
 
 class MapInterim:
-    def __init__(self, mapB3D: MapB3D, brokenLines: list[int], doorsSpeed: list[int], doorsStartLineIdx: list[int],
-            brokenTextures: dict[int, BrokenTextureData], foeAngles: list[int], foeWalkDistances: list[int], gameType: GameType):
+    def __init__(self, mapB3D: MapB3D, doorsSpeed: list[int], doorsStartLineIdx: list[int],
+            brokenTextures: dict[int, BrokenTextureData], foeAngles: list[int], foeWalkDistances: list[int],
+            gameType: GameType, mapIndex: int):
+        self.gameType = gameType
+        self.mapIndex = mapIndex
         self.textures = mapB3D.textures
         self.lines: list[LineInterim] = []
         allCircleLines = []
@@ -124,8 +127,7 @@ class MapInterim:
         self._fixBrokenTextures(brokenTextures)
         self._fillCirclesOffsets(mapB3D.circles)
         self._initDoors(doorsStartLineIdx, doorsSpeed)
-        self._removeCratesDoorsAndBrokenLines(mapB3D.crates, doorsStartLineIdx, brokenLines)
-        # self._fixVertexes()
+        self._removeCratesDoorsAndBrokenLines(mapB3D.crates, doorsStartLineIdx)
         self._cutMultitextureLines()
         self._removeOverlaps()
 
@@ -235,8 +237,8 @@ class MapInterim:
                 offset += lineLengthScaled
 
 
-    def _removeCratesDoorsAndBrokenLines(self, crates: list[CrateB3D], doorsStartLineIdx: list[int], brokenLines: list[int]):
-        linesToRemove: set[int] = set(brokenLines)
+    def _removeCratesDoorsAndBrokenLines(self, crates: list[CrateB3D], doorsStartLineIdx: list[int]):
+        linesToRemove: set[int] = set(BROKEN_LINES.get((self.gameType, self.mapIndex)) or [])
 
         for crate in crates:
             linesToRemove.add(crate.startLineIdx)
@@ -253,28 +255,6 @@ class MapInterim:
             if index not in linesToRemove:
                 newLines.append(line)
         self.lines = newLines
-
-
-    def _fixVertexes(self):
-        THRESHOLD = 100
-        for i in range(len(self.lines)):
-            v1 = self.lines[i].v1
-            v2 = self.lines[i].v2
-            for j in range(len(self.lines)):
-                if i == j: continue
-                if (v1.pair in [self.lines[j].v1.pair, self.lines[j].v2.pair] or
-                    v2.pair in [self.lines[j].v1.pair, self.lines[j].v2.pair]
-                ): continue
-
-                x, y = v1.pair()
-                fixed = fixVertex(x, y, *self.lineToTuple(self.lines[j]), THRESHOLD)
-                if fixed:
-                    self.lines[i].v1 = Vertex(*fixed)
-
-                x, y = v2.pair()
-                fixed = fixVertex(x, y, *self.lineToTuple(self.lines[j]), THRESHOLD)
-                if fixed:
-                    self.lines[i].v2 = Vertex(*fixed)
 
 
     @staticmethod
@@ -493,6 +473,8 @@ class MapInterim:
     def _initDoors(self, doorsStartLineIdx: list[int], doorsSpeed: list[int]):
         self.doors : list[DoorInterim] = []
         for startIndex, speed in zip(doorsStartLineIdx, doorsSpeed):
+            if startIndex in (BROKEN_LINES.get((self.gameType, self.mapIndex)) or []):
+                continue
             lines : list[LineInterim] = []
             for i in range(startIndex, startIndex+3):
                 lines.append(self.lines[i])

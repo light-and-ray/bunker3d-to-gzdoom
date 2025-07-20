@@ -11,36 +11,13 @@ class BrokenTextureData:
     stretch: float = 1.0
 
 
-BROKEN_LINES_B3D = [
-    [],
-    [145, 146, 147, 148,  181, 182, 183, 184,  83, 84, 85, 86, 87, 88], #1
-    [296, 297, 298, 299], #2
-    [], #3
-    [], #4
-    [316, 317, 318, 319], #5
-    [], #6
-    [], #7
-    [], #8
-    [] #9
-]
-
-BROKEN_LINES_L3D = [
-    [],
-    [287, 288, 289, 290, 279, 280, 281, 282, 283, 284, 285, 286], #1
-    [], #2
-    [], #3
-    [], #4
-    [], #5
-    [], #6
-    [], #7
-    [], #8
-    [], #9
-    [], #10
-]
-
-BROKEN_LINES = dict()
-BROKEN_LINES[GameType.B3D] = BROKEN_LINES_B3D
-BROKEN_LINES[GameType.L3D] = BROKEN_LINES_L3D
+BROKEN_LINES: dict[tuple[GameType, int], list[int]] = dict()
+BROKEN_LINES[(GameType.B3D, 1)] = [145, 146, 147, 148,  181, 182, 183, 184,  83, 84, 85, 86, 87, 88]
+BROKEN_LINES[(GameType.B3D, 2)] = [296, 297, 298, 299]
+BROKEN_LINES[(GameType.B3D, 3)] = [84, 85, 86]
+BROKEN_LINES[(GameType.B3D, 5)] = [316, 317, 318, 319]
+BROKEN_LINES[(GameType.L3D, 1)] = [287, 288, 289, 290, 279, 280, 281, 282, 283, 284, 285, 286]
+BROKEN_LINES[(GameType.L3D, 9)] = [276, 277, 278,  279, 280, 281,  422, 423, 424, 425,  442, 443, 444, 445]
 
 
 BROKEN_TEXTURES_B3D = [ # Doors (inside) and 45 degree with middled texture inside
@@ -190,5 +167,5 @@ BROKEN_THINGS[(GameType.B3D, 1)] = [24]
 BROKEN_THINGS[(GameType.L3D, 3)] = [41]
 BROKEN_THINGS[(GameType.L3D, 5)] = [51]
 BROKEN_THINGS[(GameType.L3D, 7)] = [40]
-BROKEN_THINGS[(GameType.L3D, 9)] = [24, 46]
+BROKEN_THINGS[(GameType.L3D, 9)] = [24, 29, 46, 72]
 

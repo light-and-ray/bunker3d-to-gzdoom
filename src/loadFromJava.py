@@ -53,7 +53,6 @@ def load_image_from_1d_list(data, width, height) -> Image.Image:
 @dataclass
 class LoadedData:
     map: MapB3D = None
-    brokenLines: list[int] = None
     brokenTextures: dict[int, BrokenTextureData] = None
     colorCeiling: tuple[int] = None
     colorFloor: tuple[int] = None
@@ -205,7 +204,6 @@ def load(mapIndex: int, game: GameType):
         triggerVisibleThingSet=read1DArray("TRIGGER_VISIBLE_THING_SET")
     )
 
-    data.brokenLines = BROKEN_LINES[game][mapIndex]
     data.brokenTextures = BROKEN_TEXTURES[game][mapIndex]
     footer = read1DArray("FOOTER")
     data.colorCeiling = (footer[0], footer[1], footer[2])
