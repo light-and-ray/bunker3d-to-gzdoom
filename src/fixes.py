@@ -167,5 +167,5 @@ BROKEN_THINGS[(GameType.B3D, 1)] = [24]
 BROKEN_THINGS[(GameType.L3D, 3)] = [41]
 BROKEN_THINGS[(GameType.L3D, 5)] = [51]
 BROKEN_THINGS[(GameType.L3D, 7)] = [40]
-BROKEN_THINGS[(GameType.L3D, 9)] = [24, 29, 46, 72]
+BROKEN_THINGS[(GameType.L3D, 9)] = [23, 24, 29, 46, 72]
 
