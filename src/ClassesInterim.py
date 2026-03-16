@@ -368,7 +368,8 @@ class MapInterim:
                     continue
                 else:
                     # print(i, j)
-                    # if i > 98:
+                    # if i > 45:
+                    #     resolveSegmentsOverlap(*self.lineToTuple(self.lines[i]), *self.lineToTuple(self.lines[j]), needPrint=True)
                     #     drawMap(self, wait=True)
                     oldLine1 = self.lines[i]
                     oldLine2 = self.lines[j]

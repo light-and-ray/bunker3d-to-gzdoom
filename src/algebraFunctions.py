@@ -1,5 +1,14 @@
 import math
 
+def intuitiveDebugSegments(segments):
+    all_coords = sorted({coord for seg in segments for coord in seg})
+    coord_to_index = {val: idx for idx, val in enumerate(all_coords)}
+    compressed_segments = [
+        tuple(coord_to_index[c] for c in seg)
+        for seg in segments
+    ]
+    return compressed_segments
+
 def areCollinear(x1, y1, x2, y2, x3, y3):
     return (y2 - y1) * (x3 - x2) == (y3 - y2) * (x2 - x1)
 

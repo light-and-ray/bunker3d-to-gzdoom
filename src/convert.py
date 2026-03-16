@@ -29,7 +29,7 @@ if __name__ == "__main__":
                     doorsStartLineIdx=data.doorsStartLineIdx, brokenTextures=data.brokenTextures, foeAngles=data.foeAngles,
                     foeWalkDistances=data.foeWalkDistances, gameType=game, mapIndex=idx)
             mapName = f'c{game.value+1}m{idx}'
-            drawMap(data.map, name=mapName, show=False)
+            drawMap(mapInterim, name=mapName, show=False)
             mapGZD = MapGZD(mapInterim, spawnPos=data.spawnPos, spawnAngle=data.spawnAngle, mapIndex=idx, gameType=game)
             saveMap(map=mapGZD, mapIndex=idx, game=game)
             saveTextures(textures=data.map.textures, mapIndex=idx, colorCeiling=data.colorCeiling, colorFloor=data.colorFloor, game=game)

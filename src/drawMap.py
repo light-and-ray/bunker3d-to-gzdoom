@@ -73,7 +73,7 @@ def drawMap(map: 'MapInterim|MapB3D', show=False, name=None, resolution=1280, fr
             dwg.add(dwg.line((midpoint_x, midpoint_y), (normal_x, normal_y),
                              stroke=color, stroke_width=1, fill='none'))
 
-        # Draw text (line index)
+        # # Draw text (line index)
         # dwg.add(dwg.text(str(i), insert=(midpoint_x-8, midpoint_y+4),
         #                  fill='black', font_size=12, font_family='sans-serif'))
 
