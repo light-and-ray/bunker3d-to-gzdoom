@@ -104,7 +104,7 @@ def drawMap(map: 'MapInterim|MapB3D', show=False, name=None, resolution=1280, fr
             # dwg.add(dwg.text("trig " + str(i), insert=(x, y),
             #  fill='black', font_size=12, font_family='sans-serif'))
 
-
+    os.makedirs(os.path.dirname(svg_filename), exist_ok=True)
     dwg.save()
     if show:
         os.system(f"firefox '{svg_filename}'")
