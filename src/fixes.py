@@ -4,7 +4,7 @@ from ClassesShared import GameType
 from PIL import Image
 
 
-BROKEN_LINES: dict[tuple[GameType, int], list[int]] = dict()
+BROKEN_LINES: dict[tuple[GameType, int], list[int]] = {}
 BROKEN_LINES[(GameType.B3D, 1)] = [145, 146, 147, 148,  181, 182, 183, 184,  83, 84, 85, 86, 87, 88]
 BROKEN_LINES[(GameType.B3D, 2)] = [296, 297, 298, 299]
 BROKEN_LINES[(GameType.B3D, 3)] = [84, 85, 86]
@@ -17,9 +17,9 @@ BROKEN_LINES[(GameType.L3D, 9)] = [276, 277, 278,  279, 280, 281,  422, 423, 424
 class TextureOverrideData:
     nums: list[int]
     offset: float = None
-    stretch: float = 1.0
+    stretch: float = None
 
-TEXTURES_OVERRIDE_B3D = [ # Doors (inside) and 45 degree with middled texture inside
+NONE_TEXTURES_B3D = [ # Doors (inside) and 45 degree with middled texture inside
     {},
     { # 1
         18 : TextureOverrideData(nums=[0, 13, 0], offset=WALL_HEIGHT-18),
@@ -55,7 +55,7 @@ TEXTURES_OVERRIDE_B3D = [ # Doors (inside) and 45 degree with middled texture in
     },
 ]
 
-TEXTURES_OVERRIDE_L3D = [ # Doors (inside) and 45 degree with middled texture inside
+NONE_TEXTURES_L3D = [ # Doors (inside) and 45 degree with middled texture inside
     {},
     { # 1
         20 : TextureOverrideData(nums=[13]),
@@ -93,9 +93,21 @@ TEXTURES_OVERRIDE_L3D = [ # Doors (inside) and 45 degree with middled texture in
     },
 ]
 
-TEXTURES_OVERRIDE = dict()
-TEXTURES_OVERRIDE[GameType.B3D] = TEXTURES_OVERRIDE_B3D
-TEXTURES_OVERRIDE[GameType.L3D] = TEXTURES_OVERRIDE_L3D
+NONE_TEXTURES = dict()
+NONE_TEXTURES[GameType.B3D] = NONE_TEXTURES_B3D
+NONE_TEXTURES[GameType.L3D] = NONE_TEXTURES_L3D
+
+INTERIM_TEXTURES_OVERRIDES: dict[tuple[GameType, int], dict[int, TextureOverrideData]] = {}
+INTERIM_TEXTURES_OVERRIDES[(GameType.L3D, 6)] = \
+{
+    49: TextureOverrideData(nums=[0]),
+}
+INTERIM_TEXTURES_OVERRIDES[(GameType.L3D, 8)] = \
+{
+    200: TextureOverrideData(nums=[20]),
+    182: TextureOverrideData(nums=[20]),
+    146: TextureOverrideData(nums=[20]),
+}
 
 
 CRATE_TOP_TEXTURES_B3D = [
@@ -140,7 +152,7 @@ def fixFoeSprite(image: Image.Image, index: int) -> Image.Image:
     return image
 
 
-SPRITE_SCALE_OVERRIDE: dict[tuple[GameType, int, int], float] = dict()
+SPRITE_SCALE_OVERRIDE: dict[tuple[GameType, int, int], float] = {}
 SPRITE_SCALE_OVERRIDE[(GameType.L3D, 1, 13)] = 1.3 # corpse
 SPRITE_SCALE_OVERRIDE[(GameType.L3D, 1, 24)] = 1.0 # meat
 SPRITE_SCALE_OVERRIDE[(GameType.L3D, 4, 28)] = 96/72 # water drop

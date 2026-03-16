@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any
 from PIL import Image
 import copy
 from ClassesB3D import MapB3D, CrateB3D, ThingCategory
@@ -10,7 +9,7 @@ from algebraFunctions import (resolveSegmentsOverlap, isInside, areOppositelyDir
 from ClassesShared import Vertex, HeightType, GameType
 from drawMap import drawMap
 from tools import SCALE_FACTOR
-from fixes import TEXTURES_OVERRIDE, BROKEN_LINES, LINE_REVERSE_FIXES
+from fixes import NONE_TEXTURES, BROKEN_LINES, LINE_REVERSE_FIXES, INTERIM_TEXTURES_OVERRIDES
 
 
 @dataclass
@@ -124,13 +123,14 @@ class MapInterim:
                 self._fillStretch(texture, line, index)
             self.lines.append(line)
 
-        self._applyTexturesOverride()
+        self._fixNoneTextures()
         self._fillCirclesOffsets(mapB3D.circles)
         self._initDoors(doorsStartLineIdx, doorsSpeed)
         self._removeCratesDoorsAndBrokenLines(mapB3D.crates, doorsStartLineIdx)
         self._cutMultitextureLines()
         self._removeOverlaps()
         self._applyLineReverseFixes()
+        self._applyTexturesOverrides()
 
         self.sprites = mapB3D.sprites
         self.foeSprites = mapB3D.foeSprites
@@ -206,26 +206,39 @@ class MapInterim:
                                     spriteIdx=3, textureName=crate.textureName, angle=int(angle)))
 
 
-    def _applyTexturesOverride(self):
+    def _fixNoneTextures(self):
         for lineNum, line in enumerate(self.lines):
             if line.texture.names[0].startswith("NONE_"):
                 brokenNum = int(line.texture.names[0].removeprefix("NONE_"))
                 newNames = []
-                if brokenNum in TEXTURES_OVERRIDE[self.gameType][self.mapIndex]:
-                    data = TEXTURES_OVERRIDE[self.gameType][self.mapIndex][brokenNum]
-                    for newNum in data.nums:
+                if brokenNum in NONE_TEXTURES[self.gameType][self.mapIndex]:
+                    override = NONE_TEXTURES[self.gameType][self.mapIndex][brokenNum]
+                    for newNum in override.nums:
                         newNames.append(list(self.textures.keys())[newNum])
                     line.texture.names = newNames
-                    line.texture.offset = data.offset
-                    line.texture.stretch = data.stretch
+                    if override.offset is not None: line.texture.offset = override.offset
+                    if override.stretch: line.texture.stretch = override.stretch
                 else:
                     print(f"warning: no fixing data for {lineNum} texture. Broken num = {brokenNum}")
+
+
+    def _applyTexturesOverrides(self):
+        for lineNum, line in enumerate(self.lines):
+            override = INTERIM_TEXTURES_OVERRIDES.get((self.gameType, self.mapIndex), {}).get(lineNum)
+            if override:
+                newNames = []
+                for newNum in override.nums:
+                    newNames.append(list(self.textures.keys())[newNum])
+                line.texture.names = newNames
+                if override.offset is not None: line.texture.offset = override.offset
+                if override.stretch: line.texture.stretch = override.stretch
 
 
     def _applyLineReverseFixes(self):
         for lineNum in range(len(self.lines)):
             if lineNum in LINE_REVERSE_FIXES.get((self.gameType, self.mapIndex), []):
                 self.lines[lineNum].v1, self.lines[lineNum].v2 = self.lines[lineNum].v2, self.lines[lineNum].v1
+
 
     def _fillCirclesOffsets(self, circles: list[list[int]]):
         for circle in circles:
