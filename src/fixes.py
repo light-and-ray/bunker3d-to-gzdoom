@@ -132,7 +132,7 @@ CRATE_TOP_TEXTURES_L3D = [
     ["CRATE_03", "CRATE_09"], #7
     ["CRATE_07", "CRATE_09"], #8
     ["CRATE_07"], #9
-    ["CRATE_07"], #10
+    ["CRATE_03"], #10
 ]
 
 CRATE_TOP_TEXTURES = dict()
