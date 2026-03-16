@@ -4,13 +4,6 @@ from ClassesShared import GameType
 from PIL import Image
 
 
-@dataclass
-class BrokenTextureData:
-    nums: list[int]
-    offset: float = None
-    stretch: float = 1.0
-
-
 BROKEN_LINES: dict[tuple[GameType, int], list[int]] = dict()
 BROKEN_LINES[(GameType.B3D, 1)] = [145, 146, 147, 148,  181, 182, 183, 184,  83, 84, 85, 86, 87, 88]
 BROKEN_LINES[(GameType.B3D, 2)] = [296, 297, 298, 299]
@@ -20,83 +13,89 @@ BROKEN_LINES[(GameType.L3D, 1)] = [287, 288, 289, 290, 279, 280, 281, 282, 283, 
 BROKEN_LINES[(GameType.L3D, 9)] = [276, 277, 278,  279, 280, 281,  422, 423, 424, 425,  442, 443, 444, 445]
 
 
-BROKEN_TEXTURES_B3D = [ # Doors (inside) and 45 degree with middled texture inside
+@dataclass
+class TextureOverrideData:
+    nums: list[int]
+    offset: float = None
+    stretch: float = 1.0
+
+TEXTURES_OVERRIDE_B3D = [ # Doors (inside) and 45 degree with middled texture inside
     {},
     { # 1
-        18 : BrokenTextureData(nums=[0, 13, 0], offset=WALL_HEIGHT-18),
-        20 : BrokenTextureData(nums=[0]),
-        19 : BrokenTextureData(nums=[6]),
-        21 : BrokenTextureData(nums=[6]),
+        18 : TextureOverrideData(nums=[0, 13, 0], offset=WALL_HEIGHT-18),
+        20 : TextureOverrideData(nums=[0]),
+        19 : TextureOverrideData(nums=[6]),
+        21 : TextureOverrideData(nums=[6]),
     },
     { # 2
-        21 : BrokenTextureData(nums=[4]),
+        21 : TextureOverrideData(nums=[4]),
     },
     { # 3
-        17 : BrokenTextureData(nums=[4]),
+        17 : TextureOverrideData(nums=[4]),
     },
     { # 4
-        23 : BrokenTextureData(nums=[4]),
+        23 : TextureOverrideData(nums=[4]),
     },
     { #5
-        18 : BrokenTextureData(nums=[0]),
-        20 : BrokenTextureData(nums=[4]),
+        18 : TextureOverrideData(nums=[0]),
+        20 : TextureOverrideData(nums=[4]),
     },
     { # 6
-        17 : BrokenTextureData(nums=[7]),
+        17 : TextureOverrideData(nums=[7]),
     },
     { # 7
-        18 : BrokenTextureData(nums=[6]),
+        18 : TextureOverrideData(nums=[6]),
     },
     { # 8
-        21 : BrokenTextureData(nums=[4]),
+        21 : TextureOverrideData(nums=[4]),
     },
     { # 9
-        19 : BrokenTextureData(nums=[6]),
-        20 : BrokenTextureData(nums=[6]),
+        19 : TextureOverrideData(nums=[6]),
+        20 : TextureOverrideData(nums=[6]),
     },
 ]
 
-BROKEN_TEXTURES_L3D = [ # Doors (inside) and 45 degree with middled texture inside
+TEXTURES_OVERRIDE_L3D = [ # Doors (inside) and 45 degree with middled texture inside
     {},
     { # 1
-        20 : BrokenTextureData(nums=[13]),
+        20 : TextureOverrideData(nums=[13]),
     },
     { # 2
-        22 : BrokenTextureData(nums=[13]),
+        22 : TextureOverrideData(nums=[13]),
     },
     { # 3
-        17 : BrokenTextureData(nums=[6]),
+        17 : TextureOverrideData(nums=[6]),
     },
     { # 4
-        20 : BrokenTextureData(nums=[10]),
+        20 : TextureOverrideData(nums=[10]),
     },
     { #5
-        15 : BrokenTextureData(nums=[6]),
+        15 : TextureOverrideData(nums=[6]),
     },
     { # 6
-        22 : BrokenTextureData(nums=[10]),
-        23 : BrokenTextureData(nums=[0]),
+        22 : TextureOverrideData(nums=[10]),
+        23 : TextureOverrideData(nums=[0]),
     },
     { # 7
-        23 : BrokenTextureData(nums=[8]),
-        24 : BrokenTextureData(nums=[8]),
+        23 : TextureOverrideData(nums=[8]),
+        24 : TextureOverrideData(nums=[8]),
     },
     { # 8
-        20 : BrokenTextureData(nums=[3]),
-        21 : BrokenTextureData(nums=[3]),
+        20 : TextureOverrideData(nums=[3]),
+        21 : TextureOverrideData(nums=[3]),
     },
     { # 9
-        20 : BrokenTextureData(nums=[7]),
-        21 : BrokenTextureData(nums=[7]),
+        20 : TextureOverrideData(nums=[7]),
+        21 : TextureOverrideData(nums=[7]),
     },
     { #10
-        21 : BrokenTextureData(nums=[6]),
+        21 : TextureOverrideData(nums=[6]),
     },
 ]
 
-BROKEN_TEXTURES = dict()
-BROKEN_TEXTURES[GameType.B3D] = BROKEN_TEXTURES_B3D
-BROKEN_TEXTURES[GameType.L3D] = BROKEN_TEXTURES_L3D
+TEXTURES_OVERRIDE = dict()
+TEXTURES_OVERRIDE[GameType.B3D] = TEXTURES_OVERRIDE_B3D
+TEXTURES_OVERRIDE[GameType.L3D] = TEXTURES_OVERRIDE_L3D
 
 
 CRATE_TOP_TEXTURES_B3D = [

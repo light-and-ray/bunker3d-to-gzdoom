@@ -10,7 +10,7 @@ from algebraFunctions import (resolveSegmentsOverlap, isInside, areOppositelyDir
 from ClassesShared import Vertex, HeightType, GameType
 from drawMap import drawMap
 from tools import SCALE_FACTOR
-from fixes import BrokenTextureData, BROKEN_LINES
+from fixes import TEXTURES_OVERRIDE, BROKEN_LINES
 
 
 @dataclass
@@ -107,7 +107,7 @@ class CrateInterim:
 
 class MapInterim:
     def __init__(self, mapB3D: MapB3D, doorsSpeed: list[int], doorsStartLineIdx: list[int],
-            brokenTextures: dict[int, BrokenTextureData], foeAngles: list[int], foeWalkDistances: list[int],
+            foeAngles: list[int], foeWalkDistances: list[int],
             gameType: GameType, mapIndex: int):
         self.gameType = gameType
         self.mapIndex = mapIndex
@@ -124,7 +124,7 @@ class MapInterim:
                 self._fillStretch(texture, line, index)
             self.lines.append(line)
 
-        self._fixBrokenTextures(brokenTextures)
+        self._fixBrokenTextures()
         self._fillCirclesOffsets(mapB3D.circles)
         self._initDoors(doorsStartLineIdx, doorsSpeed)
         self._removeCratesDoorsAndBrokenLines(mapB3D.crates, doorsStartLineIdx)
@@ -205,13 +205,13 @@ class MapInterim:
                                     spriteIdx=3, textureName=crate.textureName, angle=int(angle)))
 
 
-    def _fixBrokenTextures(self, brokenTextures: dict[int, BrokenTextureData]):
+    def _fixBrokenTextures(self):
         for lineNum, line in enumerate(self.lines):
             if line.texture.names[0].startswith("NONE_"):
                 brokenNum = int(line.texture.names[0].removeprefix("NONE_"))
                 newNames = []
-                if brokenNum in brokenTextures:
-                    data = brokenTextures[brokenNum]
+                if brokenNum in TEXTURES_OVERRIDE[self.gameType][self.mapIndex]:
+                    data = TEXTURES_OVERRIDE[self.gameType][self.mapIndex][brokenNum]
                     for newNum in data.nums:
                         newNames.append(list(self.textures.keys())[newNum])
                     line.texture.names = newNames
