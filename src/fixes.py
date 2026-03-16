@@ -83,6 +83,7 @@ NONE_TEXTURES_L3D = [ # Doors (inside) and 45 degree with middled texture inside
     { # 8
         20 : TextureOverrideData(nums=[3]),
         21 : TextureOverrideData(nums=[3]),
+        100: TextureOverrideData(nums=[0, 20, 0], offset=WALL_HEIGHT-18, stretch=1.0),
     },
     { # 9
         20 : TextureOverrideData(nums=[7]),
@@ -102,12 +103,9 @@ INTERIM_TEXTURES_OVERRIDES[(GameType.L3D, 6)] = \
 {
     49: TextureOverrideData(nums=[0]),
 }
-INTERIM_TEXTURES_OVERRIDES[(GameType.L3D, 8)] = \
-{
-    200: TextureOverrideData(nums=[20]),
-    182: TextureOverrideData(nums=[20]),
-    146: TextureOverrideData(nums=[20]),
-}
+
+B3D_TEXTURES_OVERRIDES: dict[tuple[GameType, int], dict[int, int]] = {} # WARNING: editing these breaks interim lines indexes
+B3D_TEXTURES_OVERRIDES[(GameType.L3D, 8)] = { 122: 100, 104: 100, 79: 100 }
 
 
 CRATE_TOP_TEXTURES_B3D = [

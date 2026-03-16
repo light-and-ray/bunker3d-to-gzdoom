@@ -4,7 +4,7 @@ import math
 from ClassesShared import Vertex, HeightType, Animation, GameType
 from tools import generateTextureLumpName, generateTextureModifiedLumpName, WALL_HEIGHT
 from enum import Enum
-from fixes import BROKEN_THINGS
+from fixes import BROKEN_THINGS, B3D_TEXTURES_OVERRIDES
 
 
 @dataclass
@@ -100,6 +100,11 @@ class MapB3D:
         self.mirroredDict = {}
         self._applyAnimation(animatedFrames, animatedLines, textureMirroring)
         self._applyMirroring(textureMirroring)
+
+        for lineNum, line in enumerate(self.lines):
+            override = B3D_TEXTURES_OVERRIDES.get((gameType, mapIndex), {}).get(lineNum)
+            if override:
+                line.texturesNames = [f"NONE_{override}"]
 
         if gameType == GameType.B3D:
             NPC_LAST_IDX = 16

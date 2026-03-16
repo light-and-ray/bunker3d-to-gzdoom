@@ -207,19 +207,19 @@ class MapInterim:
 
 
     def _fixNoneTextures(self):
-        for lineNum, line in enumerate(self.lines):
+        for lineNum, line in enumerate[LineInterim](self.lines):
             if line.texture.names[0].startswith("NONE_"):
-                brokenNum = int(line.texture.names[0].removeprefix("NONE_"))
+                noneTextureNum = int(line.texture.names[0].removeprefix("NONE_"))
                 newNames = []
-                if brokenNum in NONE_TEXTURES[self.gameType][self.mapIndex]:
-                    override = NONE_TEXTURES[self.gameType][self.mapIndex][brokenNum]
+                if noneTextureNum in NONE_TEXTURES[self.gameType][self.mapIndex]:
+                    override = NONE_TEXTURES[self.gameType][self.mapIndex][noneTextureNum]
                     for newNum in override.nums:
                         newNames.append(list(self.textures.keys())[newNum])
                     line.texture.names = newNames
                     if override.offset is not None: line.texture.offset = override.offset
                     if override.stretch: line.texture.stretch = override.stretch
                 else:
-                    print(f"warning: no fixing data for {lineNum} texture. Broken num = {brokenNum}")
+                    print(f"warning: no fixing data for {lineNum} texture. None texture num = {noneTextureNum}")
 
 
     def _applyTexturesOverrides(self):
