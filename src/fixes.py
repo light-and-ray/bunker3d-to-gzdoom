@@ -161,10 +161,14 @@ SPRITE_SCALE_OVERRIDE[(GameType.L3D, 10, 24)] = 1.2 # martyr
 
 
 
-BROKEN_THINGS: dict[tuple[GameType, int], list[int]] = dict()
+BROKEN_THINGS: dict[tuple[GameType, int], list[int]] = {}
 BROKEN_THINGS[(GameType.B3D, 1)] = [24]
 BROKEN_THINGS[(GameType.L3D, 3)] = [41]
 BROKEN_THINGS[(GameType.L3D, 5)] = [51]
 BROKEN_THINGS[(GameType.L3D, 7)] = [40]
 BROKEN_THINGS[(GameType.L3D, 9)] = [23, 24, 29, 46, 72]
 
+
+LINE_REVERSE_FIXES: dict[tuple[GameType, int], list[int]] = {}
+LINE_REVERSE_FIXES[(GameType.L3D, 4)] = [3]
+LINE_REVERSE_FIXES[(GameType.L3D, 6)] = [52, 118]

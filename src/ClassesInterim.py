@@ -10,7 +10,7 @@ from algebraFunctions import (resolveSegmentsOverlap, isInside, areOppositelyDir
 from ClassesShared import Vertex, HeightType, GameType
 from drawMap import drawMap
 from tools import SCALE_FACTOR
-from fixes import TEXTURES_OVERRIDE, BROKEN_LINES
+from fixes import TEXTURES_OVERRIDE, BROKEN_LINES, LINE_REVERSE_FIXES
 
 
 @dataclass
@@ -124,12 +124,13 @@ class MapInterim:
                 self._fillStretch(texture, line, index)
             self.lines.append(line)
 
-        self._fixBrokenTextures()
+        self._applyTexturesOverride()
         self._fillCirclesOffsets(mapB3D.circles)
         self._initDoors(doorsStartLineIdx, doorsSpeed)
         self._removeCratesDoorsAndBrokenLines(mapB3D.crates, doorsStartLineIdx)
         self._cutMultitextureLines()
         self._removeOverlaps()
+        self._applyLineReverseFixes()
 
         self.sprites = mapB3D.sprites
         self.foeSprites = mapB3D.foeSprites
@@ -205,7 +206,7 @@ class MapInterim:
                                     spriteIdx=3, textureName=crate.textureName, angle=int(angle)))
 
 
-    def _fixBrokenTextures(self):
+    def _applyTexturesOverride(self):
         for lineNum, line in enumerate(self.lines):
             if line.texture.names[0].startswith("NONE_"):
                 brokenNum = int(line.texture.names[0].removeprefix("NONE_"))
@@ -220,6 +221,11 @@ class MapInterim:
                 else:
                     print(f"warning: no fixing data for {lineNum} texture. Broken num = {brokenNum}")
 
+
+    def _applyLineReverseFixes(self):
+        for lineNum in range(len(self.lines)):
+            if lineNum in LINE_REVERSE_FIXES.get((self.gameType, self.mapIndex), []):
+                self.lines[lineNum].v1, self.lines[lineNum].v2 = self.lines[lineNum].v2, self.lines[lineNum].v1
 
     def _fillCirclesOffsets(self, circles: list[list[int]]):
         for circle in circles:

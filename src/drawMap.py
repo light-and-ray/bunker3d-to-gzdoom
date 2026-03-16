@@ -73,9 +73,9 @@ def drawMap(map: 'MapInterim|MapB3D', show=False, name=None, resolution=1280, fr
             dwg.add(dwg.line((midpoint_x, midpoint_y), (normal_x, normal_y),
                              stroke=color, stroke_width=1, fill='none'))
 
-        # # Draw text (line index)
-        # dwg.add(dwg.text(str(i), insert=(midpoint_x-8, midpoint_y+4),
-        #                  fill='black', font_size=12, font_family='sans-serif'))
+        # Draw text (line index)
+        dwg.add(dwg.text(str(i), insert=(midpoint_x-8, midpoint_y+4),
+                         fill='black', font_size=12, font_family='sans-serif'))
 
     if hasattr(map, 'things'):
         for i, thing in enumerate(map.things):
@@ -102,7 +102,7 @@ def drawMap(map: 'MapInterim|MapB3D', show=False, name=None, resolution=1280, fr
                     stroke=color, stroke_width=0.5, fill='none'))
             x, y = rescale(trigger.x, trigger.y)
             # dwg.add(dwg.text("trig " + str(i), insert=(x, y),
-            #  fill='black', font_size=12, font_family='sans-serif'))
+            #     fill='black', font_size=12, font_family='sans-serif'))
 
     os.makedirs(os.path.dirname(svg_filename), exist_ok=True)
     dwg.save()
