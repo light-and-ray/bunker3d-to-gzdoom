@@ -98,6 +98,7 @@ class CrateContent(Enum):
 class CrateInterim:
     pos: Vertex
     colorIdx: int
+    topTextureIndex: int
     spriteIdx: int
     content: CrateContent
     textureName: str
@@ -184,10 +185,14 @@ class MapInterim:
             isHealth = (crate.content & 0b010) != 0
             if gameType == GameType.B3D:
                 isSecondColor = (crate.content & 0b100) != 0
+                topTextureIndex = int(isSecondColor)
                 isAltAmmo = False
-            else:
+            elif gameType == GameType.L3D:
                 isSecondColor = False
+                topTextureIndex = 0
                 isAltAmmo = (crate.content & 0b100) != 0
+                if self.mapIndex in (7, 8) and isHealth and not isAmmo: # super health
+                    topTextureIndex = 1
             if isAmmo and isHealth:
                 content = CrateContent.BOTH
             elif isAmmo:
@@ -202,8 +207,8 @@ class MapInterim:
             v2 = mapB3D.lines[crate.startLineIdx+1].v2
             angle = segmentAngle(*self.lineToTuple(mapB3D.lines[crate.startLineIdx]))
             pos = Vertex(x=(v1.x+v2.x)/2, y=(v1.y+v2.y)/2)
-            self.crates.append(CrateInterim(pos=pos, colorIdx=int(isSecondColor), content=content,
-                                    spriteIdx=3, textureName=crate.textureName, angle=int(angle)))
+            self.crates.append(CrateInterim(pos=pos, colorIdx=int(isSecondColor), topTextureIndex=topTextureIndex,
+                    content=content, spriteIdx=3, textureName=crate.textureName, angle=int(angle)))
 
 
     def _fixNoneTextures(self):

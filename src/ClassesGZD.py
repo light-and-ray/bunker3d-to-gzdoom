@@ -272,7 +272,7 @@ class MapGZD:
                 modelPath = f"models/{spriteName}A0.obj"
                 model = ModelGZD(
                     modelPath=modelPath,
-                    modelObj=generateCrateObj(crate.textureName, CRATE_TOP_TEXTURES[gameType][mapIndex][crate.colorIdx]),
+                    modelObj=generateCrateObj(crate.textureName, CRATE_TOP_TEXTURES[gameType][mapIndex][crate.topTextureIndex]),
                     modelDef=generateCrateModeldef(spriteName, className, modelPath),
                 )
                 self.models.append(model)

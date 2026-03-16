@@ -129,8 +129,8 @@ CRATE_TOP_TEXTURES_L3D = [
     ["CRATE_08"], #4
     ["CRATE_07"], #5
     ["CRATE_07"], #6
-    ["CRATE_03"], #7
-    ["CRATE_07"], #8
+    ["CRATE_03", "CRATE_09"], #7
+    ["CRATE_07", "CRATE_09"], #8
     ["CRATE_07"], #9
     ["CRATE_07"], #10
 ]
