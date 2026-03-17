@@ -83,7 +83,7 @@ def generateLampClassName():
     _lampClassNameIdx += 1
     return result
 
-def generateLampZScript(className: str, spriteName: str, spriteA: Image.Image, scaleOverride: float|None, isFloor):
+def generateLampZScript(className: str, spriteName: str, spriteA: Image.Image, scaleOverride: float|None, isFloor, needLightSpot):
     if scaleOverride is not None:
         scaleFactor = scaleOverride
     else:
@@ -105,6 +105,11 @@ def generateLampZScript(className: str, spriteName: str, spriteA: Image.Image, s
     code +=  "        Spawn:\n"
     code += f"            {spriteName} C 0 NoDelay A_JumpIf(true, \"SpawnBase\");\n"
     code += f"            stop;\n"
+    code +=  "    }\n"
+    code +=  "    override void PostBeginPlay()\n"
+    code +=  "    {\n"
+    code += f"        needLightSpot = {needLightSpot};\n"
+    code +=  "        super.PostBeginPlay();\n"
     code +=  "    }\n"
     code +=  "}\n"
     return code

@@ -11,7 +11,7 @@ from actorsGeneration import ( generateDecorationSpriteName, generateDecorationC
     generateCrateObj, generateCrateModelReplacementTextureDef, generateGenericPatchTextureDef,
 )
 from tools import LEVEL_CEILING, LEVEL_FLOOR, SCALE_FACTOR
-from fixes import CRATE_TOP_TEXTURES, SPRITE_SCALE_OVERRIDE
+from fixes import CRATE_TOP_TEXTURES, SPRITE_SCALE_OVERRIDE, NO_LIGHT_SPOT_LEVELS
 
 @dataclass
 class SectorGZD:
@@ -160,7 +160,8 @@ class MapGZD:
                 isFloor = False
                 if gameType == GameType.L3D and mapIndex == 9:
                     isFloor = True
-                zscript = generateLampZScript(className, spriteName, spriteA, scaleOverrideFix, isFloor)
+                needLightSpot = not isFloor and ((gameType, mapIndex) not in NO_LIGHT_SPOT_LEVELS)
+                zscript = generateLampZScript(className, spriteName, spriteA, scaleOverrideFix, isFloor, needLightSpot)
                 ednum = EdnumGZD(num=generateEdnum(), className=className)
                 self.sprites[spriteName + "A0"] = spriteA
                 self.sprites[spriteName + "B0"] = spriteB
@@ -178,7 +179,7 @@ class MapGZD:
         self._keysToFoe: dict[tuple[int], ActorGZD] = dict()
         for foe in mapInterim.foes:
             key = (foe.colorIdx)
-            if key not in self._keysToLamp:
+            if key not in self._keysToFoe:
                 spriteName = generateFoeSpriteName()
                 className = generateFoeClassName()
                 ednum = EdnumGZD(num=generateEdnum(), className=className)
@@ -205,11 +206,11 @@ class MapGZD:
                         self.sprites[spriteName+name] = mapInterim.foeSprites[foe.colorIdx][len(patches_names)+i]
                 zscript = generateFoeZScript(className, spriteName, self.sprites[spriteName+"C0"], self.sprites[spriteName+"G0"])
                 self.actors.append(ActorGZD(ednum=ednum, zscript=zscript))
-                self._keysToLamp[key] = self.actors[-1]
+                self._keysToFoe[key] = self.actors[-1]
             self.things.append(ThingGZD(
                 x = foe.pos.x,
                 y = foe.pos.y,
-                type = self._keysToLamp[key].ednum.num,
+                type = self._keysToFoe[key].ednum.num,
                 angle = (foe.angle+90)%360,
                 arg0 = foe.walkDistance,
                 arg1 = foe.health,

@@ -195,3 +195,4 @@ ALT_TEXTURE_VARIANT[(GameType.L3D, 6)] = \
     26: AltTextureVariantData(5, mirror=True),
 }
 
+NO_LIGHT_SPOT_LEVELS: list[tuple[GameType, int]] = [(GameType.B3D, 9)]

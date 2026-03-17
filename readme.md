@@ -1,4 +1,4 @@
-Need to do list [7/24]:
+Need to do list [8/24]:
 - [x] filter things using triggers
 - [x] sprite scale mechanism
 - [x] remove broken things
@@ -6,8 +6,8 @@ Need to do list [7/24]:
 - [x] fix animated big fan texture
 - [x] fix broken lines in l3d levels
 - [x] add lamp light on walls
+- [x] add lamp light on floor
 - [ ] animated decorations
-- [ ] add lamp light on floor
 - [ ] sync current discharge sprite and wall
 - [ ] add RPG
 - [ ] breakable glass

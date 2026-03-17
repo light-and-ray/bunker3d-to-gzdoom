@@ -1,10 +1,33 @@
 #include "zscript/Helpers.zs"
 
-class BaseFloorLamp : Actor
+class LightSpot_t : Actor
+{
+    bool isOn;
+    Default
+    {
+        +FORCEXYBILLBOARD;
+    }
+    States
+    {
+        Spawn:
+            goto Off;
+        On:
+            LSPT A 1 A_JumpIf(!isOn, "Off");
+            loop;
+        Off:
+            TNT1 A 1 A_JumpIf(isOn, "On");
+            loop;
+    }
+}
+
+
+class _BaseLamp : Actor
 {
     Array<int> lineIndexesToChange;
     Array<TextureID> onTextureForLines;
     Array<TextureID> offTextureForLines;
+    bool needLightSpot;
+    LightSpot_t lightSpot;
     Helpers_t helpers;
 
     Default
@@ -42,7 +65,7 @@ class BaseFloorLamp : Actor
             #### C 5;
             loop;
         Death:
-            #### B 0 onLightOff();
+            #### C 0 onLightOff();
             goto DeathLoop;
         XDeath:
             #### C 0 A_Jump(145, "Death");
@@ -54,6 +77,9 @@ class BaseFloorLamp : Actor
     {
         initWallFlickering();
         super.PostBeginPlay();
+        if (needLightSpot) {
+            initLightSpot();
+        }
     }
 
     void initWallFlickering()
@@ -80,6 +106,12 @@ class BaseFloorLamp : Actor
         }
     }
 
+    void initLightSpot()
+    {
+        Vector3 spawnPos = Pos;
+        spawnPos.z = 0;
+        lightSpot = LightSpot_t(Spawn('LightSpot_t', spawnPos));
+    }
 
     TextureID getLineTexture(int lineIndex)
     {
@@ -92,26 +124,34 @@ class BaseFloorLamp : Actor
     }
 
 
-    void onLightOff()
+    virtual void onLightOff()
     {
         for (int i = 0; i < lineIndexesToChange.size(); i++)
         {
             int lineIndex = lineIndexesToChange[i];
             setLineTexture(lineIndex, offTextureForLines[i]);
         }
+        if (needLightSpot) {
+            lightSpot.isOn = false;
+        }
     }
 
-    void onLightOn()
+    virtual void onLightOn()
     {
         for (int i = 0; i < lineIndexesToChange.size(); i++)
         {
             int lineIndex = lineIndexesToChange[i];
             setLineTexture(lineIndex, onTextureForLines[i]);
         }
+        if (needLightSpot) {
+            lightSpot.isOn = true;
+        }
     }
 }
 
-class BaseCeilingLamp : BaseFloorLamp
+class BaseFloorLamp : _BaseLamp { }
+
+class BaseCeilingLamp : _BaseLamp
 {
     Default
     {
@@ -119,4 +159,6 @@ class BaseCeilingLamp : BaseFloorLamp
         +DONTFALL;
         +SPAWNCEILING;
     }
+
 }
+
