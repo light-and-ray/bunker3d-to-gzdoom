@@ -1,4 +1,4 @@
-#include "zscript/DoorsOpenerHelper.zs"
+#include "zscript/Helpers.zs"
 
 class Door_t
 {
@@ -38,7 +38,7 @@ class DoorsOpener : Thinker
     Array<Door_t> doors;
     Map<Int, Door_t> doorsMap;
     PlayerPawn player;
-    DoorsOpenerHelper helper;
+    Helpers_t helpers;
     Actor freezeChecker;
 
     void initShallowCopy(DoorsOpener other)
@@ -82,7 +82,7 @@ class DoorsOpener : Thinker
                     side.door.start.x = Level.lines[i].GetUDMFFloat("user_b3d_door_po_x");
                     side.door.start.y = Level.lines[i].GetUDMFFloat("user_b3d_door_po_y");
                     side.door.poMirrorNum = Level.lines[i].GetUDMFInt("user_b3d_door_po_mirror_num");
-                    Vector2 targetPoint = helper.getTargetPoint(side.sideVA.x, side.sideVA.y,
+                    Vector2 targetPoint = helpers.getTargetPoint(side.sideVA.x, side.sideVA.y,
                             side.sideVB.x, side.sideVB.y, side.door.start.x, side.door.start.y);
                     side.door.target = targetPoint;
                     side.door.speed = speed;
@@ -113,7 +113,7 @@ class DoorsOpener : Thinker
         {
             DoorSide_t side = doorSides[i];
             if (side.door.isCloseImprecise(player.pos.x, player.pos.y) &&
-                helper.isPlayerCloseEnough(player.pos.x, player.pos.y,
+                helpers.isPlayerCloseEnough(player.pos.x, player.pos.y,
                 side.sideVA.x, side.sideVA.y,
                 side.sideVB.x, side.sideVB.y
             ))

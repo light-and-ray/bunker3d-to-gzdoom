@@ -1,4 +1,4 @@
-class DoorsOpenerHelper
+class Helpers_t
 {
     double distanceToSegment(double px, double py, double x1, double y1, double x2, double y2)
     {
