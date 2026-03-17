@@ -170,7 +170,6 @@ SPRITE_SCALE_OVERRIDE[(GameType.L3D, 10, 13)] = 1.3 # corpse
 SPRITE_SCALE_OVERRIDE[(GameType.L3D, 10, 24)] = 1.2 # martyr
 
 
-
 BROKEN_THINGS: dict[tuple[GameType, int], list[int]] = {}
 BROKEN_THINGS[(GameType.B3D, 1)] = [24]
 BROKEN_THINGS[(GameType.L3D, 3)] = [41]
@@ -182,3 +181,17 @@ BROKEN_THINGS[(GameType.L3D, 9)] = [23, 24, 29, 46, 72]
 LINE_REVERSE_FIXES: dict[tuple[GameType, int], list[int]] = {}
 LINE_REVERSE_FIXES[(GameType.L3D, 4)] = [3]
 LINE_REVERSE_FIXES[(GameType.L3D, 6)] = [52, 118]
+
+
+@dataclass
+class AltTextureVariantData:
+    index: int
+    mirror: bool = False
+
+ALT_TEXTURE_VARIANT: dict[tuple[GameType, int], dict[int, AltTextureVariantData]] = {}
+ALT_TEXTURE_VARIANT[(GameType.L3D, 6)] = \
+{
+    6: AltTextureVariantData(5),
+    26: AltTextureVariantData(5, mirror=True),
+}
+

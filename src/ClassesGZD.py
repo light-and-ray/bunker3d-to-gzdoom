@@ -58,6 +58,7 @@ class LineGZD:
     b3dDoorPOy: float = None
     b3dDoorBackSide: bool = None
     b3dDoorPOMirrorNum: bool = None
+    b3dAltTextureName: str = None
 
 
 @dataclass
@@ -111,6 +112,7 @@ class MapGZD:
         self.sectorOnlyTop = SectorGZD(heightFloor=0, heightCeiling=(LEVEL_CEILING+LEVEL_FLOOR)//2)
         self.sectors.extend([self.sectorFull, self.sectorOnlyBottom, self.sectorOnlyTop])
 
+        self.altTextures = mapInterim.altTextures
         self.lines.extend(self._convertLines(mapInterim.lines))
         self._convertDoors(mapInterim.doors)
 
@@ -379,22 +381,24 @@ class MapGZD:
             sideFrontIdx = None
             sideBackIdx = None
             doNotPeg = False
+            texture = line.texture.names[0]
+            altTexture = self.altTextures.get(texture)
             if line.height == HeightType.FULL:
                 sector = forcedSector if forcedSector is not None else self.SECTOR_FULL_IDX
-                sideFrontIdx = self._addSide(sector, TextureMode.MIDDLE, line.texture.names[0], line.texture.offset, line.texture.stretch)
+                sideFrontIdx = self._addSide(sector, TextureMode.MIDDLE, texture, line.texture.offset, line.texture.stretch)
             elif line.height == HeightType.ONLY_BOTTOM:
-                sideFrontIdx = self._addSide(self.SECTOR_FULL_IDX, TextureMode.TOP_AND_BOTTOM, line.texture.names[0], line.texture.offset, line.texture.stretch)
+                sideFrontIdx = self._addSide(self.SECTOR_FULL_IDX, TextureMode.TOP_AND_BOTTOM, texture, line.texture.offset, line.texture.stretch)
                 sideBackIdx = self._addSide(self.SECTOR_ONLY_BOTTOM_IDX, TextureMode.NO_TEXTURES, None, None, 1.0)
             elif line.height == HeightType.ONLY_TOP:
-                sideFrontIdx = self._addSide(self.SECTOR_FULL_IDX, TextureMode.TOP_AND_BOTTOM, line.texture.names[0], line.texture.offset, line.texture.stretch)
+                sideFrontIdx = self._addSide(self.SECTOR_FULL_IDX, TextureMode.TOP_AND_BOTTOM, texture, line.texture.offset, line.texture.stretch)
                 sideBackIdx = self._addSide(self.SECTOR_ONLY_TOP_IDX, TextureMode.NO_TEXTURES, None, None, 1.0)
                 doNotPeg = True
             elif line.height == HeightType.BOTTOM:
-                sideFrontIdx = self._addSide(self.SECTOR_ONLY_TOP_IDX, TextureMode.MIDDLE, line.texture.names[0], line.texture.offset, line.texture.stretch)
+                sideFrontIdx = self._addSide(self.SECTOR_ONLY_TOP_IDX, TextureMode.MIDDLE, texture, line.texture.offset, line.texture.stretch)
                 doNotPeg = True
             elif line.height == HeightType.TOP:
-                sideFrontIdx = self._addSide(self.SECTOR_ONLY_BOTTOM_IDX, TextureMode.MIDDLE, line.texture.names[0], line.texture.offset, line.texture.stretch)
-            linesGZD.append(LineGZD(v1=v1Idx, v2=v2Idx, doNotPeg=doNotPeg,
+                sideFrontIdx = self._addSide(self.SECTOR_ONLY_BOTTOM_IDX, TextureMode.MIDDLE, texture, line.texture.offset, line.texture.stretch)
+            linesGZD.append(LineGZD(v1=v1Idx, v2=v2Idx, doNotPeg=doNotPeg, b3dAltTextureName=altTexture,
                                       sideFrontIdx=sideFrontIdx, sideBackIdx=sideBackIdx))
         return linesGZD
 

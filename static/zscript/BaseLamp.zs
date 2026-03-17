@@ -2,12 +2,9 @@
 
 class BaseFloorLamp : Actor
 {
-    Array<String> wallTexturesStrOff;
-    Array<String> wallTexturesStrOn;
-    Array<TextureID> wallTexturesOff;
-    Array<TextureID> wallTexturesOn;
     Array<int> lineIndexesToChange;
-    Array<int> textureIndexesForLines;
+    Array<TextureID> onTextureForLines;
+    Array<TextureID> offTextureForLines;
     Helpers_t helpers;
 
     Default
@@ -26,6 +23,7 @@ class BaseFloorLamp : Actor
             #### A 0 A_JumpIf(args[0] == -2, "LightOFF");
             #### A 0 A_JumpIf(args[0] == -1, "LightFlickOn");
         LightON:
+            #### A 0 onLightOn();
             #### A 5;
             loop;
         LightOFF:
@@ -54,35 +52,12 @@ class BaseFloorLamp : Actor
 
     override void PostBeginPlay()
     {
-        wallTexturesStrOff.push("TEXT_268");
-        wallTexturesStrOff.push("TEXT_268");
-        wallTexturesStrOn.push("TEXT_269");
-        wallTexturesStrOn.push("MDFC_72");
         initWallFlickering();
         super.PostBeginPlay();
     }
 
     void initWallFlickering()
     {
-        if (wallTexturesStrOff.size() != wallTexturesStrOn.size()) {
-            Console.printf("wallTexturesStrOff.size() != wallTexturesStrOn.size()");
-            return;
-        }
-        for (int i = 0; i < wallTexturesStrOff.size(); i++) {
-            TextureID texture = TexMan.CheckForTexture(wallTexturesStrOff[i]);
-            if (!texture.IsValid()) {
-                Console.printf("invalid off texture: %s", wallTexturesStrOff[i]);
-            }
-            wallTexturesOff.push(texture);
-        }
-        for (int i = 0; i < wallTexturesStrOn.size(); i++) {
-            TextureID texture = TexMan.CheckForTexture(wallTexturesStrOn[i]);
-            if (!texture.IsValid()) {
-                Console.printf("invalid off texture: %s", wallTexturesStrOn[i]);
-            }
-            wallTexturesOn.push(texture);
-        }
-
         double THRESHOLD = 100.0;
         int totalLines = Level.lines.size();
         for (int lineIndex = 0; lineIndex < totalLines; lineIndex++)
@@ -94,11 +69,13 @@ class BaseFloorLamp : Actor
             );
             TextureID texture = getLineTexture(lineIndex);
             String textureStr = TexMan.GetName(texture);
-            int textureIndex = wallTexturesStrOn.find(textureStr);
-            if (distance < THRESHOLD && textureIndex != wallTexturesStrOn.size())
+            String altTextureStr = Level.lines[lineIndex].GetUDMFString("user_b3d_alt_texture_name");
+            if (distance < THRESHOLD && altTextureStr)
             {
+                TextureID altTexture = TexMan.CheckForTexture(altTextureStr);
                 lineIndexesToChange.push(lineIndex);
-                textureIndexesForLines.push(textureIndex);
+                onTextureForLines.push(texture);
+                offTextureForLines.push(altTexture);
             }
         }
     }
@@ -120,12 +97,7 @@ class BaseFloorLamp : Actor
         for (int i = 0; i < lineIndexesToChange.size(); i++)
         {
             int lineIndex = lineIndexesToChange[i];
-            TextureID texture = getLineTexture(lineIndex);
-            int textureIndex = textureIndexesForLines[i];
-            if (textureIndex != wallTexturesOn.size())
-            {
-                setLineTexture(lineIndex, wallTexturesOff[textureIndex]);
-            }
+            setLineTexture(lineIndex, offTextureForLines[i]);
         }
     }
 
@@ -134,12 +106,7 @@ class BaseFloorLamp : Actor
         for (int i = 0; i < lineIndexesToChange.size(); i++)
         {
             int lineIndex = lineIndexesToChange[i];
-            TextureID texture = getLineTexture(lineIndex);
-            int textureIndex = textureIndexesForLines[i];
-            if (textureIndex != wallTexturesOff.size())
-            {
-                setLineTexture(lineIndex, wallTexturesOn[textureIndex]);
-            }
+            setLineTexture(lineIndex, onTextureForLines[i]);
         }
     }
 }

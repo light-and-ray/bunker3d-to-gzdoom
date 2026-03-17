@@ -1,19 +1,19 @@
-Need to do list [6/25]:
+Need to do list [7/24]:
 - [x] filter things using triggers
 - [x] sprite scale mechanism
 - [x] remove broken things
 - [x] floor lamps
 - [x] fix animated big fan texture
 - [x] fix broken lines in l3d levels
+- [x] add lamp light on walls
 - [ ] animated decorations
-- [ ] add lamp light on walls
 - [ ] add lamp light on floor
-- [ ] add lamp flicker handler
 - [ ] sync current discharge sprite and wall
 - [ ] add RPG
 - [ ] breakable glass
 - [ ] friendly NPC AI
 - [ ] explosive barrels
+
 
 - [ ] ends of levels
 - [ ] broken door logic

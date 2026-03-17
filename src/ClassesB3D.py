@@ -4,7 +4,7 @@ import math
 from ClassesShared import Vertex, HeightType, Animation, GameType
 from tools import generateTextureLumpName, generateTextureModifiedLumpName, WALL_HEIGHT
 from enum import Enum
-from fixes import BROKEN_THINGS, B3D_TEXTURES_OVERRIDES
+from fixes import BROKEN_THINGS, B3D_TEXTURES_OVERRIDES, ALT_TEXTURE_VARIANT
 
 
 @dataclass
@@ -49,6 +49,8 @@ class MapB3D:
             visibleThingSets: list[list[int]], triggers: list[list[int]], triggerVisibleThingSet : list[int]
 
     ):
+        self.gameType = gameType
+        self.mapIndex = mapIndex
         self.triggers: list[Vertex] = []
         for cluster in triggers:
             self.triggers.append(Vertex(cluster[0], cluster[1]))
@@ -100,6 +102,8 @@ class MapB3D:
         self.mirroredDict = {}
         self._applyAnimation(animatedFrames, animatedLines, textureMirroring)
         self._applyMirroring(textureMirroring)
+        self.altTextures: dict[str, str] = {}
+        self._initAltTextures()
 
         for lineNum, line in enumerate(self.lines):
             override = B3D_TEXTURES_OVERRIDES.get((gameType, mapIndex), {}).get(lineNum)
@@ -173,6 +177,20 @@ class MapB3D:
                     self.textures[mirroredName].nonMirroredName = textureName
                 line.texturesNames[needMirrorIdx] = self.mirroredDict[textureName]
 
+
+    def _initAltTextures(self):
+        for textureIndex, altTextureData in ALT_TEXTURE_VARIANT.get((self.gameType, self.mapIndex), {}).items():
+            textureName = list(self.textures.keys())[textureIndex]
+            altTextureName = list(self.textures.keys())[altTextureData.index]
+            if altTextureData.mirror and altTextureName not in self.mirroredDict.keys():
+                mirroredName = generateTextureModifiedLumpName()
+                self.mirroredDict[altTextureName] = mirroredName
+                self.textures[mirroredName] = self.textures[altTextureName].transpose(Image.FLIP_LEFT_RIGHT)
+                self.textures[mirroredName].nonMirroredName = altTextureName
+                altTextureName = mirroredName
+            self.altTextures[textureName] = altTextureName
+
+
     def _removeRepeatingTexturesTale(self):
         for line in self.lines:
             i = len(line.texturesNames) - 1
@@ -230,8 +248,6 @@ class MapB3D:
                         self.lines[animatedLineIdx].texturesNames[textureIndex] = list(self.textures.keys())[animatedFrames[0]]
                 else:
                     raise Exception("Empty animated frames")
-
-
 
 
     def _repeatShortTextures(self):

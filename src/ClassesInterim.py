@@ -112,6 +112,7 @@ class MapInterim:
         self.gameType = gameType
         self.mapIndex = mapIndex
         self.textures = mapB3D.textures
+        self.altTextures = mapB3D.altTextures
         self.lines: list[LineInterim] = []
         allCircleLines = []
         for circle in mapB3D.circles:
