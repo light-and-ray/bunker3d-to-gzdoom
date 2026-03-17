@@ -5,22 +5,23 @@ Need to do list [6/25]:
 - [x] floor lamps
 - [x] fix animated big fan texture
 - [x] fix broken lines in l3d levels
-- [ ] ends of levels
-- [ ] broken door logic
-- [ ] add lamp flicker handler
+- [ ] animated decorations
 - [ ] add lamp light on walls
 - [ ] add lamp light on floor
+- [ ] add lamp flicker handler
+- [ ] sync current discharge sprite and wall
 - [ ] add RPG
+- [ ] breakable glass
+- [ ] friendly NPC AI
+- [ ] explosive barrels
+
+- [ ] ends of levels
+- [ ] broken door logic
 - [ ] add pistols
 - [ ] add chaingun
-- [ ] animated decorations
-- [ ] breakable glass
-- [ ] sync current discharge sprite and wall
-- [ ] friendly NPC AI
 - [ ] flamethrower guy AI
 - [ ] foe AI
 - [ ] crates logic
-- [ ] explosive barrels
 - [ ] fix broken texture offset in constructions
 - [ ] smart cutter for TOP lines
 - [ ] lightnings
