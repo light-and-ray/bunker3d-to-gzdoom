@@ -101,7 +101,7 @@ class Helpers_t
 
         for (int pass = 0; pass < maxPasses; pass++)
         {
-            bool moved = false;
+            bool stillStuck = false;
 
             for (int i = 0; i < Level.lines.Size(); i++)
             {
@@ -113,10 +113,6 @@ class Helpers_t
 
                 // 2D Cross Product to check side (Left vs Right)
                 double side = (lineVec.x * actorVec.y) - (lineVec.y * actorVec.x);
-
-                // If you want the line to only block from the front,
-                // skip if the actor is already behind it.
-                if (side > 0) continue;
 
                 double lineLenSq = lineVec.LengthSquared();
                 if (lineLenSq <= 0) continue;
@@ -131,7 +127,11 @@ class Helpers_t
 
                 if (dist < radius)
                 {
-                    moved = true;
+                    stillStuck = true;
+
+                    // Skip if the actor is already behind it.
+                    if (side > 0) continue;
+
                     if (dist < 0.001) // Using a small epsilon instead of hard zero
                     {
                         // The Right-hand normal for (x, y) is (y, -x)
@@ -146,10 +146,12 @@ class Helpers_t
                 }
             }
 
-            if (!moved) break;
+            if (!stillStuck) {
+                return currentPos;
+            }
         }
 
-        return currentPos;
+        return pos;
     }
 }
 
