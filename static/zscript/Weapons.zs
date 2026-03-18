@@ -150,7 +150,8 @@ class Explosion_t : Actor
     States
     {
         Spawn:
-            EXPL ABCDE 5 A_Explode;
+            EXPL A 0 NoDelay A_Explode;
+            EXPL ABCDE 5;
             stop;
     }
 
