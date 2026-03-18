@@ -96,7 +96,7 @@ class Helpers_t
 
     Vector2 getUnstuckPos(Vector2 originalPos, double radius, LevelLocals Level)
     {
-        double DISPLACEMENT_LIMIT = 1.5;
+        double DISPLACEMENT_LIMIT = radius * 2.0;
         Vector2 currentPos = originalPos;
         int maxPasses = 3;
 
@@ -152,7 +152,7 @@ class Helpers_t
         }
 
         double totalDisplacement = (currentPos - originalPos).Length();
-        if (totalDisplacement > (radius * DISPLACEMENT_LIMIT))
+        if (totalDisplacement > DISPLACEMENT_LIMIT)
         {
             return originalPos;
         }
