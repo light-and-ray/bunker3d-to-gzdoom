@@ -1,4 +1,3 @@
-#include "zscript/Helpers.zs"
 
 class LightSpot_t : Actor
 {
