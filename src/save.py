@@ -62,6 +62,8 @@ def saveMap(map: MapGZD, mapIndex: int, game: GameType):
             umap.linedefs[-1].user_b3d_door_po_mirror_num = int(line.b3dDoorPOMirrorNum)
         if line.b3dAltTextureName is not None:
             umap.linedefs[-1].user_b3d_alt_texture_name = line.b3dAltTextureName
+        if line.b3dAltTextureType is not None:
+            umap.linedefs[-1].user_b3d_alt_texture_type = line.b3dAltTextureType
         umap.linedefs[-1].dontpegtop = line.doNotPeg
         umap.linedefs[-1].dontpegbottom = line.doNotPeg
 

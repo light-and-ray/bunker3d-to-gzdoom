@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from tools import WALL_HEIGHT
 from ClassesShared import GameType
+from enum import Enum
 from PIL import Image
 
 
@@ -183,16 +184,20 @@ LINE_REVERSE_FIXES[(GameType.L3D, 4)] = [3]
 LINE_REVERSE_FIXES[(GameType.L3D, 6)] = [52, 118]
 
 
+class AltTextureType(Enum):
+    LAMP_OFF = 'lamp_off'
+
 @dataclass
-class AltTextureVariantData:
+class AltTextureRawData:
     index: int
+    type: AltTextureType
     mirror: bool = False
 
-ALT_TEXTURE_VARIANT: dict[tuple[GameType, int], dict[int, AltTextureVariantData]] = {}
+ALT_TEXTURE_VARIANT: dict[tuple[GameType, int], dict[int, AltTextureRawData]] = {}
 ALT_TEXTURE_VARIANT[(GameType.L3D, 6)] = \
 {
-    6: AltTextureVariantData(5),
-    26: AltTextureVariantData(5, mirror=True),
+    6: AltTextureRawData(5, AltTextureType.LAMP_OFF),
+    26: AltTextureRawData(5, AltTextureType.LAMP_OFF, mirror=True),
 }
 
 NO_LIGHT_SPOT_LEVELS: list[tuple[GameType, int]] = [(GameType.B3D, 9)]

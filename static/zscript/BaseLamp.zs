@@ -96,7 +96,8 @@ class _BaseLamp : Actor
             TextureID texture = getLineTexture(lineIndex);
             String textureStr = TexMan.GetName(texture);
             String altTextureStr = Level.lines[lineIndex].GetUDMFString("user_b3d_alt_texture_name");
-            if (distance < THRESHOLD && altTextureStr)
+            String altTextureType = Level.lines[lineIndex].GetUDMFString("user_b3d_alt_texture_type");
+            if (distance < THRESHOLD && altTextureStr && altTextureType == "lamp_off")
             {
                 TextureID altTexture = TexMan.CheckForTexture(altTextureStr);
                 lineIndexesToChange.push(lineIndex);

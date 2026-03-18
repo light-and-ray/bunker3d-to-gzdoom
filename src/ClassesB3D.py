@@ -4,7 +4,7 @@ import math
 from ClassesShared import Vertex, HeightType, Animation, GameType
 from tools import generateTextureLumpName, generateTextureModifiedLumpName, WALL_HEIGHT
 from enum import Enum
-from fixes import BROKEN_THINGS, B3D_TEXTURES_OVERRIDES, ALT_TEXTURE_VARIANT
+from fixes import BROKEN_THINGS, B3D_TEXTURES_OVERRIDES, ALT_TEXTURE_VARIANT, AltTextureType
 
 
 @dataclass
@@ -35,6 +35,11 @@ class ThingB3D:
     special: int|None
     sprite: int|None
     index: int
+
+@dataclass
+class AltTextureData:
+    name: str
+    type: AltTextureType
 
 
 class MapB3D:
@@ -102,7 +107,7 @@ class MapB3D:
         self.mirroredDict = {}
         self._applyAnimation(animatedFrames, animatedLines, textureMirroring)
         self._applyMirroring(textureMirroring)
-        self.altTextures: dict[str, str] = {}
+        self.altTextures: dict[str, AltTextureData] = {}
         self._initAltTextures()
 
         for lineNum, line in enumerate(self.lines):
@@ -179,16 +184,16 @@ class MapB3D:
 
 
     def _initAltTextures(self):
-        for textureIndex, altTextureData in ALT_TEXTURE_VARIANT.get((self.gameType, self.mapIndex), {}).items():
+        for textureIndex, altTextureRawData in ALT_TEXTURE_VARIANT.get((self.gameType, self.mapIndex), {}).items():
             textureName = list(self.textures.keys())[textureIndex]
-            altTextureName = list(self.textures.keys())[altTextureData.index]
-            if altTextureData.mirror and altTextureName not in self.mirroredDict.keys():
+            altTextureName = list(self.textures.keys())[altTextureRawData.index]
+            if altTextureRawData.mirror and altTextureName not in self.mirroredDict.keys():
                 mirroredName = generateTextureModifiedLumpName()
                 self.mirroredDict[altTextureName] = mirroredName
                 self.textures[mirroredName] = self.textures[altTextureName].transpose(Image.FLIP_LEFT_RIGHT)
                 self.textures[mirroredName].nonMirroredName = altTextureName
                 altTextureName = mirroredName
-            self.altTextures[textureName] = altTextureName
+            self.altTextures[textureName] = AltTextureData(name=altTextureName, type=altTextureRawData.type)
 
 
     def _removeRepeatingTexturesTale(self):

@@ -59,6 +59,7 @@ class LineGZD:
     b3dDoorBackSide: bool = None
     b3dDoorPOMirrorNum: bool = None
     b3dAltTextureName: str = None
+    b3dAltTextureType: str = None
 
 
 @dataclass
@@ -383,7 +384,12 @@ class MapGZD:
             sideBackIdx = None
             doNotPeg = False
             texture = line.texture.names[0]
-            altTexture = self.altTextures.get(texture)
+            _altTexture = self.altTextures.get(texture)
+            altTextureName = None
+            altTextureType = None
+            if _altTexture:
+                altTextureName = _altTexture.name
+                altTextureType = _altTexture.type.value
             if line.height == HeightType.FULL:
                 sector = forcedSector if forcedSector is not None else self.SECTOR_FULL_IDX
                 sideFrontIdx = self._addSide(sector, TextureMode.MIDDLE, texture, line.texture.offset, line.texture.stretch)
@@ -399,7 +405,7 @@ class MapGZD:
                 doNotPeg = True
             elif line.height == HeightType.TOP:
                 sideFrontIdx = self._addSide(self.SECTOR_ONLY_BOTTOM_IDX, TextureMode.MIDDLE, texture, line.texture.offset, line.texture.stretch)
-            linesGZD.append(LineGZD(v1=v1Idx, v2=v2Idx, doNotPeg=doNotPeg, b3dAltTextureName=altTexture,
+            linesGZD.append(LineGZD(v1=v1Idx, v2=v2Idx, doNotPeg=doNotPeg, b3dAltTextureName=altTextureName, b3dAltTextureType=altTextureType,
                                       sideFrontIdx=sideFrontIdx, sideBackIdx=sideBackIdx))
         return linesGZD
 
