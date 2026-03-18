@@ -16,6 +16,7 @@ class GlassBreakerActor_t : Actor
         +DONTFALL;
 
         +NOTAUTOAIMED;
+        +GHOST;
     }
     States
     {

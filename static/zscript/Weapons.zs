@@ -35,6 +35,7 @@ class B3DBulletPuff : Actor
         +NOGRAVITY;
         +RANDOMIZE;
         +FORCEXYBILLBOARD;
+        +THRUGHOST;
         Scale 1.3;
     }
 
