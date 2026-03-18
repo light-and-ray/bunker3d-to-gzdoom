@@ -97,48 +97,50 @@ class Helpers_t
     Vector2 getUnstuckPos(Vector2 pos, double radius, LevelLocals Level)
     {
         Vector2 currentPos = pos;
+        int maxPasses = 3;
 
-        for (int i = 0; i < Level.lines.Size(); i++)
+        for (int pass = 0; pass < maxPasses; pass++)
         {
-            Vector2 v1 = Level.lines[i].v1.p;
-            Vector2 v2 = Level.lines[i].v2.p;
+            bool moved = false;
 
-            // Vector from V1 to V2 (the wall)
-            Vector2 lineVec = v2 - v1;
-            // Vector from V1 to the Actor
-            Vector2 actorVec = currentPos - v1;
-
-            double lineLenSq = lineVec.x * lineVec.x + lineVec.y * lineVec.y;
-            if (lineLenSq == 0) continue; // Safety check for zero-length lines
-
-            // Calculate the t-parameter for the point on the line segment closest to pos
-            // Clamp it between 0 and 1 to stay on the segment
-            double t = (actorVec.x * lineVec.x + actorVec.y * lineVec.y) / lineLenSq;
-            t = max(0.0, min(1.0, t));
-
-            // This is the point on the wall closest to the actor
-            Vector2 closestPoint = v1 + lineVec * t;
-
-            // Vector from the wall to the actor
-            Vector2 pushVec = currentPos - closestPoint;
-            double dist = sqrt(pushVec.x * pushVec.x + pushVec.y * pushVec.y);
-
-            // If the actor is inside the radius, push them out
-            if (dist < radius)
+            for (int i = 0; i < Level.lines.Size(); i++)
             {
-                // If the actor is exactly on the line, we need a fallback direction
-                if (dist == 0)
+                Vector2 v1 = Level.lines[i].v1.p;
+                Vector2 v2 = Level.lines[i].v2.p;
+
+                Vector2 lineVec = v2 - v1;
+                Vector2 actorVec = currentPos - v1;
+
+                double lineLenSq = lineVec.LengthSquared();
+                if (lineLenSq <= 0) continue;
+
+                // Project actor onto line segment
+                double t = (actorVec dot lineVec) / lineLenSq;
+                t = clamp(t, 0.0, 1.0);
+
+                Vector2 closestPoint = v1 + lineVec * t;
+                Vector2 pushVec = currentPos - closestPoint;
+                double dist = pushVec.Length();
+
+                if (dist < radius)
                 {
-                    // Push perpendicular to the line
-                    Vector2 normal = (-lineVec.y, lineVec.x).Unit();
-                    currentPos += normal * radius;
-                }
-                else
-                {
-                    // Normalize the push vector and move the actor to exactly 'radius' distance
-                    currentPos = closestPoint + (pushVec / dist) * radius;
+                    moved = true;
+                    if (dist < 0.001) // Using a small epsilon instead of hard zero
+                    {
+                        // Fallback: push along line normal
+                        Vector2 normal = (-lineVec.y, lineVec.x).Unit();
+                        currentPos += normal * radius;
+                    }
+                    else
+                    {
+                        // Move to exactly the radius distance
+                        currentPos = closestPoint + (pushVec / dist) * radius;
+                    }
                 }
             }
+
+            // If no lines pushed the actor during this pass, we are officially unstuck
+            if (!moved) break;
         }
 
         return currentPos;
