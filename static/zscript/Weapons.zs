@@ -134,6 +134,62 @@ class MachineGun : DoomWeapon
 }
 
 
+class Explosion_t : Actor
+{
+    Default
+    {
+        Height 72;
+        Radius 36;
+        Damage 100;
+        Scale 1.2;
+        +FORCEXYBILLBOARD;
+        +NOGRAVITY;
+    }
+    States
+    {
+        Spawn:
+            EXPL ABCDE 5 A_Explode;
+            stop;
+    }
+
+}
+
+
+class BazookaProjectile : Actor
+{
+    Default
+    {
+        Projectile;
+        Height 4;
+        Radius 2;
+        Damage 5;
+        Speed 100;
+    }
+    States
+    {
+        Spawn:
+            PUFL A 4;
+            loop;
+        Death:
+            PUFL A 0 SpawnExplosion();
+            stop;
+    }
+
+    void SpawnExplosion()
+    {
+        Vector3 newPos;
+        newPos.x = pos.x;
+        newPos.y = pos.y;
+        newPos.z = pos.z - 72;
+        if (newPos.z < 0) {
+            newPos.z = 0;
+        }
+        Explosion_t explosion = Explosion_t(Spawn('Explosion_t', newPos));
+    }
+}
+
+
+
 class Bazooka : DoomWeapon
 {
     Default
@@ -143,12 +199,13 @@ class Bazooka : DoomWeapon
         Weapon.AmmoGive 8;
         Tag "Bazooka";
         Weapon.AmmoType "B3DClip";
-        Inventory.PickupMessage "$GOTSHOTGUN";
+        // Inventory.PickupMessage "$GOTSHOTGUN";
         Obituary "$OB_MPSHOTGUN";
-        Decal "BulletChip";
+        // Decal "BulletChip";
         Weapon.WeaponScaleX 1.0;
         Weapon.WeaponScaleY 1.0;
         +WEAPON.NOAUTOAIM;
+        +WEAPON.NOAUTOFIRE;
     }
 
     GlobalVars_t globalVars;
@@ -173,7 +230,7 @@ class Bazooka : DoomWeapon
         Fire:
             BZKA A 2;
             // BZKA B 0 A_StartSound("MP40_fire");
-            // BZKA B 0 A_FireBullets(2, 1, 1, random(3, 5), getGlobalVars().puffClass);
+            BZKA B 0 A_FireProjectile('BazookaProjectile');
             BZKA B 0 A_GunFlash;
             BZKA B 0 A_GunFlash;
             BZKA B 4 A_WeaponOffset(50, 0, WOF_ADD);

@@ -7,6 +7,8 @@ class GlassBreakerActor_t : Actor
     {
         Health 50;
         GibHealth 99999999;
+        ProjectilePassHeight 0;
+
         +SHOOTABLE;
         +DONTTHRUST;
         +NOBLOOD;
