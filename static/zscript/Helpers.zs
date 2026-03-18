@@ -94,9 +94,10 @@ class Helpers_t
         };
     }
 
-    Vector2 getUnstuckPos(Vector2 pos, double radius, LevelLocals Level)
+    Vector2 getUnstuckPos(Vector2 originalPos, double radius, LevelLocals Level)
     {
-        Vector2 currentPos = pos;
+        double DISPLACEMENT_LIMIT = 1.5;
+        Vector2 currentPos = originalPos;
         int maxPasses = 3;
 
         for (int pass = 0; pass < maxPasses; pass++)
@@ -148,6 +149,12 @@ class Helpers_t
             if (!stillStuck) {
                 break;
             }
+        }
+
+        double totalDisplacement = (currentPos - originalPos).Length();
+        if (totalDisplacement > (radius * DISPLACEMENT_LIMIT))
+        {
+            return originalPos;
         }
 
         return currentPos;
