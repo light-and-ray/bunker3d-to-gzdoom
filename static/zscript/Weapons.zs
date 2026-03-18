@@ -1,3 +1,5 @@
+#include "zscript/Helpers.zs"
+
 class B3DClip : Ammo replaces Clip
 {
     Default
@@ -157,6 +159,8 @@ class Explosion_t : Actor
 
 class BazookaProjectile : Actor
 {
+    Helpers_t helpers;
+
     Default
     {
         Projectile;
@@ -164,22 +168,27 @@ class BazookaProjectile : Actor
         Radius 2;
         Damage 5;
         Speed 100;
+        +THRUGHOST;
     }
     States
     {
         Spawn:
-            PUFL A 4;
+            TNT1 A 4;
             loop;
         Death:
-            PUFL A 0 SpawnExplosion();
+            TNT1 A 0 SpawnExplosion();
             stop;
     }
 
     void SpawnExplosion()
     {
+        Vector2 newPos2D;
+        newPos2D.x = pos.x;
+        newPos2D.y = pos.y;
+        newPos2D = helpers.getUnstuckPos(newPos2D, 36, Level);
         Vector3 newPos;
-        newPos.x = pos.x;
-        newPos.y = pos.y;
+        newPos.x = newPos2D.x;
+        newPos.y = newPos2D.y;
         newPos.z = pos.z - 72;
         if (newPos.z < 0) {
             newPos.z = 0;
