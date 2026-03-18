@@ -167,7 +167,7 @@ class BazookaProjectile : Actor
         Height 4;
         Radius 2;
         Damage 5;
-        Speed 100;
+        Speed 130;
         +THRUGHOST;
     }
     States

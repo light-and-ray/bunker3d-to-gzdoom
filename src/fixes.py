@@ -84,6 +84,8 @@ NONE_TEXTURES_L3D = [ # Doors (inside) and 45 degree with middled texture inside
     { # 8
         20 : TextureOverrideData(nums=[3]),
         21 : TextureOverrideData(nums=[3]),
+        # fix big fan
+        # WARNING: editing like this breaks interim lines indexes
         100: TextureOverrideData(nums=[0, 20, 0], offset=WALL_HEIGHT-18, stretch=1.0),
     },
     { # 9
@@ -100,12 +102,16 @@ NONE_TEXTURES[GameType.B3D] = NONE_TEXTURES_B3D
 NONE_TEXTURES[GameType.L3D] = NONE_TEXTURES_L3D
 
 INTERIM_TEXTURES_OVERRIDES: dict[tuple[GameType, int], dict[int, TextureOverrideData]] = {}
+INTERIM_TEXTURES_OVERRIDES[(GameType.L3D, 4)] = \
+{
+    40: TextureOverrideData(nums=[22]), # not animated glass texture for some reason
+}
 INTERIM_TEXTURES_OVERRIDES[(GameType.L3D, 6)] = \
 {
-    49: TextureOverrideData(nums=[0]),
+    49: TextureOverrideData(nums=[0]), # accidentally broken texture over metal box
 }
 
-B3D_TEXTURES_OVERRIDES: dict[tuple[GameType, int], dict[int, int]] = {} # WARNING: editing these breaks interim lines indexes
+B3D_TEXTURES_OVERRIDES: dict[tuple[GameType, int], dict[int, int]] = {}
 B3D_TEXTURES_OVERRIDES[(GameType.L3D, 8)] = { 122: 100, 104: 100, 79: 100 }
 
 
