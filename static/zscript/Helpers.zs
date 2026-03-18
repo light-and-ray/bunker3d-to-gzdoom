@@ -111,6 +111,13 @@ class Helpers_t
                 Vector2 lineVec = v2 - v1;
                 Vector2 actorVec = currentPos - v1;
 
+                // 2D Cross Product to check side (Left vs Right)
+                double side = (lineVec.x * actorVec.y) - (lineVec.y * actorVec.x);
+
+                // If you want the line to only block from the front,
+                // skip if the actor is already behind it.
+                if (side > 0) continue;
+
                 double lineLenSq = lineVec.LengthSquared();
                 if (lineLenSq <= 0) continue;
 
@@ -127,9 +134,9 @@ class Helpers_t
                     moved = true;
                     if (dist < 0.001) // Using a small epsilon instead of hard zero
                     {
-                        // Fallback: push along line normal
-                        Vector2 normal = (-lineVec.y, lineVec.x).Unit();
-                        currentPos += normal * radius;
+                        // The Right-hand normal for (x, y) is (y, -x)
+                        Vector2 frontNormal = (lineVec.y, -lineVec.x).Unit();
+                        currentPos = closestPoint + frontNormal * radius;
                     }
                     else
                     {
@@ -139,7 +146,6 @@ class Helpers_t
                 }
             }
 
-            // If no lines pushed the actor during this pass, we are officially unstuck
             if (!moved) break;
         }
 
