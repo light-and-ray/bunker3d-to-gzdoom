@@ -2,15 +2,40 @@
 
 class GlassBreakerActor_t : Actor
 {
+    Line connectedLine;
     Default
     {
+        Health 50;
+        GibHealth 99999999;
+        +SHOOTABLE;
+        +DONTTHRUST;
+        +NOBLOOD;
+        +NOBLOODDECALS;
+
         +NOGRAVITY;
+        +DONTFALL;
+
+        +NOTAUTOAIMED;
     }
     States
     {
         Spawn:
-            LSPT A 1;
+            TNT1 A 25;
             loop;
+        Death:
+            TNT1 A 25;
+            loop;
+    }
+
+    override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
+    {
+        if (damage > 50){
+            String altTextureStr = connectedLine.GetUDMFString("user_b3d_alt_texture_name");
+            TextureID altTexture = TexMan.CheckForTexture(altTextureStr);
+            connectedLine.sidedef[Line.front].SetTexture(Side.mid, altTexture);
+            return super.DamageMobj(inflictor, source, damage, mod, flags, angle);
+        }
+        return 0;
     }
 }
 
@@ -19,13 +44,14 @@ class GlassBreakHandler : EventHandler
 {
     Helpers_t helpers;
 
-    void attachGlassBreakerActor(Line linkedLine, double x, double y)
+    void attachGlassBreakerActor(Line line_, double x, double y)
     {
         Vector3 pos;
         pos.x = x;
         pos.y = y;
         pos.z = 48;
         GlassBreakerActor_t spawned = GlassBreakerActor_t(Actor.Spawn('GlassBreakerActor_t', pos));
+        spawned.connectedLine = line_;
     }
 
     override void WorldLoaded(WorldEvent event)
