@@ -186,6 +186,7 @@ LINE_REVERSE_FIXES[(GameType.L3D, 6)] = [52, 118]
 
 class AltTextureType(Enum):
     LAMP_OFF = 'lamp_off'
+    GLASS_BREAK = 'glass_break'
 
 @dataclass
 class AltTextureRawData:
@@ -194,6 +195,10 @@ class AltTextureRawData:
     mirror: bool = False
 
 ALT_TEXTURE_VARIANT: dict[tuple[GameType, int], dict[int, AltTextureRawData]] = {}
+ALT_TEXTURE_VARIANT[(GameType.L3D, 4)] = \
+{
+    22: AltTextureRawData(3, AltTextureType.GLASS_BREAK),
+}
 ALT_TEXTURE_VARIANT[(GameType.L3D, 6)] = \
 {
     6: AltTextureRawData(5, AltTextureType.LAMP_OFF),

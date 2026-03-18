@@ -183,19 +183,6 @@ class MapB3D:
                 line.texturesNames[needMirrorIdx] = self.mirroredDict[textureName]
 
 
-    def _initAltTextures(self):
-        for textureIndex, altTextureRawData in ALT_TEXTURE_VARIANT.get((self.gameType, self.mapIndex), {}).items():
-            textureName = list(self.textures.keys())[textureIndex]
-            altTextureName = list(self.textures.keys())[altTextureRawData.index]
-            if altTextureRawData.mirror and altTextureName not in self.mirroredDict.keys():
-                mirroredName = generateTextureModifiedLumpName()
-                self.mirroredDict[altTextureName] = mirroredName
-                self.textures[mirroredName] = self.textures[altTextureName].transpose(Image.FLIP_LEFT_RIGHT)
-                self.textures[mirroredName].nonMirroredName = altTextureName
-                altTextureName = mirroredName
-            self.altTextures[textureName] = AltTextureData(name=altTextureName, type=altTextureRawData.type)
-
-
     def _removeRepeatingTexturesTale(self):
         for line in self.lines:
             i = len(line.texturesNames) - 1
@@ -266,4 +253,20 @@ class MapB3D:
                 else:
                     newNames.append(name)
             line.texturesNames = newNames
+
+
+    def _initAltTextures(self):
+        for textureIndex, altTextureRawData in ALT_TEXTURE_VARIANT.get((self.gameType, self.mapIndex), {}).items():
+            textureName = list(self.textures.keys())[textureIndex]
+            altTextureName = list(self.textures.keys())[altTextureRawData.index]
+            if altTextureRawData.mirror and altTextureName not in self.mirroredDict.keys():
+                mirroredName = generateTextureModifiedLumpName()
+                self.mirroredDict[altTextureName] = mirroredName
+                self.textures[mirroredName] = self.textures[altTextureName].transpose(Image.FLIP_LEFT_RIGHT)
+                self.textures[mirroredName].nonMirroredName = altTextureName
+                altTextureName = mirroredName
+            self.altTextures[textureName] = AltTextureData(name=altTextureName, type=altTextureRawData.type)
+            for animation in self.animations:
+                if textureName in animation.frames:
+                    self.altTextures[animation.name] = self.altTextures[textureName]
 

@@ -10,3 +10,4 @@ version 4.14
 #include "zscript/BaseFriendly.zs"
 #include "zscript/BaseCrate.zs"
 #include "zscript/generated/include.zs"
+#include "zscript/GlassBreakHandler.zs"

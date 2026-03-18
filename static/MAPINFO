@@ -168,5 +168,5 @@ episode C2M1
 GameInfo
 {
     PlayerClasses = "B3DPlayer"
-    AddEventHandlers = "DoorsOpenerHandler", "GlobalVars_t"
+    AddEventHandlers = "DoorsOpenerHandler", "GlobalVars_t", "GlassBreakHandler"
 }
