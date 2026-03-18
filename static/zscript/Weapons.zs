@@ -133,3 +133,61 @@ class MachineGun : DoomWeapon
     }
 }
 
+
+class Bazooka : DoomWeapon
+{
+    Default
+    {
+        Weapon.SelectionOrder 1300;
+        Weapon.AmmoUse 1;
+        Weapon.AmmoGive 8;
+        Tag "Bazooka";
+        Weapon.AmmoType "B3DClip";
+        Inventory.PickupMessage "$GOTSHOTGUN";
+        Obituary "$OB_MPSHOTGUN";
+        Decal "BulletChip";
+        Weapon.WeaponScaleX 1.0;
+        Weapon.WeaponScaleY 1.0;
+        +WEAPON.NOAUTOAIM;
+    }
+
+    GlobalVars_t globalVars;
+
+    action GlobalVars_t getGlobalVars()
+    {
+        if(!invoker.globalVars) invoker.globalVars = GlobalVars_t(EventHandler.Find("GlobalVars_t"));
+        return invoker.globalVars;
+    }
+
+    States
+    {
+        Ready:
+            BZKA A 1 A_WeaponReady;
+            Loop;
+        Deselect:
+            BZKA A 1 A_Lower;
+            Loop;
+        Select:
+            BZKA A 1 A_Raise;
+            Loop;
+        Fire:
+            BZKA A 2;
+            // BZKA B 0 A_StartSound("MP40_fire");
+            // BZKA B 0 A_FireBullets(2, 1, 1, random(3, 5), getGlobalVars().puffClass);
+            BZKA B 0 A_GunFlash;
+            BZKA B 0 A_GunFlash;
+            BZKA B 4 A_WeaponOffset(50, 0, WOF_ADD);
+            BZKA C 4 A_GunFlash;
+            BZKA A 0 A_WeaponOffset(-50, 0, WOF_ADD);
+            BZKA AAAAAAAAAAAAAAAAAAAAAAAAA 1 A_WeaponOffset(0, 5, WOF_ADD|WOF_INTERPOLATE);
+            BZKA AAAAAAAAAAAAAAAAAAAAAAAAA 1 A_WeaponOffset(0, -5, WOF_ADD|WOF_INTERPOLATE);
+            Goto Ready;
+        Flash:
+            BZKA A 0;
+            Goto LightDone;
+        Spawn:
+            BZKA A -1;
+            Stop;
+    }
+}
+
