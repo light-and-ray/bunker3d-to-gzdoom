@@ -1,10 +1,12 @@
 
 class Explosion_t : Actor
 {
+    Helpers_t helpers;
+
     Default
     {
         Height 72;
-        Radius 36;
+        Radius 37;
         Damage 100;
         Scale 1.2;
         +FORCEXYBILLBOARD;
@@ -17,14 +19,27 @@ class Explosion_t : Actor
             EXPL ABCDE 5;
             stop;
     }
-
+    override void BeginPlay()
+    {
+        Vector2 newPos2D;
+        newPos2D.x = pos.x;
+        newPos2D.y = pos.y;
+        newPos2D = helpers.getUnstuckPos(newPos2D, Radius, Level);
+        Vector3 newPos;
+        newPos.x = newPos2D.x;
+        newPos.y = newPos2D.y;
+        newPos.z = pos.z - 72;
+        if (newPos.z < 0) {
+            newPos.z = 0;
+        }
+        SetXYZ(newPos);
+        Super.BeginPlay();
+    }
 }
 
 
 class BazookaProjectile : Actor
 {
-    Helpers_t helpers;
-
     Default
     {
         Projectile;
@@ -46,18 +61,7 @@ class BazookaProjectile : Actor
 
     void SpawnExplosion()
     {
-        Vector2 newPos2D;
-        newPos2D.x = pos.x;
-        newPos2D.y = pos.y;
-        newPos2D = helpers.getUnstuckPos(newPos2D, 36, Level);
-        Vector3 newPos;
-        newPos.x = newPos2D.x;
-        newPos.y = newPos2D.y;
-        newPos.z = pos.z - 72;
-        if (newPos.z < 0) {
-            newPos.z = 0;
-        }
-        Explosion_t explosion = Explosion_t(Spawn('Explosion_t', newPos));
+        Explosion_t explosion = Explosion_t(Spawn('Explosion_t', pos));
     }
 }
 
