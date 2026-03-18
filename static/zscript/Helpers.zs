@@ -113,6 +113,8 @@ class Helpers_t
 
                 // 2D Cross Product to check side (Left vs Right)
                 double side = (lineVec.x * actorVec.y) - (lineVec.y * actorVec.x);
+                // Skip if the actor is already behind it.
+                if (side > 0) continue;
 
                 double lineLenSq = lineVec.LengthSquared();
                 if (lineLenSq <= 0) continue;
@@ -129,9 +131,6 @@ class Helpers_t
                 {
                     stillStuck = true;
 
-                    // Skip if the actor is already behind it.
-                    if (side > 0) continue;
-
                     if (dist < 0.001) // Using a small epsilon instead of hard zero
                     {
                         // The Right-hand normal for (x, y) is (y, -x)
@@ -147,11 +146,11 @@ class Helpers_t
             }
 
             if (!stillStuck) {
-                return currentPos;
+                break;
             }
         }
 
-        return pos;
+        return currentPos;
     }
 }
 
