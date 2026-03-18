@@ -1,4 +1,4 @@
-Need to do list [9/24]:
+Need to do list [10/24]:
 - [x] filter things using triggers
 - [x] sprite scale mechanism
 - [x] remove broken things
@@ -8,9 +8,9 @@ Need to do list [9/24]:
 - [x] add lamp light on walls
 - [x] add lamp light on floor
 - [x] breakable glass
+- [x] add RPG
 - [ ] animated decorations
 - [ ] sync current discharge sprite and wall
-- [ ] add RPG
 - [ ] friendly NPC AI
 - [ ] explosive barrels
 
