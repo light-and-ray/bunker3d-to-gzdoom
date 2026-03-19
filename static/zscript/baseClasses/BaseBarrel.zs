@@ -28,7 +28,39 @@ class BaseBarrel : Actor
 
     override bool CanCollideWith(Actor other, bool passive)
     {
-        return true;
+        double BLOCKING_RADIUS = 5;
+        double combinedRadius = self.radius + other.radius;
+        double combinedRadiusBlocking = BLOCKING_RADIUS + other.radius;
+        double distSq = self.Distance2DSquared(other);
+        bool canCollideSoft = (distSq <= combinedRadius * combinedRadius);
+        bool canCollideBlocking = (distSq <= combinedRadiusBlocking * combinedRadiusBlocking);
+
+        if (canCollideSoft)
+        {
+            Vector3 diff = self.Vec3To(other);
+            if (other.pos.z < self.pos.z + self.height - 20) {
+                diff.z = 0; // Sphere logic on top to allow jumping on it
+            }
+
+            double dist = diff.Length();
+            if (dist > 0)
+            {
+                Vector3 normal = diff / dist;
+                double dotProd = other.Vel dot normal;
+
+                double penetration = combinedRadius - dist;
+
+                double heightFactor = 1.0;
+
+                if (dotProd < 0)
+                {
+                    double pushForce = dotProd - (penetration * 0.2);
+                    other.vel -= normal * pushForce * heightFactor;
+                }
+            }
+        }
+
+        return canCollideBlocking;
     }
 
     void SpawnExplosion()
