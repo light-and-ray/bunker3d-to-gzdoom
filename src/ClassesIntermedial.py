@@ -104,6 +104,12 @@ class CrateIntermedial:
     textureName: str
     angle: int
 
+@dataclass
+class BarrelIntermedial:
+    pos: Vertex
+    textureName: str
+    circleIndex: int
+
 
 class MapIntermedial:
     def __init__(self, mapB3D: MapB3D, doorsSpeed: list[int], doorsStartLineIdx: list[int],
@@ -128,7 +134,10 @@ class MapIntermedial:
         self._fixNoneTextures()
         self._fillCirclesOffsets(mapB3D.circles)
         self._initDoors(doorsStartLineIdx, doorsSpeed)
-        self._removeCratesDoorsAndBrokenLines(mapB3D.crates, doorsStartLineIdx)
+        self.barrels: list[BarrelIntermedial] = []
+        self._initBarrels(mapB3D.circles)
+        self._removeNoWallLines(mapB3D.crates, doorsStartLineIdx, mapB3D.circles)
+        print("!!!", self.barrels)
         self._cutMultitextureLines()
         self._removeOverlaps()
         self._applyLineReverseFixes()
@@ -269,7 +278,22 @@ class MapIntermedial:
                 offset += lineLengthScaled
 
 
-    def _removeCratesDoorsAndBrokenLines(self, crates: list[CrateB3D], doorsStartLineIdx: list[int]):
+    def _initBarrels(self, circles: list[list[int]]):
+        if self.gameType != GameType.L3D:
+            return
+        for circleIndex, circle in enumerate(circles):
+            circleLine1 = self.lines[circle[0]]
+            circleLine2 = self.lines[circle[len(circle)//2-1]]
+            if circleLine1.height != HeightType.ONLY_BOTTOM:
+                continue
+            textureName = circleLine1.texture.names[0]
+            v1 =circleLine1.v1
+            v2 = circleLine2.v1
+            center = (v1 + v2) / 2
+            self.barrels.append(BarrelIntermedial(pos=center, textureName=textureName, circleIndex=circleIndex))
+
+
+    def _removeNoWallLines(self, crates: list[CrateB3D], doorsStartLineIdx: list[int], circles: list[list[int]]):
         linesToRemove: set[int] = set(BROKEN_LINES.get((self.gameType, self.mapIndex)) or [])
 
         for crate in crates:
@@ -281,6 +305,9 @@ class MapIntermedial:
             linesToRemove.add(doorLineIdx)
             linesToRemove.add(doorLineIdx+1)
             linesToRemove.add(doorLineIdx+2)
+        for barrel in self.barrels:
+            for lineIndex in circles[barrel.circleIndex]:
+                linesToRemove.add(lineIndex)
 
         newLines: list[LineIntermedial] = []
         for index, line in enumerate(self.lines):
