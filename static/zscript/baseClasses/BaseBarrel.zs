@@ -5,7 +5,7 @@ class BaseBarrel : Actor
     {
         Health 5;
         Height 48;
-        Radius 27.817490;
+        Radius 29;
         +SOLID;
         +SHOOTABLE;
         +DONTTHRUST;
@@ -25,9 +25,10 @@ class BaseBarrel : Actor
 
     override bool CanCollideWith(Actor other, bool passive)
     {
-        double BLOCKING_RADIUS = 5;
+        double SOFT_GAP = 14;
+        double PENETRATION_FORCE_SCALE = 0.3;
         double combinedRadius = self.radius + other.radius;
-        double combinedRadiusBlocking = BLOCKING_RADIUS + other.radius;
+        double combinedRadiusBlocking = self.radius - SOFT_GAP + other.radius;
         double distSq = self.Distance2DSquared(other);
         bool canCollideSoft = (distSq <= combinedRadius * combinedRadius);
         bool canCollideBlocking = (distSq <= combinedRadiusBlocking * combinedRadiusBlocking);
@@ -36,7 +37,7 @@ class BaseBarrel : Actor
         {
             Vector3 diff = self.Vec3To(other);
             if (other.pos.z < self.pos.z + self.height - self.radius) {
-                diff.z = 0; // Semi-sphere on the top, cylinder on the bottom
+                diff.z = 0; // Hemisphere on the top, cylinder on the bottom
             }
 
             double dist = diff.Length();
@@ -48,7 +49,7 @@ class BaseBarrel : Actor
 
                 if (dotProd < 0)
                 {
-                    double pushForce = dotProd - (penetration * 0.2);
+                    double pushForce = dotProd - (penetration * PENETRATION_FORCE_SCALE);
                     other.vel -= normal * pushForce;
                 }
             }
