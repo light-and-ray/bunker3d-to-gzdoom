@@ -137,7 +137,6 @@ class MapIntermedial:
         self.barrels: list[BarrelIntermedial] = []
         self._initBarrels(mapB3D.circles)
         self._removeNoWallLines(mapB3D.crates, doorsStartLineIdx, mapB3D.circles)
-        print("!!!", self.barrels)
         self._cutMultitextureLines()
         self._removeOverlaps()
         self._applyLineReverseFixes()

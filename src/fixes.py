@@ -146,6 +146,11 @@ CRATE_TOP_TEXTURES = dict()
 CRATE_TOP_TEXTURES[GameType.B3D] = CRATE_TOP_TEXTURES_B3D
 CRATE_TOP_TEXTURES[GameType.L3D] = CRATE_TOP_TEXTURES_L3D
 
+BARREL_TOP_TEXTURES: dict[tuple[GameType, int], str] = {}
+BARREL_TOP_TEXTURES[(GameType.L3D, 1)] = "BARR_TOP"
+BARREL_TOP_TEXTURES[(GameType.L3D, 4)] = "BARR_TOP"
+BARREL_TOP_TEXTURES[(GameType.L3D, 9)] = "BARR_TOP"
+
 
 def fixFoeSprite(image: Image.Image, index: int) -> Image.Image:
     if image.mode != 'RGBA':

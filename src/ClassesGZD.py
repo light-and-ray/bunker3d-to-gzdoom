@@ -8,10 +8,11 @@ from actorsGeneration import ( generateDecorationSpriteName, generateDecorationC
     generateEdnum, generateLampSpriteName, generateLampClassName, generateLampZScript, generateFoeClassName,
     generateFoeSpriteName, generateFoeZScript, generateFoeTexturesDef, generateFriendlyClassName, generateFriendlyZScript,
     generateNpcSpriteName, generateCrateClassName, generateCrateSpriteName, generateCrateZScript, generateCrateModeldef,
-    generateCrateObj, generateCrateModelReplacementTextureDef, generateGenericPatchTextureDef,
+    generateCrateObj, generateModelReplacementTextureDef, generateGenericPatchTextureDef, generateBarrelSpriteName,
+    generateBarrelClassName, generateBarrelModeldef, generateBarrelObj, generateBarrelZScript,
 )
 from tools import LEVEL_CEILING, LEVEL_FLOOR, SCALE_FACTOR
-from fixes import CRATE_TOP_TEXTURES, SPRITE_SCALE_OVERRIDE, NO_LIGHT_SPOT_LEVELS
+from fixes import CRATE_TOP_TEXTURES, SPRITE_SCALE_OVERRIDE, NO_LIGHT_SPOT_LEVELS, BARREL_TOP_TEXTURES
 
 @dataclass
 class SectorGZD:
@@ -280,7 +281,7 @@ class MapGZD:
                     modelDef=generateCrateModeldef(spriteName, className, modelPath),
                 )
                 self.models.append(model)
-                textureDef = generateCrateModelReplacementTextureDef(spriteName+"A0", crate.textureName,
+                textureDef = generateModelReplacementTextureDef(spriteName+"A0", crate.textureName,
                         mapIntermedial.textures[crate.textureName], mapIndex, gameType) + "\n"
                 textureDef2x = ""
                 patchNameBase = getPatchBaseName(crate.colorIdx)
@@ -302,6 +303,33 @@ class MapGZD:
                 type = self._keysToCrates[key].ednum.num,
                 angle = crate.angle,
                 arg0=crate.content.value,
+            ))
+
+        self._keysToBarrels: dict[tuple[int], ActorGZD] = dict()
+        for barrel in mapIntermedial.barrels:
+            key = (barrel.textureName)
+            if key not in self._keysToBarrels:
+                spriteName = generateBarrelSpriteName()
+                className = generateBarrelClassName()
+                zscript = generateBarrelZScript(className, spriteName)
+                ednum = EdnumGZD(num=generateEdnum(), className=className)
+                modelPath = f"models/{spriteName}A0.obj"
+                model = ModelGZD(
+                    modelPath=modelPath,
+                    modelObj=generateBarrelObj(barrel.textureName, BARREL_TOP_TEXTURES[(gameType, mapIndex)]),
+                    modelDef=generateBarrelModeldef(spriteName, className, modelPath),
+                )
+                self.models.append(model)
+                textureDef = generateModelReplacementTextureDef(spriteName+"A0", barrel.textureName,
+                        mapIntermedial.textures[barrel.textureName], mapIndex, gameType) + "\n"
+                self.texturesDefs[spriteName] = textureDef
+                self.actors.append(ActorGZD(ednum=ednum, zscript=zscript))
+                self._keysToBarrels[key] = self.actors[-1]
+            self.things.append(ThingGZD(
+                x = barrel.pos.x,
+                y = barrel.pos.y,
+                type = self._keysToBarrels[key].ednum.num,
+                angle = 0,
             ))
 
 

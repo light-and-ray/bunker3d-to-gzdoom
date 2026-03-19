@@ -294,7 +294,7 @@ def generateCrateModeldef(spriteName: str, className: str, modelPath: str):
     code +=  "}\n"
     return code
 
-def generateCrateModelReplacementTextureDef(spriteName: str, textureName: str, texture: Image.Image, mapIndex: int, game: GameType):
+def generateModelReplacementTextureDef(spriteName: str, textureName: str, texture: Image.Image, mapIndex: int, game: GameType):
     textures = ""
     textures += f"Sprite {spriteName}, {texture.width}, {texture.height}\n"
     textures +=  "{\n"
@@ -302,4 +302,160 @@ def generateCrateModelReplacementTextureDef(spriteName: str, textureName: str, t
     textures += f"    Offset {texture.width//2}, {texture.height}\n"
     textures +=  "}\n"
     return textures
+
+
+_barrelSpriteNameIdx = 0
+def generateBarrelSpriteName():
+    global _barrelSpriteNameIdx
+    result = f'BAR{_barrelSpriteNameIdx}'
+    _barrelSpriteNameIdx += 1
+    return result
+
+_barrelClassNameIdx = 0
+def generateBarrelClassName():
+    global _barrelClassNameIdx
+    result = f'B3DBarrel{_barrelClassNameIdx:03}'
+    _barrelClassNameIdx += 1
+    return result
+
+def generateBarrelZScript(className: str, spriteName: str):
+    code = ""
+    code += f"class {className} : BaseBarrel\n"
+    code +=  "{\n"
+    code +=  "    Default\n"
+    code +=  "    {\n"
+    code +=  "    }\n"
+    code +=  "    States\n"
+    code +=  "    {\n"
+    code +=  "        Spawn:\n"
+    code += f"            {spriteName} B 0 NoDelay A_JumpIf(true, \"SpawnBase\");\n"
+    code += f"            stop;\n"
+    code +=  "    }\n"
+    code +=  "}\n"
+    return code
+
+def generateBarrelObj(sideTextureName: str, topTextureName: str):
+    code = f'''
+# Blender 4.1.1
+# www.blender.org
+o Cylinder
+v 0.000000 0.000000 -27.817490
+v 0.000000 48.000000 -27.817490
+v 13.908745 0.000000 -24.090652
+v 13.908745 48.000000 -24.090652
+v 24.090652 0.000000 -13.908745
+v 24.090652 48.000000 -13.908745
+v 27.817490 0.000000 0.000000
+v 27.817490 48.000000 0.000000
+v 24.090652 0.000000 13.908745
+v 24.090652 48.000000 13.908745
+v 13.908745 0.000000 24.090652
+v 13.908745 48.000000 24.090652
+v 0.000000 0.000000 27.817490
+v 0.000000 48.000000 27.817490
+v -13.908745 0.000000 24.090652
+v -13.908745 48.000000 24.090652
+v -24.090652 0.000000 13.908745
+v -24.090652 48.000000 13.908745
+v -27.817490 0.000000 0.000000
+v -27.817490 48.000000 0.000000
+v -24.090652 0.000000 -13.908745
+v -24.090652 48.000000 -13.908745
+v -13.908745 0.000000 -24.090652
+v -13.908745 48.000000 -24.090652
+vn 0.2588 -0.0000 -0.9659
+vn 0.7071 -0.0000 -0.7071
+vn 0.9659 -0.0000 -0.2588
+vn 0.9659 -0.0000 0.2588
+vn 0.7071 -0.0000 0.7071
+vn 0.2588 -0.0000 0.9659
+vn -0.2588 -0.0000 0.9659
+vn -0.7071 -0.0000 0.7071
+vn -0.9659 -0.0000 0.2588
+vn -0.9659 -0.0000 -0.2588
+vn -0.0000 1.0000 -0.0000
+vn -0.7071 -0.0000 -0.7071
+vn -0.2588 -0.0000 -0.9659
+vn -0.0000 -1.0000 -0.0000
+vt 1.500000 0.000000
+vt 1.500000 1.000000
+vt 1.333333 1.000000
+vt 1.333333 0.000000
+vt 1.166667 1.000000
+vt 1.166667 0.000000
+vt 1.000000 1.000000
+vt 1.000000 0.000000
+vt 0.833333 1.000000
+vt 0.833333 0.000000
+vt 0.666667 1.000000
+vt 0.666667 0.000000
+vt 0.500000 1.000000
+vt 0.500000 0.000000
+vt 0.333333 1.000000
+vt 0.333333 0.000000
+vt 0.166667 1.000000
+vt 0.166667 0.000000
+vt 0.000000 1.000000
+vt 0.000000 0.000000
+vt -0.166667 1.000000
+vt -0.166667 0.000000
+vt 0.597369 0.863386
+vt 0.402631 0.863386
+vt 0.233983 0.766017
+vt 0.136614 0.597369
+vt 0.136614 0.402631
+vt 0.233983 0.233983
+vt 0.402631 0.136614
+vt 0.597369 0.136614
+vt 0.766017 0.233983
+vt 0.863386 0.402631
+vt 0.863386 0.597369
+vt 0.766017 0.766017
+vt -0.333333 1.000000
+vt -0.333333 0.000000
+vt -0.500000 1.000000
+vt -0.500000 0.000000
+vt 0.750000 0.490000
+vt 0.870000 0.457846
+vt 0.957846 0.370000
+vt 0.990000 0.250000
+vt 0.957846 0.130000
+vt 0.870000 0.042154
+vt 0.750000 0.010000
+vt 0.630000 0.042154
+vt 0.542154 0.130000
+vt 0.510000 0.250000
+vt 0.542154 0.370000
+vt 0.630000 0.457846
+s 0
+usemtl {topTextureName}
+f 4/23/11 2/24/11 24/25/11 22/26/11 20/27/11 18/28/11 16/29/11 14/30/11 12/31/11 10/32/11 8/33/11 6/34/11
+f 1/39/14 3/40/14 5/41/14 7/42/14 9/43/14 11/44/14 13/45/14 15/46/14 17/47/14 19/48/14 21/49/14 23/50/14
+usemtl {sideTextureName}
+f 1/1/1 2/2/1 4/3/1 3/4/1
+f 3/4/2 4/3/2 6/5/2 5/6/2
+f 5/6/3 6/5/3 8/7/3 7/8/3
+f 7/8/4 8/7/4 10/9/4 9/10/4
+f 9/10/5 10/9/5 12/11/5 11/12/5
+f 11/12/6 12/11/6 14/13/6 13/14/6
+f 13/14/7 14/13/7 16/15/7 15/16/7
+f 15/16/8 16/15/8 18/17/8 17/18/8
+f 17/18/9 18/17/9 20/19/9 19/20/9
+f 19/20/10 20/19/10 22/21/10 21/22/10
+f 21/22/12 22/21/12 24/35/12 23/36/12
+f 23/36/13 24/35/13 2/37/13 1/38/13
+
+'''
+    return code
+
+def generateBarrelModeldef(spriteName: str, className: str, modelPath: str):
+    code = ""
+    code += f"Model {className}\n"
+    code +=  "{\n"
+    code += f"    Model 0 \"{modelPath}\"\n"
+    code +=  "    Scale 1.0 1.0 1.0\n"
+    code +=  "    Offset 0 0 0\n"
+    code += f"    FrameIndex {spriteName} A 0 0\n"
+    code +=  "}\n"
+    return code
 

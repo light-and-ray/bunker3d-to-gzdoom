@@ -12,4 +12,5 @@ version 4.14
 #include "zscript/baseClasses/BaseFoe.zs"
 #include "zscript/baseClasses/BaseFriendly.zs"
 #include "zscript/baseClasses/BaseCrate.zs"
+#include "zscript/baseClasses/BaseBarrel.zs"
 #include "zscript/generated/include.zs"
