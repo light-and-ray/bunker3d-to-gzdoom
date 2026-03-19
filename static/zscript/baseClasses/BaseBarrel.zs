@@ -3,7 +3,7 @@ class BaseBarrel : Actor
 {
     Default
     {
-        Health 100;
+        Health 5;
         Height 48;
         Radius 27.817490;
         +SOLID;
@@ -17,6 +17,10 @@ class BaseBarrel : Actor
         SpawnBase:
             #### A -1;
             loop;
+        Death:
+            #### A 15;
+            TNT1 A 0 SpawnExplosion();
+            stop;
     }
 
     override bool CanCollideWith(Actor other, bool passive)
@@ -24,13 +28,10 @@ class BaseBarrel : Actor
         return true;
     }
 
-    // override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
-    // {
-    //     if (!isBroken){
-    //         doBrake();
-    //     }
-    //     return 0;
-    // }
+    void SpawnExplosion()
+    {
+        Explosion_t explosion = Explosion_t(Spawn('Explosion_t', pos));
+    }
 
 }
 
