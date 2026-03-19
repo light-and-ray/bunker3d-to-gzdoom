@@ -35,8 +35,8 @@ class BaseBarrel : Actor
         if (canCollideSoft)
         {
             Vector3 diff = self.Vec3To(other);
-            if (other.pos.z < self.pos.z + self.height - 20) {
-                diff.z = 0; // Sphere logic on top to allow jumping on it
+            if (other.pos.z < self.pos.z + self.height - self.radius) {
+                diff.z = 0; // Semi-sphere on the top, cylinder on the bottom
             }
 
             double dist = diff.Length();
