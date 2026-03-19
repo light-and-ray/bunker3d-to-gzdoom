@@ -43,16 +43,13 @@ class BaseBarrel : Actor
             if (dist > 0)
             {
                 Vector3 normal = diff / dist;
-                double dotProd = other.Vel dot normal;
-
                 double penetration = combinedRadius - dist;
-
-                double heightFactor = 1.0;
+                double dotProd = other.Vel dot normal;
 
                 if (dotProd < 0)
                 {
                     double pushForce = dotProd - (penetration * 0.2);
-                    other.vel -= normal * pushForce * heightFactor;
+                    other.vel -= normal * pushForce;
                 }
             }
         }
