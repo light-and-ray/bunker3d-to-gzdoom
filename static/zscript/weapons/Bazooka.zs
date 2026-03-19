@@ -16,7 +16,7 @@ class Explosion_t : Actor
     {
         Spawn:
             EXPL A 0 NoDelay A_Explode;
-            EXPL ABCDE bright 5;
+            EXPL ABCDE 5 Bright;
             stop;
     }
     override void BeginPlay()
