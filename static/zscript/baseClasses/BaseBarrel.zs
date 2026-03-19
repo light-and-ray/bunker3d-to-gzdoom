@@ -21,9 +21,6 @@ class BaseBarrel : Actor
             #### A 15;
             TNT1 A 0 SpawnExplosion();
             stop;
-        XDeath:
-            TNT1 A 0 SpawnExplosion();
-            stop;
     }
 
     override bool CanCollideWith(Actor other, bool passive)
