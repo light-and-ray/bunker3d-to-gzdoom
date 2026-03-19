@@ -16,7 +16,7 @@ class Explosion_t : Actor
     {
         Spawn:
             EXPL A 0 NoDelay A_Explode;
-            EXPL ABCDE 5;
+            EXPL ABCDE bright 5;
             stop;
     }
     override void BeginPlay()
@@ -97,7 +97,6 @@ class Bazooka : DoomWeapon
             BZKA A 1 A_Raise;
             Loop;
         Fire:
-            BZKA A 2;
             // BZKA B 0 A_StartSound("MP40_fire");
             BZKA B 0 A_FireProjectile('BazookaProjectile');
             BZKA B 0 A_GunFlash;
