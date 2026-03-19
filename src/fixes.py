@@ -85,7 +85,7 @@ NONE_TEXTURES_L3D = [ # Doors (inside) and 45 degree with middled texture inside
         20 : TextureOverrideData(nums=[3]),
         21 : TextureOverrideData(nums=[3]),
         # fix big fan
-        # WARNING: editing like this breaks interim lines indexes
+        # WARNING: editing like this breaks intermedial lines indexes
         100: TextureOverrideData(nums=[0, 20, 0], offset=WALL_HEIGHT-18, stretch=1.0),
     },
     { # 9

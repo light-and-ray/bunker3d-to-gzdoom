@@ -1,6 +1,6 @@
 from loadFromJava import load
 from drawMap import drawMap
-from ClassesInterim import MapInterim
+from ClassesIntermedial import MapIntermedial
 from ClassesGZD import MapGZD, EdnumGZD, ModelGZD
 from ClassesShared import Animation, GameType
 from save import (saveMap, saveStaticData, saveTextures, saveAnimations, saveSprites, saveZScripts, saveEdnums,
@@ -25,13 +25,13 @@ if __name__ == "__main__":
         for idx in maps:
             data = load(idx, game)
             animations.extend(data.map.animations)
-            mapInterim = MapInterim(data.map, doorsSpeed=data.doorsSpeed,
+            mapIntermedial = MapIntermedial(data.map, doorsSpeed=data.doorsSpeed,
                     doorsStartLineIdx=data.doorsStartLineIdx, foeAngles=data.foeAngles,
                     foeWalkDistances=data.foeWalkDistances, gameType=game, mapIndex=idx)
             mapName = f'c{game.value+1}m{idx}'
             drawMap(data.map, name=f"b3d/{mapName}", show=False)
-            drawMap(mapInterim, name=f"inter/{mapName}", show=False)
-            mapGZD = MapGZD(mapInterim, spawnPos=data.spawnPos, spawnAngle=data.spawnAngle, mapIndex=idx, gameType=game)
+            drawMap(mapIntermedial, name=f"inter/{mapName}", show=False)
+            mapGZD = MapGZD(mapIntermedial, spawnPos=data.spawnPos, spawnAngle=data.spawnAngle, mapIndex=idx, gameType=game)
             saveMap(map=mapGZD, mapIndex=idx, game=game)
             saveTextures(textures=data.map.textures, mapIndex=idx, colorCeiling=data.colorCeiling, colorFloor=data.colorFloor, game=game)
             saveSprites(sprites=mapGZD.sprites, mapIndex=idx, game=game)

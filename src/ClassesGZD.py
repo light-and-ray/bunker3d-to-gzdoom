@@ -3,7 +3,7 @@ from enum import Enum
 from typing import Any
 from PIL import Image
 from ClassesShared import HeightType, GameType
-from ClassesInterim import MapInterim, LineInterim, DoorInterim
+from ClassesIntermedial import MapIntermedial, LineIntermedial, DoorIntermedial
 from actorsGeneration import ( generateDecorationSpriteName, generateDecorationClassName, generateDecorationZScript,
     generateEdnum, generateLampSpriteName, generateLampClassName, generateLampZScript, generateFoeClassName,
     generateFoeSpriteName, generateFoeZScript, generateFoeTexturesDef, generateFriendlyClassName, generateFriendlyZScript,
@@ -96,7 +96,7 @@ class MapGZD:
     SECTOR_ONLY_BOTTOM_IDX = 1
     SECTOR_ONLY_TOP_IDX = 2
 
-    def __init__(self, mapInterim: MapInterim, spawnPos: list[int], spawnAngle: int, mapIndex: int, gameType: GameType):
+    def __init__(self, mapIntermedial: MapIntermedial, spawnPos: list[int], spawnAngle: int, mapIndex: int, gameType: GameType):
         self.vertexes: list[VertexGZD] = []
         self.sectorFull: SectorGZD = None
         self.sectorBottom: SectorGZD = None
@@ -113,9 +113,9 @@ class MapGZD:
         self.sectorOnlyTop = SectorGZD(heightFloor=0, heightCeiling=(LEVEL_CEILING+LEVEL_FLOOR)//2)
         self.sectors.extend([self.sectorFull, self.sectorOnlyBottom, self.sectorOnlyTop])
 
-        self.altTextures = mapInterim.altTextures
-        self.lines.extend(self._convertLines(mapInterim.lines))
-        self._convertDoors(mapInterim.doors)
+        self.altTextures = mapIntermedial.altTextures
+        self.lines.extend(self._convertLines(mapIntermedial.lines))
+        self._convertDoors(mapIntermedial.doors)
 
         self.things.append(ThingGZD(spawnPos[0], spawnPos[1], 1, spawnAngle+90)) # starting pos
 
@@ -125,16 +125,16 @@ class MapGZD:
         self.texturesDefs2x: dict[str, str] = dict()
 
         self._keysToDecoration: dict[tuple[int], ActorGZD] = dict()
-        for decoration in mapInterim.decorations:
+        for decoration in mapIntermedial.decorations:
             key = (decoration.spriteIdx, decoration.colorIdx)
             if key not in self._keysToDecoration:
                 spriteName = generateDecorationSpriteName()
                 className = generateDecorationClassName()
                 if decoration.spriteIdx >= 0:
-                    sprite = mapInterim.sprites[decoration.colorIdx][decoration.spriteIdx]
+                    sprite = mapIntermedial.sprites[decoration.colorIdx][decoration.spriteIdx]
                     scaleOverrideFix = SPRITE_SCALE_OVERRIDE.get((gameType, mapIndex, decoration.spriteIdx))
                 else:
-                    sprite = mapInterim.foeSprites[decoration.colorIdx][decoration.spriteIdx]
+                    sprite = mapIntermedial.foeSprites[decoration.colorIdx][decoration.spriteIdx]
                     scaleOverrideFix = 1.3
                 zscript = generateDecorationZScript(className, spriteName, sprite, scaleOverrideFix)
                 ednum = EdnumGZD(num=generateEdnum(), className=className)
@@ -149,14 +149,14 @@ class MapGZD:
             ))
 
         self._keysToLamp: dict[tuple[int], ActorGZD] = dict()
-        for lamp in mapInterim.lamps:
+        for lamp in mapIntermedial.lamps:
             key = (lamp.spriteIdx, lamp.colorIdx)
             if key not in self._keysToLamp:
                 spriteName = generateLampSpriteName()
                 className = generateLampClassName()
-                spriteA = mapInterim.sprites[lamp.colorIdx][lamp.spriteIdx]
-                spriteB = mapInterim.sprites[lamp.colorIdx][lamp.spriteIdx+1]
-                spriteC = mapInterim.sprites[lamp.colorIdx][lamp.spriteIdx+2]
+                spriteA = mapIntermedial.sprites[lamp.colorIdx][lamp.spriteIdx]
+                spriteB = mapIntermedial.sprites[lamp.colorIdx][lamp.spriteIdx+1]
+                spriteC = mapIntermedial.sprites[lamp.colorIdx][lamp.spriteIdx+2]
                 scaleOverrideFix = SPRITE_SCALE_OVERRIDE.get((gameType, mapIndex, lamp.spriteIdx))
                 isFloor = False
                 if gameType == GameType.L3D and mapIndex == 9:
@@ -178,7 +178,7 @@ class MapGZD:
             ))
 
         self._keysToFoe: dict[tuple[int], ActorGZD] = dict()
-        for foe in mapInterim.foes:
+        for foe in mapIntermedial.foes:
             key = (foe.colorIdx)
             if key not in self._keysToFoe:
                 spriteName = generateFoeSpriteName()
@@ -189,7 +189,7 @@ class MapGZD:
                 sprite_names = ["C0", "D0", "E0", "F0", "G0", "H0", "I0", "J0"]
                 for i, name in enumerate(patches_names):
                     patchName = spriteName + name
-                    patch = mapInterim.foeSprites[foe.colorIdx][i]
+                    patch = mapIntermedial.foeSprites[foe.colorIdx][i]
                     self.patches[patchName] = patch
                     if name.startswith('A'):
                         texturesName = spriteName+'A'
@@ -202,9 +202,9 @@ class MapGZD:
                     self.texturesDefs2x[texturesName] += generateFoeTexturesDef(patchName, patch, mapIndex, gameType, True) + '\n'
                 for i, name in enumerate(sprite_names):
                     if gameType == GameType.L3D and i >= 5:
-                        self.sprites[spriteName+name] = mapInterim.sprites[foe.colorIdx][11+i-5]
+                        self.sprites[spriteName+name] = mapIntermedial.sprites[foe.colorIdx][11+i-5]
                     else:
-                        self.sprites[spriteName+name] = mapInterim.foeSprites[foe.colorIdx][len(patches_names)+i]
+                        self.sprites[spriteName+name] = mapIntermedial.foeSprites[foe.colorIdx][len(patches_names)+i]
                 zscript = generateFoeZScript(className, spriteName, self.sprites[spriteName+"C0"], self.sprites[spriteName+"G0"])
                 self.actors.append(ActorGZD(ednum=ednum, zscript=zscript))
                 self._keysToFoe[key] = self.actors[-1]
@@ -218,19 +218,19 @@ class MapGZD:
             ))
 
         self._keysToFriendly: dict[tuple[int], ActorGZD] = dict()
-        for friendly in mapInterim.friendlies:
+        for friendly in mapIntermedial.friendlies:
             key = (friendly.spriteIdx, friendly.colorIdx, friendly.isSecond)
             if key not in self._keysToFriendly:
                 spriteName = generateNpcSpriteName()
                 className = generateFriendlyClassName()
                 if not friendly.isSecond:
-                    spriteA = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx]
-                    spriteB = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+1]
+                    spriteA = mapIntermedial.sprites[friendly.colorIdx][friendly.spriteIdx]
+                    spriteB = mapIntermedial.sprites[friendly.colorIdx][friendly.spriteIdx+1]
                 else:
-                    spriteA = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+4]
-                    spriteB = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+5]
-                spriteC = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+2]
-                spriteD = mapInterim.sprites[friendly.colorIdx][friendly.spriteIdx+3]
+                    spriteA = mapIntermedial.sprites[friendly.colorIdx][friendly.spriteIdx+4]
+                    spriteB = mapIntermedial.sprites[friendly.colorIdx][friendly.spriteIdx+5]
+                spriteC = mapIntermedial.sprites[friendly.colorIdx][friendly.spriteIdx+2]
+                spriteD = mapIntermedial.sprites[friendly.colorIdx][friendly.spriteIdx+3]
                 scaleOverrideFix = SPRITE_SCALE_OVERRIDE.get((gameType, mapIndex, friendly.spriteIdx))
                 zscript = generateFriendlyZScript(className, spriteName, spriteA, spriteD, scaleOverrideFix)
                 ednum = EdnumGZD(num=generateEdnum(), className=className)
@@ -251,22 +251,22 @@ class MapGZD:
         self._keysToCratesFrames: set[tuple[int]] = set()
         def getPatchBaseName(colorIdx):
             return f"crate_color_{colorIdx}"
-        for crate in mapInterim.crates:
+        for crate in mapIntermedial.crates:
             key = (crate.spriteIdx, crate.colorIdx)
             if key not in self._keysToCratesFrames:
                 patchNameBase = getPatchBaseName(crate.colorIdx)
-                self.patches[patchNameBase+"_frame_B"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+1]
-                self.patches[patchNameBase+"_frame_C"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+2]
-                self.patches[patchNameBase+"_frame_D"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+3] # None
-                self.patches[patchNameBase+"_frame_E"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+4] # Ammo
-                self.patches[patchNameBase+"_frame_F"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+5] # Health
-                self.patches[patchNameBase+"_frame_G"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+6] # Both
+                self.patches[patchNameBase+"_frame_B"] = mapIntermedial.sprites[crate.colorIdx][crate.spriteIdx+1]
+                self.patches[patchNameBase+"_frame_C"] = mapIntermedial.sprites[crate.colorIdx][crate.spriteIdx+2]
+                self.patches[patchNameBase+"_frame_D"] = mapIntermedial.sprites[crate.colorIdx][crate.spriteIdx+3] # None
+                self.patches[patchNameBase+"_frame_E"] = mapIntermedial.sprites[crate.colorIdx][crate.spriteIdx+4] # Ammo
+                self.patches[patchNameBase+"_frame_F"] = mapIntermedial.sprites[crate.colorIdx][crate.spriteIdx+5] # Health
+                self.patches[patchNameBase+"_frame_G"] = mapIntermedial.sprites[crate.colorIdx][crate.spriteIdx+6] # Both
                 if gameType != GameType.B3D:
-                    self.patches[patchNameBase+"_frame_H"] = mapInterim.sprites[crate.colorIdx][crate.spriteIdx+7] # Alt Ammo
+                    self.patches[patchNameBase+"_frame_H"] = mapIntermedial.sprites[crate.colorIdx][crate.spriteIdx+7] # Alt Ammo
                 self._keysToCratesFrames.add(key)
 
         self._keysToCrates: dict[tuple[int], ActorGZD] = dict()
-        for crate in mapInterim.crates:
+        for crate in mapIntermedial.crates:
             key = (crate.spriteIdx, crate.colorIdx, crate.textureName)
             if key not in self._keysToCrates:
                 spriteName = generateCrateSpriteName()
@@ -281,7 +281,7 @@ class MapGZD:
                 )
                 self.models.append(model)
                 textureDef = generateCrateModelReplacementTextureDef(spriteName+"A0", crate.textureName,
-                        mapInterim.textures[crate.textureName], mapIndex, gameType) + "\n"
+                        mapIntermedial.textures[crate.textureName], mapIndex, gameType) + "\n"
                 textureDef2x = ""
                 patchNameBase = getPatchBaseName(crate.colorIdx)
                 frameLetters = ['B', 'C', 'D', "E", "F", "G"]
@@ -318,7 +318,7 @@ class MapGZD:
         self.sectors.append(SectorGZD(heightCeiling=LEVEL_CEILING, heightFloor=LEVEL_FLOOR))
         return len(self.sectors) - 1
 
-    def _convertDoors(self, doors: list[DoorInterim]):
+    def _convertDoors(self, doors: list[DoorIntermedial]):
         prevLines: list[LineGZD] = None
         prevDoorPolyObjectDef: PolObjectGZD = None
 
@@ -375,9 +375,9 @@ class MapGZD:
             self.lines.extend(boxLines)
 
 
-    def _convertLines(self, liesInterim: list[LineInterim], forcedSector: int|None = None):
+    def _convertLines(self, liesIntermedial: list[LineIntermedial], forcedSector: int|None = None):
         linesGZD: list[LineGZD] = []
-        for line in liesInterim:
+        for line in liesIntermedial:
             v1Idx = self._addVertex(*line.v1.pair())
             v2Idx = self._addVertex(*line.v2.pair())
             sideFrontIdx = None

@@ -13,7 +13,7 @@ from fixes import NONE_TEXTURES, BROKEN_LINES, LINE_REVERSE_FIXES, INTERIM_TEXTU
 
 
 @dataclass
-class TextureInterim:
+class TextureIntermedial:
     names : list[str]
     offset : float = 0.0
     stretch : float = 1.0
@@ -29,24 +29,24 @@ class TextureInterim:
 
 
 @dataclass
-class LineInterim:
+class LineIntermedial:
     v1 : Vertex
     v2 : Vertex
     height : HeightType
-    texture : TextureInterim
+    texture : TextureIntermedial
 
 
 @dataclass
-class DoorInterim:
-    lines: list[LineInterim]
+class DoorIntermedial:
+    lines: list[LineIntermedial]
     speed: int
     startingSpot: Vertex
-    boxLines: list[LineInterim] = None
+    boxLines: list[LineIntermedial] = None
     nextIsMirror: bool = False
 
 
 @dataclass
-class DecorationInterim:
+class DecorationIntermedial:
     pos: Vertex
     spriteIdx: int
     colorIdx: int
@@ -57,7 +57,7 @@ class LampSpecial(Enum):
     FLICK = -1
 
 @dataclass
-class LampInterim:
+class LampIntermedial:
     pos: Vertex
     spriteIdx: int
     colorIdx: int
@@ -73,7 +73,7 @@ class NpcSpecial(Enum):
     FINALBOSS = 32
 
 @dataclass
-class FoeInterim:
+class FoeIntermedial:
     pos: Vertex
     colorIdx: int
     health: int
@@ -81,7 +81,7 @@ class FoeInterim:
     walkDistance: int
 
 @dataclass
-class FriendlyInterim:
+class FriendlyIntermedial:
     pos: Vertex
     colorIdx: int
     spriteIdx: int
@@ -95,7 +95,7 @@ class CrateContent(Enum):
     ALT_AMMO = 4
 
 @dataclass
-class CrateInterim:
+class CrateIntermedial:
     pos: Vertex
     colorIdx: int
     topTextureIndex: int
@@ -105,7 +105,7 @@ class CrateInterim:
     angle: int
 
 
-class MapInterim:
+class MapIntermedial:
     def __init__(self, mapB3D: MapB3D, doorsSpeed: list[int], doorsStartLineIdx: list[int],
             foeAngles: list[int], foeWalkDistances: list[int],
             gameType: GameType, mapIndex: int):
@@ -113,14 +113,14 @@ class MapInterim:
         self.mapIndex = mapIndex
         self.textures = mapB3D.textures
         self.altTextures = mapB3D.altTextures
-        self.lines: list[LineInterim] = []
+        self.lines: list[LineIntermedial] = []
         allCircleLines = []
         for circle in mapB3D.circles:
             allCircleLines.extend(circle)
 
         for index, line in enumerate(mapB3D.lines):
-            texture = TextureInterim(names=line.texturesNames)
-            line = LineInterim(v1=copy.copy(line.v1), v2=copy.copy(line.v2), height=line.height, texture=texture)
+            texture = TextureIntermedial(names=line.texturesNames)
+            line = LineIntermedial(v1=copy.copy(line.v1), v2=copy.copy(line.v2), height=line.height, texture=texture)
             if texture.names[0] in self.textures and index not in allCircleLines:
                 self._fillStretch(texture, line, index)
             self.lines.append(line)
@@ -137,14 +137,14 @@ class MapInterim:
         self.sprites = mapB3D.sprites
         self.foeSprites = mapB3D.foeSprites
 
-        self.decorations: list[DecorationInterim] = []
+        self.decorations: list[DecorationIntermedial] = []
         for thing in mapB3D.things:
             if thing.category != ThingCategory.DECORATION: continue
             if thing.sprite in (0, 1): continue # decorative lamps, not breakable in the original game
             # print('!!!', thing.index, thing.special, thing.sprite)
-            self.decorations.append(DecorationInterim(pos=thing.pos, spriteIdx=thing.sprite, colorIdx=thing.color))
+            self.decorations.append(DecorationIntermedial(pos=thing.pos, spriteIdx=thing.sprite, colorIdx=thing.color))
 
-        self.lamps: list[LampInterim] = []
+        self.lamps: list[LampIntermedial] = []
         for thing in mapB3D.things:
             if thing.category == ThingCategory.LAMP:
                 try:
@@ -152,16 +152,16 @@ class MapInterim:
                 except ValueError:
                     print(f"warning: unknown lamp special {thing.special} index {thing.index}")
                     continue
-                self.lamps.append(LampInterim(pos=thing.pos, spriteIdx=0, colorIdx=thing.color, special=special))
+                self.lamps.append(LampIntermedial(pos=thing.pos, spriteIdx=0, colorIdx=thing.color, special=special))
             elif thing.category == ThingCategory.DECORATION and thing.sprite in (0, 1):
                 if thing.sprite == 0:
                     special = LampSpecial.ON
                 elif thing.sprite == 1:
                     special = LampSpecial.OFF
-                self.lamps.append(LampInterim(pos=thing.pos, spriteIdx=0, colorIdx=thing.color, special=special))
+                self.lamps.append(LampIntermedial(pos=thing.pos, spriteIdx=0, colorIdx=thing.color, special=special))
 
-        self.foes: list[FoeInterim] = []
-        self.friendlies: list[FriendlyInterim] = []
+        self.foes: list[FoeIntermedial] = []
+        self.friendlies: list[FriendlyIntermedial] = []
         for thing in mapB3D.things:
             if thing.category != ThingCategory.NPC: continue
             if thing.special >= 0:
@@ -172,21 +172,21 @@ class MapInterim:
                     continue
                 if special in (NpcSpecial.FRIENDLY1_B3D, NpcSpecial.FRIENDLY2_B3D):
                     isSecond = (special == NpcSpecial.FRIENDLY2_B3D)
-                    self.friendlies.append(FriendlyInterim(pos=thing.pos, colorIdx=thing.color, isSecond=isSecond, spriteIdx=thing.sprite))
+                    self.friendlies.append(FriendlyIntermedial(pos=thing.pos, colorIdx=thing.color, isSecond=isSecond, spriteIdx=thing.sprite))
                 elif special in (NpcSpecial.FRIENDLY1_L3D, NpcSpecial.FRIENDLY2_L3D, NpcSpecial.FRIENDLY3_L3D, NpcSpecial.FRIENDLY4_L3D):
                     isSecond = False
                     sprite = special.value - 37 + 24
-                    self.friendlies.append(FriendlyInterim(pos=thing.pos, colorIdx=thing.color, isSecond=isSecond, spriteIdx=sprite))
+                    self.friendlies.append(FriendlyIntermedial(pos=thing.pos, colorIdx=thing.color, isSecond=isSecond, spriteIdx=sprite))
                 else:
                     print(f'warning: not handled npc special {special.name} index {thing.index}')
             else:
                 health = 1000 // abs(thing.special)
                 angle = foeAngles[thing.index]
                 walkDistance = foeWalkDistances[thing.index]
-                self.foes.append(FoeInterim(pos=thing.pos, colorIdx=thing.color, health=health, angle=angle, walkDistance=walkDistance))
+                self.foes.append(FoeIntermedial(pos=thing.pos, colorIdx=thing.color, health=health, angle=angle, walkDistance=walkDistance))
 
 
-        self.crates: list[CrateInterim] = []
+        self.crates: list[CrateIntermedial] = []
         for crate in mapB3D.crates:
             content: CrateContent = None
             isAmmo = (crate.content & 0b001) != 0
@@ -215,12 +215,12 @@ class MapInterim:
             v2 = mapB3D.lines[crate.startLineIdx+1].v2
             angle = segmentAngle(*self.lineToTuple(mapB3D.lines[crate.startLineIdx]))
             pos = Vertex(x=(v1.x+v2.x)/2, y=(v1.y+v2.y)/2)
-            self.crates.append(CrateInterim(pos=pos, colorIdx=int(isSecondColor), topTextureIndex=topTextureIndex,
+            self.crates.append(CrateIntermedial(pos=pos, colorIdx=int(isSecondColor), topTextureIndex=topTextureIndex,
                     content=content, spriteIdx=3, textureName=crate.textureName, angle=int(angle)))
 
 
     def _fixNoneTextures(self):
-        for lineNum, line in enumerate[LineInterim](self.lines):
+        for lineNum, line in enumerate[LineIntermedial](self.lines):
             if line.texture.names[0].startswith("NONE_"):
                 noneTextureNum = int(line.texture.names[0].removeprefix("NONE_"))
                 newNames = []
@@ -282,7 +282,7 @@ class MapInterim:
             linesToRemove.add(doorLineIdx+1)
             linesToRemove.add(doorLineIdx+2)
 
-        newLines: list[LineInterim] = []
+        newLines: list[LineIntermedial] = []
         for index, line in enumerate(self.lines):
             if index not in linesToRemove:
                 newLines.append(line)
@@ -290,16 +290,16 @@ class MapInterim:
 
 
     @staticmethod
-    def lineToTuple(line: LineInterim) -> tuple[int]:
+    def lineToTuple(line: LineIntermedial) -> tuple[int]:
         return (line.v1.x, line.v1.y, line.v2.x, line.v2.y)
 
     @staticmethod
-    def _tuplesToLines(tuples, oldLine1: LineInterim, oldLine2: LineInterim) -> list[LineInterim]:
-        lines: list[LineInterim] = []
+    def _tuplesToLines(tuples, oldLine1: LineIntermedial, oldLine2: LineIntermedial) -> list[LineIntermedial]:
+        lines: list[LineIntermedial] = []
         for tup in tuples:
             height : HeightType = None
             changed = False
-            if isInside(*tup, *MapInterim.lineToTuple(oldLine1)) and isInside(*tup, *MapInterim.lineToTuple(oldLine2)):
+            if isInside(*tup, *MapIntermedial.lineToTuple(oldLine1)) and isInside(*tup, *MapIntermedial.lineToTuple(oldLine2)):
                 heights = set([oldLine1.height, oldLine2.height])
                 if HeightType.ONLY_TOP in heights:
                     heights.add(HeightType.TOP)
@@ -308,25 +308,25 @@ class MapInterim:
                     heights.add(HeightType.BOTTOM)
                     heights.remove(HeightType.ONLY_BOTTOM)
                 if len(heights) == 1:
-                    if areOppositelyDirected(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
+                    if areOppositelyDirected(*MapIntermedial.lineToTuple(oldLine1), *MapIntermedial.lineToTuple(oldLine2)):
                         height = None
                     else:
                         height = oldLine1.height
                 else:
                     if heights == set([HeightType.TOP, HeightType.BOTTOM]):
-                        if areOppositelyDirected(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
+                        if areOppositelyDirected(*MapIntermedial.lineToTuple(oldLine1), *MapIntermedial.lineToTuple(oldLine2)):
                             raise Exception("Oppositely directed TOP and BOTTOM")
                         else:
                             height = HeightType.FULL
                     elif heights == set([HeightType.TOP, HeightType.FULL]):
-                        if areOppositelyDirected(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
+                        if areOppositelyDirected(*MapIntermedial.lineToTuple(oldLine1), *MapIntermedial.lineToTuple(oldLine2)):
                             height = HeightType.BOTTOM
                             changed = True
                         else:
                             print('Warning: top and full lines are not oppositely directed')
                             height = HeightType.FULL
                     elif heights == set([HeightType.BOTTOM, HeightType.FULL]):
-                        if areOppositelyDirected(*MapInterim.lineToTuple(oldLine1), *MapInterim.lineToTuple(oldLine2)):
+                        if areOppositelyDirected(*MapIntermedial.lineToTuple(oldLine1), *MapIntermedial.lineToTuple(oldLine2)):
                             height = HeightType.TOP
                             changed = True
                         else:
@@ -335,9 +335,9 @@ class MapInterim:
                     else:
                         raise Exception("Can't be here")
             else:
-                if isInside(*tup, *MapInterim.lineToTuple(oldLine1)):
+                if isInside(*tup, *MapIntermedial.lineToTuple(oldLine1)):
                     height = oldLine1.height
-                elif isInside(*tup, *MapInterim.lineToTuple(oldLine2)):
+                elif isInside(*tup, *MapIntermedial.lineToTuple(oldLine2)):
                     height = oldLine2.height
                 else:
                     raise Exception("Tuple is not inside either oldLine1 or oldLine2")
@@ -356,14 +356,14 @@ class MapInterim:
                             break
                 if not newLine:
                     if not changed:
-                        lines.append(LineInterim(
+                        lines.append(LineIntermedial(
                             v1=Vertex(tup[0], tup[1]),
                             v2=Vertex(tup[2], tup[3]),
                             height=height,
                             texture=None
                         ))
                     else:
-                        lines.append(LineInterim(
+                        lines.append(LineIntermedial(
                             v1=Vertex(tup[2], tup[3]),
                             v2=Vertex(tup[0], tup[1]),
                             height=height,
@@ -374,7 +374,7 @@ class MapInterim:
 
         return lines
 
-    def _restoreTextures(self, newLines: list[LineInterim], oldLines: list[LineInterim]):
+    def _restoreTextures(self, newLines: list[LineIntermedial], oldLines: list[LineIntermedial]):
         for newLine in newLines:
             restored = False
             if newLine.texture is not None: continue
@@ -452,7 +452,7 @@ class MapInterim:
                 newList.extend(x.boxLines)
         return newList
 
-    def _moveDoorOnNewPosition(self, door: DoorInterim):
+    def _moveDoorOnNewPosition(self, door: DoorIntermedial):
         newX = max([x.v1.x for x in self.getAllLines()]) + 200 / SCALE_FACTOR
         newY = max([x.v1.y for x in self.getAllLines()]) + 200 / SCALE_FACTOR
         offsetX = newX - door.lines[0].v1.x
@@ -464,7 +464,7 @@ class MapInterim:
             line.v2.y += offsetY
 
 
-    def _generateBoxAroundDoor(self, POLines: list[LineInterim]):
+    def _generateBoxAroundDoor(self, POLines: list[LineIntermedial]):
         """
             |ay                       |by
         ax--A-------------------------B--bx
@@ -477,14 +477,14 @@ class MapInterim:
         CB = POLines[1]
         BA = POLines[2]
         AD = POLines[3]
-        dx = vertexWithOffset(*MapInterim.lineToTuple(DC), -OFFSET)
-        cx = vertexWithOffset(*MapInterim.lineToTuple(DC), segmentLength(*MapInterim.lineToTuple(DC))+OFFSET)
-        bx = vertexWithOffset(*MapInterim.lineToTuple(BA), -OFFSET)
-        ax = vertexWithOffset(*MapInterim.lineToTuple(BA), segmentLength(*MapInterim.lineToTuple(BA))+OFFSET)
-        cy = vertexWithOffset(*MapInterim.lineToTuple(CB), -OFFSET)
-        by = vertexWithOffset(*MapInterim.lineToTuple(CB), segmentLength(*MapInterim.lineToTuple(CB))+OFFSET)
-        ay = vertexWithOffset(*MapInterim.lineToTuple(AD), -OFFSET)
-        dy = vertexWithOffset(*MapInterim.lineToTuple(AD), segmentLength(*MapInterim.lineToTuple(AD))+OFFSET)
+        dx = vertexWithOffset(*MapIntermedial.lineToTuple(DC), -OFFSET)
+        cx = vertexWithOffset(*MapIntermedial.lineToTuple(DC), segmentLength(*MapIntermedial.lineToTuple(DC))+OFFSET)
+        bx = vertexWithOffset(*MapIntermedial.lineToTuple(BA), -OFFSET)
+        ax = vertexWithOffset(*MapIntermedial.lineToTuple(BA), segmentLength(*MapIntermedial.lineToTuple(BA))+OFFSET)
+        cy = vertexWithOffset(*MapIntermedial.lineToTuple(CB), -OFFSET)
+        by = vertexWithOffset(*MapIntermedial.lineToTuple(CB), segmentLength(*MapIntermedial.lineToTuple(CB))+OFFSET)
+        ay = vertexWithOffset(*MapIntermedial.lineToTuple(AD), -OFFSET)
+        dy = vertexWithOffset(*MapIntermedial.lineToTuple(AD), segmentLength(*MapIntermedial.lineToTuple(AD))+OFFSET)
         A = AD.v1.pair()
         B = BA.v1.pair()
         C = CB.v1.pair()
@@ -493,9 +493,9 @@ class MapInterim:
         newBVertex = findFourthVertex([by, B, bx])
         newCVertex = findFourthVertex([cx, C, cy])
         newDVertex = findFourthVertex([dy, D, dx])
-        newLines : list[LineInterim] = []
+        newLines : list[LineIntermedial] = []
         def getNewLine(new1Vertex, new2Vertex):
-            return LineInterim(Vertex(*new1Vertex), Vertex(*new2Vertex), POLines[0].height, TextureInterim([list(self.textures.keys())[0]]))
+            return LineIntermedial(Vertex(*new1Vertex), Vertex(*new2Vertex), POLines[0].height, TextureIntermedial([list(self.textures.keys())[0]]))
         newLines.append(getNewLine(newAVertex, newBVertex))
         newLines.append(getNewLine(newBVertex, newCVertex))
         newLines.append(getNewLine(newCVertex, newDVertex))
@@ -504,21 +504,21 @@ class MapInterim:
 
 
     def _initDoors(self, doorsStartLineIdx: list[int], doorsSpeed: list[int]):
-        self.doors : list[DoorInterim] = []
+        self.doors : list[DoorIntermedial] = []
         for startIndex, speed in zip(doorsStartLineIdx, doorsSpeed):
             if startIndex in (BROKEN_LINES.get((self.gameType, self.mapIndex)) or []):
                 continue
-            lines : list[LineInterim] = []
+            lines : list[LineIntermedial] = []
             for i in range(startIndex, startIndex+3):
                 lines.append(self.lines[i])
-            lines.append(LineInterim(v1=copy.copy(lines[2].v2), v2=copy.copy(lines[0].v1),
+            lines.append(LineIntermedial(v1=copy.copy(lines[2].v2), v2=copy.copy(lines[0].v1),
                                     texture=copy.deepcopy(lines[1].texture), height=lines[0].height))
             if speed != -1:
                 startingSpot=Vertex(
                     x = (lines[0].v1.x + lines[2].v1.x) // 2,
                     y = (lines[0].v1.y + lines[2].v1.y) // 2,
                 )
-                self.doors.append(DoorInterim(lines=lines, speed=speed, startingSpot=startingSpot))
+                self.doors.append(DoorIntermedial(lines=lines, speed=speed, startingSpot=startingSpot))
             else:
                 self.lines.extend(lines)
 
@@ -531,7 +531,7 @@ class MapInterim:
             door.boxLines = self._generateBoxAroundDoor(door.lines)
 
 
-    def _fillStretch(self, texture: TextureInterim, line: LineInterim, index: int):
+    def _fillStretch(self, texture: TextureIntermedial, line: LineIntermedial, index: int):
         textureW = self.textures[texture.names[0]].width
         length = round(segmentLength(*self.lineToTuple(line)) * SCALE_FACTOR)
         rem = length % textureW

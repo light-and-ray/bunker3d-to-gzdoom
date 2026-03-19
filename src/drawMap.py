@@ -3,11 +3,11 @@ import math, os
 import svgwrite
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
-    from ClassesInterim import MapInterim
+    from ClassesIntermedial import MapIntermedial
     from ClassesB3D import MapB3D
 
 
-def drawMap(map: 'MapInterim|MapB3D', show=False, name=None, resolution=1280, frame=30, wait=False):
+def drawMap(map: 'MapIntermedial|MapB3D', show=False, name=None, resolution=1280, frame=30, wait=False):
     setX = set([line.v1.x for line in map.lines] + [line.v2.x for line in map.lines])
     setY = set([line.v1.y for line in map.lines] + [line.v2.y for line in map.lines])
     if hasattr(map, 'things'):
