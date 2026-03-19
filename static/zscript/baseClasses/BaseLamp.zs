@@ -110,6 +110,11 @@ class _BaseLamp : Actor
     {
         Vector3 spawnPos = Pos;
         spawnPos.z = 0;
+        if (GetZAt(pos.x, pos.y, 0, GZF_ABSOLUTEPOS) != 0)
+        {
+            needLightSpot = false;
+            return;
+        }
         lightSpot = LightSpot_t(Spawn('LightSpot_t', spawnPos));
     }
 
