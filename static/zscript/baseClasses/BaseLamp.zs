@@ -154,7 +154,13 @@ class _BaseLamp : Actor
     }
 }
 
-class BaseFloorLamp : _BaseLamp { }
+class BaseFloorLamp : _BaseLamp
+{
+    Default
+    {
+        +SOLID;
+    }
+}
 
 class BaseCeilingLamp : _BaseLamp
 {
