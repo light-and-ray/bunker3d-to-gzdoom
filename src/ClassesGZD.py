@@ -135,7 +135,7 @@ class MapGZD:
                 className = generateDecorationClassName()
                 decorationData = DECORATION_DATA_FOR_SPRITE.get((gameType, mapIndex), {}).get(decoration.spriteIdx)
                 if not decorationData:
-                    decorationData = DecorationData(zscriptClass="BaseDecoration", numberOfSprites=1)
+                    decorationData = DecorationData()
                 sprite_suffixes = ["A0", "B0", "C0", "D0", "E0", "F0", "G0", "H0", "I0", "J0"]
                 sprites = []
                 if decoration.spriteIdx >= 0:

@@ -238,12 +238,40 @@ NO_LAMP_LIGHT_SPOT_LEVELS: list[tuple[GameType, int]] = [(GameType.B3D, 9)]
 
 @dataclass
 class DecorationData:
-    zscriptClass: str
-    numberOfSprites: int
+    zscriptClass: str = None
+    numberOfSprites: int = 1
     solid: bool = False
 
 DECORATION_DATA_FOR_SPRITE: dict[tuple[GameType, int], dict[int, DecorationData]] = {}
+DECORATION_DATA_FOR_SPRITE[(GameType.L3D, 2)] = \
+{
+    32: DecorationData(zscriptClass="BaseSmallRadiusDecoration", solid=True), # table
+    33: DecorationData(zscriptClass="BaseSmallRadiusDecoration", solid=True), # chair
+}
 DECORATION_DATA_FOR_SPRITE[(GameType.L3D, 4)] = \
 {
-    28: DecorationData(zscriptClass="Base3FramesDecoration", numberOfSprites=3)
+    28: DecorationData(zscriptClass="BaseDrippingDecoration", numberOfSprites=3),
+}
+DECORATION_DATA_FOR_SPRITE[(GameType.L3D, 5)] = \
+{
+    41: DecorationData(zscriptClass="BaseSmallRadiusDecoration", solid=True), # skulls
+}
+DECORATION_DATA_FOR_SPRITE[(GameType.L3D, 7)] = \
+{
+    34: DecorationData(zscriptClass="BaseCurrentDischarge", numberOfSprites=3, solid=True),
+}
+DECORATION_DATA_FOR_SPRITE[(GameType.L3D, 8)] = \
+{
+    42: DecorationData(zscriptClass="BaseXYBillboardDecoration"), # blood
+    43: DecorationData(zscriptClass="BaseXYBillboardDecoration"), # blood
+}
+DECORATION_DATA_FOR_SPRITE[(GameType.L3D, 9)] = \
+{
+    32: DecorationData(zscriptClass="BaseSmallRadiusDecoration", solid=True), # shovels
+}
+DECORATION_DATA_FOR_SPRITE[(GameType.L3D, 10)] = \
+{
+    32: DecorationData(zscriptClass="BaseCurrentDischarge", numberOfSprites=3, solid=True),
+    35: DecorationData(zscriptClass="BaseXYBillboardDecoration"), # blood
+    36: DecorationData(zscriptClass="BaseXYBillboardDecoration"), # blood
 }

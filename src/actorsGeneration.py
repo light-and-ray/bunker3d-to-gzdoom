@@ -49,7 +49,7 @@ def generateDecorationZScript(className: str, spriteName: str, sprite: Image.Ima
         scaleFactor = 1.0
     code = ""
     isPinnedToCeiling = isBottomRowTransparent(sprite) and not isTopRowTransparent(sprite)
-    code += f"class {className} : {decorationData.zscriptClass}\n"
+    code += f"class {className} : {decorationData.zscriptClass or "BaseDecoration"}\n"
     code +=  "{\n"
     code +=  "    Default\n"
     code +=  "    {\n"
