@@ -247,10 +247,11 @@ class MapIntermedial:
         for lineNum, line in enumerate(self.lines):
             override = INTERIM_TEXTURES_OVERRIDES.get((self.gameType, self.mapIndex), {}).get(lineNum)
             if override:
-                newNames = []
-                for newNum in override.nums:
-                    newNames.append(list(self.textures.keys())[newNum])
-                line.texture.names = newNames
+                if override.nums:
+                    newNames = []
+                    for newNum in override.nums:
+                        newNames.append(list(self.textures.keys())[newNum])
+                    line.texture.names = newNames
                 if override.offset is not None: line.texture.offset = override.offset
                 if override.stretch: line.texture.stretch = override.stretch
 
@@ -406,7 +407,7 @@ class MapIntermedial:
             if newLine.texture is not None: continue
             for oldLine in oldLines:
                 if isInside(*self.lineToTuple(newLine), *self.lineToTuple(oldLine)):
-                    newLine.texture = oldLine.texture
+                    newLine.texture = copy.deepcopy(oldLine.texture)
                     newLine.texture.offset += calculateOffset(*self.lineToTuple(newLine), *self.lineToTuple(oldLine)) * SCALE_FACTOR
                     newLine.texture.trimOffset(self.textures)
                     restored = True

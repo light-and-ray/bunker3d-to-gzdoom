@@ -16,7 +16,7 @@ BROKEN_LINES[(GameType.L3D, 9)] = [276, 277, 278,  279, 280, 281,  422, 423, 424
 
 @dataclass
 class TextureOverrideData:
-    nums: list[int]
+    nums: list[int] = None
     offset: float = None
     stretch: float = None
 
@@ -109,6 +109,18 @@ INTERIM_TEXTURES_OVERRIDES[(GameType.L3D, 4)] = \
 INTERIM_TEXTURES_OVERRIDES[(GameType.L3D, 6)] = \
 {
     49: TextureOverrideData(nums=[0]), # accidentally broken texture over metal box
+}
+INTERIM_TEXTURES_OVERRIDES[(GameType.L3D, 7)] = \
+{
+    37: TextureOverrideData(offset=0), # broken offsets
+    39: TextureOverrideData(offset=48),
+}
+INTERIM_TEXTURES_OVERRIDES[(GameType.L3D, 8)] = \
+{
+    303: TextureOverrideData(offset=0), # broken offsets
+    304: TextureOverrideData(offset=48),
+    58: TextureOverrideData(offset=0),
+    59: TextureOverrideData(offset=48),
 }
 
 B3D_TEXTURES_OVERRIDES: dict[tuple[GameType, int], dict[int, int]] = {}

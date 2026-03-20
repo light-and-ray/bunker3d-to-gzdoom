@@ -1,4 +1,4 @@
-Need to do list [11/24]:
+Need to do list [12/24]:
 - [x] filter things using triggers
 - [x] sprite scale mechanism
 - [x] remove broken things
@@ -10,6 +10,7 @@ Need to do list [11/24]:
 - [x] breakable glass
 - [x] add RPG
 - [x] explosive barrels
+- [x] fix broken texture offset in constructions
 - [ ] animated decorations
 - [ ] friendly NPC AI
 - [ ] sync current discharge sprite and wall
@@ -22,7 +23,6 @@ Need to do list [11/24]:
 - [ ] flamethrower guy AI
 - [ ] foe AI
 - [ ] crates logic
-- [ ] fix broken texture offset in constructions
 - [ ] smart cutter for TOP lines
 - [ ] lightnings
 
