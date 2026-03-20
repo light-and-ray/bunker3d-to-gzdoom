@@ -4,7 +4,7 @@ import math
 from ClassesShared import Vertex, HeightType, Animation, GameType
 from tools import generateTextureLumpName, generateTextureModifiedLumpName, WALL_HEIGHT
 from enum import Enum
-from fixes import BROKEN_THINGS, B3D_TEXTURES_OVERRIDES, ALT_TEXTURE_VARIANT, AltTextureType
+from fixes import BROKEN_THINGS, B3D_TEXTURES_OVERRIDES, ALT_TEXTURE_VARIANT, AltTextureType, TEXTURE_INDEX_TO_ANIMATION_DURATIONS
 
 
 @dataclass
@@ -201,14 +201,22 @@ class MapB3D:
                 if len(set(animatedFrames)) >= 2:
                     key = (tuple(animatedFrames))
                     if key not in self.keyToAnimation:
+                        firstFrame = animatedFrames[0]
                         frames: list[str] = []
+                        duration = TEXTURE_INDEX_TO_ANIMATION_DURATIONS.get((self.gameType, self.mapIndex), {}).get(firstFrame)
+                        if not duration:
+                            if animatedFrames[-1] == animatedFrames[-2]:
+                                duration = 4
+                            else:
+                                duration = 2
+                            if self.gameType == GameType.L3D:
+                                duration *= 2
+
                         if animatedFrames[-1] == animatedFrames[-2]:
                             animatedFrames = animatedFrames[:-1]
-                            duration = 4
-                        else:
-                            duration = 2
-                        if self.gameType == GameType.L3D and self.mapIndex == 4:
-                            duration = 8
+                        if self.gameType == GameType.L3D and self.mapIndex in (1, 2): # train
+                            animatedFrames = animatedFrames * 2 + [animatedFrames[-1]] * 6
+
                         for frameIdx in animatedFrames:
                             if frameIdx >= len(list(self.textures.keys())):
                                 frameIdx = 0
@@ -216,7 +224,9 @@ class MapB3D:
                             frameNewName = generateTextureModifiedLumpName()
                             self.textures[frameNewName] = self.textures[frameOldName]
                             frames.append(frameNewName)
+
                         animation = Animation(name=frames[0], frames=frames, duration=duration)
+
                         self.animations.append(animation)
                         self.keyToAnimation[key] = animation
                         if any([textureMirroring[x] == 5 for x in animatedLines]):

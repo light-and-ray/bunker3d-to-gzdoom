@@ -275,3 +275,16 @@ DECORATION_DATA_FOR_SPRITE[(GameType.L3D, 10)] = \
     35: DecorationData(zscriptClass="BaseXYBillboardDecoration"), # blood
     36: DecorationData(zscriptClass="BaseXYBillboardDecoration"), # blood
 }
+
+
+TEXTURE_INDEX_TO_ANIMATION_DURATIONS: dict[tuple[GameType, int], dict[int, float]] = {}
+TEXTURE_INDEX_TO_ANIMATION_DURATIONS[(GameType.L3D, 5)] = \
+{
+    7: 4, # furnace
+}
+TEXTURE_INDEX_TO_ANIMATION_DURATIONS[(GameType.L3D, 8)] = \
+{
+    14: 3.5, # computer
+    9: 4.5, # bubbles
+    6: 3.7, # big fan
+}
