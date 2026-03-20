@@ -9,7 +9,7 @@ from algebraFunctions import (resolveSegmentsOverlap, isInside, areOppositelyDir
 from ClassesShared import Vertex, HeightType, GameType
 from drawMap import drawMap
 from tools import SCALE_FACTOR
-from fixes import NONE_TEXTURES, BROKEN_LINES, LINE_REVERSE_FIXES, INTERIM_TEXTURES_OVERRIDES
+from fixes import NONE_TEXTURES, BROKEN_LINES, LINE_REVERSE_FIXES, INTERMEDIAL_TEXTURES_OVERRIDES
 
 
 @dataclass
@@ -245,7 +245,7 @@ class MapIntermedial:
 
     def _applyTexturesOverrides(self):
         for lineNum, line in enumerate(self.lines):
-            override = INTERIM_TEXTURES_OVERRIDES.get((self.gameType, self.mapIndex), {}).get(lineNum)
+            override = INTERMEDIAL_TEXTURES_OVERRIDES.get((self.gameType, self.mapIndex), {}).get(lineNum)
             if override:
                 if override.nums:
                     newNames = []

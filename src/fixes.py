@@ -101,21 +101,21 @@ NONE_TEXTURES = dict()
 NONE_TEXTURES[GameType.B3D] = NONE_TEXTURES_B3D
 NONE_TEXTURES[GameType.L3D] = NONE_TEXTURES_L3D
 
-INTERIM_TEXTURES_OVERRIDES: dict[tuple[GameType, int], dict[int, TextureOverrideData]] = {}
-INTERIM_TEXTURES_OVERRIDES[(GameType.L3D, 4)] = \
+INTERMEDIAL_TEXTURES_OVERRIDES: dict[tuple[GameType, int], dict[int, TextureOverrideData]] = {}
+INTERMEDIAL_TEXTURES_OVERRIDES[(GameType.L3D, 4)] = \
 {
     40: TextureOverrideData(nums=[22]), # not animated glass texture for some reason
 }
-INTERIM_TEXTURES_OVERRIDES[(GameType.L3D, 6)] = \
+INTERMEDIAL_TEXTURES_OVERRIDES[(GameType.L3D, 6)] = \
 {
     49: TextureOverrideData(nums=[0]), # accidentally broken texture over metal box
 }
-INTERIM_TEXTURES_OVERRIDES[(GameType.L3D, 7)] = \
+INTERMEDIAL_TEXTURES_OVERRIDES[(GameType.L3D, 7)] = \
 {
     37: TextureOverrideData(offset=0), # broken offsets
     39: TextureOverrideData(offset=48),
 }
-INTERIM_TEXTURES_OVERRIDES[(GameType.L3D, 8)] = \
+INTERMEDIAL_TEXTURES_OVERRIDES[(GameType.L3D, 8)] = \
 {
     303: TextureOverrideData(offset=0), # broken offsets
     304: TextureOverrideData(offset=48),
@@ -233,4 +233,7 @@ ALT_TEXTURE_VARIANT[(GameType.L3D, 8)] = \
 }
 
 
-NO_LIGHT_SPOT_LEVELS: list[tuple[GameType, int]] = [(GameType.B3D, 9)]
+NO_LAMP_LIGHT_SPOT_LEVELS: list[tuple[GameType, int]] = [(GameType.B3D, 9)]
+
+
+

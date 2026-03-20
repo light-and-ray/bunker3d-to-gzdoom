@@ -12,7 +12,7 @@ from actorsGeneration import ( generateDecorationSpriteName, generateDecorationC
     generateBarrelClassName, generateBarrelModeldef, generateBarrelObj, generateBarrelZScript,
 )
 from tools import LEVEL_CEILING, LEVEL_FLOOR, SCALE_FACTOR
-from fixes import CRATE_TOP_TEXTURES, SPRITE_SCALE_OVERRIDE, NO_LIGHT_SPOT_LEVELS, BARREL_TOP_TEXTURES
+from fixes import CRATE_TOP_TEXTURES, SPRITE_SCALE_OVERRIDE, NO_LAMP_LIGHT_SPOT_LEVELS, BARREL_TOP_TEXTURES
 
 @dataclass
 class SectorGZD:
@@ -162,7 +162,7 @@ class MapGZD:
                 isFloor = False
                 if gameType == GameType.L3D and mapIndex == 9:
                     isFloor = True
-                needLightSpot = not isFloor and ((gameType, mapIndex) not in NO_LIGHT_SPOT_LEVELS)
+                needLightSpot = not isFloor and ((gameType, mapIndex) not in NO_LAMP_LIGHT_SPOT_LEVELS)
                 zscript = generateLampZScript(className, spriteName, spriteA, scaleOverrideFix, isFloor, needLightSpot)
                 ednum = EdnumGZD(num=generateEdnum(), className=className)
                 self.sprites[spriteName + "A0"] = spriteA
