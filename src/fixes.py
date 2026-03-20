@@ -215,5 +215,10 @@ ALT_TEXTURE_VARIANT[(GameType.L3D, 6)] = \
     6: AltTextureRawData(5, AltTextureType.LAMP_OFF),
     26: AltTextureRawData(5, AltTextureType.LAMP_OFF, mirror=True),
 }
+ALT_TEXTURE_VARIANT[(GameType.L3D, 8)] = \
+{
+    4: AltTextureRawData(5, AltTextureType.GLASS_BREAK), # doesn't exist in the original
+}
+
 
 NO_LIGHT_SPOT_LEVELS: list[tuple[GameType, int]] = [(GameType.B3D, 9)]
