@@ -207,6 +207,8 @@ class MapB3D:
                             duration = 4
                         else:
                             duration = 2
+                        if self.gameType == GameType.L3D and self.mapIndex == 4:
+                            duration = 8
                         for frameIdx in animatedFrames:
                             if frameIdx >= len(list(self.textures.keys())):
                                 frameIdx = 0

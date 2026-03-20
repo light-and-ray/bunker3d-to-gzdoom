@@ -1,7 +1,7 @@
 from PIL import Image
 from tools import isBottomRowTransparent, isTopRowTransparent
 from ClassesShared import GameType
-
+from fixes import DecorationData
 
 _lastEdnum = 0
 def generateEdnum():
@@ -42,15 +42,14 @@ def generateDecorationClassName():
     _decorationClassNameIdx += 1
     return result
 
-def generateDecorationZScript(className: str, spriteName: str, sprite: Image.Image, scaleOverride: float|None):
+def generateDecorationZScript(className: str, spriteName: str, sprite: Image.Image, scaleOverride: float|None, decorationData: DecorationData):
     if scaleOverride is not None:
         scaleFactor = scaleOverride
     else:
         scaleFactor = 1.0
     code = ""
     isPinnedToCeiling = isBottomRowTransparent(sprite) and not isTopRowTransparent(sprite)
-    baseClassName = "BaseCeilingDecoration" if isPinnedToCeiling else "BaseFloorDecoration"
-    code += f"class {className} : {baseClassName}\n"
+    code += f"class {className} : {decorationData.zscriptClass}\n"
     code +=  "{\n"
     code +=  "    Default\n"
     code +=  "    {\n"
@@ -58,11 +57,16 @@ def generateDecorationZScript(className: str, spriteName: str, sprite: Image.Ima
     code += f"        Radius {sprite.width/2*scaleFactor};\n"
     if scaleOverride is not None:
         code += f"        Scale {scaleOverride};\n"
+    if isPinnedToCeiling:
+        code += f"        +NOGRAVITY;\n"
+        code += f"        +SPAWNCEILING;\n"
+    if decorationData.solid:
+        code += f"        +SOLID;\n"
     code +=  "    }\n"
     code +=  "    States\n"
     code +=  "    {\n"
     code +=  "        Spawn:\n"
-    code += f"            {spriteName} C 0 NoDelay A_JumpIf(true, \"SpawnBase\");\n"
+    code += f"            {spriteName} A 0 NoDelay A_JumpIf(true, \"SpawnBase\");\n"
     code += f"            stop;\n"
     code +=  "    }\n"
     code +=  "}\n"

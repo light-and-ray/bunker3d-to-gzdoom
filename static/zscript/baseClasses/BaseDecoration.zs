@@ -1,4 +1,5 @@
-class BaseFloorDecoration : Actor
+
+class BaseDecoration : Actor
 {
     Default
     {    }
@@ -11,11 +12,17 @@ class BaseFloorDecoration : Actor
 }
 
 
-class BaseCeilingDecoration : BaseFloorDecoration
+class Base3FramesDecoration : BaseDecoration
 {
     Default
+    {    }
+    States
     {
-        +NOGRAVITY;
-        +SPAWNCEILING;
+        SpawnBase:
+            #### A 3;
+            #### B 3;
+            #### C 3;
+            loop;
     }
+
 }

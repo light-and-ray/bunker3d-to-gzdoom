@@ -12,7 +12,9 @@ from actorsGeneration import ( generateDecorationSpriteName, generateDecorationC
     generateBarrelClassName, generateBarrelModeldef, generateBarrelObj, generateBarrelZScript,
 )
 from tools import LEVEL_CEILING, LEVEL_FLOOR, SCALE_FACTOR
-from fixes import CRATE_TOP_TEXTURES, SPRITE_SCALE_OVERRIDE, NO_LAMP_LIGHT_SPOT_LEVELS, BARREL_TOP_TEXTURES
+from fixes import (CRATE_TOP_TEXTURES, SPRITE_SCALE_OVERRIDE, NO_LAMP_LIGHT_SPOT_LEVELS, BARREL_TOP_TEXTURES,
+    DECORATION_DATA_FOR_SPRITE, DecorationData,
+)
 
 @dataclass
 class SectorGZD:
@@ -131,15 +133,21 @@ class MapGZD:
             if key not in self._keysToDecoration:
                 spriteName = generateDecorationSpriteName()
                 className = generateDecorationClassName()
+                decorationData = DECORATION_DATA_FOR_SPRITE.get((gameType, mapIndex), {}).get(decoration.spriteIdx)
+                if not decorationData:
+                    decorationData = DecorationData(zscriptClass="BaseDecoration", numberOfSprites=1)
+                sprite_suffixes = ["A0", "B0", "C0", "D0", "E0", "F0", "G0", "H0", "I0", "J0"]
+                sprites = []
                 if decoration.spriteIdx >= 0:
-                    sprite = mapIntermedial.sprites[decoration.colorIdx][decoration.spriteIdx]
+                    sprites = mapIntermedial.sprites[decoration.colorIdx]
                     scaleOverrideFix = SPRITE_SCALE_OVERRIDE.get((gameType, mapIndex, decoration.spriteIdx))
                 else:
-                    sprite = mapIntermedial.foeSprites[decoration.colorIdx][decoration.spriteIdx]
+                    sprites = mapIntermedial.foeSprites[decoration.colorIdx]
                     scaleOverrideFix = 1.3
-                zscript = generateDecorationZScript(className, spriteName, sprite, scaleOverrideFix)
+                for i in range(decorationData.numberOfSprites):
+                    self.sprites[spriteName + sprite_suffixes[i]] = sprites[decoration.spriteIdx + i]
+                zscript = generateDecorationZScript(className, spriteName, sprites[decoration.spriteIdx], scaleOverrideFix, decorationData)
                 ednum = EdnumGZD(num=generateEdnum(), className=className)
-                self.sprites[spriteName + "A0"] = sprite
                 self.actors.append(ActorGZD(ednum=ednum, zscript=zscript))
                 self._keysToDecoration[key] = self.actors[-1]
             self.things.append(ThingGZD(

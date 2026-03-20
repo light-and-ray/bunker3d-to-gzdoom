@@ -236,4 +236,14 @@ ALT_TEXTURE_VARIANT[(GameType.L3D, 8)] = \
 NO_LAMP_LIGHT_SPOT_LEVELS: list[tuple[GameType, int]] = [(GameType.B3D, 9)]
 
 
+@dataclass
+class DecorationData:
+    zscriptClass: str
+    numberOfSprites: int
+    solid: bool = False
 
+DECORATION_DATA_FOR_SPRITE: dict[tuple[GameType, int], dict[int, DecorationData]] = {}
+DECORATION_DATA_FOR_SPRITE[(GameType.L3D, 4)] = \
+{
+    28: DecorationData(zscriptClass="Base3FramesDecoration", numberOfSprites=3)
+}
