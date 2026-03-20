@@ -85,6 +85,7 @@ map C2M1 lookup "C2M1"
 {
     levelnum = 1
     next = "C2M2"
+    EventHandlers = "TrainSwayingHandler"
     // music = "$MUSIC_E1M1"
 }
 
@@ -92,6 +93,7 @@ map C2M2 lookup "C2M2"
 {
     levelnum = 2
     next = "C2M3"
+    EventHandlers = "TrainSwayingHandler"
     // music = "$MUSIC_E1M1"
 }
 

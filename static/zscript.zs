@@ -7,6 +7,7 @@ version 4.14
 #include "zscript/weapons/Bazooka.zs"
 #include "zscript/handlers/DoorsOpener.zs"
 #include "zscript/handlers/GlassBreakHandler.zs"
+#include "zscript/handlers/TrainSwayingHandler.zs"
 #include "zscript/baseClasses/BaseDecoration.zs"
 #include "zscript/baseClasses/BaseLamp.zs"
 #include "zscript/baseClasses/BaseFoe.zs"
