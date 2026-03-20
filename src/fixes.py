@@ -284,7 +284,7 @@ TEXTURE_INDEX_TO_ANIMATION_DURATIONS[(GameType.L3D, 5)] = \
 }
 TEXTURE_INDEX_TO_ANIMATION_DURATIONS[(GameType.L3D, 8)] = \
 {
-    14: 3.5, # computer
+    14: 4, # computer
     9: 4.5, # bubbles
     6: 3.7, # big fan
 }
