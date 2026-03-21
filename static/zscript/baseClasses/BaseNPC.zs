@@ -53,8 +53,7 @@ class BaseHandsUpFriendlyNPC : BaseNPC
             #### B 25;
             loop;
         Death:
-            #### C 6 {bSOLID = false; bSHOOTABLE = false; }
-            #### D 0 onDeathScale();
+            #### CD 8 {bSOLID = false; bSHOOTABLE = false; onDeathScale(); }
             goto DeathLoop;
         DeathLoop:
             #### D 25;
@@ -76,8 +75,7 @@ class BaseMeatFalseNPC : BaseNPC
             #### A 25;
             loop;
         Death:
-            #### C 0 {bSOLID = false; bSHOOTABLE = false; }
-            #### CD 6;
+            #### CDE 6 {bSOLID = false; bSHOOTABLE = false; }
             goto DeathLoop;
         DeathLoop:
             #### E 25;
@@ -94,7 +92,7 @@ class BaseMartyrNPC : BaseNPC
             #### AB 6;
             loop;
         Death:
-            #### C 6 {bSOLID = false; bSHOOTABLE = false; }
+            #### CD 8 {bSOLID = false; bSHOOTABLE = false; }
             goto DeathLoop;
         DeathLoop:
             #### D 25;
