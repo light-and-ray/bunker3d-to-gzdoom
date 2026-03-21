@@ -183,7 +183,7 @@ def main():
             "СЪЕШЬ ЖЕ ЕЩЁ ЭТИХ МЯГКИХ ФРАНЦУЗСКИХ БУЛОК, ДА ВЫПЕЙ ЧАЮ.\n"
             "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG'S TAIL!\n"
             " - numbers: 0123456789\n"
-            " - symbols: '`*-?!#()\\/><.,;^|&%$@_{}[]\n"
+            " - symbols: '`*-:?!#()\\/><\".,;^|&%$@_{}[]\n"
         )
     else:
         render_input = args.text
