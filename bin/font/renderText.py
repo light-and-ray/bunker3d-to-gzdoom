@@ -2,12 +2,13 @@
 import argparse
 import os
 import sys
+import textwrap
 from PIL import Image
 
 TEST_TEXT = (
-    '"Font test"\\n'
+    '"Font test"\\n\\n'
     "СЪЕШЬ ЖЕ ЕЩЁ ЭТИХ МЯГКИХ ФРАНЦУЗСКИХ БУЛОК, ДА ВЫПЕЙ ЧАЮ.\n"
-    "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG'S TAIL!\n"
+    "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG'S TAIL!\n\n"
     " - numbers: 0123456789\n"
     " - symbols: '`*-:?!#()\\/><\".,;^|&%$@_{}[]\n"
 )
@@ -143,11 +144,34 @@ def get_char_tile(font_img, char, char_coords, game, CHAR_W, CHAR_H):
     return font_img.crop((cx * CHAR_W, cy * CHAR_H, (cx + 1) * CHAR_W, (cy + 1) * CHAR_H))
 
 
-def renderText(game: str, text: str) -> Image.Image:
-    """
-    Renders the provided text using a sprite sheet font.
-    Returns a PIL Image object.
-    """
+def wrapByWords(text: str, charLimit: int) -> str:
+    if not text:
+        return ""
+
+    lines = text.splitlines()
+    wrapped_lines = []
+
+    for line in lines:
+        # .strip() removes leading/trailing spaces that often cause "doubling"
+        clean_line = line.strip()
+
+        if not clean_line:
+            wrapped_lines.append("")
+        else:
+            # fix_sentence_endings=False prevents adding extra spaces after periods
+            # break_long_words=False ensures words aren't cut in half
+            wrapped = textwrap.fill(
+                clean_line,
+                width=charLimit,
+                fix_sentence_endings=False,
+                break_long_words=False
+            )
+            wrapped_lines.append(wrapped)
+
+    return "\n".join(wrapped_lines)
+
+
+def renderText(game: str, text: str, scale: int, charLimit: int) -> Image.Image:
     script_dir = os.path.dirname(os.path.realpath(__file__))
     font_path = os.path.join(script_dir, f"font_{game}.png")
 
@@ -179,6 +203,7 @@ def renderText(game: str, text: str) -> Image.Image:
     char_coords[' '] = (3, 3)  # Specific space coordinate
 
     processed_text = process_text(text)
+    processed_text = wrapByWords(processed_text, charLimit)
     lines = processed_text.split('\n')
 
     CHAR_W, CHAR_H = 15, 16
@@ -191,6 +216,10 @@ def renderText(game: str, text: str) -> Image.Image:
             tile = get_char_tile(font_img, char, char_coords, game, CHAR_W, CHAR_H)
             out_img.paste(tile, (char_idx * CHAR_W, line_idx * CHAR_H))
 
+    if scale != 1:
+        new_size = (out_img.width * scale, out_img.height * scale)
+        out_img = out_img.resize(new_size, resample=Image.Resampling.NEAREST)
+
     return out_img
 
 
@@ -200,6 +229,7 @@ def main():
     parser.add_argument("--test", action="store_true", help="Render test sentences instead of provided text")
     parser.add_argument("--output", "-o", type=str, help="Output filename")
     parser.add_argument("--scale", type=int, default=6, help="Scale factor (nearest neighbor). Default is 6")
+    parser.add_argument("--limit", type=int, default=300, help="Characters per line limit. Default is 300")
     parser.add_argument("text", nargs="?", default="", help="Text to render")
     args = parser.parse_args()
 
@@ -211,17 +241,11 @@ def main():
     else:
         render_input = args.text
 
-    # Call the new helper function
     try:
-        out_img = renderText(args.game, render_input)
+        out_img = renderText(args.game, render_input, args.scale, args.limit)
     except Exception as e:
         print(f"Error: {e}")
         sys.exit(1)
-
-    # Apply scaling if necessary
-    if args.scale != 1:
-        new_size = (out_img.width * args.scale, out_img.height * args.scale)
-        out_img = out_img.resize(new_size, resample=Image.Resampling.NEAREST)
 
     if args.output:
         out_filename = args.output
@@ -242,7 +266,7 @@ def makeGradioApp():
     }
     """
 
-    with gr.Blocks(css=css) as demo:
+    with gr.Blocks(css=css, title="Bunker 3D Fonts", theme=gr.themes.Default(primary_hue=gr.themes.colors.blue)) as demo:
         with gr.Column():
             gr.Markdown(
                 "### Используйте шрифты из старых J2ME игр от Netsoftware! (Бункер 3D, Лаборатория 3D, Крепость 3D)\n\n"
@@ -258,12 +282,16 @@ def makeGradioApp():
                     game = gr.Radio(label="Игра/Game", value="b3d", choices=["b3d", "l3d", "c3d"])
                 with gr.Column():
                     result = gr.Image(label="Результат/Result", elem_id="result")
+                    charLimit = gr.Slider(label="Лимит символов в строке/Characters limit per line", value=40, minimum=10, maximum=300, scale=1, step=1)
+                    scale = gr.Slider(label="Размер пикселей/Pixels size", value=6, minimum=1, maximum=10, scale=1, step=1)
         gr.on(
-            triggers=[prompt.change, game.change, demo.load],
+            triggers=[prompt.change, game.change, scale.change, demo.load],
             fn=renderText,
             inputs=[
                 game,
                 prompt,
+                scale,
+                charLimit,
             ],
             outputs=[
                 result
