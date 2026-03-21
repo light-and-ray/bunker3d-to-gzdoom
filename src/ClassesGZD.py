@@ -13,7 +13,7 @@ from actorsGeneration import ( generateDecorationSpriteName, generateDecorationC
 )
 from tools import LEVEL_CEILING, LEVEL_FLOOR, SCALE_FACTOR
 from fixes import (CRATE_TOP_TEXTURES, SPRITE_SCALE_OVERRIDE, NO_LAMP_LIGHT_SPOT_LEVELS, BARREL_TOP_TEXTURES,
-    DECORATION_DATA_FOR_SPRITE, DecorationData,
+    DECORATION_DATA_FOR_SPRITE, DecorationData, NPC_DATA_FOR_SPRITE, NpcData,
 )
 
 @dataclass
@@ -227,31 +227,42 @@ class MapGZD:
             ))
 
         self._keysToNPC: dict[tuple[int], ActorGZD] = dict()
-        for NPC in mapIntermedial.friendlies:
-            key = (NPC.spriteIdx, NPC.colorIdx, NPC.isSecond)
+        for npc in mapIntermedial.friendlies:
+            key = (npc.spriteIdx, npc.colorIdx, npc.isSecond)
             if key not in self._keysToNPC:
                 spriteName = generateNpcSpriteName()
                 className = generateNpcClassName()
-                if not NPC.isSecond:
-                    spriteA = mapIntermedial.sprites[NPC.colorIdx][NPC.spriteIdx]
-                    spriteB = mapIntermedial.sprites[NPC.colorIdx][NPC.spriteIdx+1]
+                npcData = NPC_DATA_FOR_SPRITE.get((gameType, mapIndex), {}).get(npc.spriteIdx)
+                if not npcData:
+                    npcData = NpcData()
+                scaleOverrideFix = SPRITE_SCALE_OVERRIDE.get((gameType, mapIndex, npc.spriteIdx))
+                sprite_suffixes = ["A0", "B0", "C0", "D0", "E0", "F0", "G0", "H0", "I0", "J0"]
+                sprites = []
+                if not npc.isSecond:
+                    sprites.append(mapIntermedial.sprites[npc.colorIdx][npc.spriteIdx])
+                    sprites.append(mapIntermedial.sprites[npc.colorIdx][npc.spriteIdx+1])
                 else:
-                    spriteA = mapIntermedial.sprites[NPC.colorIdx][NPC.spriteIdx+4]
-                    spriteB = mapIntermedial.sprites[NPC.colorIdx][NPC.spriteIdx+5]
-                spriteC = mapIntermedial.sprites[NPC.colorIdx][NPC.spriteIdx+2]
-                spriteD = mapIntermedial.sprites[NPC.colorIdx][NPC.spriteIdx+3]
-                scaleOverrideFix = SPRITE_SCALE_OVERRIDE.get((gameType, mapIndex, NPC.spriteIdx))
-                zscript = generateNpcZScript(className, spriteName, spriteA, spriteD, scaleOverrideFix)
+                    sprites.append(mapIntermedial.sprites[npc.colorIdx][npc.spriteIdx+4])
+                    sprites.append(mapIntermedial.sprites[npc.colorIdx][npc.spriteIdx+5])
+                sprites.append(mapIntermedial.sprites[npc.colorIdx][npc.spriteIdx+2])
+                sprites.append(mapIntermedial.sprites[npc.colorIdx][npc.spriteIdx+3])
+                try:
+                    sprites.append(mapIntermedial.sprites[npc.colorIdx][npc.spriteIdx+4])
+                    sprites.append(mapIntermedial.sprites[npc.colorIdx][npc.spriteIdx+5])
+                except IndexError:
+                    pass
+                sprites = sprites[:npcData.numberOfSprites]
+                firstSprite = sprites[0]
+                corpseSprite = sprites[-1]
+                zscript = generateNpcZScript(className, spriteName, firstSprite, corpseSprite, scaleOverrideFix, npcData)
                 ednum = EdnumGZD(num=generateEdnum(), className=className)
-                self.sprites[spriteName+"A0"] = spriteA
-                self.sprites[spriteName+"B0"] = spriteB
-                self.sprites[spriteName+"C0"] = spriteC
-                self.sprites[spriteName+"D0"] = spriteD
+                for i in range(len(sprites)):
+                    self.sprites[spriteName + sprite_suffixes[i]] = sprites[i]
                 self.actors.append(ActorGZD(ednum=ednum, zscript=zscript))
                 self._keysToNPC[key] = self.actors[-1]
             self.things.append(ThingGZD(
-                x = NPC.pos.x,
-                y = NPC.pos.y,
+                x = npc.pos.x,
+                y = npc.pos.y,
                 type = self._keysToNPC[key].ednum.num,
                 angle = 0,
             ))

@@ -293,5 +293,10 @@ TEXTURE_INDEX_TO_ANIMATION_DURATIONS[(GameType.L3D, 8)] = \
 @dataclass
 class NpcData:
     zscriptClass: str = "BaseHandsUpFriendlyNPC"
-    numberOfSprites: int = 1
+    numberOfSprites: int = 4
 
+NPC_DATA_FOR_SPRITE: dict[tuple[GameType, int], dict[int, DecorationData]] = {}
+NPC_DATA_FOR_SPRITE[(GameType.L3D, 1)] = \
+{
+    24: DecorationData(zscriptClass="BaseMeatFalseNPC", numberOfSprites=5),
+}

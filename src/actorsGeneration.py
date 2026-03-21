@@ -1,7 +1,7 @@
 from PIL import Image
 from tools import isBottomRowTransparent, isTopRowTransparent
 from ClassesShared import GameType
-from fixes import DecorationData
+from fixes import DecorationData, NpcData
 
 _lastEdnum = 0
 def generateEdnum():
@@ -182,13 +182,13 @@ def generateNpcClassName():
     _npcClassNameIdx += 1
     return result
 
-def generateNpcZScript(className: str, spriteName: str, spriteA: Image.Image, spriteCorpse: Image.Image, scaleOverride: float|None):
+def generateNpcZScript(className: str, spriteName: str, spriteA: Image.Image, spriteCorpse: Image.Image, scaleOverride: float|None, npcData: NpcData):
     code = ""
     if scaleOverride is not None:
         scaleFactor = scaleOverride
     else:
         scaleFactor = 1.3
-    code += f"class {className} : BaseHandsUpFriendlyNPC\n"
+    code += f"class {className} : {npcData.zscriptClass}\n"
     code +=  "{\n"
     code +=  "    Default\n"
     code +=  "    {\n"
