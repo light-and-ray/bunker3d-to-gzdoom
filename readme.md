@@ -12,7 +12,7 @@ Need to do list [13/24]:
 - [x] explosive barrels
 - [x] fix broken texture offset in constructions
 - [x] animated decorations
-- [ ] friendly NPC AI
+- [x] friendly NPC AI
 - [ ] sync current discharge sprite and wall
 
 

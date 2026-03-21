@@ -307,6 +307,8 @@ NPC_DATA_FOR_SPRITE[(GameType.L3D, 2)] = \
 }
 NPC_DATA_FOR_SPRITE[(GameType.L3D, 5)] = \
 {
+    24: NpcData(deathScale=1.3), # fat worker
+    28: NpcData(zscriptClass="BaseFlamethrowerGuyNPC"),
     33: NpcData(deathScale=1.3), # bald worker
     37: NpcData(deathScale=1.3), # skinny worker
 }
@@ -316,11 +318,12 @@ NPC_DATA_FOR_SPRITE[(GameType.L3D, 6)] = \
 }
 NPC_DATA_FOR_SPRITE[(GameType.L3D, 7)] = \
 {
-    24: NpcData(zscriptClass="BaseMartyrNPC"), # martyr
+    24: NpcData(zscriptClass="BaseMartyrNPC"),
 }
 NPC_DATA_FOR_SPRITE[(GameType.L3D, 8)] = \
 {
-    24: NpcData(zscriptClass="BaseMartyrNPC"), # martyr
+    24: NpcData(zscriptClass="BaseMartyrNPC"),
+    28: NpcData(zscriptClass="BaseFlamethrowerGuyNPC"),
 }
 NPC_DATA_FOR_SPRITE[(GameType.L3D, 9)] = \
 {
@@ -330,5 +333,5 @@ NPC_DATA_FOR_SPRITE[(GameType.L3D, 9)] = \
 }
 NPC_DATA_FOR_SPRITE[(GameType.L3D, 10)] = \
 {
-    24: NpcData(zscriptClass="BaseMartyrNPC"), # martyr
+    24: NpcData(zscriptClass="BaseMartyrNPC"),
 }

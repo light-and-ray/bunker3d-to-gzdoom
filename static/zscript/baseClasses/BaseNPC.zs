@@ -22,7 +22,6 @@ class BaseNPC : Actor
     {
         bSOLID = false;
         bSHOOTABLE = false;
-        bFORCEXYBILLBOARD = true;
         Vector2 newScale;
         newScale.x = 1.0;
         newScale.y = 1.0;
@@ -41,18 +40,18 @@ class BaseNPC : Actor
 
 class BaseHandsUpFriendlyNPC : BaseNPC
 {
-    const SEE_DISTANCE = 92;
+    const SEE_DISTANCE = 125;
     States
     {
         SpawnBase:
-            #### A 25 A_LookEx(0, 0, SEE_DISTANCE, SEE_DISTANCE, 360);
+            #### A 1 A_LookEx(0, 0, SEE_DISTANCE, SEE_DISTANCE, 360);
             loop;
         See:
             #### B 25;
             loop;
         Death:
-            #### C 0 onDeathScale();
             #### C 6 {bSOLID = false; bSHOOTABLE = false; }
+            #### D 0 onDeathScale();
             goto DeathLoop;
         DeathLoop:
             #### D 25;
@@ -84,6 +83,7 @@ class BaseMeatFalseNPC : BaseNPC
     }
 }
 
+
 class BaseMartyrNPC : BaseNPC
 {
     States
@@ -97,5 +97,40 @@ class BaseMartyrNPC : BaseNPC
         DeathLoop:
             #### D 25;
             loop;
+    }
+}
+
+
+class BaseFlamethrowerGuyNPC : BaseNPC
+{
+    Default
+    {
+        Health 50;
+    }
+
+    States
+    {
+        SpawnBase:
+            #### A 25;
+            loop;
+        Death:
+            GIB2 A 0 onDeath();
+            goto DeathLoop;
+        DeathLoop:
+            GIB2 A 25;
+            loop;
+        XDeath:
+            goto Death;
+    }
+
+    void onDeath()
+    {
+        Vector2 newScale;
+        newScale.x = 1.0;
+        newScale.y = 1.0;
+        Scale = newScale;
+        bSOLID = false;
+        bSHOOTABLE = false;
+        Spawn('Explosion_t', self.pos);
     }
 }
