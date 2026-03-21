@@ -9,3 +9,4 @@ DOOM.WAD
 javax
 gzdoom-crash.log
 *.pk3
+/bin/font/*.png
