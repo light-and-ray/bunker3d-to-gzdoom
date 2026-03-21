@@ -170,7 +170,7 @@ def wrapByWords(text: str, charLimit: int) -> str:
                 line,
                 width=charLimit,
                 fix_sentence_endings=False,
-                break_long_words=False
+                break_long_words=True
             )
             wrapped_lines.append(wrapped)
 
