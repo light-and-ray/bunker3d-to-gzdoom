@@ -100,6 +100,7 @@ def main():
     parser.add_argument("--game", choices=['b3d', 'l3d', 'c3d'], required=True, help="Game font to use")
     parser.add_argument("--test", action="store_true", help="Render test sentences instead of provided text")
     parser.add_argument("--output", "-o", type=str, help="Output filename")
+    parser.add_argument("--scale", type=int, default=6, help="Scale factor (nearest neighbor). Default is 6")
     parser.add_argument("text", nargs="?", default="", help="Text to render")
     args = parser.parse_args()
 
@@ -159,7 +160,10 @@ def main():
             tile = get_char_tile(font_img, char, char_coords, args.game, CHAR_W, CHAR_H)
             out_img.paste(tile, (char_idx * CHAR_W, line_idx * CHAR_H))
 
-    # Handle output filename logic
+    if args.scale != 1:
+        new_size = (out_img.width * args.scale, out_img.height * args.scale)
+        out_img = out_img.resize(new_size, resample=Image.Resampling.NEAREST)
+
     if args.output:
         out_filename = args.output
     else:
