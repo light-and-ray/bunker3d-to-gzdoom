@@ -256,6 +256,10 @@ DECORATION_DATA_FOR_SPRITE[(GameType.L3D, 5)] = \
 {
     41: DecorationData(zscriptClass="BaseSmallRadiusDecoration", solid=True), # skulls
 }
+DECORATION_DATA_FOR_SPRITE[(GameType.L3D, 6)] = \
+{
+    32: DecorationData(zscriptClass="BaseSmallRadiusDecoration", solid=True), # coal
+}
 DECORATION_DATA_FOR_SPRITE[(GameType.L3D, 7)] = \
 {
     34: DecorationData(zscriptClass="BaseCurrentDischarge", numberOfSprites=3, solid=True),
