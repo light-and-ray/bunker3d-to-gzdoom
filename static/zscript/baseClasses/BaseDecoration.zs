@@ -46,7 +46,9 @@ class BaseXYBillboardDecoration : BaseDecoration
 class BaseCurrentDischarge : BaseFloorLamp
 {
     Default
-    {    }
+    {
+        Health 50;
+    }
     States
     {
         SpawnBase:
@@ -56,9 +58,16 @@ class BaseCurrentDischarge : BaseFloorLamp
             #### C 30 onLightOff();
             loop;
     }
+    override bool CanCollideWith(Actor other, bool passive)
+    {
+        if (self.health > 0) {
+            other.DamageMobj(self, self, 1.5, 'Normal');
+        }
+        return super.CanCollideWith(other, passive);
+    }
 }
 
-class BaseCurrentDischargeCutScene : BaseFloorLamp
+class BaseCurrentDischargeCutScene : BaseCurrentDischarge
 {
     Default
     {    }
