@@ -6,7 +6,7 @@ from ClassesShared import HeightType, GameType
 from ClassesIntermedial import MapIntermedial, LineIntermedial, DoorIntermedial
 from actorsGeneration import ( generateDecorationSpriteName, generateDecorationClassName, generateDecorationZScript,
     generateEdnum, generateLampSpriteName, generateLampClassName, generateLampZScript, generateFoeClassName,
-    generateFoeSpriteName, generateFoeZScript, generateFoeTexturesDef, generateFriendlyClassName, generateFriendlyZScript,
+    generateFoeSpriteName, generateFoeZScript, generateFoeTexturesDef, generateNpcClassName, generateNpcZScript,
     generateNpcSpriteName, generateCrateClassName, generateCrateSpriteName, generateCrateZScript, generateCrateModeldef,
     generateCrateObj, generateModelReplacementTextureDef, generateGenericPatchTextureDef, generateBarrelSpriteName,
     generateBarrelClassName, generateBarrelModeldef, generateBarrelObj, generateBarrelZScript,
@@ -226,33 +226,33 @@ class MapGZD:
                 arg1 = foe.health,
             ))
 
-        self._keysToFriendly: dict[tuple[int], ActorGZD] = dict()
-        for friendly in mapIntermedial.friendlies:
-            key = (friendly.spriteIdx, friendly.colorIdx, friendly.isSecond)
-            if key not in self._keysToFriendly:
+        self._keysToNPC: dict[tuple[int], ActorGZD] = dict()
+        for NPC in mapIntermedial.friendlies:
+            key = (NPC.spriteIdx, NPC.colorIdx, NPC.isSecond)
+            if key not in self._keysToNPC:
                 spriteName = generateNpcSpriteName()
-                className = generateFriendlyClassName()
-                if not friendly.isSecond:
-                    spriteA = mapIntermedial.sprites[friendly.colorIdx][friendly.spriteIdx]
-                    spriteB = mapIntermedial.sprites[friendly.colorIdx][friendly.spriteIdx+1]
+                className = generateNpcClassName()
+                if not NPC.isSecond:
+                    spriteA = mapIntermedial.sprites[NPC.colorIdx][NPC.spriteIdx]
+                    spriteB = mapIntermedial.sprites[NPC.colorIdx][NPC.spriteIdx+1]
                 else:
-                    spriteA = mapIntermedial.sprites[friendly.colorIdx][friendly.spriteIdx+4]
-                    spriteB = mapIntermedial.sprites[friendly.colorIdx][friendly.spriteIdx+5]
-                spriteC = mapIntermedial.sprites[friendly.colorIdx][friendly.spriteIdx+2]
-                spriteD = mapIntermedial.sprites[friendly.colorIdx][friendly.spriteIdx+3]
-                scaleOverrideFix = SPRITE_SCALE_OVERRIDE.get((gameType, mapIndex, friendly.spriteIdx))
-                zscript = generateFriendlyZScript(className, spriteName, spriteA, spriteD, scaleOverrideFix)
+                    spriteA = mapIntermedial.sprites[NPC.colorIdx][NPC.spriteIdx+4]
+                    spriteB = mapIntermedial.sprites[NPC.colorIdx][NPC.spriteIdx+5]
+                spriteC = mapIntermedial.sprites[NPC.colorIdx][NPC.spriteIdx+2]
+                spriteD = mapIntermedial.sprites[NPC.colorIdx][NPC.spriteIdx+3]
+                scaleOverrideFix = SPRITE_SCALE_OVERRIDE.get((gameType, mapIndex, NPC.spriteIdx))
+                zscript = generateNpcZScript(className, spriteName, spriteA, spriteD, scaleOverrideFix)
                 ednum = EdnumGZD(num=generateEdnum(), className=className)
                 self.sprites[spriteName+"A0"] = spriteA
                 self.sprites[spriteName+"B0"] = spriteB
                 self.sprites[spriteName+"C0"] = spriteC
                 self.sprites[spriteName+"D0"] = spriteD
                 self.actors.append(ActorGZD(ednum=ednum, zscript=zscript))
-                self._keysToFriendly[key] = self.actors[-1]
+                self._keysToNPC[key] = self.actors[-1]
             self.things.append(ThingGZD(
-                x = friendly.pos.x,
-                y = friendly.pos.y,
-                type = self._keysToFriendly[key].ednum.num,
+                x = NPC.pos.x,
+                y = NPC.pos.y,
+                type = self._keysToNPC[key].ednum.num,
                 angle = 0,
             ))
 

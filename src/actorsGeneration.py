@@ -49,7 +49,7 @@ def generateDecorationZScript(className: str, spriteName: str, sprite: Image.Ima
         scaleFactor = 1.0
     code = ""
     isPinnedToCeiling = isBottomRowTransparent(sprite) and not isTopRowTransparent(sprite)
-    code += f"class {className} : {decorationData.zscriptClass or "BaseDecoration"}\n"
+    code += f"class {className} : {decorationData.zscriptClass}\n"
     code +=  "{\n"
     code +=  "    Default\n"
     code +=  "    {\n"
@@ -175,20 +175,20 @@ def generateNpcSpriteName():
     _npcSpriteNameIdx += 1
     return result
 
-_friendlyClassNameIdx = 0
-def generateFriendlyClassName():
-    global _friendlyClassNameIdx
-    result = f'B3DFriendly{_friendlyClassNameIdx:03}'
-    _friendlyClassNameIdx += 1
+_npcClassNameIdx = 0
+def generateNpcClassName():
+    global _npcClassNameIdx
+    result = f'B3DNpc{_npcClassNameIdx:03}'
+    _npcClassNameIdx += 1
     return result
 
-def generateFriendlyZScript(className: str, spriteName: str, spriteA: Image.Image, spriteCorpse: Image.Image, scaleOverride: float|None):
+def generateNpcZScript(className: str, spriteName: str, spriteA: Image.Image, spriteCorpse: Image.Image, scaleOverride: float|None):
     code = ""
     if scaleOverride is not None:
         scaleFactor = scaleOverride
     else:
         scaleFactor = 1.3
-    code += f"class {className} : BaseFriendly\n"
+    code += f"class {className} : BaseHandsUpFriendlyNPC\n"
     code +=  "{\n"
     code +=  "    Default\n"
     code +=  "    {\n"

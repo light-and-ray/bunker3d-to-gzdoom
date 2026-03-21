@@ -238,7 +238,7 @@ NO_LAMP_LIGHT_SPOT_LEVELS: list[tuple[GameType, int]] = [(GameType.B3D, 9)]
 
 @dataclass
 class DecorationData:
-    zscriptClass: str = None
+    zscriptClass: str = "BaseDecoration"
     numberOfSprites: int = 1
     solid: bool = False
 
@@ -288,3 +288,10 @@ TEXTURE_INDEX_TO_ANIMATION_DURATIONS[(GameType.L3D, 8)] = \
     9: 4.5, # bubbles
     6: 3.7, # big fan
 }
+
+
+@dataclass
+class NpcData:
+    zscriptClass: str = "BaseHandsUpFriendlyNPC"
+    numberOfSprites: int = 1
+

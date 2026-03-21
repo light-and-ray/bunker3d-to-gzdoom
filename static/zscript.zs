@@ -11,7 +11,7 @@ version 4.14
 #include "zscript/baseClasses/BaseDecoration.zs"
 #include "zscript/baseClasses/BaseLamp.zs"
 #include "zscript/baseClasses/BaseFoe.zs"
-#include "zscript/baseClasses/BaseFriendly.zs"
+#include "zscript/baseClasses/BaseNPC.zs"
 #include "zscript/baseClasses/BaseCrate.zs"
 #include "zscript/baseClasses/BaseBarrel.zs"
 #include "zscript/generated/include.zs"

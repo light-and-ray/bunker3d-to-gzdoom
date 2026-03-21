@@ -1,4 +1,4 @@
-class BaseFriendly : Actor
+class BaseHandsUpFriendlyNPC : Actor
 {
     Default
     {

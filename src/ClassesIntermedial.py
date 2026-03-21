@@ -81,7 +81,7 @@ class FoeIntermedial:
     walkDistance: int
 
 @dataclass
-class FriendlyIntermedial:
+class NpcIntermedial:
     pos: Vertex
     colorIdx: int
     spriteIdx: int
@@ -169,7 +169,7 @@ class MapIntermedial:
                 self.lamps.append(LampIntermedial(pos=thing.pos, spriteIdx=0, colorIdx=thing.color, special=special))
 
         self.foes: list[FoeIntermedial] = []
-        self.friendlies: list[FriendlyIntermedial] = []
+        self.friendlies: list[NpcIntermedial] = []
         for thing in mapB3D.things:
             if thing.category != ThingCategory.NPC: continue
             if thing.special >= 0:
@@ -180,11 +180,11 @@ class MapIntermedial:
                     continue
                 if special in (NpcSpecial.FRIENDLY1_B3D, NpcSpecial.FRIENDLY2_B3D):
                     isSecond = (special == NpcSpecial.FRIENDLY2_B3D)
-                    self.friendlies.append(FriendlyIntermedial(pos=thing.pos, colorIdx=thing.color, isSecond=isSecond, spriteIdx=thing.sprite))
+                    self.friendlies.append(NpcIntermedial(pos=thing.pos, colorIdx=thing.color, isSecond=isSecond, spriteIdx=thing.sprite))
                 elif special in (NpcSpecial.FRIENDLY1_L3D, NpcSpecial.FRIENDLY2_L3D, NpcSpecial.FRIENDLY3_L3D, NpcSpecial.FRIENDLY4_L3D):
                     isSecond = False
                     sprite = special.value - 37 + 24
-                    self.friendlies.append(FriendlyIntermedial(pos=thing.pos, colorIdx=thing.color, isSecond=isSecond, spriteIdx=sprite))
+                    self.friendlies.append(NpcIntermedial(pos=thing.pos, colorIdx=thing.color, isSecond=isSecond, spriteIdx=sprite))
                 else:
                     print(f'warning: not handled npc special {special.name} index {thing.index}')
             else:
