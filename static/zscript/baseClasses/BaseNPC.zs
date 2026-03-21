@@ -1,3 +1,6 @@
+class B3DBlood : Actor replaces Blood
+{    }
+
 class BaseNPC : Actor
 {
     double deathScale;
@@ -65,7 +68,6 @@ class BaseMeatFalseNPC : BaseNPC
 {
     Default
     {
-        +NOBLOOD;
         +NOBLOODDECALS;
     }
     States

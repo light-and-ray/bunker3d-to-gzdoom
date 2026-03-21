@@ -303,7 +303,7 @@ NPC_DATA_FOR_SPRITE[(GameType.L3D, 1)] = \
 }
 NPC_DATA_FOR_SPRITE[(GameType.L3D, 2)] = \
 {
-    24: NpcData(deathScale=1.0), # fat worker
+    24: NpcData(deathScale=1.3), # fat worker
 }
 NPC_DATA_FOR_SPRITE[(GameType.L3D, 5)] = \
 {
