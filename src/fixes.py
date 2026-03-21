@@ -294,9 +294,24 @@ TEXTURE_INDEX_TO_ANIMATION_DURATIONS[(GameType.L3D, 8)] = \
 class NpcData:
     zscriptClass: str = "BaseHandsUpFriendlyNPC"
     numberOfSprites: int = 4
+    deathScale: float = 1.8
 
 NPC_DATA_FOR_SPRITE: dict[tuple[GameType, int], dict[int, DecorationData]] = {}
 NPC_DATA_FOR_SPRITE[(GameType.L3D, 1)] = \
 {
-    24: DecorationData(zscriptClass="BaseMeatFalseNPC", numberOfSprites=5),
+    24: NpcData(zscriptClass="BaseMeatFalseNPC", numberOfSprites=5),
+}
+NPC_DATA_FOR_SPRITE[(GameType.L3D, 2)] = \
+{
+    24: NpcData(deathScale=1.0), # fat worker
+}
+NPC_DATA_FOR_SPRITE[(GameType.L3D, 6)] = \
+{
+    24: NpcData(deathScale=1.3), # fat worker
+}
+NPC_DATA_FOR_SPRITE[(GameType.L3D, 9)] = \
+{
+    24: NpcData(deathScale=1.3), # fat worker
+    28: NpcData(deathScale=1.3), # bald worker
+    33: NpcData(deathScale=1.3), # skinny worker
 }

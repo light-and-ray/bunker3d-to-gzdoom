@@ -204,6 +204,11 @@ def generateNpcZScript(className: str, spriteName: str, spriteA: Image.Image, sp
     code += f"            {spriteName} A 0 NoDelay A_JumpIf(true, \"SpawnBase\");\n"
     code += f"            stop;\n"
     code +=  "    }\n"
+    code +=  "    override void PostBeginPlay()\n"
+    code +=  "    {\n"
+    code += f"        deathScale = {npcData.deathScale};\n"
+    code +=  "        super.PostBeginPlay();\n"
+    code +=  "    }\n"
     code +=  "}\n"
     return code
 

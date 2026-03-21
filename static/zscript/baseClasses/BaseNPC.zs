@@ -1,5 +1,7 @@
 class BaseNPC : Actor
 {
+    double deathScale;
+
     Default
     {
         Health 5;
@@ -26,6 +28,14 @@ class BaseNPC : Actor
         newScale.y = 1.0;
         Scale = newScale;
     }
+
+    virtual void onDeathScale()
+    {
+        Vector2 newScale;
+        newScale.x = deathScale;
+        newScale.y = deathScale;
+        Scale = newScale;
+    }
 }
 
 
@@ -41,12 +51,14 @@ class BaseHandsUpFriendlyNPC : BaseNPC
             #### B 25;
             loop;
         Death:
+            #### C 0 onDeathScale();
             #### C 6 {bSOLID = false; bSHOOTABLE = false; }
             goto DeathLoop;
         DeathLoop:
             #### D 25;
             loop;
     }
+
 }
 
 
