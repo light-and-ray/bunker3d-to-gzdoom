@@ -202,6 +202,12 @@ class MapB3D:
                     key = (tuple(animatedFrames))
                     if key not in self.keyToAnimation:
                         firstFrame = animatedFrames[0]
+
+                        if firstFrame in ALT_TEXTURE_VARIANT.get((self.gameType, self.mapIndex), {}):
+                            for animatedLineIdx in animatedLines:
+                                self.lines[animatedLineIdx].texturesNames[textureIndex] = list(self.textures.keys())[firstFrame]
+                            continue
+
                         frames: list[str] = []
                         duration = TEXTURE_INDEX_TO_ANIMATION_DURATIONS.get((self.gameType, self.mapIndex), {}).get(firstFrame)
                         if not duration:

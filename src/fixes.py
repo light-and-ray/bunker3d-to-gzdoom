@@ -227,9 +227,17 @@ ALT_TEXTURE_VARIANT[(GameType.L3D, 6)] = \
     6: AltTextureRawData(5, AltTextureType.LAMP_OFF),
     26: AltTextureRawData(5, AltTextureType.LAMP_OFF, mirror=True),
 }
+ALT_TEXTURE_VARIANT[(GameType.L3D, 7)] = \
+{
+    13: AltTextureRawData(0, AltTextureType.LAMP_OFF),
+}
 ALT_TEXTURE_VARIANT[(GameType.L3D, 8)] = \
 {
     4: AltTextureRawData(5, AltTextureType.GLASS_BREAK), # doesn't exist in the original
+}
+ALT_TEXTURE_VARIANT[(GameType.L3D, 10)] = \
+{
+    3: AltTextureRawData(4, AltTextureType.LAMP_OFF),
 }
 
 
@@ -282,19 +290,6 @@ DECORATION_DATA_FOR_SPRITE[(GameType.L3D, 10)] = \
 }
 
 
-TEXTURE_INDEX_TO_ANIMATION_DURATIONS: dict[tuple[GameType, int], dict[int, float]] = {}
-TEXTURE_INDEX_TO_ANIMATION_DURATIONS[(GameType.L3D, 5)] = \
-{
-    7: 4, # furnace
-}
-TEXTURE_INDEX_TO_ANIMATION_DURATIONS[(GameType.L3D, 8)] = \
-{
-    14: 4, # computer
-    9: 4.5, # bubbles
-    6: 3.7, # big fan
-}
-
-
 @dataclass
 class NpcData:
     zscriptClass: str = "BaseHandsUpFriendlyNPC"
@@ -337,3 +332,15 @@ NPC_DATA_FOR_SPRITE[(GameType.L3D, 9)] = \
     33: NpcData(deathScale=1.3), # skinny worker
 }
 
+
+TEXTURE_INDEX_TO_ANIMATION_DURATIONS: dict[tuple[GameType, int], dict[int, float]] = {}
+TEXTURE_INDEX_TO_ANIMATION_DURATIONS[(GameType.L3D, 5)] = \
+{
+    7: 4, # furnace
+}
+TEXTURE_INDEX_TO_ANIMATION_DURATIONS[(GameType.L3D, 8)] = \
+{
+    14: 4, # computer
+    9: 4.5, # bubbles
+    6: 3.7, # big fan
+}

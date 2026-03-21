@@ -43,29 +43,30 @@ class BaseXYBillboardDecoration : BaseDecoration
     }
 }
 
-class BaseCurrentDischarge : BaseDecoration
+class BaseCurrentDischarge : BaseFloorLamp
 {
     Default
     {    }
     States
     {
         SpawnBase:
-            #### AB 4;
-            #### C 10;
-            #### AB 4;
-            #### C 30;
+            #### AB 4 onLightOn();
+            #### C 10 onLightOff();
+            #### AB 4 onLightOn();
+            #### C 30 onLightOff();
             loop;
     }
 }
 
-class BaseCurrentDischargeCutScene : BaseDecoration
+class BaseCurrentDischargeCutScene : BaseFloorLamp
 {
     Default
     {    }
     States
     {
         SpawnBase:
-            #### ABC 2;
+            #### AB 2 onLightOn();
+            #### C 2 onLightOff();
             loop;
     }
 }

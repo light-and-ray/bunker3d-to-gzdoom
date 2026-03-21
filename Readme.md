@@ -1,4 +1,4 @@
-Need to do list [13/24]:
+Need to do list [15/24]:
 - [x] filter things using triggers
 - [x] sprite scale mechanism
 - [x] remove broken things
@@ -13,7 +13,7 @@ Need to do list [13/24]:
 - [x] fix broken texture offset in constructions
 - [x] animated decorations
 - [x] friendly NPC AI
-- [ ] sync current discharge sprite and wall
+- [x] sync current discharge sprite and wall
 
 
 - [ ] ends of levels
