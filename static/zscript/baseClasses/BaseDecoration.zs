@@ -74,8 +74,12 @@ class BaseCurrentDischargeCutScene : BaseCurrentDischarge
     States
     {
         SpawnBase:
-            #### AB 2 onLightOn();
-            #### C 2 onLightOff();
+            #### AC 2 onLightOn();
+            #### B 2 onLightOff();
             loop;
+        Death:
+            #### B 2 onLightOff();
+        XDeath:
+            goto Death;
     }
 }
