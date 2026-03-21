@@ -83,3 +83,19 @@ class BaseMeatFalseNPC : BaseNPC
             loop;
     }
 }
+
+class BaseMartyrNPC : BaseNPC
+{
+    States
+    {
+        SpawnBase:
+            #### AB 6;
+            loop;
+        Death:
+            #### C 6 {bSOLID = false; bSHOOTABLE = false; }
+            goto DeathLoop;
+        DeathLoop:
+            #### D 25;
+            loop;
+    }
+}
