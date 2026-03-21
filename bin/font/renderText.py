@@ -40,7 +40,7 @@ INPUT_TO_FONT = {
     'K': 'К', 'L': 'L', 'M': 'М', 'N': 'N', 'O': 'О',
     'P': 'Р', 'Q': 'Q', 'R': 'R', 'S': 'S', 'T': 'Т',
     'U': 'U', 'V': 'V', 'W': 'Ш', 'X': 'Х', 'Y': 'Y', 'Z': 'Z',
-    'Ъ': 'Ь', 'Ч': '4', '>': '»',
+    'Ъ': 'Ь', 'Ч': '4', '>': '»', '@': '*',
 }
 
 def process_text(text):
@@ -152,16 +152,11 @@ def wrapByWords(text: str, charLimit: int) -> str:
     wrapped_lines = []
 
     for line in lines:
-        # .strip() removes leading/trailing spaces that often cause "doubling"
-        clean_line = line.strip()
-
-        if not clean_line:
+        if not line:
             wrapped_lines.append("")
         else:
-            # fix_sentence_endings=False prevents adding extra spaces after periods
-            # break_long_words=False ensures words aren't cut in half
             wrapped = textwrap.fill(
-                clean_line,
+                line,
                 width=charLimit,
                 fix_sentence_endings=False,
                 break_long_words=False
@@ -264,6 +259,9 @@ def makeGradioApp():
         padding: 40px 10px;
         background: black;
     }
+    footer {
+        visibility: hidden;
+    }
     """
 
     with gr.Blocks(css=css, title="Bunker 3D Fonts", theme=gr.themes.Default(primary_hue=gr.themes.colors.blue)) as demo:
@@ -285,7 +283,7 @@ def makeGradioApp():
                     charLimit = gr.Slider(label="Лимит символов в строке/Characters limit per line", value=40, minimum=10, maximum=300, scale=1, step=1)
                     scale = gr.Slider(label="Размер пикселей/Pixels size", value=6, minimum=1, maximum=10, scale=1, step=1)
         gr.on(
-            triggers=[prompt.change, game.change, scale.change, demo.load],
+            triggers=[prompt.change, game.change, scale.change, charLimit.change, demo.load],
             fn=renderText,
             inputs=[
                 game,
