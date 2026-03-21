@@ -1,11 +1,24 @@
-class BaseHandsUpFriendlyNPC : Actor
+class BaseNPC : Actor
 {
     Default
     {
+        Health 5;
+        GibHealth 20;
         Scale 1.3;
         +SOLID;
-        +BILLBOARDFACECAMERA;
+        +SHOOTABLE;
+        +DONTTHRUST;
     }
+    States
+    {
+        XDeath:
+            GIB1 A 25 {bSOLID = false; bSHOOTABLE = false; }
+            loop;
+    }
+}
+
+class BaseHandsUpFriendlyNPC : BaseNPC
+{
     States
     {
         SpawnBase:
@@ -14,17 +27,24 @@ class BaseHandsUpFriendlyNPC : Actor
     }
 }
 
-class BaseMeatFalseNPC : Actor
+class BaseMeatFalseNPC : BaseNPC
 {
     Default
     {
-        +SOLID;
-        Scale 1.3;
+        +NOBLOOD;
+        +NOBLOODDECALS;
     }
     States
     {
         SpawnBase:
-            #### ABCDE 25;
+            #### A 25;
+            loop;
+        Death:
+            #### C 0 {bSOLID = false; bSHOOTABLE = false; }
+            #### CD 6;
+            goto DeathLoop;
+        DeathLoop:
+            #### E 25;
             loop;
     }
 }
