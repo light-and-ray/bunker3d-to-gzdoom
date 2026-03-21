@@ -11,6 +11,17 @@ TEST_TEXT = (
     "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG'S TAIL!\n\n"
     " - numbers: 0123456789\n"
     " - symbols: '`*-:?!#()\\/><\".,;^|&%$@_{}[]\n"
+r'''
+
+     |\    o
+    |  \    o
+|\ /    .\ o
+| |       (
+|/ \     /
+    |  /
+     |/
+
+'''
 )
 
 # Default layout for most games
@@ -166,36 +177,28 @@ def wrapByWords(text: str, charLimit: int) -> str:
     return "\n".join(wrapped_lines)
 
 
-def renderText(game: str, text: str, scale: int, charLimit: int) -> Image.Image:
+def renderText(game: str, text: str, scale: int, charLimit: int, addBlackBackground: bool = False) -> Image.Image:
     script_dir = os.path.dirname(os.path.realpath(__file__))
     font_path = os.path.join(script_dir, f"font_{game}.png")
 
     if not os.path.exists(font_path):
         raise FileNotFoundError(f"Font file not found at {font_path}")
 
-    # Load and process font background transparency
     font_img = Image.open(font_path).convert("RGBA")
     bg_color = font_img.getpixel((0, 0))
 
     datas = font_img.getdata()
     new_data = []
     for item in datas:
-        # If the pixel matches the background color exactly, make it fully transparent
         if item[0:3] == bg_color[0:3]:
             new_data.append((0, 0, 0, 0))
         else:
             new_data.append(item)
     font_img.putdata(new_data)
 
-    # Determine layout and coordinates
     current_layout = B3D_LAYOUT if game == 'b3d' else DEFAULT_LAYOUT
-    char_coords = {}
-    for y, row in enumerate(current_layout):
-        for x, c in enumerate(row):
-            if c != ' ' and c not in char_coords:
-                char_coords[c] = (x, y)
-
-    char_coords[' '] = (3, 3)  # Specific space coordinate
+    char_coords = {c: (x, y) for y, row in enumerate(current_layout) for x, c in enumerate(row) if c != ' '}
+    char_coords[' '] = (3, 3)
 
     processed_text = process_text(text)
     processed_text = wrapByWords(processed_text, charLimit)
@@ -203,13 +206,17 @@ def renderText(game: str, text: str, scale: int, charLimit: int) -> Image.Image:
 
     CHAR_W, CHAR_H = 15, 16
     max_len = max(len(line) for line in lines) if lines else 0
-    out_img = Image.new("RGBA", (max_len * CHAR_W, len(lines) * CHAR_H), (0, 0, 0, 0))
 
-    # Paste characters onto the output canvas
+    # Logic for background color
+    bg_fill = (0, 0, 0, 255) if addBlackBackground else (0, 0, 0, 0)
+    out_img = Image.new("RGBA", (max_len * CHAR_W, len(lines) * CHAR_H), bg_fill)
+
     for line_idx, line in enumerate(lines):
         for char_idx, char in enumerate(line):
             tile = get_char_tile(font_img, char, char_coords, game, CHAR_W, CHAR_H)
-            out_img.paste(tile, (char_idx * CHAR_W, line_idx * CHAR_H))
+            # Use tile as mask to preserve transparency of the font itself
+            # while pasting onto the chosen background
+            out_img.paste(tile, (char_idx * CHAR_W, line_idx * CHAR_H), tile)
 
     if scale != 1:
         new_size = (out_img.width * scale, out_img.height * scale)
@@ -217,27 +224,24 @@ def renderText(game: str, text: str, scale: int, charLimit: int) -> Image.Image:
 
     return out_img
 
-
 def main():
     parser = argparse.ArgumentParser(description="Render text using sprite sheet fonts.")
     parser.add_argument("--game", choices=['b3d', 'l3d', 'c3d'], required=True, help="Game font to use")
-    parser.add_argument("--test", action="store_true", help="Render test sentences instead of provided text")
+    parser.add_argument("--test", action="store_true", help="Render test sentences")
     parser.add_argument("--output", "-o", type=str, help="Output filename")
-    parser.add_argument("--scale", type=int, default=6, help="Scale factor (nearest neighbor). Default is 6")
-    parser.add_argument("--limit", type=int, default=300, help="Characters per line limit. Default is 300")
+    parser.add_argument("--scale", type=int, default=6, help="Scale factor. Default 6")
+    parser.add_argument("--limit", type=int, default=300, help="Chars per line. Default 300")
+    parser.add_argument("--background", action="store_true", help="Add solid black background")
     parser.add_argument("text", nargs="?", default="", help="Text to render")
     args = parser.parse_args()
 
     if not args.test and not args.text:
-        parser.error("The following arguments are required: text (or use --test)")
+        parser.error("Required: text or --test")
 
-    if args.test:
-        render_input = TEST_TEXT
-    else:
-        render_input = args.text
+    render_input = TEST_TEXT if args.test else args.text
 
     try:
-        out_img = renderText(args.game, render_input, args.scale, args.limit)
+        out_img = renderText(args.game, render_input, args.scale, args.limit, args.background)
     except Exception as e:
         print(f"Error: {e}")
         sys.exit(1)
@@ -250,52 +254,6 @@ def main():
 
     out_img.save(out_filename)
     print(f"Successfully rendered {args.game} text to {out_filename}")
-
-
-def makeGradioApp():
-    import gradio as gr
-    css = """
-    #result img {
-        padding: 40px 10px;
-        background: black;
-    }
-    footer {
-        visibility: hidden;
-    }
-    """
-
-    with gr.Blocks(css=css, title="Bunker 3D Fonts", theme=gr.themes.Default(primary_hue=gr.themes.colors.blue)) as demo:
-        with gr.Column():
-            gr.Markdown(
-                "### Используйте шрифты из старых J2ME игр от Netsoftware! (Бункер 3D, Лаборатория 3D, Крепость 3D)\n\n"
-                "### Use fonts from the old J2ME Netsoftware games! (Bunker 3D, Laboratory 3D, Castle 3D)\n\n"
-            )
-            with gr.Row():
-                with gr.Column():
-                    prompt = gr.Text(
-                        label="Ваш текст/Your text",
-                        lines=2,
-                        value=TEST_TEXT,
-                    )
-                    game = gr.Radio(label="Игра/Game", value="b3d", choices=["b3d", "l3d", "c3d"])
-                with gr.Column():
-                    result = gr.Image(label="Результат/Result", elem_id="result")
-                    charLimit = gr.Slider(label="Лимит символов в строке/Characters limit per line", value=40, minimum=10, maximum=300, scale=1, step=1)
-                    scale = gr.Slider(label="Размер пикселей/Pixels size", value=6, minimum=1, maximum=10, scale=1, step=1)
-        gr.on(
-            triggers=[prompt.change, game.change, scale.change, charLimit.change, demo.load],
-            fn=renderText,
-            inputs=[
-                game,
-                prompt,
-                scale,
-                charLimit,
-            ],
-            outputs=[
-                result
-            ],
-        )
-    return demo
 
 
 if __name__ == "__main__":
