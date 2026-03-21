@@ -134,27 +134,20 @@ def get_char_tile(font_img, char, char_coords, game, CHAR_W, CHAR_H):
 
     return font_img.crop((cx * CHAR_W, cy * CHAR_H, (cx + 1) * CHAR_W, (cy + 1) * CHAR_H))
 
-def main():
-    parser = argparse.ArgumentParser(description="Render text using sprite sheet fonts.")
-    parser.add_argument("--game", choices=['b3d', 'l3d', 'c3d'], required=True, help="Game font to use")
-    parser.add_argument("--test", action="store_true", help="Render test sentences instead of provided text")
-    parser.add_argument("--output", "-o", type=str, help="Output filename")
-    parser.add_argument("--scale", type=int, default=6, help="Scale factor (nearest neighbor). Default is 6")
-    parser.add_argument("text", nargs="?", default="", help="Text to render")
-    args = parser.parse_args()
 
-    if not args.test and not args.text:
-        parser.error("The following arguments are required: text (or use --test)")
-
+def renderText(game: str, text: str) -> Image.Image:
+    """
+    Renders the provided text using a sprite sheet font.
+    Returns a PIL Image object.
+    """
     script_dir = os.path.dirname(os.path.realpath(__file__))
-    font_path = os.path.join(script_dir, f"font_{args.game}.png")
+    font_path = os.path.join(script_dir, f"font_{game}.png")
 
     if not os.path.exists(font_path):
-        print(f"Error: Font file not found at {font_path}")
-        sys.exit(1)
+        raise FileNotFoundError(f"Font file not found at {font_path}")
 
+    # Load and process font background transparency
     font_img = Image.open(font_path).convert("RGBA")
-
     bg_color = font_img.getpixel((0, 0))
 
     datas = font_img.getdata()
@@ -167,15 +160,43 @@ def main():
             new_data.append(item)
     font_img.putdata(new_data)
 
-    current_layout = B3D_LAYOUT if args.game == 'b3d' else DEFAULT_LAYOUT
-
+    # Determine layout and coordinates
+    current_layout = B3D_LAYOUT if game == 'b3d' else DEFAULT_LAYOUT
     char_coords = {}
     for y, row in enumerate(current_layout):
         for x, c in enumerate(row):
             if c != ' ' and c not in char_coords:
                 char_coords[c] = (x, y)
 
-    char_coords[' '] = (3, 3) # Specific space coordinate
+    char_coords[' '] = (3, 3)  # Specific space coordinate
+
+    processed_text = process_text(text)
+    lines = processed_text.split('\n')
+
+    CHAR_W, CHAR_H = 15, 16
+    max_len = max(len(line) for line in lines) if lines else 0
+    out_img = Image.new("RGBA", (max_len * CHAR_W, len(lines) * CHAR_H), (0, 0, 0, 0))
+
+    # Paste characters onto the output canvas
+    for line_idx, line in enumerate(lines):
+        for char_idx, char in enumerate(line):
+            tile = get_char_tile(font_img, char, char_coords, game, CHAR_W, CHAR_H)
+            out_img.paste(tile, (char_idx * CHAR_W, line_idx * CHAR_H))
+
+    return out_img
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Render text using sprite sheet fonts.")
+    parser.add_argument("--game", choices=['b3d', 'l3d', 'c3d'], required=True, help="Game font to use")
+    parser.add_argument("--test", action="store_true", help="Render test sentences instead of provided text")
+    parser.add_argument("--output", "-o", type=str, help="Output filename")
+    parser.add_argument("--scale", type=int, default=6, help="Scale factor (nearest neighbor). Default is 6")
+    parser.add_argument("text", nargs="?", default="", help="Text to render")
+    args = parser.parse_args()
+
+    if not args.test and not args.text:
+        parser.error("The following arguments are required: text (or use --test)")
 
     if args.test:
         render_input = (
@@ -188,18 +209,14 @@ def main():
     else:
         render_input = args.text
 
-    processed_text = process_text(render_input)
-    lines = processed_text.split('\n')
+    # Call the new helper function
+    try:
+        out_img = renderText(args.game, render_input)
+    except Exception as e:
+        print(f"Error: {e}")
+        sys.exit(1)
 
-    CHAR_W, CHAR_H = 15, 16
-    max_len = max(len(line) for line in lines) if lines else 0
-    out_img = Image.new("RGBA", (max_len * CHAR_W, len(lines) * CHAR_H), (0, 0, 0, 0))
-
-    for line_idx, line in enumerate(lines):
-        for char_idx, char in enumerate(line):
-            tile = get_char_tile(font_img, char, char_coords, args.game, CHAR_W, CHAR_H)
-            out_img.paste(tile, (char_idx * CHAR_W, line_idx * CHAR_H))
-
+    # Apply scaling if necessary
     if args.scale != 1:
         new_size = (out_img.width * args.scale, out_img.height * args.scale)
         out_img = out_img.resize(new_size, resample=Image.Resampling.NEAREST)
@@ -212,6 +229,7 @@ def main():
 
     out_img.save(out_filename)
     print(f"Successfully rendered {args.game} text to {out_filename}")
+
 
 if __name__ == "__main__":
     main()
