@@ -31,7 +31,7 @@ INPUT_TO_FONT = {
     'K': 'К', 'L': 'L', 'M': 'М', 'N': 'N', 'O': 'О',
     'P': 'Р', 'Q': 'Q', 'R': 'R', 'S': 'S', 'T': 'Т',
     'U': 'U', 'V': 'V', 'W': 'Ш', 'X': 'Х', 'Y': 'Y', 'Z': 'Z',
-    'Ъ': 'Ь', 'Ч': '4',
+    'Ъ': 'Ь', 'Ч': '4', '>': '»',
 }
 
 def process_text(text):
@@ -51,19 +51,46 @@ def process_text(text):
     return "".join(res)
 
 def get_char_tile(font_img, char, char_coords, game, CHAR_W, CHAR_H):
-    # 1. Special Case: Mirrored « (Universal)
-    if char == '«' and '»' in char_coords:
+    # Special Case: Mirrored « (Universal)
+    if char in ('«', '<') and '»' in char_coords:
         cx, cy = char_coords['»']
         crop = font_img.crop((cx * CHAR_W, cy * CHAR_H, (cx + 1) * CHAR_W, (cy + 1) * CHAR_H))
         return crop.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
 
-    # 2. Special Case: Vertically mirrored comma for apostrophe
-    if char == "'" and ',' in char_coords:
+    # Special Case: Vertically mirrored comma for apostrophe
+    if char in ("'", "`") and ',' in char_coords:
         cx, cy = char_coords[',']
         crop = font_img.crop((cx * CHAR_W, cy * CHAR_H, (cx + 1) * CHAR_W, (cy + 1) * CHAR_H))
         return crop.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
 
-    # 3. Special Case: B3D Overrides
+    # Special Case: Slashes generated from rotated hyphens
+    if char in ('/', '\\') and '-' in char_coords:
+        cx, cy = char_coords['-']
+        crop = font_img.crop((cx * CHAR_W, cy * CHAR_H, (cx + 1) * CHAR_W, (cy + 1) * CHAR_H))
+        # Rotate 45 deg counter-clockwise for '/', -45 (or 315) for '\'
+        angle = 45 if char == '/' else -45
+        return crop.rotate(angle, resample=Image.BICUBIC)
+
+    # Special Case: Semicolon (combined from , and mirrored .)
+    if char == ';' and ',' in char_coords and '.' in char_coords:
+        # Create a transparent base tile
+        semicolon_tile = Image.new('RGBA', (CHAR_W, CHAR_H), (0, 0, 0, 0))
+
+        # Get the comma
+        cx_comma, cy_comma = char_coords[',']
+        comma_tile = font_img.crop((cx_comma * CHAR_W, cy_comma * CHAR_H, (cx_comma + 1) * CHAR_W, (cy_comma + 1) * CHAR_H))
+
+        # Get the period and mirror it vertically
+        cx_dot, cy_dot = char_coords['.']
+        dot_tile = font_img.crop((cx_dot * CHAR_W, cy_dot * CHAR_H, (cx_dot + 1) * CHAR_W, (cy_dot + 1) * CHAR_H))
+        mirrored_dot = dot_tile.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+
+        # Composite them (pasting comma over the mirrored dot or vice versa)
+        semicolon_tile.paste(mirrored_dot, (0, 0), mirrored_dot if mirrored_dot.mode == 'RGBA' else None)
+        semicolon_tile.paste(comma_tile, (0, 0), comma_tile if comma_tile.mode == 'RGBA' else None)
+        return semicolon_tile
+
+    # Special Case: B3D Overrides
     if game == 'b3d':
         if char == 'N': # Mirrored И
             cx, cy = char_coords.get('И', (0,0))
@@ -75,7 +102,7 @@ def get_char_tile(font_img, char, char_coords, game, CHAR_W, CHAR_H):
             cx, cy = char_coords.get('Е', (0,0))
             return font_img.crop((cx * CHAR_W, cy * CHAR_H, (cx + 1) * CHAR_W, (cy + 1) * CHAR_H)).transpose(Image.Transpose.FLIP_LEFT_RIGHT)
 
-    # 4. Special Case: C3D Overrides
+    # Special Case: C3D Overrides
     if game == 'c3d':
         if char == 'J': # 180 rotated 7
             cx, cy = char_coords.get('7', (0,0))
@@ -86,6 +113,18 @@ def get_char_tile(font_img, char, char_coords, game, CHAR_W, CHAR_H):
         if char == 'Q': # 180 rotated Ь
             cx, cy = char_coords.get('Ь', (0,0))
             return font_img.crop((cx * CHAR_W, cy * CHAR_H, (cx + 1) * CHAR_W, (cy + 1) * CHAR_H)).transpose(Image.Transpose.ROTATE_180)
+
+    if char == '^': # Mirrored Л
+        cx, cy = char_coords.get('Л', (0,0))
+        return font_img.crop((cx * CHAR_W, cy * CHAR_H, (cx + 1) * CHAR_W, (cy + 1) * CHAR_H)).transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+
+    if char == '&': # Mirrored В
+        cx, cy = char_coords.get('В', (0,0))
+        return font_img.crop((cx * CHAR_W, cy * CHAR_H, (cx + 1) * CHAR_W, (cy + 1) * CHAR_H)).transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+
+    if char == '|': # Rotated -
+        cx, cy = char_coords.get('-', (0,0))
+        return font_img.crop((cx * CHAR_W, cy * CHAR_H, (cx + 1) * CHAR_W, (cy + 1) * CHAR_H)).transpose(Image.Transpose.ROTATE_90)
 
     # Standard lookup
     if char in char_coords:
@@ -143,7 +182,8 @@ def main():
             '"Font test"\\n'
             "СЪЕШЬ ЖЕ ЕЩЁ ЭТИХ МЯГКИХ ФРАНЦУЗСКИХ БУЛОК, ДА ВЫПЕЙ ЧАЮ.\n"
             "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG'S TAIL!\n"
-            "  (numbers): 0123456789... ?"
+            " - numbers: 0123456789\n"
+            " - symbols: '`*-?!#()\\/><.,;^|&%$@_{}[]\n"
         )
     else:
         render_input = args.text
