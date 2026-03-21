@@ -57,3 +57,15 @@ class BaseCurrentDischarge : BaseDecoration
             loop;
     }
 }
+
+class BaseCurrentDischargeCutScene : BaseDecoration
+{
+    Default
+    {    }
+    States
+    {
+        SpawnBase:
+            #### ABC 2;
+            loop;
+    }
+}

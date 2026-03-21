@@ -271,7 +271,8 @@ DECORATION_DATA_FOR_SPRITE[(GameType.L3D, 9)] = \
 }
 DECORATION_DATA_FOR_SPRITE[(GameType.L3D, 10)] = \
 {
-    32: DecorationData(zscriptClass="BaseCurrentDischarge", numberOfSprites=3, solid=True),
+    24: DecorationData(zscriptClass="BaseMartyrNPC", numberOfSprites=4), # martyr but decoration
+    32: DecorationData(zscriptClass="BaseCurrentDischargeCutScene", numberOfSprites=3, solid=True),
     35: DecorationData(zscriptClass="BaseXYBillboardDecoration"), # blood
     36: DecorationData(zscriptClass="BaseXYBillboardDecoration"), # blood
 }
@@ -331,7 +332,4 @@ NPC_DATA_FOR_SPRITE[(GameType.L3D, 9)] = \
     28: NpcData(deathScale=1.3), # bald worker
     33: NpcData(deathScale=1.3), # skinny worker
 }
-NPC_DATA_FOR_SPRITE[(GameType.L3D, 10)] = \
-{
-    24: NpcData(zscriptClass="BaseMartyrNPC"),
-}
+
