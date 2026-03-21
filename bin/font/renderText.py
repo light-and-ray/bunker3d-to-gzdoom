@@ -4,6 +4,14 @@ import os
 import sys
 from PIL import Image
 
+TEST_TEXT = (
+    '"Font test"\\n'
+    "СЪЕШЬ ЖЕ ЕЩЁ ЭТИХ МЯГКИХ ФРАНЦУЗСКИХ БУЛОК, ДА ВЫПЕЙ ЧАЮ.\n"
+    "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG'S TAIL!\n"
+    " - numbers: 0123456789\n"
+    " - symbols: '`*-:?!#()\\/><\".,;^|&%$@_{}[]\n"
+)
+
 # Default layout for most games
 DEFAULT_LAYOUT = [
     "0123456789",
@@ -199,13 +207,7 @@ def main():
         parser.error("The following arguments are required: text (or use --test)")
 
     if args.test:
-        render_input = (
-            '"Font test"\\n'
-            "СЪЕШЬ ЖЕ ЕЩЁ ЭТИХ МЯГКИХ ФРАНЦУЗСКИХ БУЛОК, ДА ВЫПЕЙ ЧАЮ.\n"
-            "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG'S TAIL!\n"
-            " - numbers: 0123456789\n"
-            " - symbols: '`*-:?!#()\\/><\".,;^|&%$@_{}[]\n"
-        )
+        render_input = TEST_TEXT
     else:
         render_input = args.text
 
@@ -231,5 +233,45 @@ def main():
     print(f"Successfully rendered {args.game} text to {out_filename}")
 
 
+def makeGradioApp():
+    import gradio as gr
+    css = """
+    #result img {
+        padding: 40px 10px;
+        background: black;
+    }
+    """
+
+    with gr.Blocks(css=css) as demo:
+        with gr.Column():
+            gr.Markdown(
+                "### Используйте шрифты из старых J2ME игр от Netsoftware! (Бункер 3D, Лаборатория 3D, Крепость 3D)\n\n"
+                "### Use fonts from the old J2ME Netsoftware games! (Bunker 3D, Laboratory 3D, Castle 3D)\n\n"
+            )
+            with gr.Row():
+                with gr.Column():
+                    prompt = gr.Text(
+                        label="Ваш текст/Your text",
+                        lines=2,
+                        value=TEST_TEXT,
+                    )
+                    game = gr.Radio(label="Игра/Game", value="b3d", choices=["b3d", "l3d", "c3d"])
+                with gr.Column():
+                    result = gr.Image(label="Результат/Result", elem_id="result")
+        gr.on(
+            triggers=[prompt.change, game.change, demo.load],
+            fn=renderText,
+            inputs=[
+                game,
+                prompt,
+            ],
+            outputs=[
+                result
+            ],
+        )
+    return demo
+
+
 if __name__ == "__main__":
     main()
+
