@@ -28,19 +28,18 @@ Need to do list [15/24]:
 
 ## Bunker3D to GZDoom
 
-The goal of this project is to port all the maps and resources from an old 2006-2008 j2me mobile FPS game trilogy: Bunker3D, Laboratory3D and Castle3D by Netsoftware on [GZDoom](https://github.com/ZDoom/gzdoom) engine. The project is planned to serve as a base for a further enhanced port
+The goal of this project is to port all the maps and resources from an old 2006-2008 j2me mobile FPS game trilogy: Bunker3D, Laboratory3D and Castle3D by Netsoftware on [GZDoom](https://github.com/ZDoom/gzdoom)/[UZDoom](https://github.com/UZDoom/UZDoom) engine. The project is planned to serve as a base for a further enhanced port
 
 ![](readmeImages/screenshot1.png)
 
 
-What does this project do?
-1. Runs the java code extracted from the games, modified only to load and export data
-1. Heuristic algorithm removes hidden linedefs and resolve overlapping ones, e.g. back side of a crate which fills only bottom half of the level height, overlaps a wall -> this algorithm cuts the wall in this place and leaves only the other top half of the wall
-1. Work in progress...
+#### How the porting/resource conversion process works in general terms:
 
-### `.b3d` map format
-
-Despite visual similarities with Doom, these maps have nothing similar with Doom's format. The file contains very complicated data, stored in about 100 arrays. I assume it was made to fit the game in order of hundreds kilobytes. The base geometry is described as sequencies of segments, they are stored as nibble values (halves of bytes). The other geometry is stored as descriptions of geometric shapes: rectangles, circles, incomplete rectangles. The engine in one hand has less restrictions about lines - it's okay to have overlapping walls, walls in out of bounce; but in the other hand it doesn't support sector light (btw was added in Meat2Eat game), and different sector's floor and ceiling level. It doesn't have a "sector" term at all - lines can have different height, but you can't see what's on surfaces on top of them or under neath
+1. A part of the code that loads data into RAM during level loading was extracted from the decompiled original game code, and data in this format is saved to .json. Initially, I wanted to write a resource parser myself, but it turned out that the data is very tightly compressed, and essentially the level is reconstructed using a small set of parameters. This makes sense - the game files for version 1.0 weigh less than 100KB, which is orders of magnitude smaller than classic games from the 90s.
+2. The entire conversion process takes place in Python code. Data from the .json files is loaded and organized into something more or less meaningful in terms of structure.
+3. Data is converted into an intermediate format based on the logic of engines more familiar to Doom. For example, in Doom, there can only be one texture on a single wall, whereas in Bunker, there is a whole array of textures from left to right.
+4. Data from the format "familiar" to Doom is converted into one compatible with it. For instance, sectors are created for different floor and ceiling levels, and walls are sliced into Sidedefs, Linedefs, etc.
+5. The resulting resources are saved as UDMF format maps, and TEXTUREDEF, ANIMATEDEF, MODELDEF files, etc., which can already work with GZDoom/UZDoom.
 
 ### Dependencies
 
