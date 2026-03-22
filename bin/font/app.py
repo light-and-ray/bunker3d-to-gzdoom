@@ -24,14 +24,15 @@ def makeGradioApp():
                         lines=2,
                         value=TEST_TEXT,
                     )
-                    game = gr.Radio(label="Игра/Game", value="b3d", choices=["b3d", "l3d", "c3d"])
+                    updateButton = gr.Button("Обновить / Update")
+                    game = gr.Radio(label="Игра / Game", value="b3d", choices=["b3d", "l3d", "c3d"])
                     background = gr.Checkbox(label="Черный фон / Black background", value=True)
                 with gr.Column():
-                    result = gr.Image(label="Результат/Result", elem_id="result")
+                    result = gr.Image(label="Результат / Result", elem_id="result", format="png")
                     charLimit = gr.Slider(label="Лимит символов в строке / Characters limit per line", value=40, minimum=10, maximum=300, scale=1, step=1)
                     scale = gr.Slider(label="Размер пикселей / Pixels size", value=6, minimum=1, maximum=10, scale=1, step=1)
         gr.on(
-            triggers=[prompt.change, game.change, scale.change, charLimit.change, background.change, demo.load],
+            triggers=[updateButton.click, game.change, scale.change, charLimit.change, background.change, demo.load],
             fn=renderText,
             inputs=[
                 game,
