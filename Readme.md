@@ -51,3 +51,7 @@ python -m venv env
 pip install omgifol pillow svgwrite
 
 ```
+
+#### Fonts
+
+To write any text in the games' fonts I've made script in `bin/font`. Use it, or a hosted version of this script online: https://huggingface.co/spaces/light-and-ray/bunker3d-fonts
