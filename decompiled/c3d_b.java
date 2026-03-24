@@ -32,7 +32,7 @@ public final class c3d_b extends Canvas {
    private byte[] m;
    private byte[] n;
    private byte[] o;
-   private int[][] p;
+   private int[][] loadedMap;
    private byte[] q = new byte[]{5, 100, 10, 8};
    private String r = ".b3d";
    private String[] mapFiles = new String[]{"/temple", "/catacomb", "/ground", "/chemical", "/chdepot", "/vine", "/cell", "/hall", "/rooms", "/library", "/vip", "/roof"};
@@ -734,7 +734,7 @@ public final class c3d_b extends Canvas {
             Runtime.getRuntime().totalMemory();
             this.hR = var1.getClipHeight();
             if (this.e == null) {
-               this.a();
+               this.readMetadata();
             }
 
             this.s();
@@ -1275,11 +1275,11 @@ public final class c3d_b extends Canvas {
       }
    }
 
-   private static short a(byte[] var0, int var1) {
+   private static short readShort(byte[] var0, int var1) {
       return (short)(var0[var1] & 255 | (var0[var1 + 1] & 255) << 8);
    }
 
-   private byte[] a(String var1) {
+   private byte[] readBinary(String var1) {
       try {
          InputStream var4;
          byte[] var2 = new byte[(var4 = this.getClass().getResourceAsStream(var1)).read() & 255 | (var4.read() & 255) << 8];
@@ -1290,13 +1290,13 @@ public final class c3d_b extends Canvas {
       }
    }
 
-   private void a() {
+   private void readMetadata() {
       int var2 = 0;
-      byte[] var4 = this.a("/a" + this.r);
+      byte[] var4 = this.readBinary("/a" + this.r);
       short[] var5 = new short[12];
 
       for(int var1 = 0; var1 < 12; ++var1) {
-         var5[var1] = a(var4, var2);
+         var5[var1] = readShort(var4, var2);
          var2 += 2;
       }
 
@@ -1304,7 +1304,7 @@ public final class c3d_b extends Canvas {
       this.e = new short[var3];
 
       for(int var6 = 0; var6 < var3; ++var6) {
-         this.e[var6] = a(var4, var2);
+         this.e[var6] = readShort(var4, var2);
          var2 += 2;
       }
 
@@ -1312,7 +1312,7 @@ public final class c3d_b extends Canvas {
       this.f = new short[var3];
 
       for(int var7 = 0; var7 < var3; ++var7) {
-         this.f[var7] = a(var4, var2);
+         this.f[var7] = readShort(var4, var2);
          var2 += 2;
       }
 
@@ -1344,7 +1344,7 @@ public final class c3d_b extends Canvas {
       this.k = new byte[var3];
 
       for(int var11 = 0; var11 < var3; ++var11) {
-         this.k[var11] = (byte)(a(var4, var2) - 128);
+         this.k[var11] = (byte)(readShort(var4, var2) - 128);
          var2 += 2;
       }
 
@@ -1415,38 +1415,38 @@ public final class c3d_b extends Canvas {
       }
 
       byte[] var6;
-      short var7 = a((byte[])(var6 = var10000.a(var10001.append(var10002).append(this.r).toString())), (int)0);
-      short var8 = a((byte[])var6, (int)2);
-      short var9 = a((byte[])var6, (int)4);
-      this.p = new int[6][];
+      short var7 = readShort((byte[])(var6 = var10000.readBinary(var10001.append(var10002).append(this.r).toString())), (int)0);
+      short var8 = readShort((byte[])var6, (int)2);
+      short var9 = readShort((byte[])var6, (int)4);
+      this.loadedMap = new int[6][];
       int var4 = var7 * 4;
-      this.p[0] = new int[var4];
+      this.loadedMap[0] = new int[var4];
       var3 = 6;
 
       for(int var2 = 0; var2 < var4; var2 += 4) {
-         this.p[0][var2] = (byte)((var6[var3 + 1] & 240) >> 4);
-         this.p[0][var2 + 1] = (byte)(var6[var3 + 1] & 15);
-         this.p[0][var2 + 2] = (byte)((var6[var3] & 240) >> 4);
-         this.p[0][var2 + 3] = (byte)(var6[var3] & 15);
+         this.loadedMap[0][var2] = (byte)((var6[var3 + 1] & 240) >> 4);
+         this.loadedMap[0][var2 + 1] = (byte)(var6[var3 + 1] & 15);
+         this.loadedMap[0][var2 + 2] = (byte)((var6[var3] & 240) >> 4);
+         this.loadedMap[0][var2 + 3] = (byte)(var6[var3] & 15);
          var3 += 2;
       }
 
-      this.p[1] = new int[this.q[0]];
+      this.loadedMap[1] = new int[this.q[0]];
       this.d = new short[5];
       var4 = this.q[0];
 
       for(int var11 = 0; var11 < var4; ++var11) {
-         short var1 = a(var6, var3);
+         short var1 = readShort(var6, var3);
          this.d[var11] = var1;
          int[] var22;
          int var24;
          int var26;
          if (var1 >= 128) {
-            var22 = this.p[1];
+            var22 = this.loadedMap[1];
             var24 = var11;
             var26 = 127 - var1;
          } else {
-            var22 = this.p[1];
+            var22 = this.loadedMap[1];
             var24 = var11;
             var26 = var1;
          }
@@ -1455,26 +1455,26 @@ public final class c3d_b extends Canvas {
          var3 += 2;
       }
 
-      this.p[2] = new int[var8];
+      this.loadedMap[2] = new int[var8];
 
       for(int var12 = 0; var12 < var8; ++var12) {
-         this.p[2][var12] = var6[var3];
+         this.loadedMap[2][var12] = var6[var3];
          ++var3;
       }
 
       var4 = this.q[1];
-      this.p[3] = new int[var4];
+      this.loadedMap[3] = new int[var4];
 
       for(int var13 = 0; var13 < var4; ++var13) {
          int[] var23;
          int var25;
          int var27;
          if (var13 != 41 && var13 != 42 && var13 != 60 && var13 != 61 && var13 != 62) {
-            var23 = this.p[3];
+            var23 = this.loadedMap[3];
             var25 = var13;
             var27 = var6[var3];
          } else {
-            var23 = this.p[3];
+            var23 = this.loadedMap[3];
             var25 = var13;
             var27 = 128 + var6[var3];
          }
@@ -1483,46 +1483,46 @@ public final class c3d_b extends Canvas {
          ++var3;
       }
 
-      this.p[4] = new int[var9];
+      this.loadedMap[4] = new int[var9];
 
       for(int var14 = 0; var14 < var9; ++var14) {
-         this.p[4][var14] = var6[var3];
+         this.loadedMap[4][var14] = var6[var3];
          ++var3;
       }
 
       var4 = this.q[2];
-      this.p[5] = new int[var4];
+      this.loadedMap[5] = new int[var4];
 
       for(int var15 = 0; var15 < var4; ++var15) {
-         this.p[5][var15] = var6[var3];
+         this.loadedMap[5][var15] = var6[var3];
          ++var3;
       }
 
-      short[] var10 = new short[var4 = this.q[3]];
+      short[] footer = new short[var4 = this.q[3]];
 
       for(int var16 = 0; var16 < var4; ++var16) {
-         var10[var16] = a(var6, var3);
+         footer[var16] = readShort(var6, var3);
          var3 += 2;
       }
 
-      this.a(var10);
+      this.loadMapInner(footer);
       this.k = null;
       this.D = (byte[][][][])null;
       this.L = null;
       System.gc();
    }
 
-   private void a(short[] var1) {
+   private void loadMapInner(short[] var1) {
       this.D = new byte[3][][][];
-      this.a(this.p[0], this.p[1], this.i, 0);
-      this.a(this.p[2], this.p[3], this.j, 1);
+      this.a(this.loadedMap[0], this.loadedMap[1], this.i, 0);
+      this.a(this.loadedMap[2], this.loadedMap[3], this.j, 1);
       this.a(this.D[0], this.D[1]);
       this.a(this.D[1]);
-      this.a(this.p[4], this.p[5], this.h, 2);
+      this.a(this.loadedMap[4], this.loadedMap[5], this.h, 2);
       this.b(this.D[2]);
       this.c(this.D[2]);
       this.d(this.D[2]);
-      this.p = (int[][])null;
+      this.loadedMap = (int[][])null;
       this.D[2] = (byte[][][])null;
       this.c(false);
       System.gc();
@@ -10633,7 +10633,7 @@ public final class c3d_b extends Canvas {
 
    private void H() {
       if (this.o == null) {
-         this.a();
+         this.readMetadata();
       }
 
       this.S();
