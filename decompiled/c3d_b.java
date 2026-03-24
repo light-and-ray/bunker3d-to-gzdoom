@@ -1512,22 +1512,22 @@ public final class c3d_b extends Canvas {
       System.gc();
    }
 
-   private void loadMapInner(short[] var1) {
+   private void loadMapInner(short[] footer) {
       this.D = new byte[3][][][];
-      this.a(this.loadedMap[0], this.loadedMap[1], this.i, 0);
-      this.a(this.loadedMap[2], this.loadedMap[3], this.j, 1);
-      this.a(this.D[0], this.D[1]);
-      this.a(this.D[1]);
-      this.a(this.loadedMap[4], this.loadedMap[5], this.h, 2);
-      this.b(this.D[2]);
-      this.c(this.D[2]);
-      this.d(this.D[2]);
+      this.loadMapPart(this.loadedMap[0], this.loadedMap[1], this.i, 0);
+      this.loadMapPart(this.loadedMap[2], this.loadedMap[3], this.j, 1);
+      this.modifyBigLumps01(this.D[0], this.D[1]);
+      this.modifyBigLump1(this.D[1]);
+      this.loadMapPart(this.loadedMap[4], this.loadedMap[5], this.h, 2);
+      this.loadSpritesPart1(this.D[2]);
+      this.loadSpritesPart2(this.D[2]);
+      this.loadSpritesPart3(this.D[2]);
       this.loadedMap = (int[][])null;
       this.D[2] = (byte[][][])null;
       this.c(false);
       System.gc();
-      this.b(var1);
-      this.a(this.D[0], this.D[1], var1);
+      this.initFloorCeilingColor(footer);
+      this.loadTextures(this.D[0], this.D[1], footer);
       this.gC = 12;
       this.gD = 20;
       if (this.selectedMap == 11) {
@@ -1572,7 +1572,7 @@ public final class c3d_b extends Canvas {
 
    }
 
-   private void a(int[] var1, int[] var2, byte[] var3, int var4) {
+   private void loadMapPart(int[] var1, int[] var2, byte[] var3, int var4) {
       int var8 = 0;
       int var10 = var2.length;
       this.D[var4] = new byte[var10][][];
@@ -1593,7 +1593,7 @@ public final class c3d_b extends Canvas {
 
    }
 
-   private void a(byte[][][] var1, byte[][][] var2) {
+   private void modifyBigLumps01(byte[][][] var1, byte[][][] var2) {
       boolean var3 = false;
       int var11 = 0;
       int var12 = 0;
@@ -1777,7 +1777,7 @@ public final class c3d_b extends Canvas {
 
    }
 
-   private void a(byte[][][] var1) {
+   private void modifyBigLump1(byte[][][] var1) {
       this.dn = new short[7][];
       this.do_ = new short[7][];
       this.gS = this.gP;
@@ -2192,7 +2192,7 @@ public final class c3d_b extends Canvas {
       }
    }
 
-   private void b(byte[][][] var1) {
+   private void loadSpritesPart1(byte[][][] var1) {
       int var6 = var1[4].length;
       this.cF = new byte[var6];
       this.cC = new short[var6];
@@ -2391,7 +2391,7 @@ public final class c3d_b extends Canvas {
       a(this.ey, this.ez, this.bJ[this.bM[var1]][var1], this.bO[var1], var2, 4, var3, false);
    }
 
-   private void c(byte[][][] var1) {
+   private void loadSpritesPart2(byte[][][] var1) {
       Object var7 = null;
       Object var8 = null;
       Image var27 = this.b("/e" + this.r);
@@ -2491,7 +2491,7 @@ public final class c3d_b extends Canvas {
 
    }
 
-   private void d(byte[][][] var1) {
+   private void loadSpritesPart3(byte[][][] var1) {
       int var2 = 0;
       if (this.selectedMap == 2) {
          for(int var3 = 0; var3 < 3; ++var3) {
@@ -2636,7 +2636,7 @@ public final class c3d_b extends Canvas {
 
    }
 
-   private void a(byte[][][] var1, byte[][][] var2, short[] var3) {
+   private void loadTextures(byte[][][] var1, byte[][][] var2, short[] var3) {
       int var20 = 0;
       this.M = new int[var2[9].length][];
       this.N = new int[var2[9].length];
@@ -3815,7 +3815,7 @@ public final class c3d_b extends Canvas {
       this.gK = var7;
    }
 
-   private void b(short[] var1) {
+   private void initFloorCeilingColor(short[] var1) {
       this.bg = var1[0] << 16 | var1[1] << 8 | var1[2];
       this.bh = var1[3] << 16 | var1[4] << 8 | var1[5];
       this.bg = (int)((long)this.bg | 0L);
