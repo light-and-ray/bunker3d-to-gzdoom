@@ -737,7 +737,7 @@ public final class c3d_b extends Canvas {
                this.readMetadata();
             }
 
-            this.s();
+            this.initCosTable();
             this.loadMap();
             this.m();
             this.t();
@@ -1608,7 +1608,7 @@ public final class c3d_b extends Canvas {
       }
 
       var17 = this.bB[var4 - 1] + var2[33].length * 4;
-      this.s(var17);
+      this.initMapArrays(var17);
       this.bS = new byte[var17];
       var7 = var2[31].length;
 
@@ -1807,18 +1807,18 @@ public final class c3d_b extends Canvas {
             short[] var10000;
             int var10001;
             int var10002;
-            if (v(var14 = var1[12][var13][3] % 90) <= 3) {
+            if (abs(var14 = var1[12][var13][3] % 90) <= 3) {
                var10000 = this.do_[var2];
                var10001 = var6;
-               var10002 = var10000[var6] - v(var14);
+               var10002 = var10000[var6] - abs(var14);
             } else {
-               if (v(var14) > 6) {
+               if (abs(var14) > 6) {
                   continue;
                }
 
                var10000 = this.dn[var2];
                var10001 = var6;
-               var10002 = var10000[var6] + (v(var14) - 3);
+               var10002 = var10000[var6] + (abs(var14) - 3);
             }
 
             var10000[var10001] = (short)var10002;
@@ -1829,7 +1829,7 @@ public final class c3d_b extends Canvas {
 
          int var7;
          for(var7 = var6; var7 < var10; ++var7) {
-            this.dn[var2][var7] = (short)(this.gT + v(var1[var2 + 21][var7 - var6][0]) % 60 * 3);
+            this.dn[var2][var7] = (short)(this.gT + abs(var1[var2 + 21][var7 - var6][0]) % 60 * 3);
             this.do_[var2][var7] = (short)(this.dn[var2][var7] + 2);
             short[] var64;
             int var72;
@@ -1862,18 +1862,18 @@ public final class c3d_b extends Canvas {
             short[] var65;
             int var73;
             int var80;
-            if (v(var55 = var1[41][var53][2] % 90) <= 3) {
+            if (abs(var55 = var1[41][var53][2] % 90) <= 3) {
                var65 = this.do_[var2];
                var73 = var8;
-               var80 = var65[var8] - v(var55);
+               var80 = var65[var8] - abs(var55);
             } else {
-               if (v(var55) > 6) {
+               if (abs(var55) > 6) {
                   continue;
                }
 
                var65 = this.dn[var2];
                var73 = var8;
-               var80 = var65[var8] + (v(var55) - 3);
+               var80 = var65[var8] + (abs(var55) - 3);
             }
 
             var65[var73] = (short)var80;
@@ -1933,7 +1933,7 @@ public final class c3d_b extends Canvas {
          if (this.selectedMap != 12) {
             var67 = this.cK;
             var74 = var35;
-            var82 = (byte)(v(this.I()) % 3);
+            var82 = (byte)(abs(this.I()) % 3);
          } else {
             var67 = this.cK;
             var74 = var35;
@@ -2258,11 +2258,11 @@ public final class c3d_b extends Canvas {
          if (this.selectedMap != 12 && this.selectedMap != 7 && this.selectedMap != 4 && this.selectedMap != 5) {
             var10000 = this.cN;
             var10001 = var3;
-            var10002 = (byte)(v(this.I()) % 8);
+            var10002 = (byte)(abs(this.I()) % 8);
          } else if (this.selectedMap != 7 && this.selectedMap != 4 && this.selectedMap != 5) {
             var10000 = this.cN;
             var10001 = var3;
-            var10002 = (byte)(v(this.I()) % 2 * 3 + v(this.I()) % 2 * 4);
+            var10002 = (byte)(abs(this.I()) % 2 * 3 + abs(this.I()) % 2 * 4);
          } else {
             var10000 = this.cN;
             var10001 = var3;
@@ -2324,7 +2324,7 @@ public final class c3d_b extends Canvas {
          if (this.selectedMap != 12) {
             var14 = this.cL;
             var18 = var4;
-            var22 = (byte)(v(this.I()) % 3);
+            var22 = (byte)(abs(this.I()) % 3);
          } else {
             var14 = this.cL;
             var18 = var4;
@@ -3533,10 +3533,10 @@ public final class c3d_b extends Canvas {
                var10001 = var18;
                var10002 = (long)this.u[var19][var17 + 1] * var5;
             } else {
-               this.dP[var17][var18] = (int)(((long)this.u[var19][var17] * var7 * this.u(var9) >> 16) - ((long)this.u[var19][var17 + 1] * var5 * this.t(var9) >> 16) + var1);
+               this.dP[var17][var18] = (int)(((long)this.u[var19][var17] * var7 * this.sin(var9) >> 16) - ((long)this.u[var19][var17 + 1] * var5 * this.cos(var9) >> 16) + var1);
                var10000 = this.dP[var17 + 1];
                var10001 = var18;
-               var10002 = ((long)this.u[var19][var17] * var7 * this.t(var9) >> 16) + ((long)this.u[var19][var17 + 1] * var5 * this.u(var9) >> 16);
+               var10002 = ((long)this.u[var19][var17] * var7 * this.cos(var9) >> 16) + ((long)this.u[var19][var17 + 1] * var5 * this.sin(var9) >> 16);
             }
 
             var10000[var10001] = (int)(var10002 + var3);
@@ -3575,10 +3575,10 @@ public final class c3d_b extends Canvas {
                var10001 = var19;
                var10002 = (long)this.u[var20][var18 + 1] * var5;
             } else {
-               this.dP[var18][var19] = (int)(((long)this.u[var20][var18] * var7 * this.u(var9) >> 16) - ((long)this.u[var20][var18 + 1] * var5 * this.t(var9) >> 16) + var1);
+               this.dP[var18][var19] = (int)(((long)this.u[var20][var18] * var7 * this.sin(var9) >> 16) - ((long)this.u[var20][var18 + 1] * var5 * this.cos(var9) >> 16) + var1);
                var10000 = this.dP[var18 + 1];
                var10001 = var19;
-               var10002 = ((long)this.u[var20][var18] * var7 * this.t(var9) >> 16) + ((long)this.u[var20][var18 + 1] * var5 * this.u(var9) >> 16);
+               var10002 = ((long)this.u[var20][var18] * var7 * this.cos(var9) >> 16) + ((long)this.u[var20][var18 + 1] * var5 * this.sin(var9) >> 16);
             }
 
             var10000[var10001] = (int)(var10002 + var3);
@@ -3705,7 +3705,7 @@ public final class c3d_b extends Canvas {
             var10005 = 10;
          }
 
-         var27[var30] = var33 * (var10003 / var10004.u(var10005));
+         var27[var30] = var33 * (var10003 / var10004.sin(var10005));
       }
 
       label80: {
@@ -3717,7 +3717,7 @@ public final class c3d_b extends Canvas {
          label130: {
             byte var38;
             if (this.dN[var15] > 0 && var17 <= 2) {
-               this.dS[0][var15] = (this.dQ[var15] * this.u(this.dO[var15] - 10) >> 16) + this.dT[0][var15];
+               this.dS[0][var15] = (this.dQ[var15] * this.sin(this.dO[var15] - 10) >> 16) + this.dT[0][var15];
                var28 = this.dS[1];
                var31 = var15;
                var34 = this.dQ[var15];
@@ -3726,7 +3726,7 @@ public final class c3d_b extends Canvas {
                var38 = 10;
             } else {
                if (this.dN[var15] < 0 && var17 <= 2) {
-                  this.dS[0][var15] = (-this.dQ[var15] * this.u(this.dO[var15] + 10) >> 16) + this.dT[0][var15];
+                  this.dS[0][var15] = (-this.dQ[var15] * this.sin(this.dO[var15] + 10) >> 16) + this.dT[0][var15];
                   var28 = this.dS[1];
                   var31 = var15;
                   var34 = -this.dQ[var15];
@@ -3736,7 +3736,7 @@ public final class c3d_b extends Canvas {
                }
 
                if (this.dN[var15] > 0 && var17 > 2) {
-                  this.dS[0][var15] = (-this.dQ[var15] * this.u(this.dO[var15] + 80) >> 16) + this.dT[0][var15];
+                  this.dS[0][var15] = (-this.dQ[var15] * this.sin(this.dO[var15] + 80) >> 16) + this.dT[0][var15];
                   var28 = this.dS[1];
                   var31 = var15;
                   var34 = -this.dQ[var15];
@@ -3749,7 +3749,7 @@ public final class c3d_b extends Canvas {
                   break label80;
                }
 
-               this.dS[0][var15] = (-this.dQ[var15] * this.u(this.dO[var15] - 80) >> 16) + this.dT[0][var15];
+               this.dS[0][var15] = (-this.dQ[var15] * this.sin(this.dO[var15] - 80) >> 16) + this.dT[0][var15];
                var28 = this.dS[1];
                var31 = var15;
                var34 = -this.dQ[var15];
@@ -3761,7 +3761,7 @@ public final class c3d_b extends Canvas {
             var37 -= var38;
          }
 
-         var28[var31] = (var34 * var35.t(var37) >> 16) + this.dT[1][var15];
+         var28[var31] = (var34 * var35.cos(var37) >> 16) + this.dT[1][var15];
       }
 
       this.dW[var10] = var11;
@@ -3784,11 +3784,11 @@ public final class c3d_b extends Canvas {
 
       int var13;
       for(var13 = var8; var13 < var8 + var5; ++var13) {
-         this.dP[0][var13] = (int)((var6 * this.t(var14) >> 16) + var1);
-         this.dP[1][var13] = (int)((var6 * this.u(var14) >> 16) + var3);
+         this.dP[0][var13] = (int)((var6 * this.cos(var14) >> 16) + var1);
+         this.dP[1][var13] = (int)((var6 * this.sin(var14) >> 16) + var3);
          var14 -= var15;
-         this.dP[2][var13] = (int)((var6 * this.t(var14) >> 16) + var1);
-         this.dP[3][var13] = (int)((var6 * this.u(var14) >> 16) + var3);
+         this.dP[2][var13] = (int)((var6 * this.cos(var14) >> 16) + var1);
+         this.dP[3][var13] = (int)((var6 * this.sin(var14) >> 16) + var3);
          this.bR[var13] = var10;
          this.dW[var13] = (byte)var9;
          this.bS[var13] = var11;
@@ -3906,12 +3906,12 @@ public final class c3d_b extends Canvas {
       this.bx = new long[3];
       this.by = new long[3];
       this.bz = new long[3];
-      this.bx[0] = -this.t(this.gJ + 135);
-      this.by[0] = this.u(this.gJ + 135);
-      this.bx[1] = this.t(this.gJ + 45);
-      this.by[1] = -this.u(this.gJ + 45);
-      this.bx[2] = -this.t(this.gJ + 180);
-      this.by[2] = this.u(this.gJ + 180);
+      this.bx[0] = -this.cos(this.gJ + 135);
+      this.by[0] = this.sin(this.gJ + 135);
+      this.bx[1] = this.cos(this.gJ + 45);
+      this.by[1] = -this.sin(this.gJ + 45);
+      this.bx[2] = -this.cos(this.gJ + 180);
+      this.by[2] = this.sin(this.gJ + 180);
 
       for(int var1 = 0; var1 < 3; ++var1) {
          this.bz[var1] = -(this.bx[var1] * this.gv >> 16) - (this.by[var1] * this.gw >> 16);
@@ -3923,8 +3923,8 @@ public final class c3d_b extends Canvas {
    }
 
    private void c(int var1) {
-      long var2 = this.t(this.gJ + 90);
-      long var4 = -this.u(this.gJ + 90);
+      long var2 = this.cos(this.gJ + 90);
+      long var4 = -this.sin(this.gJ + 90);
       long var6 = (var2 * this.gv >> 16) + (var4 * this.gw >> 16);
       long var8 = (long)(this.dP[1][var1] - this.dP[3][var1]);
       long var10 = (long)(this.dP[2][var1] - this.dP[0][var1]);
@@ -3951,8 +3951,8 @@ public final class c3d_b extends Canvas {
    }
 
    private void e() {
-      this.S = -this.t(this.gJ);
-      this.T = this.u(this.gJ);
+      this.S = -this.cos(this.gJ);
+      this.T = this.sin(this.gJ);
       this.U = this.T;
       this.V = -this.S;
    }
@@ -4073,7 +4073,7 @@ public final class c3d_b extends Canvas {
       int var20;
       if (var5 != -90 && var5 != 0) {
          var10000 = this;
-         var20 = (int)(a(((long)(this.dP[1][var1] - this.dP[3][var1]) << 16) / this.u(var5)) * 75000L >> 16 >> 16);
+         var20 = (int)(abs(((long)(this.dP[1][var1] - this.dP[3][var1]) << 16) / this.sin(var5)) * 75000L >> 16 >> 16);
       } else {
          int[][] var10002;
          byte var10003;
@@ -4089,7 +4089,7 @@ public final class c3d_b extends Canvas {
             var10003 = 3;
          }
 
-         var20 = v(var20 - var10002[var10003][var1]) >> 16;
+         var20 = abs(var20 - var10002[var10003][var1]) >> 16;
       }
 
       var10000.bf = var20;
@@ -4487,8 +4487,8 @@ public final class c3d_b extends Canvas {
             } else {
                if (this.ar == -1) {
                   this.c(this.av);
-                  this.fo = (int)(a(this.ca - this.gv) >> 16);
-                  this.fp = (int)(a(this.cb - this.gw) >> 16);
+                  this.fo = (int)(abs(this.ca - this.gv) >> 16);
+                  this.fp = (int)(abs(this.cb - this.gw) >> 16);
                   if (this.fo <= this.fP && this.fp <= this.fP) {
                      var55 = true;
                   }
@@ -5791,7 +5791,7 @@ public final class c3d_b extends Canvas {
       if (var1 < this.gH && (this.cO[var1] < 8 || (this.selectedMap == 2 || this.selectedMap == 3) && this.cO[var1] >= 30 && this.cO[var1] <= 37 || this.selectedMap == 11 && this.cO[var1] >= 47 && this.cO[var1] <= 48 || this.selectedMap == 12 && this.cO[var1] >= 30 && this.cO[var1] <= 32) && !this.cU[var1] && this.cV[var1]) {
          label156: {
             int var3;
-            var3 = (var3 = (this.gJ < 0 ? 360 - v(this.gJ) % 360 : this.gJ % 360) - this.cC[var1]) < 0 ? 360 - v(var3) % 360 : var3 % 360;
+            var3 = (var3 = (this.gJ < 0 ? 360 - abs(this.gJ) % 360 : this.gJ % 360) - this.cC[var1]) < 0 ? 360 - abs(var3) % 360 : var3 % 360;
             c3d_b var10000;
             byte var10001;
             byte var10002;
@@ -6056,8 +6056,8 @@ public final class c3d_b extends Canvas {
             var10000.cj = var10001;
             if (this.cj > var10) {
                if (this.fH == 3 && this.ch < 64 && var33) {
-                  int var39 = (int)(a((long)this.cx[this.ch][0] - this.bW) >> 16);
-                  int var40 = (int)(a((long)this.cx[this.ch][1] - this.bX) >> 16);
+                  int var39 = (int)(abs((long)this.cx[this.ch][0] - this.bW) >> 16);
+                  int var40 = (int)(abs((long)this.cx[this.ch][1] - this.bX) >> 16);
                   if (var39 <= 1 && var40 <= 1) {
                      this.cA[this.cn] = this.ch;
                      ++this.cn;
@@ -6078,7 +6078,7 @@ public final class c3d_b extends Canvas {
                            break label306;
                         }
 
-                        if (var4 <= (long)v(this.bH[0][this.cj])) {
+                        if (var4 <= (long)abs(this.bH[0][this.cj])) {
                            if (this.bH[0][this.cj] > 0) {
                               var10000 = this;
                               var10001 = 1;
@@ -6091,7 +6091,7 @@ public final class c3d_b extends Canvas {
 
                         var10000 = this;
                      } else {
-                        if (var4 <= (long)v(this.bH[0][this.cj])) {
+                        if (var4 <= (long)abs(this.bH[0][this.cj])) {
                            ++var23;
                            break label306;
                         }
@@ -6113,8 +6113,8 @@ public final class c3d_b extends Canvas {
                   this.aG = this.aF + var21 - 1;
                   this.aD = this.aF << 16;
                   if (!this.cU[this.ch] && this.ch < 64) {
-                     this.fo = (int)(a((long)this.cx[this.ch][0] - this.gv) >> 16);
-                     this.fp = (int)(a((long)this.cx[this.ch][1] - this.gw) >> 16);
+                     this.fo = (int)(abs((long)this.cx[this.ch][0] - this.gv) >> 16);
+                     this.fp = (int)(abs((long)this.cx[this.ch][1] - this.gw) >> 16);
                      if (this.fo <= this.fP && this.fp <= this.fP && (this.fH != 3 || this.ch < 42)) {
                         var27 = true;
                      }
@@ -7207,8 +7207,8 @@ public final class c3d_b extends Canvas {
    private void a(long var1, long var3, int var5) {
       long[] var6 = new long[2];
       int var7 = this.gJ + var5;
-      var6[0] = this.hF[0] - (var1 * this.t(var7) >> 16);
-      var6[1] = this.hF[1] + (var1 * this.u(var7) >> 16);
+      var6[0] = this.hF[0] - (var1 * this.cos(var7) >> 16);
+      var6[1] = this.hF[1] + (var1 * this.sin(var7) >> 16);
       if (this.ji) {
          this.hF[0] = var6[0];
          this.hF[1] = var6[1];
@@ -7216,8 +7216,8 @@ public final class c3d_b extends Canvas {
          this.fs = false;
          if (!this.a(var6, var1 >> 1, var7, false, -1)) {
             if (this.fs) {
-               var6[0] = this.hF[0] - ((var1 >> 1) * this.t(var7) >> 16);
-               var6[1] = this.hF[1] + ((var1 >> 1) * this.u(var7) >> 16);
+               var6[0] = this.hF[0] - ((var1 >> 1) * this.cos(var7) >> 16);
+               var6[1] = this.hF[1] + ((var1 >> 1) * this.sin(var7) >> 16);
             }
 
             this.eY = -1;
@@ -7417,7 +7417,7 @@ public final class c3d_b extends Canvas {
       byte var10001;
       long var10002;
       if (this.eA[var1] != 0) {
-         var6[0] -= (long)var5 * var2 * this.t(this.eA[var1]) >> 16;
+         var6[0] -= (long)var5 * var2 * this.cos(this.eA[var1]) >> 16;
          var10000 = var6;
          var10001 = 1;
          var10002 = (-var11 - (var7 * var6[0] >> 16) << 16) / var9;
@@ -7447,7 +7447,7 @@ public final class c3d_b extends Canvas {
    }
 
    private boolean e(int var1, int var2) {
-      return this.u(var2 - this.eA[var1]) >= 0L;
+      return this.sin(var2 - this.eA[var1]) >= 0L;
    }
 
    private boolean a(long[] var1, long var2, int var4, boolean var5, int var6) {
@@ -7458,7 +7458,7 @@ public final class c3d_b extends Canvas {
       for(int var14 = 0; var14 < var12; ++var14) {
          short var11 = this.cR[this.hh][var14];
          int var13 = this.selectedMap == 11 && var11 == 19 ? 2 : 0;
-         if (a(var7 - ((long)this.cx[var11][0] * 75000L >> 16)) < 30000L << var13 && a(var9 - ((long)this.cx[var11][1] * 75000L >> 16)) < 30000L << var13 && this.cE[this.cO[var11]] == 1 && var11 != var6) {
+         if (abs(var7 - ((long)this.cx[var11][0] * 75000L >> 16)) < 30000L << var13 && abs(var9 - ((long)this.cx[var11][1] * 75000L >> 16)) < 30000L << var13 && this.cE[this.cO[var11]] == 1 && var11 != var6) {
             if ((this.selectedMap == 3 && (this.cO[var11] == 49 || this.cO[var11] == 50) || this.selectedMap == 6 && (this.cO[var11] == 38 || this.cO[var11] == 39) || this.selectedMap == 7 && this.cO[var11] >= 35 && this.cO[var11] <= 36 || this.selectedMap == 9 && this.cO[var11] >= 38 && this.cO[var11] <= 39 || this.selectedMap == 11 && this.cO[var11] >= 39 && this.cO[var11] <= 40) && !var5) {
                return this.b(var11, var2, var4);
             }
@@ -7471,7 +7471,7 @@ public final class c3d_b extends Canvas {
                   }
 
                   this.fX = true;
-                  int var37 = v(this.I() % 3);
+                  int var37 = abs(this.I() % 3);
                   int[] var49 = this.gx;
                   var49[3] += 1 + var37;
                } else {
@@ -7479,7 +7479,7 @@ public final class c3d_b extends Canvas {
                      return false;
                   }
 
-                  int var38 = v(this.I() % 3);
+                  int var38 = abs(this.I() % 3);
                   int[] var50 = this.gx;
                   var50[3] += 1 + var38;
                   this.ht = true;
@@ -7617,7 +7617,7 @@ public final class c3d_b extends Canvas {
                      return false;
                   }
 
-                  int var20 = v(this.I() % 11);
+                  int var20 = abs(this.I() % 11);
                   int[] var10000 = this.gx;
                   byte var10001 = this.cL[var11];
                   var10000[var10001] += 10 + var20;
@@ -7636,7 +7636,7 @@ public final class c3d_b extends Canvas {
                      return false;
                   }
 
-                  int var21 = v(this.I() % 11);
+                  int var21 = abs(this.I() % 11);
                   if (this.gz < 100) {
                      this.gz += 10 + var21;
                      this.hu = true;
@@ -7655,7 +7655,7 @@ public final class c3d_b extends Canvas {
                   }
 
                   if (this.gx[this.cL[var11]] < 777 && this.gz >= 100) {
-                     int var35 = v(this.I() % 11);
+                     int var35 = abs(this.I() % 11);
                      int[] var48 = this.gx;
                      byte var58 = this.cL[var11];
                      var48[var58] += 10 + var35;
@@ -7671,7 +7671,7 @@ public final class c3d_b extends Canvas {
                   }
 
                   if (this.gx[this.cL[var11]] == 777 && this.gz < 100) {
-                     int var34 = v(this.I() % 11);
+                     int var34 = abs(this.I() % 11);
                      if (this.gz < 100) {
                         this.gz += 10 + var34;
                         this.hu = true;
@@ -7686,7 +7686,7 @@ public final class c3d_b extends Canvas {
                      return false;
                   }
 
-                  int var22 = v(this.I() % 11);
+                  int var22 = abs(this.I() % 11);
                   int[] var40 = this.gx;
                   byte var51 = this.cL[var11];
                   var40[var51] += 10 + var22;
@@ -7697,7 +7697,7 @@ public final class c3d_b extends Canvas {
                   this.ht = true;
                   this.hn = (byte)(this.cN[var11] - 5);
                   this.go = this.gl;
-                  int var16 = v(this.I() % 11);
+                  int var16 = abs(this.I() % 11);
                   if (this.gz < 100) {
                      this.gz += 10 + var16;
                      this.hu = true;
@@ -7718,7 +7718,7 @@ public final class c3d_b extends Canvas {
                      return false;
                   }
 
-                  int var33 = v(this.I() % 11);
+                  int var33 = abs(this.I() % 11);
                   int[] var47 = this.gx;
                   int var57 = this.cN[var11] - 1;
                   var47[var57] += 10 + var33;
@@ -7734,7 +7734,7 @@ public final class c3d_b extends Canvas {
                      return false;
                   }
 
-                  int var29 = v(this.I() % 11);
+                  int var29 = abs(this.I() % 11);
                   if (this.gz < 100) {
                      this.gz += 10 + var29;
                      this.hu = true;
@@ -7750,7 +7750,7 @@ public final class c3d_b extends Canvas {
                   }
 
                   if (this.gx[this.cN[var11] - 5] < 777 && this.gz >= 100) {
-                     int var32 = v(this.I() % 11);
+                     int var32 = abs(this.I() % 11);
                      int[] var46 = this.gx;
                      int var56 = this.cN[var11] - 5;
                      var46[var56] += 10 + var32;
@@ -7766,7 +7766,7 @@ public final class c3d_b extends Canvas {
                   }
 
                   if (this.gx[this.cN[var11] - 5] == 777 && this.gz < 100) {
-                     int var31 = v(this.I() % 11);
+                     int var31 = abs(this.I() % 11);
                      if (this.gz < 100) {
                         this.gz += 10 + var31;
                         this.hu = true;
@@ -7782,7 +7782,7 @@ public final class c3d_b extends Canvas {
                      return false;
                   }
 
-                  int var30 = v(this.I() % 11);
+                  int var30 = abs(this.I() % 11);
                   int[] var44 = this.gx;
                   int var55 = this.cN[var11] - 5;
                   var44[var55] += 10 + var30;
@@ -7793,7 +7793,7 @@ public final class c3d_b extends Canvas {
                   this.ht = true;
                   this.hn = (byte)(this.cN[var11] - 5);
                   this.go = this.gl;
-                  int var39 = v(this.I() % 11);
+                  int var39 = abs(this.I() % 11);
                   if (this.gz < 100) {
                      this.gz += 10 + var39;
                      this.hu = true;
@@ -7826,7 +7826,7 @@ public final class c3d_b extends Canvas {
                   return false;
                }
 
-               int var23 = v(this.I() % 21);
+               int var23 = abs(this.I() % 21);
                int[] var41 = this.gx;
                byte var52 = this.cK[var11];
                var41[var52] += 25 + var23;
@@ -7838,7 +7838,7 @@ public final class c3d_b extends Canvas {
                   return false;
                }
 
-               int var24 = v(this.I() % 21);
+               int var24 = abs(this.I() % 21);
                if (this.gz < 100) {
                   this.gz += 25 + var24;
                   this.hu = true;
@@ -7858,7 +7858,7 @@ public final class c3d_b extends Canvas {
 
                if (this.gx[this.cK[var11]] == 777 && this.gz != this.gF) {
                   this.cJ[var11] = (byte)(this.dm + 3);
-                  int var27 = v(this.I() % 21);
+                  int var27 = abs(this.I() % 21);
                   this.cO[var11] = this.cJ[var11];
                   if (this.gz < 100) {
                      this.gz += 25 + var27;
@@ -7883,7 +7883,7 @@ public final class c3d_b extends Canvas {
                if (this.gx[this.cK[var11]] != 777 && (this.gz == this.gF && this.selectedMap != 7 && this.selectedMap != 4 || this.gz == 200)) {
                   this.cJ[var11] = (byte)(this.dm + 4);
                   this.cO[var11] = this.cJ[var11];
-                  int var26 = v(this.I() % 21);
+                  int var26 = abs(this.I() % 21);
                   int[] var43 = this.gx;
                   byte var54 = this.cK[var11];
                   var43[var54] += 25 + var26;
@@ -7902,7 +7902,7 @@ public final class c3d_b extends Canvas {
                this.hn = this.cK[var11];
                this.go = this.gl;
                this.gp = this.gl;
-               int var25 = v(this.I() % 21);
+               int var25 = abs(this.I() % 21);
                int[] var42 = this.gx;
                byte var53 = this.cK[var11];
                var42[var53] += 25 + var25;
@@ -7917,7 +7917,7 @@ public final class c3d_b extends Canvas {
                   this.gF = 200;
                }
             } else if (this.cJ[var11] == this.dm + 6) {
-               int var28 = v(this.I() % 2);
+               int var28 = abs(this.I() % 2);
                if (this.fH != 3) {
                   this.gA += 2 + var28;
                } else {
@@ -7961,8 +7961,8 @@ public final class c3d_b extends Canvas {
       long[] var5;
       (var5 = new long[2])[0] = (long)this.cx[var1][0] * 75000L >> 16;
       var5[1] = (long)this.cx[var1][1] * 75000L >> 16;
-      var5[0] -= var2 * this.t(var4) >> 16;
-      var5[1] += var2 * this.u(var4) >> 16;
+      var5[0] -= var2 * this.cos(var4) >> 16;
+      var5[1] += var2 * this.sin(var4) >> 16;
       if (!this.a(var5)) {
          return true;
       } else if (!this.a(var5, var2, var4, true, var1)) {
@@ -7975,7 +7975,7 @@ public final class c3d_b extends Canvas {
       }
    }
 
-   private void s(int var1) {
+   private void initMapArrays(int var1) {
       this.dP = new int[4][var1];
       this.bR = new byte[var1];
    }
@@ -8342,7 +8342,7 @@ public final class c3d_b extends Canvas {
                         var10001 = var2;
                         var10002 = var5[var2] + 1;
                      } else if (this.eN[var2] < var3 + this.eF[var2]) {
-                        if (a(this.hF[0] - ((long)this.eC[var2][0] * 75000L >> 16)) >= 75000L || a(this.hF[1] - ((long)this.eC[var2][1] * 75000L >> 16)) >= 75000L) {
+                        if (abs(this.hF[0] - ((long)this.eC[var2][0] * 75000L >> 16)) >= 75000L || abs(this.hF[1] - ((long)this.eC[var2][1] * 75000L >> 16)) >= 75000L) {
                            if ((this.selectedMap == 1 || this.selectedMap == 2) && var2 == 0) {
                               this.im = true;
                            }
@@ -8381,15 +8381,15 @@ public final class c3d_b extends Canvas {
       if (this.eF[var2] == 1) {
          var3 = this.eJ;
          var3[var2] += var1 * this.eR;
-         this.eL[var2] = (int)((long)this.eL[var2] - (long)(var1 * v(this.eR)) * 96L);
+         this.eL[var2] = (int)((long)this.eL[var2] - (long)(var1 * abs(this.eR)) * 96L);
          var3 = this.eM;
          var10001 = var2;
-         var10002 = (int)((long)this.eM[var2] + (long)(var1 * v(this.eR)) * 96L);
+         var10002 = (int)((long)this.eM[var2] + (long)(var1 * abs(this.eR)) * 96L);
       } else {
          int[] var4 = this.eJ;
          var4[var2] += var1 * this.eK[var2];
-         this.eL[var2] = (int)((long)this.eL[var2] - (long)(var1 * v(this.eK[var2])) * 96L);
-         this.eM[var2] = (int)((long)this.eM[var2] + (long)(var1 * v(this.eK[var2])) * 96L);
+         this.eL[var2] = (int)((long)this.eL[var2] - (long)(var1 * abs(this.eK[var2])) * 96L);
+         this.eM[var2] = (int)((long)this.eM[var2] + (long)(var1 * abs(this.eK[var2])) * 96L);
          var3 = this.eN;
          var10001 = var2;
          var10002 = var3[var2] + 1;
@@ -8408,7 +8408,7 @@ public final class c3d_b extends Canvas {
          if (!this.dV[var1]) {
             long var7 = -(this.gv - this.dR[0][var1]);
             long var9 = -(this.gw - this.dR[1][var1]);
-            if (a(var7) < var4 && a(var9) < var4) {
+            if (abs(var7) < var4 && abs(var9) < var4) {
                int[] var10000;
                int var10001;
                int var10002;
@@ -8441,7 +8441,7 @@ public final class c3d_b extends Canvas {
 
       for(int var2 = 0; var2 < this.gR; ++var2) {
          long var3 = (this.selectedMap != 1 || var2 != 8 && var2 != 10 && var2 != 11 && var2 != 5) && (this.selectedMap != 2 || var2 != 13 && var2 != 14 && var2 != 15) ? 75000L : 37500L;
-         if (a(this.hF[0] - ((long)this.eC[var2][0] * 75000L >> 16)) < var3 && a(this.hF[1] - ((long)this.eC[var2][1] * 75000L >> 16)) < var3) {
+         if (abs(this.hF[0] - ((long)this.eC[var2][0] * 75000L >> 16)) < var3 && abs(this.hF[1] - ((long)this.eC[var2][1] * 75000L >> 16)) < var3) {
             if (var2 == this.gK) {
                ++this.selectedMap;
                if (this.selectedMap == 12) {
@@ -8636,7 +8636,7 @@ public final class c3d_b extends Canvas {
       this.eO = var1;
    }
 
-   private void s() {
+   private void initCosTable() {
       this.fa = new int[91];
       this.fa[1] = 1146;
       int var1 = 1146;
@@ -8649,9 +8649,9 @@ public final class c3d_b extends Canvas {
       this.a = null;
    }
 
-   private long t(int var1) {
+   private long cos(int var1) {
       if (var1 < 0) {
-         return -this.t(-var1);
+         return -this.cos(-var1);
       } else if (var1 >= 90 & var1 < 180) {
          return (long)this.fa[180 - var1];
       } else if (var1 >= 180 & var1 < 270) {
@@ -8659,28 +8659,28 @@ public final class c3d_b extends Canvas {
       } else if (var1 >= 270 & var1 < 360) {
          return (long)(-this.fa[90 - (var1 - 270)]);
       } else {
-         return var1 >= 360 ? this.t(var1 % 360) : (long)this.fa[var1];
+         return var1 >= 360 ? this.cos(var1 % 360) : (long)this.fa[var1];
       }
    }
 
-   private long u(int var1) {
-      return this.t(90 - var1);
+   private long sin(int var1) {
+      return this.cos(90 - var1);
    }
 
-   private static int v(int var0) {
+   private static int abs(int var0) {
       return var0 > 0 ? var0 : -var0;
    }
 
-   private static long a(long var0) {
+   private static long abs(long var0) {
       return var0 > 0L ? var0 : -var0;
    }
 
    private void a(int var1, int var2, int var3, int var4, int var5, int var6) {
-      this.eT = (long)var1 * (17000L * this.t(this.eA[var6]) >> 16) + ((long)this.dP[1][var6] * 75000L >> 16);
-      this.eU = (long)var2 * (17000L * this.u(90 - this.eA[var6]) >> 16) + ((long)this.dP[0][var6] * 75000L >> 16);
-      this.eW = (long)var3 * (17000L * this.u(90 + this.eA[var6]) >> 16) + ((long)this.dP[2][var6] * 75000L >> 16);
-      this.eV = (long)var4 * (17000L * this.t(90 - this.eA[var6]) >> 16) + ((long)this.dP[1][var6] * 75000L >> 16);
-      this.eX = (long)var5 * (17000L * this.t(90 + this.eA[var6]) >> 16) + ((long)this.dP[3][var6] * 75000L >> 16);
+      this.eT = (long)var1 * (17000L * this.cos(this.eA[var6]) >> 16) + ((long)this.dP[1][var6] * 75000L >> 16);
+      this.eU = (long)var2 * (17000L * this.sin(90 - this.eA[var6]) >> 16) + ((long)this.dP[0][var6] * 75000L >> 16);
+      this.eW = (long)var3 * (17000L * this.sin(90 + this.eA[var6]) >> 16) + ((long)this.dP[2][var6] * 75000L >> 16);
+      this.eV = (long)var4 * (17000L * this.cos(90 - this.eA[var6]) >> 16) + ((long)this.dP[1][var6] * 75000L >> 16);
+      this.eX = (long)var5 * (17000L * this.cos(90 + this.eA[var6]) >> 16) + ((long)this.dP[3][var6] * 75000L >> 16);
    }
 
    private void a(short var1, short var2, int var3) {
@@ -8717,7 +8717,7 @@ public final class c3d_b extends Canvas {
 
                      while(true) {
                         byte var15 = var17;
-                        if ((this.t(var15) << 16) / this.t(90 - var15) >= var6) {
+                        if ((this.cos(var15) << 16) / this.cos(90 - var15) >= var6) {
                            var16 = this.eA;
                            var10001 = var14;
                            var10002 = var15;
@@ -8755,7 +8755,7 @@ public final class c3d_b extends Canvas {
          byte var10004;
          byte var10005;
          if (this.dP[1][var14] <= this.dP[3][var14]) {
-            var8 = (17000L * this.u(this.eA[var14]) >> 16) + ((long)this.dP[0][var14] * 75000L >> 16);
+            var8 = (17000L * this.sin(this.eA[var14]) >> 16) + ((long)this.dP[0][var14] * 75000L >> 16);
             if (this.eA[var14] != -90) {
                var19 = this;
                var21 = 1;
@@ -8779,7 +8779,7 @@ public final class c3d_b extends Canvas {
                var10005 = 1;
             }
          } else {
-            var8 = -(17000L * this.u(this.eA[var14]) >> 16) + ((long)this.dP[0][var14] * 75000L >> 16);
+            var8 = -(17000L * this.sin(this.eA[var14]) >> 16) + ((long)this.dP[0][var14] * 75000L >> 16);
             var19 = this;
             var21 = -1;
             var23 = -1;
@@ -8989,8 +8989,8 @@ public final class c3d_b extends Canvas {
 
    private void h(int var1, int var2) {
       this.fq = false;
-      this.fo = (int)(a((long)this.cx[var1][0] - this.gv) >> 16);
-      this.fp = (int)(a((long)this.cx[var1][1] - this.gw) >> 16);
+      this.fo = (int)(abs((long)this.cx[var1][0] - this.gv) >> 16);
+      this.fp = (int)(abs((long)this.cx[var1][1] - this.gw) >> 16);
       if (this.fo <= var2 && this.fp <= var2) {
          this.fh = (long)this.cx[var1][0] * 75000L >> 16;
          this.fi = (long)this.cx[var1][1] * 75000L >> 16;
@@ -9069,11 +9069,11 @@ public final class c3d_b extends Canvas {
    private boolean z(int var1) {
       long var2 = (long)this.cx[var1][0] * 75000L >> 16;
       long var4 = (long)this.cx[var1][1] * 75000L >> 16;
-      long var6 = a(var2 - this.fh) + a(var4 - this.fi);
-      long var8 = a(var2 - this.hF[0]) + a(var4 - this.hF[1]);
+      long var6 = abs(var2 - this.fh) + abs(var4 - this.fi);
+      long var8 = abs(var2 - this.hF[0]) + abs(var4 - this.hF[1]);
       long var10 = var6 + var8;
-      long var12 = a(this.fh - this.hF[0]) + a(this.fi - this.hF[1]);
-      return a(var10 - var12) >= 17000L;
+      long var12 = abs(this.fh - this.hF[0]) + abs(this.fi - this.hF[1]);
+      return abs(var10 - var12) >= 17000L;
    }
 
    private boolean A(int var1) {
@@ -9322,9 +9322,9 @@ public final class c3d_b extends Canvas {
                         if (this.cI[var4] == 1) {
                            if (this.cH[var4] < this.cF[var4]) {
                               int[] var13 = this.cx[var4];
-                              var13[0] = (int)((long)var13[0] - ((7498L << this.y) * this.t(this.cC[var4]) >> 16));
+                              var13[0] = (int)((long)var13[0] - ((7498L << this.y) * this.cos(this.cC[var4]) >> 16));
                               var13 = this.cx[var4];
-                              var13[1] = (int)((long)var13[1] + ((7498L << this.y) * this.u(this.cC[var4]) >> 16));
+                              var13[1] = (int)((long)var13[1] + ((7498L << this.y) * this.sin(this.cC[var4]) >> 16));
                               ++this.cH[var4];
                            } else if (this.cH[var4] == this.cF[var4]) {
                               if (this.cG[var4] < 0) {
@@ -9363,9 +9363,9 @@ public final class c3d_b extends Canvas {
                            }
                         } else if (this.cH[var4] < this.cF[var4]) {
                            int[] var17 = this.cx[var4];
-                           var17[0] = (int)((long)var17[0] + ((7498L << this.y) * this.t(this.cC[var4]) >> 16));
+                           var17[0] = (int)((long)var17[0] + ((7498L << this.y) * this.cos(this.cC[var4]) >> 16));
                            var17 = this.cx[var4];
-                           var17[1] = (int)((long)var17[1] - ((7498L << this.y) * this.u(this.cC[var4]) >> 16));
+                           var17[1] = (int)((long)var17[1] - ((7498L << this.y) * this.sin(this.cC[var4]) >> 16));
                            ++this.cH[var4];
                         } else if (this.cH[var4] == this.cF[var4]) {
                            if (this.cG[var4] < 0) {
@@ -9625,7 +9625,7 @@ public final class c3d_b extends Canvas {
                   c3d_b var10000;
                   short var10001;
                   if (this.fH == 1) {
-                     this.gs = 217 + v(this.I()) % 15;
+                     this.gs = 217 + abs(this.I()) % 15;
                      var10000 = this;
                      var10001 = 200;
                   } else {
@@ -9641,13 +9641,13 @@ public final class c3d_b extends Canvas {
                         var10001 = 0;
                      }
 
-                     var10000.gs = var10001 + v(this.I()) % 17;
+                     var10000.gs = var10001 + abs(this.I()) % 17;
                      var10000 = this;
                      var10001 = 205;
                   }
 
-                  var10000.gt = var10001 - v(this.I()) % 7;
-                  this.gu = v(this.I()) % 3 + 6;
+                  var10000.gt = var10001 - abs(this.I()) % 7;
+                  this.gu = abs(this.I()) % 3 + 6;
                }
 
                if (var1 == 0) {
@@ -9816,9 +9816,9 @@ public final class c3d_b extends Canvas {
          int[] var10000;
          int var10001;
          int var10002;
-         if (v(this.I()) % 300 == 0) {
+         if (abs(this.I()) % 300 == 0) {
             int var1;
-            var1 = (var1 = v(this.I()) % 80 + 75) << 16 | var1 << 8 | var1;
+            var1 = (var1 = abs(this.I()) % 80 + 75) << 16 | var1 << 8 | var1;
             this.gg[var2] = -var1;
             this.gg[var2 + 240] = -var1;
             this.gg[var2 + 240 + 240] = -var1;
@@ -9846,7 +9846,7 @@ public final class c3d_b extends Canvas {
       int var1 = 0;
       var1 = -11776930;
       int var2;
-      int var3 = ((var2 = v(this.I()) % 240) & 7) + 26;
+      int var3 = ((var2 = abs(this.I()) % 240) & 7) + 26;
       int var4 = 0;
 
       for(int var5 = 0; var5 <= var3; ++var5) {
@@ -9859,7 +9859,7 @@ public final class c3d_b extends Canvas {
    private void a(Graphics var1, int var2, int var3) {
       var1.drawRGB(this.gg, 0, 240, 0, 54, 240, 212, true);
       int var4;
-      var4 = (var4 = v(this.I()) % 80 + 75) << 16 | var4 << 8 | var4;
+      var4 = (var4 = abs(this.I()) % 80 + 75) << 16 | var4 << 8 | var4;
       boolean var5 = true;
       if (this.hU[2]) {
          var5 = false;
@@ -10008,7 +10008,7 @@ public final class c3d_b extends Canvas {
       int var20 = 0;
       if (var3 < var2) {
          while(var20 < var2) {
-            int var9 = (var20 += v(this.I()) % 600 + var3) & 7;
+            int var9 = (var20 += abs(this.I()) % 600 + var3) & 7;
             int var8 = 0;
 
             for(int var26 = 0; var26 <= var9; ++var26) {
@@ -10033,8 +10033,8 @@ public final class c3d_b extends Canvas {
       }
 
       int var10;
-      for(int var10000 = (var2 << 1) - (var2 >> 3) - v(this.I()) % var2; var10000 < var2; var10000 = var10 + var2) {
-         int var8 = ((var10 = v(this.I()) % 240) & 7) + 26;
+      for(int var10000 = (var2 << 1) - (var2 >> 3) - abs(this.I()) % var2; var10000 < var2; var10000 = var10 + var2) {
+         int var8 = ((var10 = abs(this.I()) % 240) & 7) + 26;
          int var7 = 0;
 
          for(int var6 = 0; var6 <= var8 >> 2; ++var6) {
@@ -10127,7 +10127,7 @@ public final class c3d_b extends Canvas {
             var10001 = 0;
          } else {
             var10000 = this;
-            var10001 = v(this.I() % (var1 << 1));
+            var10001 = abs(this.I() % (var1 << 1));
          }
 
          var10000.cp = var10001;
@@ -10245,7 +10245,7 @@ public final class c3d_b extends Canvas {
                   if (this.cG[var13] < 0) {
                      var10000 = this.cM;
                      var10001 = var13;
-                     var10002 = (byte)(var10000[var13] - v(this.cG[var13]) * (this.fH + 1));
+                     var10002 = (byte)(var10000[var13] - abs(this.cG[var13]) * (this.fH + 1));
                   } else if (this.cG[var13] != 30 || this.selectedMap != 4 && this.selectedMap != 5) {
                      if (this.cG[var13] != 30 || this.selectedMap != 6 && this.selectedMap != 7 && this.selectedMap != 11) {
                         if (this.cG[var13] != 30 || this.selectedMap != 12) {
@@ -10292,11 +10292,11 @@ public final class c3d_b extends Canvas {
                      if (!this.fW) {
                         var10000 = this.cM;
                         var10001 = var13;
-                        var10002 = (byte)(var10000[var13] - v(this.cG[var13]) * (this.fH + 2));
+                        var10002 = (byte)(var10000[var13] - abs(this.cG[var13]) * (this.fH + 2));
                      } else {
                         var10000 = this.cM;
                         var10001 = var13;
-                        var10002 = (byte)(var10000[var13] - (v(this.cG[var13]) * (this.fH + 1) << 1));
+                        var10002 = (byte)(var10000[var13] - (abs(this.cG[var13]) * (this.fH + 1) << 1));
                      }
                   } else if (this.cG[var13] != 30 || this.selectedMap != 4 && this.selectedMap != 5) {
                      if (this.cG[var13] != 30 || this.selectedMap != 6 && this.selectedMap != 7 && this.selectedMap != 11) {
@@ -10655,7 +10655,7 @@ public final class c3d_b extends Canvas {
    private void E(int var1) {
       for(int var2 = 0; var2 < var1; ++var2) {
          short var3 = this.cR[this.hh][var2];
-         if (this.cW[var3] && (this.cO[var3] == this.hj || this.cs) && (this.bN[this.cO[var3]] != 2 || !this.n(var3) || a((long)this.cx[var3][0] - this.gv) >> 16 < 6L && a((long)this.cx[var3][1] - this.gw) >> 16 < 6L)) {
+         if (this.cW[var3] && (this.cO[var3] == this.hj || this.cs) && (this.bN[this.cO[var3]] != 2 || !this.n(var3) || abs((long)this.cx[var3][0] - this.gv) >> 16 < 6L && abs((long)this.cx[var3][1] - this.gw) >> 16 < 6L)) {
             this.o(var3);
          }
       }
@@ -10721,8 +10721,8 @@ public final class c3d_b extends Canvas {
                }
 
                for(int var10 = 0; var10 < 240; var10 += 2) {
-                  this.hL[var10] = (short)(-(v(this.I()) % 60));
-                  this.hO[var10] = (byte)v(this.I() % 2);
+                  this.hL[var10] = (short)(-(abs(this.I()) % 60));
+                  this.hO[var10] = (byte)abs(this.I() % 2);
                }
 
                this.hL[0] = 0;
@@ -10972,7 +10972,7 @@ public final class c3d_b extends Canvas {
 
    private void L() {
       boolean var1 = true;
-      if (v(this.I()) % 3 != 0) {
+      if (abs(this.I()) % 3 != 0) {
          var1 = false;
       }
 
@@ -11216,24 +11216,24 @@ public final class c3d_b extends Canvas {
                this.hV[var1 - 104] = 0;
             }
 
-            if (a(this.gv - (long)this.cx[var1][0]) < 30000L && a(this.gw - (long)this.cx[var1][1]) < 30000L) {
+            if (abs(this.gv - (long)this.cx[var1][0]) < 30000L && abs(this.gw - (long)this.cx[var1][1]) < 30000L) {
                this.fu = true;
                this.cx[var1][0] = (int)(this.gv + (10000L * this.S >> 16));
                this.cx[var1][1] = (int)(this.gw + (10000L * this.T >> 16));
             }
          }
 
-         if (v(this.cx[0][0] - this.cx[104][0]) < 20000 && v(this.cx[0][1] - this.cx[104][1]) < 20000) {
+         if (abs(this.cx[0][0] - this.cx[104][0]) < 20000 && abs(this.cx[0][1] - this.cx[104][1]) < 20000) {
             this.cU[0] = true;
             this.cM[0] = 0;
          }
 
-         if (v(this.cx[1][0] - this.cx[106][0]) < 20000 && v(this.cx[1][1] - this.cx[106][1]) < 20000) {
+         if (abs(this.cx[1][0] - this.cx[106][0]) < 20000 && abs(this.cx[1][1] - this.cx[106][1]) < 20000) {
             this.cU[1] = true;
             this.cM[1] = 0;
          }
 
-         if (v(this.cx[10][0] - this.cx[148][0]) < 5000 && v(this.cx[10][1] - this.cx[148][1]) < 5000) {
+         if (abs(this.cx[10][0] - this.cx[148][0]) < 5000 && abs(this.cx[10][1] - this.cx[148][1]) < 5000) {
             label243: {
                this.cF[10] = -1;
                byte[] var7;
@@ -11266,7 +11266,7 @@ public final class c3d_b extends Canvas {
             }
          }
 
-         if (v(this.cx[9][0] - this.cx[138][0]) < 5000 && v(this.cx[9][1] - this.cx[138][1]) < 5000) {
+         if (abs(this.cx[9][0] - this.cx[138][0]) < 5000 && abs(this.cx[9][1] - this.cx[138][1]) < 5000) {
             label245: {
                this.cF[9] = -1;
                byte[] var13;
@@ -11299,7 +11299,7 @@ public final class c3d_b extends Canvas {
             }
          }
 
-         if (v(this.cx[11][0] - this.cx[151][0]) < 5000 && v(this.cx[11][1] - this.cx[151][1]) < 5000) {
+         if (abs(this.cx[11][0] - this.cx[151][0]) < 5000 && abs(this.cx[11][1] - this.cx[151][1]) < 5000) {
             label193: {
                this.cF[11] = -1;
                byte[] var19;
@@ -11531,25 +11531,25 @@ public final class c3d_b extends Canvas {
       }
 
       if (this.selectedMap == 1) {
-         if (a(this.gv - (long)this.cx[99][0]) <= 131072L && this.ib == 1 && a(this.gw - (long)this.cx[99][1]) <= 131072L && this.ib == 1) {
+         if (abs(this.gv - (long)this.cx[99][0]) <= 131072L && this.ib == 1 && abs(this.gw - (long)this.cx[99][1]) <= 131072L && this.ib == 1) {
             this.cx[99][0] = 753664;
             this.cx[99][1] = 1245184;
             this.ib = 2;
          }
 
-         if (a(this.gv - (long)this.cx[99][0]) <= 131072L && this.ib == 2 && a(this.gw - (long)this.cx[99][1]) <= 131072L && this.ib == 2) {
+         if (abs(this.gv - (long)this.cx[99][0]) <= 131072L && this.ib == 2 && abs(this.gw - (long)this.cx[99][1]) <= 131072L && this.ib == 2) {
             this.cx[99][0] = 1835008;
             this.cx[99][1] = 1474560;
             this.ib = 3;
          }
 
-         if (a(this.gv - (long)this.cx[99][0]) <= 131072L && this.ib == 3 && a(this.gw - (long)this.cx[99][1]) <= 131072L && this.ib == 3) {
+         if (abs(this.gv - (long)this.cx[99][0]) <= 131072L && this.ib == 3 && abs(this.gw - (long)this.cx[99][1]) <= 131072L && this.ib == 3) {
             this.cx[99][0] = 1409024;
             this.cx[99][1] = 1277952;
             this.ib = 4;
          }
 
-         if (a(this.gv - (long)this.cx[99][0]) <= 131072L && this.ib == 4 && a(this.gw - (long)this.cx[99][1]) <= 131072L && this.ib == 4) {
+         if (abs(this.gv - (long)this.cx[99][0]) <= 131072L && this.ib == 4 && abs(this.gw - (long)this.cx[99][1]) <= 131072L && this.ib == 4) {
             this.cx[99][0] = 1146880;
             this.cx[99][1] = 2129920;
             this.ib = 1;
@@ -11557,13 +11557,13 @@ public final class c3d_b extends Canvas {
       }
 
       if (this.selectedMap == 2) {
-         if (a(this.gv - (long)this.cx[72][0]) <= 131072L && this.ib == 1 && a(this.gw - (long)this.cx[72][1]) <= 131072L && this.ib == 1) {
+         if (abs(this.gv - (long)this.cx[72][0]) <= 131072L && this.ib == 1 && abs(this.gw - (long)this.cx[72][1]) <= 131072L && this.ib == 1) {
             this.cx[72][0] = 720896;
             this.cx[72][1] = 1114112;
             this.ib = 2;
          }
 
-         if (a(this.gv - (long)this.cx[72][0]) <= 131072L && this.ib == 2 && a(this.gw - (long)this.cx[72][1]) <= 131072L && this.ib == 2) {
+         if (abs(this.gv - (long)this.cx[72][0]) <= 131072L && this.ib == 2 && abs(this.gw - (long)this.cx[72][1]) <= 131072L && this.ib == 2) {
             this.cx[72][0] = 884736;
             this.cx[72][1] = 2392064;
             this.ib = 1;
@@ -11966,7 +11966,7 @@ public final class c3d_b extends Canvas {
       this.iQ = 192 + this.I() % 16;
       this.iR = 208 + this.I() % 4;
       if (this.gl - this.iN > 1000L) {
-         this.iP = v(this.I() % 3);
+         this.iP = abs(this.I() % 3);
          this.iN = this.gl;
       } else {
          this.iP = 0;
@@ -13401,7 +13401,7 @@ public final class c3d_b extends Canvas {
    }
 
    static int i(c3d_b var0, int var1) {
-      return v(var1);
+      return abs(var1);
    }
 
    static boolean ak(c3d_b var0) {
