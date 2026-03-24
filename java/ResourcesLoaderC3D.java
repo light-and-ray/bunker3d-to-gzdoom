@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
 
 
 public class ResourcesLoaderC3D {
-   public String ROOT_JAR = "../jars/c3d.d";
+   public String ROOT_JAR = "../jars/c3d.d/";
    public ArrayList<Integer> DOORS_START_LINE_IDX = new ArrayList<>();
    public ArrayList<Integer> CRATES_START_LINE_IDX = new ArrayList<>();
    public ArrayList<Byte> CRATES_CONTENT = new ArrayList<>();
@@ -38,23 +38,24 @@ public class ResourcesLoaderC3D {
 
    public BufferedImage readImage(String filePath) {
       try (FileInputStream fileInputStream = new FileInputStream(new File(ROOT_JAR + filePath))) {
-          byte[] header = new byte[2];
-          fileInputStream.read(header);
+         byte[] header = new byte[2];
+         fileInputStream.read(header);
 
-          int lengthLowByte = header[0] & 255;
-          int lengthHighByte = header[1] & 255;
-          int imageDataLength = lengthLowByte | lengthHighByte << 8;
+         int lengthLowByte = header[0] & 255;
+         int lengthHighByte = header[1] & 255;
+         int imageDataLength = lengthLowByte | lengthHighByte << 8;
 
-          byte[] imageData = new byte[imageDataLength + 4];
-          fileInputStream.read(imageData, 4, imageDataLength);
-          imageData[0] = -119; // 0x89
-          imageData[1] = 80;   // 'P'
-          imageData[2] = 78;   // 'N'
-          imageData[3] = 71;   // 'G'
+         byte[] imageData = new byte[imageDataLength + 4];
+         fileInputStream.read(imageData, 4, imageDataLength);
+         imageData[0] = -119; // 0x89
+         imageData[1] = 80;   // 'P'
+         imageData[2] = 78;   // 'N'
+         imageData[3] = 71;   // 'G'
 
-          return ImageIO.read(new ByteArrayInputStream(imageData));
+         return ImageIO.read(new ByteArrayInputStream(imageData));
       } catch (IOException e) {
-          return null;
+         System.out.println(e.getMessage());
+         return null;
       }
    }
 
@@ -990,47 +991,47 @@ public class ResourcesLoaderC3D {
 
    }
 
-   public void modifyBigLumps01(byte[][][] var1, byte[][][] var2) {
+   public void modifyBigLumps01(byte[][][] bigLump0, byte[][][] bigLump1) {
       boolean var3 = false;
       int var11 = 0;
       int var12 = 0;
-      int var17 = var1[0].length + var2[7].length + var2[12].length * 4 + var2[20].length * 3 + var2[33].length * 4 + var2[41].length * 4;
-      int var7 = var2[51].length + 1;
+      int var17 = bigLump0[0].length + bigLump1[7].length + bigLump1[12].length * 4 + bigLump1[20].length * 3 + bigLump1[33].length * 4 + bigLump1[41].length * 4;
+      int var7 = bigLump1[51].length + 1;
       this.bB = new int[var7];
-      this.bB[0] = var17 - var2[33].length * 4;
+      this.bB[0] = var17 - bigLump1[33].length * 4;
 
       int var4;
       for(var4 = 1; var4 < var7; ++var4) {
-         this.bB[var4] = this.bB[var4 - 1] + var2[51][var4 - 1][2];
+         this.bB[var4] = this.bB[var4 - 1] + bigLump1[51][var4 - 1][2];
       }
 
-      var17 = this.bB[var4 - 1] + var2[33].length * 4;
+      var17 = this.bB[var4 - 1] + bigLump1[33].length * 4;
       this.initMapArrays(var17);
       this.bS = new byte[var17];
-      var7 = var2[31].length;
+      var7 = bigLump1[31].length;
 
       for(int var19 = 0; var19 < var7; ++var19) {
-         this.bS[var2[31][var19][0] + 128] = var2[31][var19][1];
+         this.bS[bigLump1[31][var19][0] + 128] = bigLump1[31][var19][1];
       }
 
-      var7 = var1[0].length;
-      int var8 = var2[7].length;
+      var7 = bigLump0[0].length;
+      int var8 = bigLump1[7].length;
 
       for(int var20 = 0; var20 < var7; ++var20) {
-         if (var11 < var8 && var12 == var2[7][var11][0] + 128) {
+         if (var11 < var8 && var12 == bigLump1[7][var11][0] + 128) {
             if (var11 != 0) {
-               this.dP[2][var12 - 1] = var2[7][var11 - 1][1];
-               this.dP[3][var12 - 1] = var2[7][var11 - 1][2];
+               this.dP[2][var12 - 1] = bigLump1[7][var11 - 1][1];
+               this.dP[3][var12 - 1] = bigLump1[7][var11 - 1][2];
             }
 
-            this.dP[0][var12] = var2[7][var11][1];
-            this.dP[1][var12] = var2[7][var11][2];
+            this.dP[0][var12] = bigLump1[7][var11][1];
+            this.dP[1][var12] = bigLump1[7][var11][2];
             ++var11;
             ++var12;
          }
 
-         long var13 = (long)(var1[0][var20][0] - 7);
-         long var15 = (long)(var1[0][var20][1] - 7);
+         long var13 = (long)(bigLump0[0][var20][0] - 7);
+         long var15 = (long)(bigLump0[0][var20][1] - 7);
          this.dP[0][var12] = (int)(var13 + (long)this.dP[0][var12 - 1]);
          this.dP[1][var12] = (int)(var15 + (long)this.dP[1][var12 - 1]);
          this.dP[2][var12 - 1] = this.dP[0][var12];
@@ -1038,8 +1039,8 @@ public class ResourcesLoaderC3D {
          ++var12;
       }
 
-      this.dP[2][var12 - 1] = var2[7][var11 - 1][1];
-      this.dP[3][var12 - 1] = var2[7][var11 - 1][2];
+      this.dP[2][var12 - 1] = bigLump1[7][var11 - 1][1];
+      this.dP[3][var12 - 1] = bigLump1[7][var11 - 1][2];
 
       for(int var18 = 0; var18 < var12; ++var18) {
          for(int var21 = 0; var21 < 4; ++var21) {
@@ -1052,20 +1053,20 @@ public class ResourcesLoaderC3D {
       var12 = 0;
       var11 = 0;
       this.dW = new byte[var17];
-      var7 = var1[1].length;
-      int var9 = var2[7].length;
-      int var10 = var2[10].length;
+      var7 = bigLump0[1].length;
+      int var9 = bigLump1[7].length;
+      int var10 = bigLump1[10].length;
 
       for(int var22 = 0; var22 < var7; ++var22) {
-         var8 = var1[1][var22].length;
+         var8 = bigLump0[1][var22].length;
 
          for(int var5 = 0; var5 < var8; ++var5) {
-            if (var11 < var9 && var12 == var2[7][var11][0] + 128) {
+            if (var11 < var9 && var12 == bigLump1[7][var11][0] + 128) {
                if (var11 != 0) {
-                  this.dW[var12 - 1] = var2[7][var11 - 1][4];
+                  this.dW[var12 - 1] = bigLump1[7][var11 - 1][4];
                }
 
-               this.dW[var12] = var2[7][var11][3];
+               this.dW[var12] = bigLump1[7][var11][3];
                ++var11;
                ++var12;
             }
@@ -1074,12 +1075,12 @@ public class ResourcesLoaderC3D {
             int var10001;
             byte[] var10002;
             int var10003;
-            if (var1[1][var22][var5] == 15) {
+            if (bigLump0[1][var22][var5] == 15) {
                for(int var6 = 0; var6 < var10; ++var6) {
-                  if (var2[10][var6][0] + 128 == var12) {
+                  if (bigLump1[10][var6][0] + 128 == var12) {
                      var48 = this.dW;
                      var10001 = var12;
-                     var10002 = var2[10][var6];
+                     var10002 = bigLump1[10][var6];
                      var10003 = 1;
                      break;
                   }
@@ -1088,7 +1089,7 @@ public class ResourcesLoaderC3D {
             } else {
                var48 = this.dW;
                var10001 = var12;
-               var10002 = var1[1][var22];
+               var10002 = bigLump0[1][var22];
                var10003 = var5;
             }
 
@@ -1097,22 +1098,22 @@ public class ResourcesLoaderC3D {
          }
       }
 
-      this.dW[var12 - 1 - var2[8][0][4]] = var2[7][var11 - 1][4];
-      var7 = var1[2].length;
-      var8 = var2[29].length;
+      this.dW[var12 - 1 - bigLump1[8][0][4]] = bigLump1[7][var11 - 1][4];
+      var7 = bigLump0[2].length;
+      var8 = bigLump1[29].length;
 
       for(int var23 = 0; var23 < var7; ++var23) {
          for(int var28 = 0; var28 < 5; ++var28) {
-            if (var1[2][var23][var28] != 15) {
-               if (var1[2][var23][var28] == 7) {
-                  var1[2][var23][var28] = -7;
-               } else if (var1[2][var23][var28] != 0) {
-                  var1[2][var23][var28] = (byte)(var1[2][var23][var28] - 7);
+            if (bigLump0[2][var23][var28] != 15) {
+               if (bigLump0[2][var23][var28] == 7) {
+                  bigLump0[2][var23][var28] = -7;
+               } else if (bigLump0[2][var23][var28] != 0) {
+                  bigLump0[2][var23][var28] = (byte)(bigLump0[2][var23][var28] - 7);
                }
             } else {
                for(int var33 = 0; var33 < var8; ++var33) {
-                  if (var2[29][var33][0] == var23 && var2[29][var33][1] == var28) {
-                     var1[2][var23][var28] = var2[29][var33][2];
+                  if (bigLump1[29][var33][0] == var23 && bigLump1[29][var33][1] == var28) {
+                     bigLump0[2][var23][var28] = bigLump1[29][var33][2];
                      break;
                   }
                }
@@ -1122,15 +1123,15 @@ public class ResourcesLoaderC3D {
 
       if (this.selectedMap != 8 && this.selectedMap != 9 && this.selectedMap != 10 && this.selectedMap != 11 && this.selectedMap != 12 && this.selectedMap != 13) {
          for(int var25 = 0; var25 < var7; ++var25) {
-            var8 = var1[2][var25].length;
+            var8 = bigLump0[2][var25].length;
 
             for(int var30 = 6; var30 < var8; ++var30) {
-               var1[2][var25][var30] = (byte)(var1[2][var25][var30] * 3);
+               bigLump0[2][var25][var30] = (byte)(bigLump0[2][var25][var30] * 3);
             }
          }
       } else {
          for(int var24 = 0; var24 < var7; ++var24) {
-            var8 = var1[2][var24].length;
+            var8 = bigLump0[2][var24].length;
 
             for(int var29 = 6; var29 < var8; ++var29) {
                byte[] var49;
@@ -1138,12 +1139,12 @@ public class ResourcesLoaderC3D {
                byte var51;
                byte var52;
                if ((var24 != 23 || this.selectedMap != 9) && (var24 != 9 || this.selectedMap != 12)) {
-                  var49 = var1[2][var24];
+                  var49 = bigLump0[2][var24];
                   var50 = var29;
                   var51 = var49[var29];
                   var52 = 6;
                } else {
-                  var49 = var1[2][var24];
+                  var49 = bigLump0[2][var24];
                   var50 = var29;
                   var51 = var49[var29];
                   var52 = 3;
@@ -1154,21 +1155,21 @@ public class ResourcesLoaderC3D {
          }
       }
 
-      var7 = var1[3].length;
+      var7 = bigLump0[3].length;
 
       for(int var26 = 0; var26 < var7; ++var26) {
          for(int var31 = 1; var31 <= 2; ++var31) {
-            var1[3][var26][var31] = (byte)(var1[3][var26][var31] * 3);
+            bigLump0[3][var26][var31] = (byte)(bigLump0[3][var26][var31] * 3);
          }
       }
 
-      var7 = var1[4].length;
+      var7 = bigLump0[4].length;
 
       for(int var27 = 0; var27 < var7; ++var27) {
-         var8 = var1[4][var27].length;
+         var8 = bigLump0[4][var27].length;
 
          for(int var32 = 0; var32 < var8; ++var32) {
-            var1[4][var27][var32] = (byte)(var1[4][var27][var32] * 3);
+            bigLump0[4][var27][var32] = (byte)(bigLump0[4][var27][var32] * 3);
          }
       }
 
@@ -1297,7 +1298,7 @@ public class ResourcesLoaderC3D {
       }
 
       ResourcesLoaderC3D var66;
-      byte var74;
+      int var74;
       long var81;
       long var10003;
       if (this.selectedMap != 3 && this.selectedMap != 8 && this.selectedMap != 12) {
@@ -1340,11 +1341,11 @@ public class ResourcesLoaderC3D {
          byte var82;
          if (this.selectedMap != 12) {
             var67 = this.cK;
-            var74 = (byte)var35; // added (byte)
+            var74 = var35;
             var82 = (byte)(abs(this.randomInt()) % 3);
          } else {
             var67 = this.cK;
-            var74 = (byte)var35; // added (byte)
+            var74 = var35;
             var82 = 2;
          }
 
@@ -1380,7 +1381,7 @@ public class ResourcesLoaderC3D {
          this.eB[var27][0] = 128 + bigLump1[20][var27][0] << 16 >> 2;
          this.eB[var27][1] = 128 + bigLump1[20][var27][1] << 16 >> 2;
          byte[] var69;
-         byte var83;
+         int var83;
          if (bigLump1[20][var27][2] * bigLump1[20][var27][3] >= 0) {
             this.eD[var27] = 0;
             var69 = this.eE;
@@ -1403,12 +1404,12 @@ public class ResourcesLoaderC3D {
          int[] var70;
          if (this.eI[var27] > 0) {
             var70 = this.eJ;
-            var74 = (byte)var27; // unsure
-            var83 = (byte)65536;
+            var74 = var27; // unsure
+            var83 = 65536;
          } else {
             var70 = this.eJ;
-            var74 = (byte)var27;
-            var83 = (byte)-65536;
+            var74 = var27;
+            var83 = -65536;
          }
 
          var70[var74] = var83;
@@ -1604,8 +1605,8 @@ public class ResourcesLoaderC3D {
       }
    }
 
-   public void loadSpritesPart1(byte[][][] var1) {
-      int var6 = var1[4].length;
+   public void loadSpritesPart1(byte[][][] bigLump2) {
+      int var6 = bigLump2[4].length;
       this.cF = new byte[var6];
       this.cC = new short[var6];
       this.cG = new byte[64];
@@ -1625,7 +1626,7 @@ public class ResourcesLoaderC3D {
          byte[] var10000;
          int var10001;
          byte var10002;
-         if (var1[4][var3][2] == -1) {
+         if (bigLump2[4][var3][2] == -1) {
             var10000 = this.cO;
             var10001 = var3;
             var10002 = 10;
@@ -1636,21 +1637,21 @@ public class ResourcesLoaderC3D {
          }
 
          var10000[var10001] = var10002;
-         this.cx[var3][0] = 128 + var1[4][var3][0] << 16 >> 2;
-         this.cx[var3][1] = 128 + var1[4][var3][1] << 16 >> 2;
+         this.cx[var3][0] = 128 + bigLump2[4][var3][0] << 16 >> 2;
+         this.cx[var3][1] = 128 + bigLump2[4][var3][1] << 16 >> 2;
          if (this.selectedMap != 12 && this.selectedMap != 11) {
             var10000 = this.cF;
             var10001 = var3;
-            var10002 = var1[4][var3][2];
+            var10002 = bigLump2[4][var3][2];
          } else {
             var10000 = this.cF;
             var10001 = var3;
-            var10002 = (byte)(var1[4][var3][2] >> 1);
+            var10002 = (byte)(bigLump2[4][var3][2] >> 1);
          }
 
          var10000[var10001] = var10002;
-         this.cC[var3] = (short)(var1[4][var3][3] * 2);
-         this.cG[var3] = var1[4][var3][4];
+         this.cC[var3] = (short)(bigLump2[4][var3][3] * 2);
+         this.cG[var3] = bigLump2[4][var3][4];
          this.cV[var3] = true;
          if (this.cG[var3] > 0) {
             this.cO[var3] = this.cG[var3];
@@ -1660,13 +1661,13 @@ public class ResourcesLoaderC3D {
          }
 
          this.ge[var3] = -1;
-         this.cD[var3] = (short)(var1[4][var3][5] + 128);
+         this.cD[var3] = (short)(bigLump2[4][var3][5] + 128);
          this.cS[var3] = true;
          this.cI[var3] = 1;
          this.cH[var3] = 1;
          this.cU[var3] = false;
          this.cW[var3] = true;
-         this.cP[var3] = var1[4][var3][6];
+         this.cP[var3] = bigLump2[4][var3][6];
          if (this.selectedMap != 12 && this.selectedMap != 7 && this.selectedMap != 4 && this.selectedMap != 5) {
             var10000 = this.cN;
             var10001 = var3;
@@ -1696,28 +1697,28 @@ public class ResourcesLoaderC3D {
          var10000[var10001] = var10002;
       }
 
-      this.gH = var1[4].length;
-      this.hj = var1[8][0][0];
-      this.hk = var1[8][0][1];
-      this.hl = var1[8][0][2];
-      this.hp = var1[8][0][3];
-      this.hm = var1[8][0][4];
-      this.gI = var1[7].length;
+      this.gH = bigLump2[4].length;
+      this.hj = bigLump2[8][0][0];
+      this.hk = bigLump2[8][0][1];
+      this.hl = bigLump2[8][0][2];
+      this.hp = bigLump2[8][0][3];
+      this.hm = bigLump2[8][0][4];
+      this.gI = bigLump2[7].length;
       int var4 = 42;
-      int var5 = var1[7].length;
+      int var5 = bigLump2[7].length;
 
       for(int var7 = 0; var7 < var5; ++var7) {
          this.cO[var4] = this.hj;
-         this.cx[var4][0] = 128 + var1[7][var7][0] << 16 >> 2;
-         this.cx[var4][1] = 128 + var1[7][var7][1] << 16 >> 2;
-         this.cG[var4] = var1[7][var7][2];
+         this.cx[var4][0] = 128 + bigLump2[7][var7][0] << 16 >> 2;
+         this.cx[var4][1] = 128 + bigLump2[7][var7][1] << 16 >> 2;
+         this.cG[var4] = bigLump2[7][var7][2];
          this.cW[var4] = true;
-         this.cP[var4] = var1[7][var7][3];
+         this.cP[var4] = bigLump2[7][var7][3];
          ++var4;
       }
 
       var4 = 64;
-      var5 = var1[9].length;
+      var5 = bigLump2[9].length;
       this.cy = new int[var5][4];
       this.cr = var5;
       this.iJ = new long[var5];
@@ -1727,9 +1728,9 @@ public class ResourcesLoaderC3D {
       }
 
       for(int var8 = 0; var8 < var5; ++var8) {
-         this.cO[var4] = var1[9][var8][0];
-         this.cx[var4][0] = 128 + var1[9][var8][1] << 16 >> 2;
-         this.cx[var4][1] = 128 + var1[9][var8][2] << 16 >> 2;
+         this.cO[var4] = bigLump2[9][var8][0];
+         this.cx[var4][0] = 128 + bigLump2[9][var8][1] << 16 >> 2;
+         this.cx[var4][1] = 128 + bigLump2[9][var8][2] << 16 >> 2;
          byte[] var14;
          int var18;
          byte var22;
@@ -1746,8 +1747,8 @@ public class ResourcesLoaderC3D {
          var14[var18] = var22;
          this.cy[var8][0] = var4;
          this.cy[var8][1] = 1;
-         this.cy[var8][2] = var1[9][var8][3];
-         this.cy[var8][3] = var1[9][var8][4] * 25;
+         this.cy[var8][2] = bigLump2[9][var8][3];
+         this.cy[var8][3] = bigLump2[9][var8][4] * 25;
          this.cW[var4] = true;
          ++var4;
       }
@@ -2184,7 +2185,7 @@ public class ResourcesLoaderC3D {
 
       BufferedImage var28 = var10000.readImage(var10001.append(var10002).append(this.dataExt).toString());
       int[] var9 = new int[2];
-      var27.getRGB(0, 2, 0, 0, var9, 2, 1);
+      var27.getRGB(0, 0, 2, 1, var9, 0, 2);
       this.Q = var9[0];
       this.R = var9[1];
       this.bJ = new short[7][];
@@ -2245,8 +2246,8 @@ public class ResourcesLoaderC3D {
          this.FOE_SPRITES_H.add(this.e[var31 + 3]);
          int[] var5 = new int[this.e[var31 + 2] * this.e[var31 + 3]];
          int[] var6 = new int[this.e[var31 + 2] * this.e[var31 + 3]];
-         var27.getRGB(0, this.e[var31 + 2], this.e[var31 + 0], this.e[var31 + 1], var5, this.e[var31 + 2], this.e[var31 + 3]);
-         var28.getRGB(0, this.e[var31 + 2], this.e[var31 + 0], this.e[var31 + 1], var6, this.e[var31 + 2], this.e[var31 + 3]);
+         var27.getRGB(this.e[var31 + 0], this.e[var31 + 1], this.e[var31 + 2], this.e[var31 + 3], var5, 0, this.e[var31 + 2]);
+         var28.getRGB(this.e[var31 + 0], this.e[var31 + 1], this.e[var31 + 2], this.e[var31 + 3], var6, 0, this.e[var31 + 2]);
          this.combineLayers(var5, var6, this.bI, var23, bigLump2[0][0], bigLump2[0][1]);
          this.FOE_SPRITES_DATA_COLOR_1.add(var5);
          this.FOE_SPRITES_DATA_COLOR_2.add(var6);
@@ -2313,10 +2314,10 @@ public class ResourcesLoaderC3D {
             int var14 = bigLump2[5][var4][0] * 7;
             int[] var8 = new int[this.f[var14 + 2] * this.f[var14 + 3]];
             int[] var9 = new int[this.f[var14 + 2] * this.f[var14 + 3]];
-            this.SPRITES_W[var4] = this.i[var14 + 2];
-            this.SPRITES_H[var4] = this.i[var14 + 3];
-            var10.getRGB(0, this.f[var14 + 2], this.f[var14 + 0], this.f[var14 + 1], var8, this.f[var14 + 2], this.f[var14 + 3]);
-            var11.getRGB(0, this.f[var14 + 2], this.f[var14 + 0], this.f[var14 + 1], var9, this.f[var14 + 2], this.f[var14 + 3]);
+            this.SPRITES_W[var4] = this.f[var14 + 2];
+            this.SPRITES_H[var4] = this.f[var14 + 3];
+            var10.getRGB(this.f[var14 + 0], this.f[var14 + 1], this.f[var14 + 2], this.f[var14 + 3], var8, 0, this.f[var14 + 2]);
+            var11.getRGB(this.f[var14 + 0], this.f[var14 + 1], this.f[var14 + 2], this.f[var14 + 3], var9, 0, this.f[var14 + 2]);
             int var12 = 1552 + var4 * 97;
             this.combineLayers(var8, var9, this.bI, (short)var12, bigLump2[6][var4], bigLump2[1][var4]);
             this.SPRITES_DATA_COLOR_1.add(var8);
@@ -2537,7 +2538,7 @@ public class ResourcesLoaderC3D {
             var10001 = this.F;
          }
 
-         var10000.getRGB(0, this.J, var1[4][var3][0], var1[4][var3][1], var10001, this.J, this.K);
+         var10000.getRGB(var1[4][var3][0], var1[4][var3][1], this.J, this.K, var10001, 0, this.J);
          ResourcesLoaderC3D var14;
          if (var4 != 0) {
             var14 = this;
@@ -2647,7 +2648,7 @@ public class ResourcesLoaderC3D {
                   this.N[var5] = var20;
                   int var27 = (this.k[6 * var26 + 1] + 128 + bigLump0[4][var5][0]) * 2;
                   int var28 = (this.k[6 * var26 + 2] + 128 + bigLump0[4][var5][1]) * 2;
-                  var39.getRGB(0, var22, var27, var28, this.M[var20], var22, var23);
+                  var39.getRGB(var27, var28, var22, var23, this.M[var20], 0, var22);
                   BufferedImage var10000;
                   int[] var10001;
                   byte var10002;
@@ -2712,7 +2713,7 @@ public class ResourcesLoaderC3D {
                      var10007 = 26;
                   }
 
-                  var10000.getRGB(var10002, var10003, var10004, var10005, var10001, var10006, var10007);
+                  var10000.getRGB(var10004, var10005, var10006, var10007, var10001, var10002, var10003);
                }
 
                this.loadTextures_subfunction1(this.M[var20], bigLump0, var5);
@@ -2842,6 +2843,9 @@ public class ResourcesLoaderC3D {
                   loadTextures_subfunction18(this.dv, this.dw, this.bE[var33], var12, var13, 12, var42 + 6, var15, this.H, false);
                   loadTextures_subfunction18(this.dx, this.dy, this.bE[var33], var12, var13, 12, var42 + 4, var15, this.H, false);
                   if (this.selectedMap != 8 && this.selectedMap != 9 && this.selectedMap != 10 && this.selectedMap != 11 && this.selectedMap != 12 && this.selectedMap != 13) {
+                     this.TEXTURES_W.add(var15);
+                     this.TEXTURES_H.add(var16);
+                     this.TEXTURES_DATA.add(this.H);
                      break label162;
                   }
 

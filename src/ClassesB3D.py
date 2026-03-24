@@ -123,6 +123,10 @@ class MapB3D:
             NPC_LAST_IDX = 32
             LAMP_LAST_IDX = 64
             DECORATION_LAST_IDX = 106
+        elif gameType == GameType.C3D:
+            NPC_LAST_IDX = 32
+            LAMP_LAST_IDX = 64
+            DECORATION_LAST_IDX = 106
 
         self.things: list[ThingB3D] = []
         # for i in range(len(thingsSprites)):
@@ -175,6 +179,9 @@ class MapB3D:
                     while len(line.texturesNames) < 10:
                         line.texturesNames.append(line.texturesNames[0])
                 textureName = line.texturesNames[needMirrorIdx]
+                if textureName.startswith("NONE"):
+                    print(f"*** warning, can't apply mirroring on {textureName}")
+                    continue
                 if textureName not in self.mirroredDict.keys():
                     mirroredName = generateTextureModifiedLumpName()
                     self.mirroredDict[textureName] = mirroredName

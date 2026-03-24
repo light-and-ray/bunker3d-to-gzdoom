@@ -97,9 +97,57 @@ NONE_TEXTURES_L3D = [ # Doors (inside) and 45 degree with middled texture inside
     },
 ]
 
+NONE_TEXTURES_C3D = [ # Doors (inside) and 45 degree with middled texture inside
+    {},
+    { # 1
+        16 : TextureOverrideData(nums=[1]),
+    },
+    { # 2
+        # 22 : TextureOverrideData(nums=[13]),
+    },
+    { # 3
+        # 17 : TextureOverrideData(nums=[6]),
+    },
+    { # 4
+        # 20 : TextureOverrideData(nums=[10]),
+    },
+    { #5
+        # 15 : TextureOverrideData(nums=[6]),
+    },
+    { # 6
+        # 22 : TextureOverrideData(nums=[10]),
+        # 23 : TextureOverrideData(nums=[0]),
+    },
+    { # 7
+        # 23 : TextureOverrideData(nums=[8]),
+        # 24 : TextureOverrideData(nums=[8]),
+    },
+    { # 8
+        # 20 : TextureOverrideData(nums=[3]),
+        # 21 : TextureOverrideData(nums=[3]),
+    },
+    { # 9
+        # 20 : TextureOverrideData(nums=[7]),
+        # 21 : TextureOverrideData(nums=[7]),
+    },
+    { #10
+        # 21 : TextureOverrideData(nums=[6]),
+    },
+    { #11
+        # 21 : TextureOverrideData(nums=[6]),
+    },
+    { #12
+        # 21 : TextureOverrideData(nums=[6]),
+    },
+    { #13
+        # 21 : TextureOverrideData(nums=[6]),
+    },
+]
+
 NONE_TEXTURES = dict()
 NONE_TEXTURES[GameType.B3D] = NONE_TEXTURES_B3D
 NONE_TEXTURES[GameType.L3D] = NONE_TEXTURES_L3D
+NONE_TEXTURES[GameType.C3D] = NONE_TEXTURES_C3D
 
 INTERMEDIAL_TEXTURES_OVERRIDES: dict[tuple[GameType, int], dict[int, TextureOverrideData]] = {}
 INTERMEDIAL_TEXTURES_OVERRIDES[(GameType.L3D, 4)] = \
@@ -154,9 +202,27 @@ CRATE_TOP_TEXTURES_L3D = [
     ["CRATE_03"], #10
 ]
 
+CRATE_TOP_TEXTURES_C3D = [
+    [],
+    ["CRATE_07"], #1
+    ["CRATE_07"], #2
+    ["CRATE_07"], #3
+    ["CRATE_07"], #4
+    ["CRATE_07"], #5
+    ["CRATE_07"], #6
+    ["CRATE_07"], #7
+    ["CRATE_07"], #8
+    ["CRATE_07"], #9
+    ["CRATE_07"], #10
+    ["CRATE_07"], #11
+    ["CRATE_07"], #12
+    ["CRATE_07"], #13
+]
+
 CRATE_TOP_TEXTURES = dict()
 CRATE_TOP_TEXTURES[GameType.B3D] = CRATE_TOP_TEXTURES_B3D
 CRATE_TOP_TEXTURES[GameType.L3D] = CRATE_TOP_TEXTURES_L3D
+CRATE_TOP_TEXTURES[GameType.C3D] = CRATE_TOP_TEXTURES_C3D
 
 BARREL_TOP_TEXTURES: dict[tuple[GameType, int], str] = {}
 BARREL_TOP_TEXTURES[(GameType.L3D, 1)] = "BARR_TOP"

@@ -203,11 +203,11 @@ class MapIntermedial:
                 isSecondColor = (crate.content & 0b100) != 0
                 topTextureIndex = int(isSecondColor)
                 isAltAmmo = False
-            elif gameType == GameType.L3D:
+            else:
                 isSecondColor = False
                 topTextureIndex = 0
                 isAltAmmo = (crate.content & 0b100) != 0
-                if self.mapIndex in (7, 8) and isHealth and not isAmmo: # super health
+                if gameType == GameType.L3D and self.mapIndex in (7, 8) and isHealth and not isAmmo: # super health
                     topTextureIndex = 1
             if isAmmo and isHealth:
                 content = CrateContent.BOTH
@@ -219,12 +219,23 @@ class MapIntermedial:
                 content = CrateContent.ALT_AMMO
             else:
                 content = CrateContent.NONE
+            if crate.textureName.startswith("NONE_"):
+                crate.textureName = self._fixOneNoneTextureName(crate.textureName)
             v1 = mapB3D.lines[crate.startLineIdx].v1
             v2 = mapB3D.lines[crate.startLineIdx+1].v2
             angle = segmentAngle(*self.lineToTuple(mapB3D.lines[crate.startLineIdx]))
             pos = Vertex(x=(v1.x+v2.x)/2, y=(v1.y+v2.y)/2)
             self.crates.append(CrateIntermedial(pos=pos, colorIdx=int(isSecondColor), topTextureIndex=topTextureIndex,
                     content=content, spriteIdx=3, textureName=crate.textureName, angle=int(angle)))
+
+
+    def _fixOneNoneTextureName(self, noneTextureName: str) -> str:
+        noneTextureNum = int(noneTextureName.removeprefix("NONE_"))
+        if noneTextureNum in NONE_TEXTURES[self.gameType][self.mapIndex]:
+            override = NONE_TEXTURES[self.gameType][self.mapIndex][noneTextureNum]
+            return list(self.textures.keys())[override.nums[0]]
+        else:
+            print(f"warning: no fixing data for one texture. None texture num = {noneTextureNum}")
 
 
     def _fixNoneTextures(self):

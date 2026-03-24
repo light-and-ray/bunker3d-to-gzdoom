@@ -154,6 +154,99 @@ map C2M10 lookup "C2M10"
 }
 
 
+
+map C3M1 lookup "C3M1"
+{
+    levelnum = 1
+    next = "C3M2"
+    // music = "$MUSIC_E1M1"
+}
+
+map C3M2 lookup "C3M2"
+{
+    levelnum = 2
+    next = "C3M3"
+    // music = "$MUSIC_E1M1"
+}
+
+map C3M3 lookup "C3M3"
+{
+    levelnum = 3
+    next = "C3M4"
+    // music = "$MUSIC_E1M1"
+}
+
+map C3M4 lookup "C3M4"
+{
+    levelnum = 4
+    next = "C3M5"
+    // music = "$MUSIC_E1M1"
+}
+
+map C3M5 lookup "C3M5"
+{
+    levelnum = 5
+    next = "C3M6"
+    // music = "$MUSIC_E1M1"
+}
+
+map C3M6 lookup "C3M6"
+{
+    levelnum = 6
+    next = "C3M7"
+    // music = "$MUSIC_E1M1"
+}
+
+map C3M7 lookup "C3M7"
+{
+    levelnum = 7
+    next = "C3M8"
+    // music = "$MUSIC_E1M1"
+}
+
+map C3M8 lookup "C3M8"
+{
+    levelnum = 8
+    next = "C3M9"
+    // music = "$MUSIC_E1M1"
+}
+
+map C3M9 lookup "C3M9"
+{
+    levelnum = 9
+    next = "C3M10"
+    // music = "$MUSIC_E1M1"
+}
+
+map C3M10 lookup "C3M10"
+{
+    levelnum = 10
+    next = "C3M11"
+    // music = "$MUSIC_E1M1"
+}
+
+map C3M11 lookup "C3M11"
+{
+    levelnum = 11
+    next = "C3M12"
+    // music = "$MUSIC_E1M1"
+}
+
+map C3M12 lookup "C3M12"
+{
+    levelnum = 12
+    next = "C3M13"
+    // music = "$MUSIC_E1M1"
+}
+
+map C3M13 lookup "C3M13"
+{
+    levelnum = 13
+    /* next = "C3M13" */
+    // music = "$MUSIC_E1M1"
+}
+
+
 clearepisodes
 
 episode C1M1
@@ -164,6 +257,11 @@ episode C1M1
 episode C2M1
 {
    name = "Laboratory 3D"
+}
+
+episode C3M1
+{
+   name = "Castle 3D"
 }
 
 
