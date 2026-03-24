@@ -34,7 +34,7 @@ public final class c3d_b extends Canvas {
    private byte[] o;
    private int[][] loadedMap;
    private byte[] q = new byte[]{5, 100, 10, 8};
-   private String r = ".b3d";
+   private String dataExt = ".b3d";
    private String[] mapFiles = new String[]{"/temple", "/catacomb", "/ground", "/chemical", "/chdepot", "/vine", "/cell", "/hall", "/rooms", "/library", "/vip", "/roof"};
    private String[] spriteFiles = new String[]{"/p", "/r", "/d", "/pp", "/rr", "dd"};
    private byte[][] u = new byte[][]{{1, 1, -1, 1}, {-1, 1, -1, -1}, {-1, -1, 1, -1}, {1, -1, 1, 1}};
@@ -855,7 +855,7 @@ public final class c3d_b extends Canvas {
 
             if (this.fT && !this.ji) {
                this.gi = new int[9][];
-               Image var16 = this.b("/w" + this.r);
+               Image var16 = this.readImage("/w" + this.dataExt);
                this.gd[0] = this.g[this.fH * 8 + 2];
                this.gh[0] = this.g[this.fH * 8 + 3];
                this.gi[0] = new int[this.gd[0] * this.gh[0]];
@@ -1292,7 +1292,7 @@ public final class c3d_b extends Canvas {
 
    private void readMetadata() {
       int var2 = 0;
-      byte[] var4 = this.readBinary("/a" + this.r);
+      byte[] var4 = this.readBinary("/a" + this.dataExt);
       short[] var5 = new short[12];
 
       for(int var1 = 0; var1 < 12; ++var1) {
@@ -1415,7 +1415,7 @@ public final class c3d_b extends Canvas {
       }
 
       byte[] var6;
-      short var7 = readShort((byte[])(var6 = var10000.readBinary(var10001.append(var10002).append(this.r).toString())), (int)0);
+      short var7 = readShort((byte[])(var6 = var10000.readBinary(var10001.append(var10002).append(this.dataExt).toString())), (int)0);
       short var8 = readShort((byte[])var6, (int)2);
       short var9 = readShort((byte[])var6, (int)4);
       this.loadedMap = new int[6][];
@@ -1933,7 +1933,7 @@ public final class c3d_b extends Canvas {
          if (this.selectedMap != 12) {
             var67 = this.cK;
             var74 = (byte)var35; // added (byte)
-            var82 = (byte)(abs(this.I()) % 3);
+            var82 = (byte)(abs(this.randomInt()) % 3);
          } else {
             var67 = this.cK;
             var74 = (byte)var35; // added (byte)
@@ -2261,11 +2261,11 @@ public final class c3d_b extends Canvas {
          if (this.selectedMap != 12 && this.selectedMap != 7 && this.selectedMap != 4 && this.selectedMap != 5) {
             var10000 = this.cN;
             var10001 = var3;
-            var10002 = (byte)(abs(this.I()) % 8);
+            var10002 = (byte)(abs(this.randomInt()) % 8);
          } else if (this.selectedMap != 7 && this.selectedMap != 4 && this.selectedMap != 5) {
             var10000 = this.cN;
             var10001 = var3;
-            var10002 = (byte)(abs(this.I()) % 2 * 3 + abs(this.I()) % 2 * 4);
+            var10002 = (byte)(abs(this.randomInt()) % 2 * 3 + abs(this.randomInt()) % 2 * 4);
          } else {
             var10000 = this.cN;
             var10001 = var3;
@@ -2327,7 +2327,7 @@ public final class c3d_b extends Canvas {
          if (this.selectedMap != 12) {
             var14 = this.cL;
             var18 = var4;
-            var22 = (byte)(abs(this.I()) % 3);
+            var22 = (byte)(abs(this.randomInt()) % 3);
          } else {
             var14 = this.cL;
             var18 = var4;
@@ -2345,7 +2345,7 @@ public final class c3d_b extends Canvas {
 
    }
 
-   private void a(short[] var1, int var2, int var3) {
+   private void loadSprites_subfunction1(short[] var1, int var2, int var3) {
       this.bO[var2] = var1[var3 + 2];
       this.bP[var2] = var1[var3 + 3];
       int var4 = this.bP[var2] / var1[var3 + 5];
@@ -2394,10 +2394,10 @@ public final class c3d_b extends Canvas {
       a(this.ey, this.ez, this.bJ[this.bM[var1]][var1], this.bO[var1], var2, 4, var3, false);
    }
 
-   private void loadSpritesPart2(byte[][][] var1) {
+   private void loadSpritesPart2(byte[][][] bigLump2) {
       Object var7 = null;
       Object var8 = null;
-      Image var27 = this.b("/e" + this.r);
+      Image var27 = this.readImage("/e" + this.dataExt);
       c3d_b var10000;
       StringBuffer var10001;
       String var10002;
@@ -2417,7 +2417,7 @@ public final class c3d_b extends Canvas {
          var10002 = "/ee";
       }
 
-      Image var28 = var10000.b(var10001.append(var10002).append(this.r).toString());
+      Image var28 = var10000.readImage(var10001.append(var10002).append(this.dataExt).toString());
       int[] var9 = new int[2];
       var27.getRGB(var9, 0, 2, 0, 0, 2, 1);
       this.Q = var9[0];
@@ -2425,11 +2425,11 @@ public final class c3d_b extends Canvas {
       this.bJ = new short[7][];
       this.L = new int[this.bJ.length];
       int var2 = this.bJ.length;
-      int var3 = (16 + var1[5].length + 2) * 2;
+      int var3 = (16 + bigLump2[5].length + 2) * 2;
 
       for(int var10 = 0; var10 < var2; ++var10) {
          this.bJ[var10] = new short[var3];
-         this.L[var10] = 16 + var1[5].length + 2;
+         this.L[var10] = 16 + bigLump2[5].length + 2;
          int var4 = this.bJ[var10].length;
 
          for(int var11 = 0; var11 < var4; ++var11) {
@@ -2437,7 +2437,7 @@ public final class c3d_b extends Canvas {
          }
       }
 
-      int var14 = 16 + var1[5].length;
+      int var14 = 16 + bigLump2[5].length;
       this.cE = new short[var14];
       this.bM = new short[var14];
       this.bN = new short[var14];
@@ -2448,17 +2448,17 @@ public final class c3d_b extends Canvas {
       var2 = this.e.length;
 
       for(int var29 = 0; var29 < var2; var29 += 7) {
-         this.a(this.e, var13, var29);
+         this.loadSprites_subfunction1(this.e, var13, var29);
          this.cE[var13] = this.e[var29 + 6];
          ++var13;
       }
 
       var13 = 16;
-      var2 = var1[5].length;
+      var2 = bigLump2[5].length;
 
       for(int var12 = 0; var12 < var2; ++var12) {
-         int var30 = (var1[5][var12][0] < 0 ? -var1[5][var12][0] : var1[5][var12][0]) * 7;
-         this.a(this.f, var13, var30);
+         int var30 = (bigLump2[5][var12][0] < 0 ? -bigLump2[5][var12][0] : bigLump2[5][var12][0]) * 7;
+         this.loadSprites_subfunction1(this.f, var13, var30);
          this.cE[var13] = this.f[var30 + 6];
          ++var13;
       }
@@ -2470,19 +2470,21 @@ public final class c3d_b extends Canvas {
       int var20 = this.bJ[4][this.L[4]] + 10;
       int var21 = this.bJ[5][this.L[5]] + 10;
       int var22 = this.bJ[6][this.L[6]] + 10;
-      this.a(var16, var17, var1[1].length, var18, var19, var21, var20, var22);
+      this.loadSprites_subfunction2(var16, var17, bigLump2[1].length, var18, var19, var21, var20, var22);
       var13 = 0;
       short var23 = 0;
       var2 = this.e.length;
 
       for(int var31 = 0; var31 < var2; var31 += 7) {
+         // foe
          int[] var5 = new int[this.e[var31 + 2] * this.e[var31 + 3]];
          int[] var6 = new int[this.e[var31 + 2] * this.e[var31 + 3]];
          var27.getRGB(var5, 0, this.e[var31 + 2], this.e[var31 + 0], this.e[var31 + 1], this.e[var31 + 2], this.e[var31 + 3]);
          var28.getRGB(var6, 0, this.e[var31 + 2], this.e[var31 + 0], this.e[var31 + 1], this.e[var31 + 2], this.e[var31 + 3]);
-         this.a(var5, var6, this.bI, var23, var1[0][0], var1[0][1]);
+         this.combineLayers(var5, var6, this.bI, var23, bigLump2[0][0], bigLump2[0][1]);
          var23 = (short)(var23 + 97);
          int var15 = this.bP[var13] / this.bN[var13];
+         // b and a are not used 9n the extractor
          if (this.bM[var13] == 0) {
             this.b(var13, var15, var5);
          } else if (this.bM[var13] == 1) {
@@ -2521,8 +2523,8 @@ public final class c3d_b extends Canvas {
       int var7 = var1[5].length;
 
       for(int var5 = 0; var5 <= 2; ++var5) {
-         Image var10 = this.b(this.spriteFiles[var5] + this.r);
-         Image var11 = this.b(this.spriteFiles[var5 + 3] + this.r);
+         Image var10 = this.readImage(this.spriteFiles[var5] + this.dataExt);
+         Image var11 = this.readImage(this.spriteFiles[var5 + 3] + this.dataExt);
 
          for(int var4 = 0; var4 < var7; ++var4) {
             if (var5 == 0) {
@@ -2545,7 +2547,7 @@ public final class c3d_b extends Canvas {
             var10.getRGB(var8, 0, this.f[var14 + 2], this.f[var14 + 0], this.f[var14 + 1], this.f[var14 + 2], this.f[var14 + 3]);
             var11.getRGB(var9, 0, this.f[var14 + 2], this.f[var14 + 0], this.f[var14 + 1], this.f[var14 + 2], this.f[var14 + 3]);
             int var12 = 1552 + var4 * 97;
-            this.a(var8, var9, this.bI, (short)var12, var1[6][var4], var1[1][var4]);
+            this.combineLayers(var8, var9, this.bI, (short)var12, var1[6][var4], var1[1][var4]);
             var2 = 16 + var4;
             int var6 = this.bP[var2] / this.bN[var2];
             if (this.bM[var2] == 0) {
@@ -2578,13 +2580,13 @@ public final class c3d_b extends Canvas {
       if (this.O != var3 && var5 != var6) {
          if (var4 == 0) {
             if (var9 != 12) {
-               this.B = this.b("/" + String.valueOf(var10) + this.r);
+               this.B = this.readImage("/" + String.valueOf(var10) + this.dataExt);
             } else {
-               Image var11 = this.b("/" + String.valueOf(var10) + this.r);
+               Image var11 = this.readImage("/" + String.valueOf(var10) + this.dataExt);
                this.B = Image.createImage(var11, 0, 0, var11.getWidth(), var11.getHeight(), 5);
             }
          } else {
-            this.C = this.b("/" + String.valueOf(var10) + this.r);
+            this.C = this.readImage("/" + String.valueOf(var10) + this.dataExt);
          }
       }
 
@@ -2671,7 +2673,7 @@ public final class c3d_b extends Canvas {
 
       for(int var32 = 0; var32 <= 6; ++var32) {
          System.gc();
-         Image var39 = this.b("/" + String.valueOf(var32) + this.r);
+         Image var39 = this.readImage("/" + String.valueOf(var32) + this.dataExt);
 
          for(int var5 = 0; var5 < var19; ++var5) {
             byte var26 = var2[9][var5][0];
@@ -3098,7 +3100,7 @@ public final class c3d_b extends Canvas {
       }
    }
 
-   private void a(int[] var1, int[] var2, int[][] var3, short var4, byte[] var5, byte[] var6) {
+   private void combineLayers(int[] var1, int[] var2, int[][] var3, short var4, byte[] var5, byte[] var6) {
       byte var11 = 0;
       byte var12 = 1;
       int var13 = var1.length;
@@ -7474,7 +7476,7 @@ public final class c3d_b extends Canvas {
                   }
 
                   this.fX = true;
-                  int var37 = abs(this.I() % 3);
+                  int var37 = abs(this.randomInt() % 3);
                   int[] var49 = this.gx;
                   var49[3] += 1 + var37;
                } else {
@@ -7482,7 +7484,7 @@ public final class c3d_b extends Canvas {
                      return false;
                   }
 
-                  int var38 = abs(this.I() % 3);
+                  int var38 = abs(this.randomInt() % 3);
                   int[] var50 = this.gx;
                   var50[3] += 1 + var38;
                   this.ht = true;
@@ -7620,7 +7622,7 @@ public final class c3d_b extends Canvas {
                      return false;
                   }
 
-                  int var20 = abs(this.I() % 11);
+                  int var20 = abs(this.randomInt() % 11);
                   int[] var10000 = this.gx;
                   byte var10001 = this.cL[var11];
                   var10000[var10001] += 10 + var20;
@@ -7639,7 +7641,7 @@ public final class c3d_b extends Canvas {
                      return false;
                   }
 
-                  int var21 = abs(this.I() % 11);
+                  int var21 = abs(this.randomInt() % 11);
                   if (this.gz < 100) {
                      this.gz += 10 + var21;
                      this.hu = true;
@@ -7658,7 +7660,7 @@ public final class c3d_b extends Canvas {
                   }
 
                   if (this.gx[this.cL[var11]] < 777 && this.gz >= 100) {
-                     int var35 = abs(this.I() % 11);
+                     int var35 = abs(this.randomInt() % 11);
                      int[] var48 = this.gx;
                      byte var58 = this.cL[var11];
                      var48[var58] += 10 + var35;
@@ -7674,7 +7676,7 @@ public final class c3d_b extends Canvas {
                   }
 
                   if (this.gx[this.cL[var11]] == 777 && this.gz < 100) {
-                     int var34 = abs(this.I() % 11);
+                     int var34 = abs(this.randomInt() % 11);
                      if (this.gz < 100) {
                         this.gz += 10 + var34;
                         this.hu = true;
@@ -7689,7 +7691,7 @@ public final class c3d_b extends Canvas {
                      return false;
                   }
 
-                  int var22 = abs(this.I() % 11);
+                  int var22 = abs(this.randomInt() % 11);
                   int[] var40 = this.gx;
                   byte var51 = this.cL[var11];
                   var40[var51] += 10 + var22;
@@ -7700,7 +7702,7 @@ public final class c3d_b extends Canvas {
                   this.ht = true;
                   this.hn = (byte)(this.cN[var11] - 5);
                   this.go = this.gl;
-                  int var16 = abs(this.I() % 11);
+                  int var16 = abs(this.randomInt() % 11);
                   if (this.gz < 100) {
                      this.gz += 10 + var16;
                      this.hu = true;
@@ -7721,7 +7723,7 @@ public final class c3d_b extends Canvas {
                      return false;
                   }
 
-                  int var33 = abs(this.I() % 11);
+                  int var33 = abs(this.randomInt() % 11);
                   int[] var47 = this.gx;
                   int var57 = this.cN[var11] - 1;
                   var47[var57] += 10 + var33;
@@ -7737,7 +7739,7 @@ public final class c3d_b extends Canvas {
                      return false;
                   }
 
-                  int var29 = abs(this.I() % 11);
+                  int var29 = abs(this.randomInt() % 11);
                   if (this.gz < 100) {
                      this.gz += 10 + var29;
                      this.hu = true;
@@ -7753,7 +7755,7 @@ public final class c3d_b extends Canvas {
                   }
 
                   if (this.gx[this.cN[var11] - 5] < 777 && this.gz >= 100) {
-                     int var32 = abs(this.I() % 11);
+                     int var32 = abs(this.randomInt() % 11);
                      int[] var46 = this.gx;
                      int var56 = this.cN[var11] - 5;
                      var46[var56] += 10 + var32;
@@ -7769,7 +7771,7 @@ public final class c3d_b extends Canvas {
                   }
 
                   if (this.gx[this.cN[var11] - 5] == 777 && this.gz < 100) {
-                     int var31 = abs(this.I() % 11);
+                     int var31 = abs(this.randomInt() % 11);
                      if (this.gz < 100) {
                         this.gz += 10 + var31;
                         this.hu = true;
@@ -7785,7 +7787,7 @@ public final class c3d_b extends Canvas {
                      return false;
                   }
 
-                  int var30 = abs(this.I() % 11);
+                  int var30 = abs(this.randomInt() % 11);
                   int[] var44 = this.gx;
                   int var55 = this.cN[var11] - 5;
                   var44[var55] += 10 + var30;
@@ -7796,7 +7798,7 @@ public final class c3d_b extends Canvas {
                   this.ht = true;
                   this.hn = (byte)(this.cN[var11] - 5);
                   this.go = this.gl;
-                  int var39 = abs(this.I() % 11);
+                  int var39 = abs(this.randomInt() % 11);
                   if (this.gz < 100) {
                      this.gz += 10 + var39;
                      this.hu = true;
@@ -7829,7 +7831,7 @@ public final class c3d_b extends Canvas {
                   return false;
                }
 
-               int var23 = abs(this.I() % 21);
+               int var23 = abs(this.randomInt() % 21);
                int[] var41 = this.gx;
                byte var52 = this.cK[var11];
                var41[var52] += 25 + var23;
@@ -7841,7 +7843,7 @@ public final class c3d_b extends Canvas {
                   return false;
                }
 
-               int var24 = abs(this.I() % 21);
+               int var24 = abs(this.randomInt() % 21);
                if (this.gz < 100) {
                   this.gz += 25 + var24;
                   this.hu = true;
@@ -7861,7 +7863,7 @@ public final class c3d_b extends Canvas {
 
                if (this.gx[this.cK[var11]] == 777 && this.gz != this.gF) {
                   this.cJ[var11] = (byte)(this.dm + 3);
-                  int var27 = abs(this.I() % 21);
+                  int var27 = abs(this.randomInt() % 21);
                   this.cO[var11] = this.cJ[var11];
                   if (this.gz < 100) {
                      this.gz += 25 + var27;
@@ -7886,7 +7888,7 @@ public final class c3d_b extends Canvas {
                if (this.gx[this.cK[var11]] != 777 && (this.gz == this.gF && this.selectedMap != 7 && this.selectedMap != 4 || this.gz == 200)) {
                   this.cJ[var11] = (byte)(this.dm + 4);
                   this.cO[var11] = this.cJ[var11];
-                  int var26 = abs(this.I() % 21);
+                  int var26 = abs(this.randomInt() % 21);
                   int[] var43 = this.gx;
                   byte var54 = this.cK[var11];
                   var43[var54] += 25 + var26;
@@ -7905,7 +7907,7 @@ public final class c3d_b extends Canvas {
                this.hn = this.cK[var11];
                this.go = this.gl;
                this.gp = this.gl;
-               int var25 = abs(this.I() % 21);
+               int var25 = abs(this.randomInt() % 21);
                int[] var42 = this.gx;
                byte var53 = this.cK[var11];
                var42[var53] += 25 + var25;
@@ -7920,7 +7922,7 @@ public final class c3d_b extends Canvas {
                   this.gF = 200;
                }
             } else if (this.cJ[var11] == this.dm + 6) {
-               int var28 = abs(this.I() % 2);
+               int var28 = abs(this.randomInt() % 2);
                if (this.fH != 3) {
                   this.gA += 2 + var28;
                } else {
@@ -8005,7 +8007,7 @@ public final class c3d_b extends Canvas {
 
    }
 
-   private void a(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+   private void loadSprites_subfunction2(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       this.bI = new int[2][(16 + var3) * 97];
       this.bF = new int[97];
       this.dY = new byte[var1];
@@ -9140,7 +9142,7 @@ public final class c3d_b extends Canvas {
                if (this.selectedMap != 4 && this.selectedMap != 5) {
                   if ((this.selectedMap == 7 || this.selectedMap == 6 || this.selectedMap == 11) && this.cG[var4] == 30) {
                      if (this.fq) {
-                        if (this.I() % this.gD == 0 || this.selectedMap == 11 && this.cO[var4] == 30) {
+                        if (this.randomInt() % this.gD == 0 || this.selectedMap == 11 && this.cO[var4] == 30) {
                            this.cT[var4] = true;
                            this.cO[var4] = 32;
                            this.gz -= this.gC * this.hq;
@@ -9181,7 +9183,7 @@ public final class c3d_b extends Canvas {
                      continue;
                   }
                } else {
-                  if (this.cG[var4] == 30 && !this.fZ && (this.cO[var4] != 31 || this.I() % 15 == 0)) {
+                  if (this.cG[var4] == 30 && !this.fZ && (this.cO[var4] != 31 || this.randomInt() % 15 == 0)) {
                      if (this.cO[var4] < 31) {
                         this.cO[var4] = 31;
                      }
@@ -9268,14 +9270,14 @@ public final class c3d_b extends Canvas {
                   }
 
                   if (this.fq) {
-                     int var3 = this.I();
+                     int var3 = this.randomInt();
                      int var6 = this.fo + this.fp;
                      if ((var3 % 1 == 0 || this.cO[var4] == 8 && this.cF[var4] != -1 || this.cT[var4]) && this.cG[var4] < 0) {
                         this.cO[var4] = 8;
                         this.cT[var4] = true;
-                        if (this.I() % 2 == 0) {
+                        if (this.randomInt() % 2 == 0) {
                            this.cO[var4] = 9;
-                           if (this.I() % 2 == 0) {
+                           if (this.randomInt() % 2 == 0) {
                               this.gz -= this.fA[var6] * this.hq;
                               if (this.gz < 100) {
                                  this.gF = 100;
@@ -9628,7 +9630,7 @@ public final class c3d_b extends Canvas {
                   c3d_b var10000;
                   short var10001;
                   if (this.fH == 1) {
-                     this.gs = 217 + abs(this.I()) % 15;
+                     this.gs = 217 + abs(this.randomInt()) % 15;
                      var10000 = this;
                      var10001 = 200;
                   } else {
@@ -9644,13 +9646,13 @@ public final class c3d_b extends Canvas {
                         var10001 = 0;
                      }
 
-                     var10000.gs = var10001 + abs(this.I()) % 17;
+                     var10000.gs = var10001 + abs(this.randomInt()) % 17;
                      var10000 = this;
                      var10001 = 205;
                   }
 
-                  var10000.gt = var10001 - abs(this.I()) % 7;
-                  this.gu = abs(this.I()) % 3 + 6;
+                  var10000.gt = var10001 - abs(this.randomInt()) % 7;
+                  this.gu = abs(this.randomInt()) % 3 + 6;
                }
 
                if (var1 == 0) {
@@ -9809,7 +9811,7 @@ public final class c3d_b extends Canvas {
 
    private void v() {
       this.gf = new int['\uf4b0'];
-      this.b("/s" + this.r).getRGB(this.gf, 0, 540, 0, 0, 540, 106);
+      this.readImage("/s" + this.dataExt).getRGB(this.gf, 0, 540, 0, 0, 540, 106);
    }
 
    private void w() {
@@ -9819,9 +9821,9 @@ public final class c3d_b extends Canvas {
          int[] var10000;
          int var10001;
          int var10002;
-         if (abs(this.I()) % 300 == 0) {
+         if (abs(this.randomInt()) % 300 == 0) {
             int var1;
-            var1 = (var1 = abs(this.I()) % 80 + 75) << 16 | var1 << 8 | var1;
+            var1 = (var1 = abs(this.randomInt()) % 80 + 75) << 16 | var1 << 8 | var1;
             this.gg[var2] = -var1;
             this.gg[var2 + 240] = -var1;
             this.gg[var2 + 240 + 240] = -var1;
@@ -9845,11 +9847,11 @@ public final class c3d_b extends Canvas {
 
    private void x() {
       this.gg = new int['움'];
-      this.I();
+      this.randomInt();
       int var1 = 0;
       var1 = -11776930;
       int var2;
-      int var3 = ((var2 = abs(this.I()) % 240) & 7) + 26;
+      int var3 = ((var2 = abs(this.randomInt()) % 240) & 7) + 26;
       int var4 = 0;
 
       for(int var5 = 0; var5 <= var3; ++var5) {
@@ -9862,7 +9864,7 @@ public final class c3d_b extends Canvas {
    private void a(Graphics var1, int var2, int var3) {
       var1.drawRGB(this.gg, 0, 240, 0, 54, 240, 212, true);
       int var4;
-      var4 = (var4 = abs(this.I()) % 80 + 75) << 16 | var4 << 8 | var4;
+      var4 = (var4 = abs(this.randomInt()) % 80 + 75) << 16 | var4 << 8 | var4;
       boolean var5 = true;
       if (this.hU[2]) {
          var5 = false;
@@ -10011,7 +10013,7 @@ public final class c3d_b extends Canvas {
       int var20 = 0;
       if (var3 < var2) {
          while(var20 < var2) {
-            int var9 = (var20 += abs(this.I()) % 600 + var3) & 7;
+            int var9 = (var20 += abs(this.randomInt()) % 600 + var3) & 7;
             int var8 = 0;
 
             for(int var26 = 0; var26 <= var9; ++var26) {
@@ -10036,8 +10038,8 @@ public final class c3d_b extends Canvas {
       }
 
       int var10;
-      for(int var10000 = (var2 << 1) - (var2 >> 3) - abs(this.I()) % var2; var10000 < var2; var10000 = var10 + var2) {
-         int var8 = ((var10 = abs(this.I()) % 240) & 7) + 26;
+      for(int var10000 = (var2 << 1) - (var2 >> 3) - abs(this.randomInt()) % var2; var10000 < var2; var10000 = var10 + var2) {
+         int var8 = ((var10 = abs(this.randomInt()) % 240) & 7) + 26;
          int var7 = 0;
 
          for(int var6 = 0; var6 <= var8 >> 2; ++var6) {
@@ -10059,7 +10061,7 @@ public final class c3d_b extends Canvas {
    }
 
    private void y() {
-      this.b("/ff" + this.r);
+      this.readImage("/ff" + this.dataExt);
       int var2 = this.selectedMap != 2 ? 4 : 8;
       this.gj = new int[var2][];
 
@@ -10130,7 +10132,7 @@ public final class c3d_b extends Canvas {
             var10001 = 0;
          } else {
             var10000 = this;
-            var10001 = abs(this.I() % (var1 << 1));
+            var10001 = abs(this.randomInt() % (var1 << 1));
          }
 
          var10000.cp = var10001;
@@ -10357,7 +10359,7 @@ public final class c3d_b extends Canvas {
                   this.cF[var13] = -1;
                }
 
-               if (this.I() % 3 == 0 && this.cG[var13] < 0) {
+               if (this.randomInt() % 3 == 0 && this.cG[var13] < 0) {
                   this.cO[var13] = 10;
                }
 
@@ -10378,7 +10380,7 @@ public final class c3d_b extends Canvas {
                   this.cx[64][0] = 0;
                   this.cx[64][1] = 0;
                   if (this.cO[var13] == var3) {
-                     this.fQ = this.I();
+                     this.fQ = this.randomInt();
                   }
                } else if (this.cO[var13] == var3 && this.selectedMap == 12 && var13 == 19) {
                   if (!this.hD) {
@@ -10651,7 +10653,7 @@ public final class c3d_b extends Canvas {
       var0.fillRect(0, 0, 240, 320);
    }
 
-   private int I() {
+   private int randomInt() {
       return this.fg.nextInt();
    }
 
@@ -10724,8 +10726,8 @@ public final class c3d_b extends Canvas {
                }
 
                for(int var10 = 0; var10 < 240; var10 += 2) {
-                  this.hL[var10] = (short)(-(abs(this.I()) % 60));
-                  this.hO[var10] = (byte)abs(this.I() % 2);
+                  this.hL[var10] = (short)(-(abs(this.randomInt()) % 60));
+                  this.hO[var10] = (byte)abs(this.randomInt() % 2);
                }
 
                this.hL[0] = 0;
@@ -10734,7 +10736,7 @@ public final class c3d_b extends Canvas {
                   this.hS = 30;
                   this.ic = 100;
                   this.hJ = new int[2438];
-                  this.b("/k" + this.r).getRGB(this.hJ, 0, 106, 0, 0, 106, 23);
+                  this.readImage("/k" + this.dataExt).getRGB(this.hJ, 0, 106, 0, 0, 106, 23);
                   int var4 = this.hJ.length;
 
                   for(int var7 = 0; var7 < var4; ++var7) {
@@ -10758,7 +10760,7 @@ public final class c3d_b extends Canvas {
                   this.ic = 100;
                   int[] var3 = new int[576];
                   this.hJ = new int[9216];
-                  this.b("/dd" + this.r).getRGB(var3, 0, 16, 94, 192, 16, 36);
+                  this.readImage("/dd" + this.dataExt).getRGB(var3, 0, 16, 94, 192, 16, 36);
                   int var5 = var3.length;
 
                   for(int var1 = 0; var1 < var5; ++var1) {
@@ -10975,7 +10977,7 @@ public final class c3d_b extends Canvas {
 
    private void L() {
       boolean var1 = true;
-      if (abs(this.I()) % 3 != 0) {
+      if (abs(this.randomInt()) % 3 != 0) {
          var1 = false;
       }
 
@@ -11165,7 +11167,7 @@ public final class c3d_b extends Canvas {
 
                c3d_b var1;
                boolean var2;
-               if (this.I() % 2 == 0) {
+               if (this.randomInt() % 2 == 0) {
                   var1 = this;
                   var2 = true;
                } else {
@@ -11772,7 +11774,7 @@ public final class c3d_b extends Canvas {
    }
 
    private void R() {
-      Image var4 = this.b("/f" + this.r);
+      Image var4 = this.readImage("/f" + this.dataExt);
       this.jb = var4.getWidth();
       this.jc = var4.getHeight() - 112;
       this.jq = new int[this.jb * this.jc];
@@ -11966,10 +11968,10 @@ public final class c3d_b extends Canvas {
    }
 
    private void T() {
-      this.iQ = 192 + this.I() % 16;
-      this.iR = 208 + this.I() % 4;
+      this.iQ = 192 + this.randomInt() % 16;
+      this.iR = 208 + this.randomInt() % 4;
       if (this.gl - this.iN > 1000L) {
-         this.iP = abs(this.I() % 3);
+         this.iP = abs(this.randomInt() % 3);
          this.iN = this.gl;
       } else {
          this.iP = 0;
@@ -12655,7 +12657,7 @@ public final class c3d_b extends Canvas {
          if (this.gY == 1) {
             if (this.jo == null) {
                this.R();
-               Image var3 = this.b("/n" + this.r);
+               Image var3 = this.readImage("/n" + this.dataExt);
                this.jd = var3.getWidth();
                this.je = var3.getHeight();
                this.jr = new int[this.jd * this.je];
@@ -12781,7 +12783,7 @@ public final class c3d_b extends Canvas {
 
    private void a(boolean var1, Graphics var2) {
       try {
-         Image var3 = this.b("/i" + this.r);
+         Image var3 = this.readImage("/i" + this.dataExt);
          var2.drawImage(var3, 0, 0, 20);
          var2.drawImage(var3, 0, 212, 20);
          if (!this.fU || this.selectedMap == 12) {
@@ -12803,7 +12805,7 @@ public final class c3d_b extends Canvas {
             }
 
             if (var1) {
-               Image var6 = this.b("/ii" + this.r);
+               Image var6 = this.readImage("/ii" + this.dataExt);
                this.jn = new int[4][600];
                var6.getRGB(this.jn[3], 0, 24, 0, 0, 24, 25);
                var6.getRGB(this.jn[1], 0, 24, 24, 0, 24, 25);
@@ -12816,7 +12818,7 @@ public final class c3d_b extends Canvas {
       }
    }
 
-   private Image b(String var1) {
+   private Image readImage(String var1) {
       try {
          int var4;
          InputStream var5;
@@ -13400,7 +13402,7 @@ public final class c3d_b extends Canvas {
    }
 
    static int aj(c3d_b var0) {
-      return var0.I();
+      return var0.randomInt();
    }
 
    static int i(c3d_b var0, int var1) {
