@@ -8,7 +8,7 @@ from save import (saveMap, saveStaticData, saveTextures, saveAnimations, saveSpr
 )
 
 MAPS = [range(1, 10), range(1, 11)]
-# MAPS = [[], [], [1]]
+# MAPS = [[], [], [1, 2, 3]]
 GAMES = [GameType.B3D, GameType.L3D]
 GAMES = [None, GameType.C3D]
 

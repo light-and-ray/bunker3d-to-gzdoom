@@ -40,7 +40,11 @@ def load_image_from_1d_list(data, width, height) -> Image.Image:
     index = 0
     for y in range(height):
         for x in range(width):
-            pixel = data[index]
+            try:
+                pixel = data[index]
+            except:
+                print("!!!", index, height, width)
+                raise
             r = (pixel >> 16) & 0xFF
             g = (pixel >> 8) & 0xFF
             b = pixel & 0xFF

@@ -24,8 +24,8 @@ public class ResourcesLoaderC3D {
    public ArrayList<int[]> TEXTURES_DATA = new ArrayList<>();
    public short[] FOOTER;
    public ArrayList<ArrayList<Integer>> CIRCLES_IDX = new ArrayList<>();
-   public short[] SPRITES_W;
-   public short[] SPRITES_H;
+   public ArrayList<Short> SPRITES_W = new ArrayList<>();
+   public ArrayList<Short> SPRITES_H = new ArrayList<>();
    public ArrayList<int[]> SPRITES_DATA_COLOR_1 = new ArrayList<>();
    public ArrayList<int[]> SPRITES_DATA_COLOR_2 = new ArrayList<>();
    public ArrayList<Short> FOE_SPRITES_W = new ArrayList<>();
@@ -2289,8 +2289,6 @@ public class ResourcesLoaderC3D {
       this.hV[1] = 11;
       this.hV[2] = 9;
       int var7 = bigLump2[5].length;
-      this.SPRITES_W = new short[var7];
-      this.SPRITES_H = new short[var7];
 
       for(int var5 = 0; var5 <= 2; ++var5) {
          BufferedImage var10 = this.readImage(this.spriteFiles[var5] + this.dataExt);
@@ -2314,8 +2312,8 @@ public class ResourcesLoaderC3D {
             int var14 = bigLump2[5][var4][0] * 7;
             int[] var8 = new int[this.f[var14 + 2] * this.f[var14 + 3]];
             int[] var9 = new int[this.f[var14 + 2] * this.f[var14 + 3]];
-            this.SPRITES_W[var4] = this.f[var14 + 2];
-            this.SPRITES_H[var4] = this.f[var14 + 3];
+            this.SPRITES_W.add(this.f[var14 + 2]);
+            this.SPRITES_H.add(this.f[var14 + 3]);
             var10.getRGB(this.f[var14 + 0], this.f[var14 + 1], this.f[var14 + 2], this.f[var14 + 3], var8, 0, this.f[var14 + 2]);
             var11.getRGB(this.f[var14 + 0], this.f[var14 + 1], this.f[var14 + 2], this.f[var14 + 3], var9, 0, this.f[var14 + 2]);
             int var12 = 1552 + var4 * 97;

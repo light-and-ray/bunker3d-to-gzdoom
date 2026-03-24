@@ -353,7 +353,7 @@ class MapIntermedial:
                 else:
                     if heights == set([HeightType.TOP, HeightType.BOTTOM]):
                         if areOppositelyDirected(*MapIntermedial.lineToTuple(oldLine1), *MapIntermedial.lineToTuple(oldLine2)):
-                            raise Exception("Oppositely directed TOP and BOTTOM")
+                            print("warning: Oppositely directed TOP and BOTTOM!")
                         else:
                             height = HeightType.FULL
                     elif heights == set([HeightType.TOP, HeightType.FULL]):
