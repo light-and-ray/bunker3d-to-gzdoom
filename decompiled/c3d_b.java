@@ -2636,7 +2636,7 @@ public final class c3d_b extends Canvas {
       byte var7 = var2[2][var3][3];
       byte var8 = var2[2][var3][4];
       if (var4 != 0 || var5 != 0 || var6 != 0 || var7 != 0 || var8 != 0) {
-         this.a(var1, var4, var5, var6, var7, var8, false);
+         this.loadTextures_subfunction3(var1, var4, var5, var6, var7, var8, false);
       }
 
    }
@@ -3025,7 +3025,7 @@ public final class c3d_b extends Canvas {
       return var5;
    }
 
-   private void a(int[] var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
+   private void loadTextures_subfunction3(int[] var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
       int var12 = 1;
       int var13 = 0;
       int var14 = var1.length;
