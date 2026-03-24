@@ -1543,12 +1543,12 @@ public class ResourcesLoaderL3D {
             }
          } else {
             colorValue = pixel & 255;
-               int color1 = this.loadTextures_subfunction4(palette1[0], palette1[1], palette1[2], palette1[3], palette1[4], colorValue, false);
-               int color2 = this.loadTextures_subfunction4(palette2[0], palette2[1], palette2[2], palette2[3], palette2[4], colorValue, false);
-               layer1[i] = color1;
-               if (layer1Color2 != null) {
-                  layer1Color2[i] = color2;
-               }
+            int color1 = this.loadTextures_subfunction4(palette1[0], palette1[1], palette1[2], palette1[3], palette1[4], colorValue, false);
+            int color2 = this.loadTextures_subfunction4(palette2[0], palette2[1], palette2[2], palette2[3], palette2[4], colorValue, false);
+            layer1[i] = color1;
+            if (layer1Color2 != null) {
+               layer1Color2[i] = color2;
+            }
          }
       }
 
