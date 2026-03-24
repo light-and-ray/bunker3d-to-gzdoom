@@ -5865,7 +5865,7 @@ public final class b3d_a extends Canvas {
          }
 
          long var8;
-         a var18;
+         b3d_a var18;
          byte var19;
          byte var10003;
          byte var10004;
@@ -7828,7 +7828,7 @@ public final class b3d_a extends Canvas {
          }
 
          if (this.ht != 0) {
-            a var9;
+            b3d_a var9;
             if (this.ht == 100) {
                this.hs[0] = 1;
                this.hs[1] = 0;
