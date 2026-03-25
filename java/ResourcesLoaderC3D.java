@@ -2295,17 +2295,26 @@ public class ResourcesLoaderC3D {
          BufferedImage var11 = this.readImage(this.spriteFiles[var5 + 3] + this.dataExt);
 
          for(int var4 = 0; var4 < var7; ++var4) {
+            boolean needContinue = false;
             if (var5 == 0) {
                if (bigLump2[5][var4][0] < 0 || bigLump2[5][var4][0] > 82 && bigLump2[5][var4][0] != 122) {
-                  continue;
+                  needContinue = true;
                }
             } else if (var5 == 1) {
                if (bigLump2[5][var4][0] >= 0) {
-                  continue;
+                  needContinue = true;
                }
 
                bigLump2[5][var4][0] = (byte)(-bigLump2[5][var4][0]);
             } else if (bigLump2[5][var4][0] <= 82) {
+               needContinue = true;
+            }
+
+            if (needContinue) {
+               this.SPRITES_W.add((short)-1);
+               this.SPRITES_H.add((short)-1);
+               this.SPRITES_DATA_COLOR_1.add(new int[0]);
+               this.SPRITES_DATA_COLOR_2.add(new int[0]);
                continue;
             }
 

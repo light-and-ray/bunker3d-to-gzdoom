@@ -137,7 +137,7 @@ NONE_TEXTURES_C3D = [ # Doors (inside) and 45 degree with middled texture inside
         # 21 : TextureOverrideData(nums=[6]),
     },
     { #12
-        # 21 : TextureOverrideData(nums=[6]),
+        10 : TextureOverrideData(nums=[0]),
     },
     { #13
         # 21 : TextureOverrideData(nums=[6]),

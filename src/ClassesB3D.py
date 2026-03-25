@@ -131,40 +131,42 @@ class MapB3D:
         self.things: list[ThingB3D] = []
         # for i in range(len(thingsSprites)):
         #     print(i, ":", thingsSprites[i])
-        for lineNum in range(DECORATION_LAST_IDX):
-            if not thingsVisibleFlag[lineNum]:
+        for i in range(DECORATION_LAST_IDX):
+            if not thingsVisibleFlag[i]:
                 continue
-            if lineNum not in visibleThingsByTrigger:
+            if i not in visibleThingsByTrigger:
                 # print("removed thing by trigger:", i)
                 continue
-            if lineNum in (BROKEN_THINGS.get((gameType, mapIndex)) or []):
+            if i in (BROKEN_THINGS.get((gameType, mapIndex)) or []):
                 continue
-            if gameType == GameType.L3D and lineNum in (64, 65): # explosion sprites for RPG
+            if gameType == GameType.L3D and i in (64, 65): # explosion sprites for RPG
                 continue
-            if lineNum >= 0 and lineNum < NPC_LAST_IDX:
+            if i >= 0 and i < NPC_LAST_IDX:
                 category = ThingCategory.NPC
-            elif lineNum >= NPC_LAST_IDX and lineNum < LAMP_LAST_IDX:
+            elif i >= NPC_LAST_IDX and i < LAMP_LAST_IDX:
                 category = ThingCategory.LAMP
-            elif lineNum >= LAMP_LAST_IDX and lineNum < DECORATION_LAST_IDX:
+            elif i >= LAMP_LAST_IDX and i < DECORATION_LAST_IDX:
                 category = ThingCategory.DECORATION
             else:
                 raise Exception("Can't be here")
 
-            if lineNum >= len(thingsSpecials):
+            if i >= len(thingsSpecials):
                 special = None
             else:
-                special = thingsSpecials[lineNum]
+                special = thingsSpecials[i]
 
             if category == ThingCategory.NPC:
-                sprite = thingsSprites[lineNum]
+                sprite = thingsSprites[i]
             else:
                 if gameType == GameType.B3D:
-                    sprite = thingsSprites[lineNum] - 16
+                    sprite = thingsSprites[i] - 16
                 elif gameType == GameType.L3D:
-                    sprite = thingsSprites[lineNum] - 13
+                    sprite = thingsSprites[i] - 13
+                elif gameType == GameType.C3D:
+                    sprite = thingsSprites[i] - 13
 
-            self.things.append(ThingB3D(pos=Vertex(*thingsPos[lineNum]), category=category,
-                    color=thingsColors[lineNum], special=special, sprite=sprite, index=lineNum))
+            self.things.append(ThingB3D(pos=Vertex(*thingsPos[i]), category=category,
+                    color=thingsColors[i], special=special, sprite=sprite, index=i))
 
 
     def _applyMirroring(self, mirroringData: list[int]):

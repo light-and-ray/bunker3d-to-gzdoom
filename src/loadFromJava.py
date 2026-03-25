@@ -84,11 +84,15 @@ def _loadSprites():
     for sprites_data in (read2DArray("SPRITES_DATA_COLOR_1"), read2DArray("SPRITES_DATA_COLOR_2")):
         sprites = []
         for i in range(len(sprites_data)):
-            sprite = load_image_from_1d_list(sprites_data[i], sprites_w[i], sprites_h[i])
-            sprite = makeBackgroundTransparent(sprite)
-            if sprite.width == 96: # bomb
-                sprite = sprite.transpose(Image.FLIP_TOP_BOTTOM)
-            sprites.append(sprite)
+            if sprites_w[i] == -1:
+                magenta_square = Image.new('RGBA', (48, 48), color=(255, 0, 255, 255))
+                sprites.append(magenta_square)
+            else:
+                sprite = load_image_from_1d_list(sprites_data[i], sprites_w[i], sprites_h[i])
+                sprite = makeBackgroundTransparent(sprite)
+                if sprite.width == 96: # bomb
+                    sprite = sprite.transpose(Image.FLIP_TOP_BOTTOM)
+                sprites.append(sprite)
         all_sprites.append(sprites)
     return all_sprites
 

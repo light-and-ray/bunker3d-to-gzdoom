@@ -145,7 +145,10 @@ class MapGZD:
                     sprites = mapIntermedial.foeSprites[decoration.colorIdx]
                     scaleOverrideFix = 1.3
                 for i in range(decorationData.numberOfSprites):
-                    self.sprites[spriteName + sprite_suffixes[i]] = sprites[decoration.spriteIdx + i]
+                    try:
+                        self.sprites[spriteName + sprite_suffixes[i]] = sprites[decoration.spriteIdx + i]
+                    except:
+                        print("!!!", decoration.spriteIdx, i, sprites.__len__())
                 zscript = generateDecorationZScript(className, spriteName, sprites[decoration.spriteIdx], scaleOverrideFix, decorationData)
                 ednum = EdnumGZD(num=generateEdnum(), className=className)
                 self.actors.append(ActorGZD(ednum=ednum, zscript=zscript))
