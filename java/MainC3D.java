@@ -56,7 +56,7 @@ public class MainC3D {
         Json.export("FOE_SPRITES_W", loader.FOE_SPRITES_W);
         Json.export("FOE_SPRITES_H", loader.FOE_SPRITES_H);
         Json.export("FOE_ANGLES", loader.cC);
-        Json.export("FOE_WALK_DISTANCE", loader.cG);
+        Json.export("FOE_WALK_DISTANCE", loader.cG); // !!! FOE_WALK_DISTANCE == THINGS_SPECIAL
 
         Json.export("VISIBLE_THING_SETS", loader.cR);
         Json.export("VISIBLE_THING_SET_START", loader.hh);
@@ -64,6 +64,8 @@ public class MainC3D {
         Json.export("TRIGGER_END_OF_LEVEL", loader.gK);
         Json.export("TRIGGER_VISIBLE_THING_SET", loader.eG);
 
+        Json.export("UNKNOWN_cD", loader.cD); // maybe door side texture
+        Json.export("UNKNOWN_hp", loader.hp);
     }
 
 }
