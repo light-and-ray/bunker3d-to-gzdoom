@@ -230,7 +230,7 @@ class MapGZD:
             ))
 
         self._keysToNPC: dict[tuple[int], ActorGZD] = dict()
-        for npc in mapIntermedial.friendlies:
+        for npc in mapIntermedial.NPCs:
             key = (npc.spriteIdx, npc.colorIdx, npc.isSecond)
             if key not in self._keysToNPC:
                 spriteName = generateNpcSpriteName()

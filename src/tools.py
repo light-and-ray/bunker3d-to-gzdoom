@@ -133,3 +133,9 @@ def saveToFile(filepath, data):
     with open(filepath, mode) as f:
         f.write(data)
 
+
+def list_get(list_, index, default=None):
+    try:
+        return list_[index]
+    except IndexError:
+        return default

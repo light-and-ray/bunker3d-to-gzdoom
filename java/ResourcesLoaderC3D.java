@@ -920,8 +920,8 @@ public class ResourcesLoaderC3D {
       this.loadSpritesPart1(this.D[2]);
       this.loadSpritesPart2(this.D[2]);
       this.loadSpritesPart3(this.D[2]);
-      this.loadedMap = (int[][])null;
-      this.D[2] = (byte[][][])null;
+      // this.loadedMap = (int[][])null;
+      // this.D[2] = (byte[][][])null;
       // this.c(false);
       // System.gc();
       this.initFloorCeilingColor(footer);

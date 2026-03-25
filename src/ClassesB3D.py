@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from PIL import Image
 import math
 from ClassesShared import Vertex, HeightType, Animation, GameType
-from tools import generateTextureLumpName, generateTextureModifiedLumpName, WALL_HEIGHT
+from tools import generateTextureLumpName, generateTextureModifiedLumpName, WALL_HEIGHT, list_get
 from enum import Enum
 from fixes import BROKEN_THINGS, B3D_TEXTURES_OVERRIDES, ALT_TEXTURE_VARIANT, AltTextureType, TEXTURE_INDEX_TO_ANIMATION_DURATIONS
 
@@ -126,13 +126,13 @@ class MapB3D:
         elif gameType == GameType.C3D:
             NPC_LAST_IDX = 32
             LAMP_LAST_IDX = 64
-            DECORATION_LAST_IDX = 106
+            DECORATION_LAST_IDX = 190
 
         self.things: list[ThingB3D] = []
-        # for i in range(len(thingsSprites)):
-        #     print(i, ":", thingsSprites[i])
+
         for i in range(DECORATION_LAST_IDX):
-            if not thingsVisibleFlag[i]:
+            print(f"!!! index={i}, sprite={list_get(thingsSprites, i)}, special={list_get(thingsSpecials, i)}, visible_flag={list_get(thingsVisibleFlag, i)}")
+            if not list_get(thingsVisibleFlag, i, False):
                 continue
             if i not in visibleThingsByTrigger:
                 # print("removed thing by trigger:", i)
@@ -156,15 +156,17 @@ class MapB3D:
                 special = thingsSpecials[i]
 
             if category == ThingCategory.NPC:
-                sprite = thingsSprites[i]
+                if gameType != GameType.C3D:
+                    sprite = thingsSprites[i]
+                else:
+                    sprite = thingsSprites[i] + 11
             else:
                 if gameType == GameType.B3D:
                     sprite = thingsSprites[i] - 16
                 elif gameType == GameType.L3D:
                     sprite = thingsSprites[i] - 13
                 elif gameType == GameType.C3D:
-                    sprite = thingsSprites[i] - 13
-
+                    sprite = thingsSprites[i] - 16
             self.things.append(ThingB3D(pos=Vertex(*thingsPos[i]), category=category,
                     color=thingsColors[i], special=special, sprite=sprite, index=i))
 
