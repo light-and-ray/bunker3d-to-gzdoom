@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from PIL import Image
 import math
 from ClassesShared import Vertex, HeightType, Animation, GameType
-from tools import generateTextureLumpName, generateTextureModifiedLumpName, WALL_HEIGHT, list_get
+from tools import generateTextureLumpName, generateTextureModifiedLumpName, WALL_WIDTH, list_get
 from enum import Enum
 from fixes import BROKEN_THINGS, B3D_TEXTURES_OVERRIDES, ALT_TEXTURE_VARIANT, AltTextureType, TEXTURE_INDEX_TO_ANIMATION_DURATIONS
 
@@ -277,7 +277,7 @@ class MapB3D:
             for name in line.texturesNames:
                 if name in self.textures:
                     textureW = self.textures[name].width
-                    number = math.floor(WALL_HEIGHT/textureW)
+                    number = math.floor(WALL_WIDTH/textureW)
                     newNames.extend([name]*number)
                 else:
                     newNames.append(name)

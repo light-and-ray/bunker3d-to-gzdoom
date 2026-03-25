@@ -11,7 +11,7 @@ from actorsGeneration import ( generateDecorationSpriteName, generateDecorationC
     generateCrateObj, generateModelReplacementTextureDef, generateGenericPatchTextureDef, generateBarrelSpriteName,
     generateBarrelClassName, generateBarrelModeldef, generateBarrelObj, generateBarrelZScript,
 )
-from tools import LEVEL_CEILING, LEVEL_FLOOR, SCALE_FACTOR
+from tools import LEVEL_CEILING, LEVEL_FLOOR, SCALE_FACTOR, LEVEL_CEILING_CASTLE, LEVEL_MIDDLE
 from fixes import (CRATE_TOP_TEXTURES, SPRITE_SCALE_OVERRIDE, NO_LAMP_LIGHT_SPOT_LEVELS, BARREL_TOP_TEXTURES,
     DECORATION_DATA_FOR_SPRITE, DecorationData, NPC_DATA_FOR_SPRITE, NpcData,
 )
@@ -111,9 +111,12 @@ class MapGZD:
         self.models: list[ModelGZD] = []
         self._lastPolyObjectNum = 0
 
-        self.sectorFull = SectorGZD(heightFloor=LEVEL_FLOOR, heightCeiling=LEVEL_CEILING)
-        self.sectorOnlyBottom = SectorGZD(heightFloor=(LEVEL_CEILING+LEVEL_FLOOR)//2, heightCeiling=LEVEL_CEILING)
-        self.sectorOnlyTop = SectorGZD(heightFloor=0, heightCeiling=(LEVEL_CEILING+LEVEL_FLOOR)//2)
+        self.levelCeiling = LEVEL_CEILING
+        if gameType == GameType.C3D and mapIndex >= 8:
+            self.levelCeiling = LEVEL_CEILING_CASTLE
+        self.sectorFull = SectorGZD(heightFloor=LEVEL_FLOOR, heightCeiling=self.levelCeiling)
+        self.sectorOnlyBottom = SectorGZD(heightFloor=LEVEL_MIDDLE, heightCeiling=self.levelCeiling)
+        self.sectorOnlyTop = SectorGZD(heightFloor=0, heightCeiling=LEVEL_MIDDLE)
         self.sectors.extend([self.sectorFull, self.sectorOnlyBottom, self.sectorOnlyTop])
 
         self.altTextures = mapIntermedial.altTextures
@@ -365,7 +368,7 @@ class MapGZD:
 
 
     def _genPOSector(self):
-        self.sectors.append(SectorGZD(heightCeiling=LEVEL_CEILING, heightFloor=LEVEL_FLOOR))
+        self.sectors.append(SectorGZD(heightCeiling=self.levelCeiling, heightFloor=LEVEL_FLOOR))
         return len(self.sectors) - 1
 
     def _convertDoors(self, doors: list[DoorIntermedial]):
