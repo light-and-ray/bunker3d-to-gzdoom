@@ -2244,13 +2244,14 @@ public class ResourcesLoaderC3D {
       for(int var31 = 0; var31 < var2; var31 += 7) {
          this.FOE_SPRITES_W.add(this.e[var31 + 2]);
          this.FOE_SPRITES_H.add(this.e[var31 + 3]);
-         int[] var5 = new int[this.e[var31 + 2] * this.e[var31 + 3]];
-         int[] var6 = new int[this.e[var31 + 2] * this.e[var31 + 3]];
-         var27.getRGB(this.e[var31 + 0], this.e[var31 + 1], this.e[var31 + 2], this.e[var31 + 3], var5, 0, this.e[var31 + 2]);
-         var28.getRGB(this.e[var31 + 0], this.e[var31 + 1], this.e[var31 + 2], this.e[var31 + 3], var6, 0, this.e[var31 + 2]);
-         this.combineLayers(var5, var6, this.bI, var23, bigLump2[0][0], bigLump2[0][1]);
-         this.FOE_SPRITES_DATA_COLOR_1.add(var5);
-         this.FOE_SPRITES_DATA_COLOR_2.add(var6);
+         int[] layer1 = new int[this.e[var31 + 2] * this.e[var31 + 3]];
+         int[] layer2 = new int[this.e[var31 + 2] * this.e[var31 + 3]];
+         int[] layer1SecondPalette = new int[layer1.length];
+         var27.getRGB(this.e[var31 + 0], this.e[var31 + 1], this.e[var31 + 2], this.e[var31 + 3], layer1, 0, this.e[var31 + 2]);
+         var28.getRGB(this.e[var31 + 0], this.e[var31 + 1], this.e[var31 + 2], this.e[var31 + 3], layer2, 0, this.e[var31 + 2]);
+         this.combineLayers(layer1, layer2, this.bI, var23, bigLump2[0][0], bigLump2[0][1], layer1SecondPalette);
+         this.FOE_SPRITES_DATA_COLOR_1.add(layer1);
+         this.FOE_SPRITES_DATA_COLOR_2.add(layer1SecondPalette);
          var23 = (short)(var23 + 97);
          // int var15 = this.bP[var13] / this.bN[var13];
          // b and a are not used 9n the extractor
@@ -2319,16 +2320,17 @@ public class ResourcesLoaderC3D {
             }
 
             int var14 = bigLump2[5][var4][0] * 7;
-            int[] var8 = new int[this.f[var14 + 2] * this.f[var14 + 3]];
-            int[] var9 = new int[this.f[var14 + 2] * this.f[var14 + 3]];
+            int[] layer1 = new int[this.f[var14 + 2] * this.f[var14 + 3]];
+            int[] layer2 = new int[this.f[var14 + 2] * this.f[var14 + 3]];
+            int[] layer1SecondPalette = new int[layer1.length];
             this.SPRITES_W.add(this.f[var14 + 2]);
             this.SPRITES_H.add(this.f[var14 + 3]);
-            var10.getRGB(this.f[var14 + 0], this.f[var14 + 1], this.f[var14 + 2], this.f[var14 + 3], var8, 0, this.f[var14 + 2]);
-            var11.getRGB(this.f[var14 + 0], this.f[var14 + 1], this.f[var14 + 2], this.f[var14 + 3], var9, 0, this.f[var14 + 2]);
+            var10.getRGB(this.f[var14 + 0], this.f[var14 + 1], this.f[var14 + 2], this.f[var14 + 3], layer1, 0, this.f[var14 + 2]);
+            var11.getRGB(this.f[var14 + 0], this.f[var14 + 1], this.f[var14 + 2], this.f[var14 + 3], layer2, 0, this.f[var14 + 2]);
             int var12 = 1552 + var4 * 97;
-            this.combineLayers(var8, var9, this.bI, (short)var12, bigLump2[6][var4], bigLump2[1][var4]);
-            this.SPRITES_DATA_COLOR_1.add(var8);
-            this.SPRITES_DATA_COLOR_2.add(var9);
+            this.combineLayers(layer1, layer2, this.bI, (short)var12, bigLump2[6][var4], bigLump2[1][var4], layer1SecondPalette);
+            this.SPRITES_DATA_COLOR_1.add(layer1);
+            this.SPRITES_DATA_COLOR_2.add(layer1SecondPalette);
 
             // var2 = 16 + var4;
             // int var6 = this.bP[var2] / this.bN[var2];
@@ -2356,32 +2358,39 @@ public class ResourcesLoaderC3D {
    }
 
 
-   public void combineLayers(int[] layer1, int[] layer2, int[][] colorData, short startIndex, byte[] palette1, byte[] palette2) {
+   public void combineLayers(int[] layer1, int[] layer2, int[][] colorData, short startIndex, byte[] palette1, byte[] palette2, int[] layer1SecondPalette) {
       byte var11 = 0;
       byte var12 = 1;
       int var13 = layer1.length;
       byte[] var14 = new byte[256];
       int[] var15 = new int[97];
+      int[] var15_2 = new int[97];
       short var17 = startIndex;
       short var18 = 0;
 
       for(int i = 0; i < var13; ++i) {
          int var16;
          if ((var16 = layer1[i]) == this.Q) {
-            layer1[i] = -1;
+            // layer1[i] = -1;
          } else {
             int var10 = var16 & 255;
             if ((var11 = var14[var10]) > 0) {
                layer1[i] = var15[var11];
+               layer1SecondPalette[i] = var15_2[var11];
             } else {
-               var14[var10] = var12;
-               var15[var12] = var18;
-               ++var12;
                int var19 = palette1[0] == 0 && palette1[1] == 0 && palette1[2] == 0 && palette1[3] == 0 && palette1[4] == 0 ? var16 : this.combineLayers_subfunction1(palette1[0], palette1[1], palette1[2], palette1[3], palette1[4], var10, var10, var10, false);
                int var20 = palette2[0] == 0 && palette2[1] == 0 && palette2[2] == 0 && palette2[3] == 0 && palette2[4] == 0 ? var16 : this.combineLayers_subfunction1(palette2[0], palette2[1], palette2[2], palette2[3], palette2[4], var10, var10, var10, false);
-               colorData[0][var17] = (int)((long)var19 | 0L);
-               colorData[1][var17] = (int)((long)var20 | 0L);
-               layer1[i] = var18++;
+               int color1 = (int)((long)var19 | 0L);
+               int color2 = (int)((long)var20 | 0L);
+               var14[var10] = var12;
+               var15[var12] = color1;
+               var15_2[var12] = color2;
+               ++var12;
+               colorData[0][var17] = color1;
+               colorData[1][var17] = color2;
+               layer1[i] = color1;
+               layer1SecondPalette[i] = color2;
+               var18++;
                ++var17;
             }
          }
@@ -2396,8 +2405,10 @@ public class ResourcesLoaderC3D {
             int var8 = (var26 & 16711680) >> 19;
             int var9 = (var26 & '\uff00') >> 11;
             int var22 = (var26 & 255) >> 3;
+            layer1[i] = layer2[i];
+            layer1SecondPalette[i] = layer2[i];
             if ((var11 = this.E[var8][var9][var22]) > 0) {
-               layer1[i] = var15[var11];
+               // layer1[i] = var15[var11];
             } else {
                this.E[var8][var9][var22] = var12;
                var15[var12] = var18;
@@ -2407,7 +2418,7 @@ public class ResourcesLoaderC3D {
                   colorData[1][var17] = (int)((long)var26 | 0L);
                }
 
-               layer1[i] = var18++;
+               var18++;
                ++var17;
             }
          }
