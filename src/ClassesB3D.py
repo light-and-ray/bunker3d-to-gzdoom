@@ -4,7 +4,9 @@ import math
 from ClassesShared import Vertex, HeightType, Animation, GameType
 from tools import generateTextureLumpName, generateTextureModifiedLumpName, WALL_WIDTH, list_get
 from enum import Enum
-from fixes import BROKEN_THINGS, B3D_TEXTURES_OVERRIDES, ALT_TEXTURE_VARIANT, AltTextureType, TEXTURE_INDEX_TO_ANIMATION_DURATIONS
+from fixes import (BROKEN_THINGS, B3D_TEXTURES_OVERRIDES, ALT_TEXTURE_VARIANT, AltTextureType,
+    TEXTURE_INDEX_TO_ANIMATION_DURATIONS, SPRITE_INDEX_FIXES, MAP_WIDE_SPRITE_INDEX_FIXES, MapWideSpriteIndexFix,
+)
 
 
 @dataclass
@@ -130,45 +132,54 @@ class MapB3D:
 
         self.things: list[ThingB3D] = []
 
-        for i in range(DECORATION_LAST_IDX):
-            print(f"!!! index={i}, sprite={list_get(thingsSprites, i)}, special={list_get(thingsSpecials, i)}, visible_flag={list_get(thingsVisibleFlag, i)}")
-            if not list_get(thingsVisibleFlag, i, False):
+        for thingIndex in range(DECORATION_LAST_IDX):
+            print(f"!!! index={thingIndex}, sprite={list_get(thingsSprites, thingIndex)}, "
+                            f"special={list_get(thingsSpecials, thingIndex)}, "
+                            f"visible_flag={list_get(thingsVisibleFlag, thingIndex)}")
+            if not list_get(thingsVisibleFlag, thingIndex, False):
                 continue
-            if i not in visibleThingsByTrigger:
+            if thingIndex not in visibleThingsByTrigger:
                 # print("removed thing by trigger:", i)
                 continue
-            if i in (BROKEN_THINGS.get((gameType, mapIndex)) or []):
+            if thingIndex in (BROKEN_THINGS.get((gameType, mapIndex)) or []):
                 continue
-            if gameType == GameType.L3D and i in (64, 65): # explosion sprites for RPG
+            if gameType == GameType.L3D and thingIndex in (64, 65): # explosion sprites for RPG
                 continue
-            if i >= 0 and i < NPC_LAST_IDX:
+            if thingIndex >= 0 and thingIndex < NPC_LAST_IDX:
                 category = ThingCategory.NPC
-            elif i >= NPC_LAST_IDX and i < LAMP_LAST_IDX:
+            elif thingIndex >= NPC_LAST_IDX and thingIndex < LAMP_LAST_IDX:
                 category = ThingCategory.LAMP
-            elif i >= LAMP_LAST_IDX and i < DECORATION_LAST_IDX:
+            elif thingIndex >= LAMP_LAST_IDX and thingIndex < DECORATION_LAST_IDX:
                 category = ThingCategory.DECORATION
             else:
                 raise Exception("Can't be here")
 
-            if i >= len(thingsSpecials):
+            if thingIndex >= len(thingsSpecials):
                 special = None
             else:
-                special = thingsSpecials[i]
+                special = thingsSpecials[thingIndex]
 
-            if category == ThingCategory.NPC:
-                if gameType != GameType.C3D:
-                    sprite = thingsSprites[i]
-                else:
-                    sprite = thingsSprites[i] + 11
+            sprite = None
+            spriteFix = SPRITE_INDEX_FIXES.get((gameType, mapIndex), {}).get(thingsSprites[thingIndex])
+            if spriteFix is not None:
+                sprite = spriteFix
             else:
-                if gameType == GameType.B3D:
-                    sprite = thingsSprites[i] - 16
-                elif gameType == GameType.L3D:
-                    sprite = thingsSprites[i] - 13
-                elif gameType == GameType.C3D:
-                    sprite = thingsSprites[i] - 16
-            self.things.append(ThingB3D(pos=Vertex(*thingsPos[i]), category=category,
-                    color=thingsColors[i], special=special, sprite=sprite, index=i))
+                mapWideFix = MAP_WIDE_SPRITE_INDEX_FIXES.get((gameType, mapIndex))
+                if mapWideFix:
+                    if thingsSprites[thingIndex] > mapWideFix.threshold:
+                        sprite = thingsSprites[thingIndex] - mapWideFix.threshold + mapWideFix.offset
+            if not sprite:
+                if category == ThingCategory.NPC:
+                    sprite = thingsSprites[thingIndex]
+                else:
+                    if gameType == GameType.B3D:
+                        sprite = thingsSprites[thingIndex] - 16
+                    elif gameType == GameType.L3D:
+                        sprite = thingsSprites[thingIndex] - 13
+                    elif gameType == GameType.C3D:
+                        sprite = thingsSprites[thingIndex] - 16
+            self.things.append(ThingB3D(pos=Vertex(*thingsPos[thingIndex]), category=category,
+                    color=thingsColors[thingIndex], special=special, sprite=sprite, index=thingIndex))
 
 
     def _applyMirroring(self, mirroringData: list[int]):

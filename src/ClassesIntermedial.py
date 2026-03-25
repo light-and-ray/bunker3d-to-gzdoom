@@ -149,8 +149,6 @@ class MapIntermedial:
         for thing in mapB3D.things:
             if thing.category != ThingCategory.DECORATION: continue
             if thing.sprite in (0, 1): continue # decorative lamps, not breakable in the original game
-            if thing.sprite > 38:
-                print('!!!', thing.index, thing.special, thing.sprite)
             self.decorations.append(DecorationIntermedial(pos=thing.pos, spriteIdx=thing.sprite, colorIdx=thing.color))
 
         self.lamps: list[LampIntermedial] = []

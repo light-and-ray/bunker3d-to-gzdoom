@@ -2304,9 +2304,9 @@ public class ResourcesLoaderC3D {
             } else if (var5 == 1) {
                if (bigLump2[5][var4][0] >= 0) {
                   needContinue = true;
+               } else {
+                  bigLump2[5][var4][0] = (byte)(-bigLump2[5][var4][0]);
                }
-
-               bigLump2[5][var4][0] = (byte)(-bigLump2[5][var4][0]);
             } else if (bigLump2[5][var4][0] <= 82) {
                needContinue = true;
             }

@@ -410,3 +410,14 @@ TEXTURE_INDEX_TO_ANIMATION_DURATIONS[(GameType.L3D, 8)] = \
     9: 4.5, # bubbles
     6: 3.7, # big fan
 }
+
+@dataclass
+class MapWideSpriteIndexFix:
+    offset: int
+    threshold: int
+MAP_WIDE_SPRITE_INDEX_FIXES: dict[tuple[GameType, int], MapWideSpriteIndexFix] = {}
+MAP_WIDE_SPRITE_INDEX_FIXES[(GameType.C3D, 4)] = MapWideSpriteIndexFix(offset=73, threshold=13)
+
+SPRITE_INDEX_FIXES: dict[tuple[GameType, int], dict[int, int]] = {}
+SPRITE_INDEX_FIXES[(GameType.C3D, 2)] = {39: 65, 41: 67} # dead mice
+
