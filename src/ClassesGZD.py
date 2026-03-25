@@ -151,7 +151,7 @@ class MapGZD:
                     try:
                         self.sprites[spriteName + sprite_suffixes[i]] = sprites[decoration.spriteIdx + i]
                     except:
-                        print("!!!", decoration.spriteIdx, i, sprites.__len__())
+                        print("MapGZD.__init__", decoration.spriteIdx, i, sprites.__len__())
                 zscript = generateDecorationZScript(className, spriteName, sprites[decoration.spriteIdx], scaleOverrideFix, decorationData)
                 ednum = EdnumGZD(num=generateEdnum(), className=className)
                 self.actors.append(ActorGZD(ednum=ednum, zscript=zscript))

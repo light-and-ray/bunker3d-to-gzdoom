@@ -35,7 +35,7 @@ public class MainL3D {
         // THINGS SPECIALS
         // lamp: 127 (on), -2 (off), -1 (flick);
         // npc: -20 (foe), -2 (boss), 26 (friendly1), 32 (final boss), 30 (friendly2)
-        Json.export("THINGS_SPECIAL", loader.ck); // !!! 64 instead of 32
+        Json.export("THINGS_SPECIAL", loader.ck); // ! 64 instead of 32
         // this.cc maybe animated
         Json.export("THINGS_SPRITE", loader.cq); // 0-15 (npc), 16-31 (lamp), 32-47 (decoration), 48+ (crate content)
         Json.export("THINGS_POS", loader.cb);

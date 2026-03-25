@@ -2861,9 +2861,6 @@ public class ResourcesLoaderC3D {
                   loadTextures_subfunction18(this.dv, this.dw, this.bE[var33], var12, var13, 12, var42 + 6, var15, this.H, false);
                   loadTextures_subfunction18(this.dx, this.dy, this.bE[var33], var12, var13, 12, var42 + 4, var15, this.H, false);
                   if (this.selectedMap != 8 && this.selectedMap != 9 && this.selectedMap != 10 && this.selectedMap != 11 && this.selectedMap != 12 && this.selectedMap != 13) {
-                     this.TEXTURES_W.add(var15);
-                     this.TEXTURES_H.add(var16);
-                     this.TEXTURES_DATA.add(this.H);
                      break label162;
                   }
 
@@ -2883,15 +2880,14 @@ public class ResourcesLoaderC3D {
                }
 
                loadTextures_subfunction18(var45, var48, var49, var50, var51, var52, var53, var54, var10008, var10009);
-               this.TEXTURES_W.add(var15);
-               this.TEXTURES_H.add(var16);
-               this.TEXTURES_DATA.add(this.H);
-
             }
 
             // this.H = null;
             // System.gc();
          }
+         this.TEXTURES_W.add(var15);
+         this.TEXTURES_H.add(var16);
+         this.TEXTURES_DATA.add(this.H);
       }
 
       // this.F = null;

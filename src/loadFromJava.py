@@ -43,7 +43,7 @@ def load_image_from_1d_list(data, width, height) -> Image.Image:
             try:
                 pixel = data[index]
             except:
-                print("!!!", index, height, width)
+                print("load_image_from_1d_list", index, height, width)
                 raise
             r = (pixel >> 16) & 0xFF
             g = (pixel >> 8) & 0xFF

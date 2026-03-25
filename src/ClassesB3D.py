@@ -84,7 +84,6 @@ class MapB3D:
                     texturesNames.append(f"NONE_{index}")
                 else:
                     texturesNames.append(keys[index])
-
             self.lines.append(
                 LineB3D(
                     v1=Vertex(rawLines[0][lineNum], rawLines[1][lineNum]),
@@ -133,9 +132,9 @@ class MapB3D:
         self.things: list[ThingB3D] = []
 
         for thingIndex in range(DECORATION_LAST_IDX):
-            print(f"!!! index={thingIndex}, sprite={list_get(thingsSprites, thingIndex)}, "
-                            f"special={list_get(thingsSpecials, thingIndex)}, "
-                            f"visible_flag={list_get(thingsVisibleFlag, thingIndex)}")
+            # print(f"MapB3D thing index={thingIndex}, sprite={list_get(thingsSprites, thingIndex)}, "
+            #                 f"special={list_get(thingsSpecials, thingIndex)}, "
+            #                 f"visible_flag={list_get(thingsVisibleFlag, thingIndex)}")
             if not list_get(thingsVisibleFlag, thingIndex, False):
                 continue
             if thingIndex not in visibleThingsByTrigger:
