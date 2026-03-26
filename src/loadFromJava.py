@@ -110,17 +110,17 @@ def _loadFoeSprites():
         all_sprites.append(sprites)
     return all_sprites
 
-def _resolveTextureList(textureIdx: int) -> list[int]:
+def _resolveTextureList(originalTextureIndex: int) -> list[int]:
     help4 = read1DArray("LINES_TEXTURES_HELP_4")
-    var6 = 1 if textureIdx < 32 else 7
-    var12s = []
-    for var7 in range(var6):
-        if var6 == 1:
-            var12 = textureIdx
+    SEQ_LEN = 1 if originalTextureIndex < 32 else 7
+    textureIndexes = []
+    for textureNum in range(SEQ_LEN):
+        if SEQ_LEN == 1:
+            textureIndex = originalTextureIndex
         else:
-            var12 = help4[(textureIdx - 32) * var6 + var7]
-        var12s.append(var12)
-    return var12s
+            textureIndex = help4[(originalTextureIndex - 32) * SEQ_LEN + textureNum]
+        textureIndexes.append(textureIndex)
+    return textureIndexes
 
 
 def _loadLinesTextures():

@@ -66,6 +66,29 @@ public class MainC3D {
 
         Json.export("UNKNOWN_cD", loader.cD); // maybe door side texture
         Json.export("UNKNOWN_hp", loader.hp);
+
+        // Json.export("DEBUG_dn", loader.dn); // sets of lines. Maybe ranges of visible lines
+        // Json.export("DEBUG_do_", loader.do_);
+
+        // Json.export("DEBUG_cL", loader.cL); // something interesting for things
+
+        // Json.export("DEBUG_hQ", loader.hQ); // more for animation (not useful on level 7)
+        // Json.export("DEBUG_hM", loader.hM);
+        // Json.export("DEBUG_hK", loader.hK);
+
+        // Json.export("DEBUG_dR", loader.dR); // maybe tall doors, but no line numbers
+        // Json.export("DEBUG_dT", loader.dT);
+        // Json.export("DEBUG_dS", loader.dS);
+        // Json.export("DEBUG_dN", loader.dN);
+        // Json.export("DEBUG_dO", loader.dO);
+        // Json.export("DEBUG_dQ", loader.dQ);
+        // Json.export("DEBUG_dX", loader.dX);
+        // Json.export("DEBUG_dU", loader.dU);
+        // Json.export("DEBUG_dV", loader.dV);
+        // Json.export("DEBUG_cQ", loader.cQ);
+
+        // Json.export("DEBUG_cy", loader.cy); // maybe decoration animations
+
     }
 
 }

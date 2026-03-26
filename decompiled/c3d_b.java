@@ -11049,6 +11049,7 @@ public final class c3d_b extends Canvas {
                }
 
                if (var3) {
+                  // animation
                   this.dW[this.hN[var2][var1]] = this.hP[var2][this.hQ[var2][var1]];
                }
 
