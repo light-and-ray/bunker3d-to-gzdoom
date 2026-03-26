@@ -1593,47 +1593,47 @@ public final class c3d_b extends Canvas {
 
    }
 
-   private void modifyBigLumps01(byte[][][] var1, byte[][][] var2) {
+   private void modifyBigLumps01(byte[][][] bigLump0, byte[][][] bigLump1) {
       boolean var3 = false;
       int var11 = 0;
       int var12 = 0;
-      int var17 = var1[0].length + var2[7].length + var2[12].length * 4 + var2[20].length * 3 + var2[33].length * 4 + var2[41].length * 4;
-      int var7 = var2[51].length + 1;
+      int var17 = bigLump0[0].length + bigLump1[7].length + bigLump1[12].length * 4 + bigLump1[20].length * 3 + bigLump1[33].length * 4 + bigLump1[41].length * 4;
+      int var7 = bigLump1[51].length + 1;
       this.bB = new int[var7];
-      this.bB[0] = var17 - var2[33].length * 4;
+      this.bB[0] = var17 - bigLump1[33].length * 4;
 
       int var4;
       for(var4 = 1; var4 < var7; ++var4) {
-         this.bB[var4] = this.bB[var4 - 1] + var2[51][var4 - 1][2];
+         this.bB[var4] = this.bB[var4 - 1] + bigLump1[51][var4 - 1][2];
       }
 
-      var17 = this.bB[var4 - 1] + var2[33].length * 4;
+      var17 = this.bB[var4 - 1] + bigLump1[33].length * 4;
       this.initMapArrays(var17);
       this.bS = new byte[var17];
-      var7 = var2[31].length;
+      var7 = bigLump1[31].length;
 
       for(int var19 = 0; var19 < var7; ++var19) {
-         this.bS[var2[31][var19][0] + 128] = var2[31][var19][1];
+         this.bS[bigLump1[31][var19][0] + 128] = bigLump1[31][var19][1];
       }
 
-      var7 = var1[0].length;
-      int var8 = var2[7].length;
+      var7 = bigLump0[0].length;
+      int var8 = bigLump1[7].length;
 
       for(int var20 = 0; var20 < var7; ++var20) {
-         if (var11 < var8 && var12 == var2[7][var11][0] + 128) {
+         if (var11 < var8 && var12 == bigLump1[7][var11][0] + 128) {
             if (var11 != 0) {
-               this.dP[2][var12 - 1] = var2[7][var11 - 1][1];
-               this.dP[3][var12 - 1] = var2[7][var11 - 1][2];
+               this.dP[2][var12 - 1] = bigLump1[7][var11 - 1][1];
+               this.dP[3][var12 - 1] = bigLump1[7][var11 - 1][2];
             }
 
-            this.dP[0][var12] = var2[7][var11][1];
-            this.dP[1][var12] = var2[7][var11][2];
+            this.dP[0][var12] = bigLump1[7][var11][1];
+            this.dP[1][var12] = bigLump1[7][var11][2];
             ++var11;
             ++var12;
          }
 
-         long var13 = (long)(var1[0][var20][0] - 7);
-         long var15 = (long)(var1[0][var20][1] - 7);
+         long var13 = (long)(bigLump0[0][var20][0] - 7);
+         long var15 = (long)(bigLump0[0][var20][1] - 7);
          this.dP[0][var12] = (int)(var13 + (long)this.dP[0][var12 - 1]);
          this.dP[1][var12] = (int)(var15 + (long)this.dP[1][var12 - 1]);
          this.dP[2][var12 - 1] = this.dP[0][var12];
@@ -1641,8 +1641,8 @@ public final class c3d_b extends Canvas {
          ++var12;
       }
 
-      this.dP[2][var12 - 1] = var2[7][var11 - 1][1];
-      this.dP[3][var12 - 1] = var2[7][var11 - 1][2];
+      this.dP[2][var12 - 1] = bigLump1[7][var11 - 1][1];
+      this.dP[3][var12 - 1] = bigLump1[7][var11 - 1][2];
 
       for(int var18 = 0; var18 < var12; ++var18) {
          for(int var21 = 0; var21 < 4; ++var21) {
@@ -1655,20 +1655,20 @@ public final class c3d_b extends Canvas {
       var12 = 0;
       var11 = 0;
       this.dW = new byte[var17];
-      var7 = var1[1].length;
-      int var9 = var2[7].length;
-      int var10 = var2[10].length;
+      var7 = bigLump0[1].length;
+      int var9 = bigLump1[7].length;
+      int var10 = bigLump1[10].length;
 
       for(int var22 = 0; var22 < var7; ++var22) {
-         var8 = var1[1][var22].length;
+         var8 = bigLump0[1][var22].length;
 
          for(int var5 = 0; var5 < var8; ++var5) {
-            if (var11 < var9 && var12 == var2[7][var11][0] + 128) {
+            if (var11 < var9 && var12 == bigLump1[7][var11][0] + 128) {
                if (var11 != 0) {
-                  this.dW[var12 - 1] = var2[7][var11 - 1][4];
+                  this.dW[var12 - 1] = bigLump1[7][var11 - 1][4];
                }
 
-               this.dW[var12] = var2[7][var11][3];
+               this.dW[var12] = bigLump1[7][var11][3];
                ++var11;
                ++var12;
             }
@@ -1677,12 +1677,12 @@ public final class c3d_b extends Canvas {
             int var10001;
             byte[] var10002;
             int var10003;
-            if (var1[1][var22][var5] == 15) {
+            if (bigLump0[1][var22][var5] == 15) {
                for(int var6 = 0; var6 < var10; ++var6) {
-                  if (var2[10][var6][0] + 128 == var12) {
+                  if (bigLump1[10][var6][0] + 128 == var12) {
                      var48 = this.dW;
                      var10001 = var12;
-                     var10002 = var2[10][var6];
+                     var10002 = bigLump1[10][var6];
                      var10003 = 1;
                      break;
                   }
@@ -1691,7 +1691,7 @@ public final class c3d_b extends Canvas {
             } else {
                var48 = this.dW;
                var10001 = var12;
-               var10002 = var1[1][var22];
+               var10002 = bigLump0[1][var22];
                var10003 = var5;
             }
 
@@ -1700,22 +1700,22 @@ public final class c3d_b extends Canvas {
          }
       }
 
-      this.dW[var12 - 1 - var2[8][0][4]] = var2[7][var11 - 1][4];
-      var7 = var1[2].length;
-      var8 = var2[29].length;
+      this.dW[var12 - 1 - bigLump1[8][0][4]] = bigLump1[7][var11 - 1][4];
+      var7 = bigLump0[2].length;
+      var8 = bigLump1[29].length;
 
       for(int var23 = 0; var23 < var7; ++var23) {
          for(int var28 = 0; var28 < 5; ++var28) {
-            if (var1[2][var23][var28] != 15) {
-               if (var1[2][var23][var28] == 7) {
-                  var1[2][var23][var28] = -7;
-               } else if (var1[2][var23][var28] != 0) {
-                  var1[2][var23][var28] = (byte)(var1[2][var23][var28] - 7);
+            if (bigLump0[2][var23][var28] != 15) {
+               if (bigLump0[2][var23][var28] == 7) {
+                  bigLump0[2][var23][var28] = -7;
+               } else if (bigLump0[2][var23][var28] != 0) {
+                  bigLump0[2][var23][var28] = (byte)(bigLump0[2][var23][var28] - 7);
                }
             } else {
                for(int var33 = 0; var33 < var8; ++var33) {
-                  if (var2[29][var33][0] == var23 && var2[29][var33][1] == var28) {
-                     var1[2][var23][var28] = var2[29][var33][2];
+                  if (bigLump1[29][var33][0] == var23 && bigLump1[29][var33][1] == var28) {
+                     bigLump0[2][var23][var28] = bigLump1[29][var33][2];
                      break;
                   }
                }
@@ -1725,15 +1725,15 @@ public final class c3d_b extends Canvas {
 
       if (this.selectedMap != 8 && this.selectedMap != 9 && this.selectedMap != 10 && this.selectedMap != 11 && this.selectedMap != 12 && this.selectedMap != 13) {
          for(int var25 = 0; var25 < var7; ++var25) {
-            var8 = var1[2][var25].length;
+            var8 = bigLump0[2][var25].length;
 
             for(int var30 = 6; var30 < var8; ++var30) {
-               var1[2][var25][var30] = (byte)(var1[2][var25][var30] * 3);
+               bigLump0[2][var25][var30] = (byte)(bigLump0[2][var25][var30] * 3);
             }
          }
       } else {
          for(int var24 = 0; var24 < var7; ++var24) {
-            var8 = var1[2][var24].length;
+            var8 = bigLump0[2][var24].length;
 
             for(int var29 = 6; var29 < var8; ++var29) {
                byte[] var49;
@@ -1741,12 +1741,12 @@ public final class c3d_b extends Canvas {
                byte var51;
                byte var52;
                if ((var24 != 23 || this.selectedMap != 9) && (var24 != 9 || this.selectedMap != 12)) {
-                  var49 = var1[2][var24];
+                  var49 = bigLump0[2][var24];
                   var50 = var29;
                   var51 = var49[var29];
                   var52 = 6;
                } else {
-                  var49 = var1[2][var24];
+                  var49 = bigLump0[2][var24];
                   var50 = var29;
                   var51 = var49[var29];
                   var52 = 3;
@@ -1757,21 +1757,21 @@ public final class c3d_b extends Canvas {
          }
       }
 
-      var7 = var1[3].length;
+      var7 = bigLump0[3].length;
 
       for(int var26 = 0; var26 < var7; ++var26) {
          for(int var31 = 1; var31 <= 2; ++var31) {
-            var1[3][var26][var31] = (byte)(var1[3][var26][var31] * 3);
+            bigLump0[3][var26][var31] = (byte)(bigLump0[3][var26][var31] * 3);
          }
       }
 
-      var7 = var1[4].length;
+      var7 = bigLump0[4].length;
 
       for(int var27 = 0; var27 < var7; ++var27) {
-         var8 = var1[4][var27].length;
+         var8 = bigLump0[4][var27].length;
 
          for(int var32 = 0; var32 < var8; ++var32) {
-            var1[4][var27][var32] = (byte)(var1[4][var27][var32] * 3);
+            bigLump0[4][var27][var32] = (byte)(bigLump0[4][var27][var32] * 3);
          }
       }
 
