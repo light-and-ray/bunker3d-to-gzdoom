@@ -5,7 +5,6 @@ using chroma-weighted sampling and k-means clustering.
 """
 
 import sys
-import random
 import colorsys
 from PIL import Image
 
@@ -14,25 +13,19 @@ try:
 except ImportError:
     sys.exit("Error: numpy is required to run this script. Please install it via pip (pip install numpy).")
 
+
 def get_chroma_weights(data):
     """
     Calculate weights based on color saturation and value to favor vibrant colors
     over dull grays and pure blacks/whites.
     """
-    # Normalize RGB to 0-1
     rgb_norm = data / 255.0
-
-    # Calculate Max and Min for HSL conversion
     cmax = np.max(rgb_norm, axis=1)
     cmin = np.min(rgb_norm, axis=1)
     chroma = cmax - cmin
-
-    # We want to give higher weight to colors with high chroma (vibrancy)
-    # Adding a small constant prevents zero-division and allows some grays to exist
     weights = chroma + 0.05
-
-    # Normalize weights so they sum to 1
     return weights / np.sum(weights)
+
 
 def kmeans_palette(colors, k, max_iter=25, sample_size=100000):
     """
@@ -41,15 +34,12 @@ def kmeans_palette(colors, k, max_iter=25, sample_size=100000):
     data = np.array(colors, dtype=np.float32)
     n_points = data.shape[0]
 
-    # STAGE 1: Favor vibrant colors during sampling
     if n_points > sample_size:
         weights = get_chroma_weights(data)
         indices = np.random.choice(n_points, sample_size, replace=False, p=weights)
         data = data[indices]
         n_points = sample_size
 
-    # Initialize centroids using K-Means++ style spread (heuristic)
-    # Pick the first point randomly, then pick points far from it
     indices = [np.random.choice(n_points)]
     for _ in range(1, k):
         distances = np.min([np.sum((data - data[i])**2, axis=1) for i in indices], axis=0)
@@ -58,7 +48,6 @@ def kmeans_palette(colors, k, max_iter=25, sample_size=100000):
 
     centroids = data[indices]
 
-    # Standard K-means loop
     for iteration in range(max_iter):
         diff = data[:, np.newaxis, :] - centroids[np.newaxis, :, :]
         distances = np.sum(diff**2, axis=2)
@@ -69,7 +58,6 @@ def kmeans_palette(colors, k, max_iter=25, sample_size=100000):
             if np.any(labels == i):
                 new_centroids[i] = data[labels == i].mean(axis=0)
             else:
-                # If a cluster dies, revive it with a random point
                 new_centroids[i] = data[np.random.choice(n_points)]
 
         if np.allclose(centroids, new_centroids, atol=0.5):
@@ -79,27 +67,41 @@ def kmeans_palette(colors, k, max_iter=25, sample_size=100000):
     palette = [tuple(map(lambda x: int(round(x)), centroid)) for centroid in centroids]
     return palette
 
-def sort_palette(palette, threshold=0.15):
-    """
-    Sorts a palette by Hue, Luma, and Saturation using a threshold to group
-    perceptually similar colors together without harsh jumps.
-    """
+
+def get_semantic_bucket(h, s, v):
+    if v < 0.1:
+        return 7  # Black/Dark Gray
+    if s < 0.1:
+        if v > 0.85:
+            return 9  # White/Light Gray
+        return 8      # Mid Grays
+    hue_deg = h * 360.0
+    if hue_deg < 15 or hue_deg >= 330:
+        return 1  # Red
+    elif hue_deg < 45:
+        return 2  # Orange/Brown
+    elif hue_deg < 70:
+        return 3  # Yellow
+    elif hue_deg < 160:
+        return 4  # Green
+    elif hue_deg < 260:
+        return 5  # Blue
+    elif hue_deg < 330:
+        return 6  # Purple/Violet
+    return 10  # Fallback
+
+
+def sort_palette(palette):
+    threshold = 0.07
     def step_sort(color):
         r, g, b = color
-        h, l, s = colorsys.rgb_to_hls(r / 255.0, g / 255.0, b / 255.0)
-
-        h_bucket = int(h / threshold)
-        l_bucket = int(l / threshold)
-        s_bucket = int(s / threshold)
-
-        return (h_bucket, l_bucket, s_bucket, h, l, s)
-
+        h, s, v = colorsys.rgb_to_hsv(r / 255.0, g / 255.0, b / 255.0)
+        bucket = get_semantic_bucket(h, s, v)
+        return (bucket, int(v/threshold), int(s/threshold), h, v, s)
     return sorted(palette, key=step_sort)
 
+
 def get_optimal_palette(*png_paths):
-    """
-    Generate an optimal 256-color palette from PNGs using weighted k-means.
-    """
     colors = []
     for path in png_paths:
         try:
@@ -114,19 +116,19 @@ def get_optimal_palette(*png_paths):
 
     palette = kmeans_palette(colors, 256)
 
-    # Padding or trimming to hit exactly 256
     while len(palette) < 256:
         palette.append((0, 0, 0))
     if len(palette) > 256:
         palette = palette[:256]
 
-    palette = sort_palette(palette, threshold=0.18)
+    palette = sort_palette(palette)
 
     palette_bytes = bytearray()
     for r, g, b in palette:
         palette_bytes.extend([r, g, b])
 
     return bytes(palette_bytes)
+
 
 if __name__ == '__main__':
     if len(sys.argv) < 3:
