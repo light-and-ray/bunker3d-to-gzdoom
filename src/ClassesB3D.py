@@ -188,6 +188,8 @@ class MapB3D:
                 needMirrorIdx = 0
             if mirroring in [5, 10]:
                 needMirrorIdx = 1
+            if mirroring not in [0, 3, 5, 10, 15]:
+                print(f"warning, unknown mirroring {mirroring} on line {self.lines.index(line)}")
             if needMirrorIdx is not None:
                 if len(line.texturesNames) == 1:
                     while len(line.texturesNames) < 10:
