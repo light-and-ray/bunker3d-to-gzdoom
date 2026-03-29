@@ -64,6 +64,7 @@
         "NOBLOODDECALS",
         "NOCLIP",
         "NOGRAVITY",
+        "nolightfade",
         "NOTAUTOAIMED",
         "offsetx",
         "omgifol",

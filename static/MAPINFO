@@ -4,6 +4,7 @@ adddefaultmap
     pixelratio = 1.0
     lightmode = 3
     evenLighting
+    nolightfade
 }
 
 adddefaultmap
