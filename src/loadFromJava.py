@@ -125,9 +125,16 @@ def _resolveTextureList(originalTextureIndex: int) -> list[int]:
 
 def _loadLinesTextures():
     textures = read1DArray("LINES_TEXTURES")
+    count = 0
     linesTextures = []
-    for texture in textures:
+    for index, texture in enumerate(textures):
         linesTextures.append(_resolveTextureList(texture))
+        # print("!!!", index, ':', texture, '->', linesTextures[-1])
+        for tmp in linesTextures[-1]:
+            if tmp > 12:
+                print("!!!", index, ":", tmp)
+                break
+    # print("!!!", count)
     return linesTextures
 
 def _loadAnimatedFramesInner(lst):
