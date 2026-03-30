@@ -33,12 +33,8 @@ class TrainSwayingHandler : EventHandler
 {
     override void WorldLoaded(WorldEvent event)
     {
-        Vector3 spawnPos;
-        spawnPos.x = 0;
-        spawnPos.y = 0;
-        spawnPos.z = 0;
-        Actor.Spawn('TrainSwayingSourceWave', spawnPos);
-        Actor.Spawn('TrainSwayingSourceRandom', spawnPos);
+        Actor.Spawn('TrainSwayingSourceWave', (0, 0, 0));
+        Actor.Spawn('TrainSwayingSourceRandom', (0, 0, 0));
     }
 }
 

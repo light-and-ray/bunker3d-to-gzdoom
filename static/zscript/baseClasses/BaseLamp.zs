@@ -108,9 +108,9 @@ class _BaseLamp : Actor
 
     void initLightSpot()
     {
-        Vector3 spawnPos = Pos;
+        Vector3 spawnPos = self.pos;
         spawnPos.z = 0;
-        if (GetZAt(pos.x, pos.y, 0, GZF_ABSOLUTEPOS) != 0)
+        if (GetZAt(self.pos.x, self.pos.y, 0, GZF_ABSOLUTEPOS) != 0)
         {
             needLightSpot = false;
             return;

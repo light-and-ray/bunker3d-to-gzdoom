@@ -1,5 +1,54 @@
-class B3DBlood : Actor replaces Blood
+
+class B3DBlodeNone : Actor replaces Blood
 {    }
+
+class B3DBlood : Actor
+{
+    GlobalVars_t globalVars;
+    Default
+    {
+        +NOGRAVITY;
+        +DONTTHRUST;
+        +FORCEXYBILLBOARD;
+    }
+    States
+    {
+        Spawn:
+            TNT1 A 0 NoDelay A_JumpIf(random(0, 1) == 1, "Frame1");
+            goto Frame2;
+        Frame1:
+            BLOD A 6 { vel = (0, 0, 0); }
+            TNT1 A 0 releaseGlobalLock();
+            stop;
+        Frame2:
+            BLOD B 6 { vel = (0, 0, 0); }
+            TNT1 A 0 releaseGlobalLock();
+            stop;
+    }
+    override void PostBeginPlay()
+    {
+        if (getGlobalVars().bloodActive)
+        {
+            self.destroy();
+        } else
+        {
+            getGlobalVars().bloodActive = true;
+            Super.PostBeginPlay();
+        }
+    }
+
+    action GlobalVars_t getGlobalVars()
+    {
+        if(!invoker.globalVars) invoker.globalVars = GlobalVars_t(EventHandler.Find("GlobalVars_t"));
+        return invoker.globalVars;
+    }
+
+    void releaseGlobalLock()
+    {
+        self.getGlobalVars().bloodActive = false;
+    }
+}
+
 
 class BaseNPC : Actor
 {
@@ -105,7 +154,8 @@ class BaseFlamethrowerGuyNPC : BaseNPC
 {
     Default
     {
-        Health 50;
+        Health 50000;
+        BloodType "B3DBlood";
     }
 
     States

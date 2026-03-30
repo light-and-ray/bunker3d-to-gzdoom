@@ -3,6 +3,7 @@ class GlobalVars_t : EventHandler
 {
     int lastPuffFrame;
     string puffClass;
+    bool bloodActive;
 }
 
 class FillB3DDefaults : EventHandler
