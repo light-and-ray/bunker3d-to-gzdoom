@@ -17,6 +17,8 @@
 
 class Z_NashMove : CustomInventory
 {
+    const FLY_MULTIPLIER = 4;
+
     Default
     {
         Inventory.MaxAmount 1;
@@ -80,7 +82,7 @@ class Z_NashMove : CustomInventory
             }
             else
             {
-                Owner.A_SetSpeed(speed*2);
+                Owner.A_SetSpeed(speed*FLY_MULTIPLIER);
             }
         }
 
