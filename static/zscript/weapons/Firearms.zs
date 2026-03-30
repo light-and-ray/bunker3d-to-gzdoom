@@ -81,6 +81,30 @@ class L3DBulletPuff : B3DBulletPuff
 }
 
 
+class C3DBulletPuff : B3DBulletPuff
+{
+    Default
+    {    }
+    States
+    {
+    Spawn:
+        TNT1 A 0 NoDelay A_JumpIf(globalVars.lastPuffFrame == 1, "FrameA");
+        TNT1 A 0 A_JumpIf(globalVars.lastPuffFrame == 0, "FrameB");
+    FrameA:
+        TNT1 A 0 {globalVars.lastPuffFrame = 0;}
+        PUFC A 6;
+        Stop;
+    FrameB:
+        TNT1 A 0 {globalVars.lastPuffFrame = 1;}
+        PUFC B 6;
+        Stop;
+    Melee:
+        TNT1 A 4;
+        Stop;
+    }
+}
+
+
 class MachineGun : DoomWeapon
 {
     Default

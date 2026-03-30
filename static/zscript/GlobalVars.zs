@@ -25,3 +25,13 @@ class FillL3DDefaults : EventHandler
     }
 }
 
+class FillC3DDefaults : EventHandler
+{
+    GlobalVars_t globalVars;
+
+    override void WorldLoaded (WorldEvent e) {
+        globalVars = GlobalVars_t(EventHandler.Find("GlobalVars_t"));
+        globalVars.puffClass = "C3DBulletPuff";
+    }
+}
+

@@ -7,6 +7,7 @@ adddefaultmap
     nolightfade
 }
 
+
 adddefaultmap
 {
     EventHandlers = "FillB3DDefaults"
@@ -81,7 +82,6 @@ adddefaultmap
     EventHandlers = "FillL3DDefaults"
 }
 
-
 map C2M1 lookup "C2M1"
 {
     levelnum = 1
@@ -155,6 +155,10 @@ map C2M10 lookup "C2M10"
 }
 
 
+adddefaultmap
+{
+    EventHandlers = "FillC3DDefaults"
+}
 
 map C3M1 lookup "C3M1"
 {
