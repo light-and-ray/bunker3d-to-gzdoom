@@ -76,6 +76,7 @@
         "PUFL",
         "pycache",
         "scalex",
+        "SHAKEONLY",
         "SHOOTABLE",
         "sideback",
         "Sidedef",

@@ -10,7 +10,8 @@ class TrainSwayingSourceWave : Actor
     States
     {
         Spawn:
-            TNT1 A 1000000 NoDelay A_QuakeEx(longSway, wideSway, highSway, 1000000, 0, 100000, "", QF_WAVE, longFreq, wideFreq, highFreq);
+            TNT1 A 1000000 NoDelay A_QuakeEx(longSway, wideSway, highSway, 1000000, 0, 100000, "",
+                                        QF_RELATIVE|QF_SHAKEONLY|QF_WAVE, longFreq, wideFreq, highFreq);
             loop;
     }
 }
@@ -23,7 +24,7 @@ class TrainSwayingSourceRandom : Actor
     States
     {
         Spawn:
-            TNT1 A 1000000 NoDelay A_QuakeEx(longSway, wideSway, highSway, 1000000, 0, 100000, "");
+            TNT1 A 1000000 NoDelay A_QuakeEx(longSway, wideSway, highSway, 1000000, 0, 100000, "", QF_RELATIVE|QF_SHAKEONLY);
             loop;
     }
 }
