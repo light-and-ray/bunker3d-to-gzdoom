@@ -154,7 +154,7 @@ class BaseFlamethrowerGuyNPC : BaseNPC
 {
     Default
     {
-        Health 50000;
+        Health 50;
         BloodType "B3DBlood";
     }
 
