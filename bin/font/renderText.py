@@ -11,6 +11,7 @@ TEST_TEXT = (
     "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG'S TAIL!\n\n"
     " - numbers: 0123456789\n"
     " - symbols: '`*-:?!#()\\/><\".,;^|&%$@_{}[]\n"
+    " - Ukrainian: Ґ Є І Ї\n"
 r'''
 
      |\    o
@@ -52,6 +53,7 @@ INPUT_TO_FONT = {
     'P': 'Р', 'Q': 'Q', 'R': 'R', 'S': 'S', 'T': 'Т',
     'U': 'U', 'V': 'V', 'W': 'Ш', 'X': 'Х', 'Y': 'Y', 'Z': 'Z',
     'Ъ': 'Ь', 'Ч': '4', '>': '»', '@': '*',
+    'Ґ': 'Г', 'І': 'I', 'Ї': 'I',
 }
 
 def process_text(text):
@@ -110,7 +112,7 @@ def get_char_tile(font_img, char, char_coords, game, CHAR_W, CHAR_H):
         semicolon_tile.paste(comma_tile, (0, 0), comma_tile if comma_tile.mode == 'RGBA' else None)
         return semicolon_tile
 
-    # Special Case: B3D Overrides
+
     if game == 'b3d':
         if char == 'N': # Mirrored И
             cx, cy = char_coords.get('И', (0,0))
@@ -121,8 +123,10 @@ def get_char_tile(font_img, char, char_coords, game, CHAR_W, CHAR_H):
         if char == 'Э': # Mirrored Е
             cx, cy = char_coords.get('Е', (0,0))
             return font_img.crop((cx * CHAR_W, cy * CHAR_H, (cx + 1) * CHAR_W, (cy + 1) * CHAR_H)).transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+        if char == 'Є': # Е
+            cx, cy = char_coords.get('Е', (0,0))
+            return font_img.crop((cx * CHAR_W, cy * CHAR_H, (cx + 1) * CHAR_W, (cy + 1) * CHAR_H))
 
-    # Special Case: C3D Overrides
     if game == 'c3d':
         if char == 'J': # 180 rotated 7
             cx, cy = char_coords.get('7', (0,0))
@@ -133,6 +137,11 @@ def get_char_tile(font_img, char, char_coords, game, CHAR_W, CHAR_H):
         if char == 'Q': # 180 rotated Ь
             cx, cy = char_coords.get('Ь', (0,0))
             return font_img.crop((cx * CHAR_W, cy * CHAR_H, (cx + 1) * CHAR_W, (cy + 1) * CHAR_H)).transpose(Image.Transpose.ROTATE_180)
+
+    if char == 'Є':
+        cx, cy = char_coords['Э']
+        crop = font_img.crop((cx * CHAR_W, cy * CHAR_H, (cx + 1) * CHAR_W, (cy + 1) * CHAR_H))
+        return crop.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
 
     if char == '^': # Mirrored Л
         cx, cy = char_coords.get('Л', (0,0))
