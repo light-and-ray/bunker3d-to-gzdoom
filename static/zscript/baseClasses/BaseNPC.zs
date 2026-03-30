@@ -5,26 +5,29 @@ class B3DBlodeNone : Actor replaces Blood
 class B3DBlood : Actor
 {
     GlobalVars_t globalVars;
+
     Default
     {
         +NOGRAVITY;
         +DONTTHRUST;
         +FORCEXYBILLBOARD;
     }
+
     States
     {
         Spawn:
             TNT1 A 0 NoDelay A_JumpIf(random(0, 1) == 1, "Frame1");
             goto Frame2;
         Frame1:
-            BLOD A 6 { vel = (0, 0, 0); }
+            BLOD A 6;
             TNT1 A 0 releaseGlobalLock();
             stop;
         Frame2:
-            BLOD B 6 { vel = (0, 0, 0); }
+            BLOD B 6;
             TNT1 A 0 releaseGlobalLock();
             stop;
     }
+
     override void PostBeginPlay()
     {
         if (getGlobalVars().bloodActive)
@@ -32,6 +35,7 @@ class B3DBlood : Actor
             self.destroy();
         } else
         {
+            self.vel = (0, 0, 0);
             getGlobalVars().bloodActive = true;
             Super.PostBeginPlay();
         }

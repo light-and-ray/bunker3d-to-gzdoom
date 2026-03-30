@@ -4,6 +4,9 @@ class GlobalVars_t : EventHandler
     int lastPuffFrame;
     string puffClass;
     bool bloodActive;
+    override void WorldLoaded (WorldEvent e) {
+        self.bloodActive = false;
+    }
 }
 
 class FillB3DDefaults : EventHandler
